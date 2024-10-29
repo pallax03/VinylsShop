@@ -1,24 +1,63 @@
 # Progetto web
-Modificare le versioni e veder cosa usano in lab.
+> 💡 REPO:
+> - src
+> - mockup
+> - relazione (1 pagina: )
 
-```bash
-docker-compose up
-```
+## E-commerce Ideas:
+💡 - take an already existent website and re do it with his assets!
+### Products
+1. vinyl with music (lo capisco se vuoi dire no alla musica)
+    - we can put some music, animations...
+    ⚠️ ma quando mai ti capiterà di fare un sito SENZA COPYRIGHTS
 
-Progetto/
-├── docker-compose.yml       # File for configuring Docker services
-├── htdocs/                  # Shared folder for Docker and XAMPP
-│   ├── css/
-│   │   └── styles.css        # Stylesheets
-│   ├── js/
-│   │   └── script.js         # JavaScript files
-│   ├── images/
-│   │   └── logo.png          # Images used in the site
-│   ├── includes/
-│   │   ├── header.php        # Common header across pages
-│   │   ├── footer.php        # Common footer across pages
-│   │   └── db.php            # MySQL database connection
-│   ├── index.php             # Homepage
-│   ├── about.php             # About page
-│   └── contact.php           # Contact page
-├── db_data/                  # Docker-managed MySQL data volume
+2. Candies and happy drugs
+
+3. pencil (stationary)
+    - with products customization
+
+4. COOFFEEEEEEEEE!!!!!
+
+5. ramen / asian food
+    - with customization of food like remove any ingredient
+
+6. desk LAMPS
+
+7. powerbanks / keyboards
+
+8. drinks and cocktails
+
+9. PINBALL TABLES or FLIPPER
+
+10. peluches
+
+---
+
+## Warning ⚠️
+- mobile first
+- browser compability
+- accessibility
+- 
+
+## Roadmap
+- Progettazione: 
+    - [ ] Idea
+    - [ ] Database Idea
+    - [ ] Mockup (max 4 punti) - 📝
+    - [ ] Database
+- Deployment:
+    - [ ]  
+    - [ ] Login
+    - [ ] Cookie
+    - [ ] 
+    - [ ] 
+    - [ ] Notifiche
+    - [ ]
+- WOOOW 
+    - [ ] secure password
+    - [ ] scss animation 
+    - [ ] products view customization (?)
+    - [ ] banner privacy (for cookie)
+- [ ] Relazione
+---
+
