@@ -4,8 +4,6 @@
 > - mockup
 > - relazione (1 pagina: )
 
-## E-commerce Ideas:
-💡 - take an already existent website and re do it with his assets!
 ### Products
 1. vinyl with music (lo capisco se vuoi dire no alla musica)
     - we can put some music, animations...
@@ -13,23 +11,12 @@
 
 2. Candies and happy drugs
 
-3. pencil (stationary)
-    - with products customization
+3. COOFFEEEEEEEEE!!!!!
 
-4. COOFFEEEEEEEEE!!!!!
-
-5. ramen / asian food
+4. ramen / asian food
     - with customization of food like remove any ingredient
 
-6. desk LAMPS
-
-7. powerbanks / keyboards
-
-8. drinks and cocktails
-
-9. PINBALL TABLES or FLIPPER
-
-10. peluches
+5. drinks and cocktails
 
 ---
 
@@ -43,6 +30,8 @@
 - Progettazione: 
     - [ ] Idea
     - [ ] Database Idea
+    - [ ] SiteMap Tree
+    - [ ] Sketch
     - [ ] Mockup (max 4 punti) - 📝
     - [ ] Database
 - Deployment:
@@ -61,3 +50,9 @@
 - [ ] Relazione
 ---
 
+## Configuration:
+### db:
+Il progetto (per ora è solo per provare (devo configurare docker e xampp insieme)), utilizza una classe con un construttore che inizializza le variabili di configurazione al database.
+
+> È possibile utilizzare un file `.env` per dichiarare le variabili di configurazione. 
+> 💡 Altrimenti: modificare nel [costruttore](./src/DatabaseUtility.php) le variabili di accesso al server mysql.

@@ -1,3 +1,9 @@
+<?php
+    require_once './DatabaseUtility.php';
+    $db = new DatabaseUtility();
+    echo $db->connect() ? 'connected' : 'not connected';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
