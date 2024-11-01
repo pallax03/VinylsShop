@@ -1,7 +1,5 @@
 <?php
     require_once './DatabaseUtility.php';
-    $db = new DatabaseUtility();
-    echo $db->connect() ? 'connected' : 'not connected';
 ?>
 
 <!DOCTYPE html>
@@ -10,21 +8,21 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>server</title>
-        //<link rel="stylesheet" href="/css/style.css?<?php echo date('l jS \of F Y h:i:s A'); ?>" />
+        <link rel="stylesheet" href="/css/style.css?<?php echo date('l jS \of F Y h:i:s A'); ?>" />
     </head>
     <body>
         <?php
-            $var = 'Questo è un header!';
-            include_once './layouts/header.php';
+            $var = "database: " . (DatabaseUtility::connect() ? 'connected' : 'not connected');
+            include_once './components/header.php';
         ?>
         
-        <section>
-            <h1>xampp is working</h1>
-        </section>
+        <main>
+            <h1>Home</h1>
+        </main>
         
         
         <?php
-            include_once './layouts/footer.php';
+            include_once './components/footer.php';
         ?>
     </body>
 </html>

@@ -1,34 +1,31 @@
 <?php
     class DatabaseUtility {
-        private $host;
-        private $username;
-        private $password;
-        private $database;
+        static string $host= 'localhost';
+        static string $username= 'root';
+        static string $password= '';
+        static string $database= 'mysql';
+        static string $port= '3306';
 
-        private $connection;
+        private static $connection;
 
-        public function __construct() {
-            $this->host = $_ENV['DB_HOST'] ?? 'localhost';
-            $this->username = $_ENV['DB_USER'] ?? 'root';
-            $this->password = $_ENV['DB_PASSWORD'] ?? '';
-            $this->database = $_ENV['DB_NAME'] ?? 'my_sql';
+        private static function setConfigEnv() {
+            self::$host = $_ENV['DB_HOST'] ?? self::$host;
+            self::$username = $_ENV['DB_USER'] ?? self::$username;
+            self::$password = $_ENV['DB_PASSWORD'] ?? self::$password;
+            self::$database = $_ENV['DB_NAME'] ?? self::$database;
+            self::$port = $_ENV['DB_PORT'] ?? self::$port;
         }
 
-        public function connect() {
-            $this->connection = new mysqli($this->host, $this->username, $this->password, $this->database);
-            if ($this->connection->connect_error) {
-                die("Connection failed: " . $this->connection->connect_error);
+        public static function connect() {
+            self::setConfigEnv();
+            if (self::$connection === null) {
+                self::$connection = new mysqli(self::$host, self::$username, self::$password, self::$database);
+                if (self::$connection->connect_error) {
+                    echo ("Connection failed: " . self::$connection->connect_error);
+                    self::$connection = null;
+                }
             }
-            return $this->connection;
-        }
-
-        public function close() {
-            $this->connection->close();
-        }
-
-        // TODO: implement this method
-        public function create() {
-            throw new Exception("not implemented", 501);
+            return self::$connection;
         }
     }
 ?>
