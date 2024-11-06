@@ -28,7 +28,7 @@
 
 ## Roadmap
 - Progettazione: 
-    - [ ] Idea
+    - [x] Idea
     - [ ] Database Idea
     - [ ] SiteMap Tree
     - [ ] Sketch
