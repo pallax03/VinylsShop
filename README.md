@@ -10,15 +10,8 @@
 - accessibility
 
 ## Roadmap
-<<<<<<< HEAD
-- Progettazione: 
-    - [x] Idea
-    - [ ] Database Idea
-    - [ ] SiteMap Tree
-=======
 1. Progettazione: 
     - [x] Idea
->>>>>>> cf1fc71 (Idea)
     - [ ] Sketch
     - [ ] SiteMap Tree
     - [ ] Database Idea
