@@ -1,58 +1,84 @@
 # Progetto web
-> 💡 REPO:
+> 💡 REPO:
 > - src
 > - mockup
 > - relazione (1 pagina: )
-
-### Products
-1. vinyl with music (lo capisco se vuoi dire no alla musica)
-    - we can put some music, animations...
-    ⚠️ ma quando mai ti capiterà di fare un sito SENZA COPYRIGHTS
-
-2. Candies and happy drugs
-
-3. COOFFEEEEEEEEE!!!!!
-
-4. ramen / asian food
-    - with customization of food like remove any ingredient
-
-5. drinks and cocktails
-
----
 
 ## Warning ⚠️
 - mobile first
 - browser compability
 - accessibility
-- 
 
 ## Roadmap
+<<<<<<< HEAD
 - Progettazione: 
     - [x] Idea
     - [ ] Database Idea
     - [ ] SiteMap Tree
+=======
+1. Progettazione: 
+    - [x] Idea
+>>>>>>> cf1fc71 (Idea)
     - [ ] Sketch
-    - [ ] Mockup (max 4 punti) - 📝
+    - [ ] SiteMap Tree
+    - [ ] Database Idea
+    - [ ] Mockup (max 4 punti) - 📝
     - [ ] Database
-- Deployment:
-    - [ ]  
+2. Deployment:
+    - [ ] configs
+        - [ ] envs (api keys + database vars)
+        - [ ] database utility connection
+        - [ ] session
+    - [ ] MVC
+        - [ ] Router (Routing)
+        - [ ] Render (View)
+        - [ ] Controller
+        - [ ] Model (?)
     - [ ] Login
-    - [ ] Cookie
+    - [ ] Cookie + Session
     - [ ] 
     - [ ] 
     - [ ] Notifiche
     - [ ]
-- WOOOW 
-    - [ ] secure password
-    - [ ] scss animation 
-    - [ ] products view customization (?)
+3. WOOOW 
+    - [ ] colori accessibili
+    - [ ] scss animation
     - [ ] banner privacy (for cookie)
+    - [ ] secure password
+    - [ ] API spotify (+ others: soundcloud, apple music)
+    - [ ] vinyl view customization (edizioni speciali - tenere conto nel database??)
+
 - [ ] Relazione
 ---
+## Features
+- Spotify immagini scaricare nuovi vinili
+- Posizione mostra nazione
+- Preordinare
+- Newsletter 
+- Suggerimenti in base a nazione genere artisti preferiti
+- Customize -> Varianti
+
+## db
+- utente + newsletter (?)
+- ordini
+- carrello
+- vinili + edizioni speciali
+- artisti
+- generi
+- giri
+- album
+- brani
 
 ## Configuration:
-### db:
-Il progetto (per ora è solo per provare (devo configurare docker e xampp insieme)), utilizza una classe con un construttore che inizializza le variabili di configurazione al database.
+Il progetto è nato come sia docker sia xampp, è possibile usare entrambi gli ambienti.
 
-> È possibile utilizzare un file `.env` per dichiarare le variabili di configurazione. 
+### env:
+Possiamo passare i file env direttamente alla prof via mail! (magari lo chiediamo al ricevimento)
+
+### db:
+È possibile utilizzare un file `.env` per dichiarare le variabili di configurazione. 
 > 💡 Altrimenti: modificare nel [costruttore](./src/DatabaseUtility.php) le variabili di accesso al server mysql.
+
+## Pages
+
+## APIs
