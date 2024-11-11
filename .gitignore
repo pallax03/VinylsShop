@@ -1,5 +1,9 @@
-.vscode
-.env
-/db/
-docker-compose.yml
-/**/Dockerfile
+# IDE
+.DS_Store
+/**/.DS_Store
+
+# Project files
+/**/.*.env
+/**/*.css
+/**/*.map
+/**/.env

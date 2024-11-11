@@ -1,0 +1,103 @@
+// colors:
+
+
+@font-face {
+    font-family: "Consolas.ttf", sans-serif;
+    src: url(/assets/fonts/Consolas.ttf);
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Consolas.ttf", sans-serif;
+    background-color: #ffffff;
+    & > main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2em;
+        height: 100dvh;;
+    }
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+}
+
+img.svg {
+    width: 30px;
+    height: 30px;
+    background-color: unset;
+}
+
+.island {
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    bottom: 10%;
+    z-index: 2;
+    .track {
+        h6, p {
+            color: #fff;
+        }
+    }
+    & > ul {
+        list-style-type: none;
+        padding: 1rem;
+        margin: 0;
+        background-color: #000;
+        border-radius: 25px;
+        width: clamp(80%, 250px, 600px);
+        display: flex;
+        align-content: center;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: row;
+        & > li {
+            margin: 0.5em;
+            
+            & > button {
+                padding: .8em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                background-color: unset;
+                transition: all 0.3s ease-out;
+                cursor: pointer;
+                &:hover {
+                    transform: scale(1.4);   
+                }
+            }
+        }
+    }
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

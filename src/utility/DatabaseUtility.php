@@ -1,14 +1,14 @@
-<?php
+<?php    
     class DatabaseUtility {
-        static string $host= 'localhost';
-        static string $username= 'root';
-        static string $password= '';
-        static string $database= 'mysql';
-        static string $port= '3306';
+        private static string $host= 'localhost';
+        private static string $username= 'root';
+        private static string $password= '';
+        private static string $database= 'mysql';
+        private static string $port= '3306';
 
-        private static $connection;
+        public static $connection = null;
 
-        private static function setConfigEnv() {
+        public static function setConfigEnv() {
             self::$host = $_ENV['DB_HOST'] ?? self::$host;
             self::$username = $_ENV['DB_USER'] ?? self::$username;
             self::$password = $_ENV['DB_PASSWORD'] ?? self::$password;
@@ -17,7 +17,6 @@
         }
 
         public static function connect() {
-            self::setConfigEnv();
             if (self::$connection === null) {
                 self::$connection = new mysqli(self::$host, self::$username, self::$password, self::$database);
                 if (self::$connection->connect_error) {
