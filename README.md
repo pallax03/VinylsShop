@@ -9,58 +9,12 @@
 - browser compability
 - accessibility
 
-## Roadmap
-1. Progettazione: 
-    - [x] Idea
-    - [ ] Sketch
-    - [ ] SiteMap Tree
-    - [ ] Database Idea
-    - [ ] Mockup (max 4 punti) - 📝
-    - [ ] Database
-2. Deployment:
-    - [ ] configs
-        - [ ] envs (api keys + database vars)
-        - [ ] database utility connection
-        - [ ] session
-    - [ ] MVC
-        - [ ] Router (Routing)
-        - [ ] Render (View)
-        - [ ] Controller
-        - [ ] Model (?)
-    - [ ] Login
-    - [ ] Cookie + Session
-    - [ ] 
-    - [ ] 
-    - [ ] Notifiche
-    - [ ]
-3. WOOOW 
-    - [ ] colori accessibili
-    - [ ] scss animation
-    - [ ] banner privacy (for cookie)
-    - [ ] secure password
-    - [ ] API spotify (+ others: soundcloud, apple music)
-    - [ ] vinyl view customization (edizioni speciali - tenere conto nel database??)
-
-- [ ] Relazione
----
-## Features
-- Spotify immagini scaricare nuovi vinili
+### possibles Features
 - Posizione mostra nazione
 - Preordinare
 - Newsletter 
 - Suggerimenti in base a nazione genere artisti preferiti
-- Customize -> Varianti
 
-## db
-- utente + newsletter (?)
-- ordini
-- carrello
-- vinili + edizioni speciali
-- artisti
-- generi
-- giri
-- album
-- brani
 
 ## Configuration:
 Il progetto è nato come sia docker sia xampp, è possibile usare entrambi gli ambienti.
@@ -69,12 +23,48 @@ Se si sta usando xampp la connessione al database solitamente esplicitata nel fi
 Vengono infatti usate le variabili dichiarate nella classe [DatabaseUtility](/src/utility/DatabaseUtility.php)
 
 ### env:
-Possiamo passare i file env direttamente alla prof via mail! (magari lo chiediamo al ricevimento)
-
-### db:
-È possibile utilizzare un file `.env` per dichiarare le variabili di configurazione. 
-> 💡 Altrimenti: modificare nel [costruttore](./src/DatabaseUtility.php) le variabili di accesso al server mysql.
+mandare una mail a prof di laboratorio per chiedere: (lista di API che si vogliono utilizzare e per cosa)
+- gravatar -> prendere il profilo (immagine pfp) di un account gravatar (il "portafoglio digitale" per l'email), se l'utente lo ha altrimenti si mostra un icona di default.
+- spotify -> permette di dare suggerimenti in base al proprio account (possibilità di loggarsi nel sito usando spotify).
+- nominatim (open street map) -> autocompletamento degli indirizzi.
+- 
 
 ## Pages
+- /vinyls
+- /artists
+- /cart -> also if u r not logged have a cart but its stored in $SESSION
 
-## APIs
+[user]
+- /orders
+- /shipment
+
+[⭐️ admin]
+- /dashboard
+
+[informations]
+- /privacy -> bla bla bla
+- /api -> api docs 
+- /devs -> this README.md! 
+
+## APIs (/api/...)
+### user
+[Vinyls]
+- /api/vinyls [GET] + '?id_vinyl=' -> vinyl with this id.
+    -   + '&album=' -> vinyls of this album (title).
+    -   + '&track=' -> vinyls that contain this track (title).
+    -   + '&artist=' -> vinyls created by artist (name).
+
+[Orders]
+- /api/orders [GET] ->
+- /api/shipment [GET] ->
+
+
+### admin ⭐️ (need header auth: token (user auth))
+[Vinyls]
+- /api/vinyl [POST] -> create a new vinyl if artist is not present insert also the artist and tracks.
+
+[User]
+- /api/user [POST] -> add / modify user credentials.
+- /api/user [GET] + '?mail' -> get user credentials.
+
+[orders]
