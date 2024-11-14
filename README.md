@@ -43,7 +43,7 @@ mandare una mail a prof di laboratorio per chiedere: (lista di API che si voglio
 
 [informations]
 - /privacy -> bla bla bla
-- /api -> api docs 
+- /api -> api docs
 - /devs -> this README.md! 
 
 ## APIs (/api/...)

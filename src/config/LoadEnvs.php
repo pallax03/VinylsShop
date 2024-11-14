@@ -12,7 +12,7 @@ class LoadEnv {
                 } 
             }
         } catch (\Throwable $th) {
-            trigger_error("no env loaded", E_USER_NOTICE);
+            error_log($th->getMessage());
         }
     }
 }

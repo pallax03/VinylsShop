@@ -9,8 +9,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./src/config/envs/.env
-      - ./src/config/envs/.spotify.env
+      - .env
     
   phpmyadmin:
     image: phpmyadmin:latest

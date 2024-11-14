@@ -4,11 +4,8 @@ FROM php:8.1-apache
 # add mysqli dependency
 RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
-# Enable mod_rewrite for Apache
-RUN a2enmod rewrite
-
-# Configure Apache to allow .htaccess files
-RUN sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+# Enable mod_rewrite for Apache and configure Apache to allow .htaccess files
+RUN a2enmod rewrite && sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # COPY THOSE FILES INTO THE CONTAINER
 COPY ./ /var/www/html
