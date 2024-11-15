@@ -15,7 +15,8 @@ class Request
 
     public function getAuthentication()
     {
-        return $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+        $headers = getallheaders();
+        return $headers['Authorization'] ?? false;
     }
 
     public function getUrl()
@@ -38,23 +39,27 @@ class Request
         return $this->getMethod() === 'post';
     }
     
+    public function isDelete()
+    {
+        return $this->getMethod() === 'delete';
+    }
+
+    private function sanitazeData($array, $type) {
+        $data = [];
+        foreach ($array as $key => $value) {
+            $data[$key] = filter_input($type, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+        return $data;
+    }
 
     public function getBody()
     {
         $data = [];
-        if ($this->isGet()) {
-            foreach ($_GET as $key => $value) {
-                $data[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
-            }
+        if (($this->isGet() || $this->isDelete()) && !empty($_GET)) {
+            $data = $this->sanitazeData($_GET, INPUT_GET);
         }
         if ($this->isPost()) {
-            if ($this->getContentType() === 'application/json') {
-                $data = json_decode(file_get_contents('php://input'), true);
-            }
-
-            foreach ($_POST as $key => $value) {
-                $data[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
-            }
+            $data = $this->sanitazeData($this->getContentType() === 'application/json' ?  json_decode(file_get_contents('php://input'), true) : $_POST, INPUT_POST);
         }
         return $data;
     }

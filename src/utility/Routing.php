@@ -4,12 +4,22 @@
     require_once CONTROLLERS . '/AuthController.php';
     
     $router = new Router(new Request(), new Response());
+
+    // [Home]
     $router->get('/', [HomeController::class, 'index']);
     $router->post('/', [HomeController::class, 'index']);
 
-    
+    // [Auth]
+    // $router->get('/login', [AuthController::class, 'login']);
     $router->post('/login', [AuthController::class, 'login']);
-    // $router->delete('/api/user/{id}', [AuthController::class, 'deleteUser']);
+    
+    // [DELETE] /api/user + '?id_user=2' + 'Authorization Bearer: token' -> deleteUser if isSuperUser logged
+    $router->delete('/api/user', [AuthController::class, 'deleteUser']);
+    // $router->get('/callback', [AuthController::class, 'callback']);
+    // $router->get('/logout', [AuthController::class, 'logout']);
+    // $router->get('/register', [AuthController::class, 'register']);
+    // $router->post('/register', [AuthController::class, 'register']);
+
 
     # dispatch route
     $router->dispatch();

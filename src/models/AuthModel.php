@@ -20,10 +20,13 @@ final class AuthModel {
 
     private function verifyToken($token) {
         $key = $_ENV['JWT_SECRET_KEY'];
-        $parts = explode('.', $token);
+        // check if token is Barer token or only token
+        if (strpos($token, 'Bearer ') !== false)
+            $token = str_replace('Bearer ', '', $token);
+
+        $parts = preg_split('/\./', $token);
         
         if (count($parts) === 3) {
-            $header = base64_decode(str_replace(['-', '_'], ['+', '/'], $parts[0]));
             $payload = base64_decode(str_replace(['-', '_'], ['+', '/'], $parts[1]));
             $signatureProvided = $parts[2];
     
@@ -47,33 +50,19 @@ final class AuthModel {
     
 
     public function login($mail, $password) {
-    $db = Database::getInstance()->getConnection();
+        $db = Database::getInstance()->getConnection();
 
-    $query = "SELECT * FROM `Users` WHERE mail = ? AND password = ?";
-    $stmt = $db->prepare($query);
-    $stmt->bind_param('ss', $mail, $password);
-    $stmt->execute();
-    $result = $stmt->get_result()->fetch_assoc();
+        $query = "SELECT * FROM `Users` WHERE mail = ? AND password = ?";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param('ss', $mail, $password);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
 
-    if ($result) {
-        $token = $this->generateToken($result['id_user'], $result['su']);
-        return ['token' => $token, 'user' => $result];
-    } else {
-        return false;  // Credenziali non valide
-    }
-
-        // // TO REDO
-        // $token = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-        // if ($token) {
-        //     $decoded = $this->verifyToken($token);
-        //     if ($decoded && $decoded['role'] === 'admin') {
-        //         echo "Autenticazione riuscita. Ruolo: " . $decoded['role'];
-        //     } else {
-        //         echo "Token non valido o accesso negato.";
-        //     }
-        // } else {
-        //     echo "Nessun token fornito.";
-        // }
+        if ($result) {
+            $token = $this->generateToken($result['id_user'], $result['su']);
+            return ['token' => $token, 'user' => $result];
+        }
+        return ['error' => 'Credenziali non valide']; 
     }
 
     public function logout() {

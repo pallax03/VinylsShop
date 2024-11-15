@@ -15,35 +15,20 @@ final class AuthController extends Controller {
         // $response->redirect('/');
     }
 
-    public function logout() {
+    public function logout(Response $response) {
         // $this->model->logout();
-        echo 'logout';
+        echo json_encode(['error' => 'Not implemented']);
     }
 
     public function register() {
         // $this->model->register();
-        echo 'register';
+        echo json_encode(['error' => 'Not implemented']);
     }
 
     public function forgotPassword() {
         // $this->model->forgotPassword();
-        echo 'forgotPassword';
+        echo json_encode(['error' => 'Not implemented']);
     }
-
-    // private function checkToken($token) {
-    //     // Esempio di utilizzo
-    //     $token = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-    //     if ($token) {
-    //         $decoded = $this->model->verifyToken($token);
-    //         if ($decoded && $decoded['role'] === 'admin') {
-    //             echo "Autenticazione riuscita. Ruolo: " . $decoded['role'];
-    //         } else {
-    //             echo "Token non valido o accesso negato.";
-    //         }
-    //     } else {
-    //         echo "Nessun token fornito.";
-    //     }
-    // }
 
     public function deleteUser(Request $request, Response $response) {
         $body = $request->getBody();
