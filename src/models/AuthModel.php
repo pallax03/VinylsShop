@@ -1,6 +1,7 @@
 <?php
 final class AuthModel {
 
+    # generate token with user id and isSuperUser.
     private function generateToken($userId, $isSuperUser) {
         $key = $_ENV['JWT_SECRET_KEY'];
         $header = json_encode(['alg' => 'HS256', 'typ' => 'JWT']);
@@ -17,7 +18,6 @@ final class AuthModel {
         // Token finale
         return $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
     }
-
     private function verifyToken($token) {
         $key = $_ENV['JWT_SECRET_KEY'];
         // check if token is Barer token or only token
@@ -47,7 +47,16 @@ final class AuthModel {
         }
         return false;  // Token non valido
     }
-    
+
+    private function setCookie($token) {
+        setcookie('token', $token, [
+            'expires' => time() + 3600,  // Scadenza di 1 ora (modificabile)
+            'path' => '/',               // Disponibile su tutto il sito
+            'secure' => true,            // Solo tramite HTTPS
+            'httponly' => true,          // Non accessibile via JavaScript
+            'samesite' => 'Strict'       // Anti-CSRF, non invia il cookie da altre origini
+        ]);
+    }
 
     public function login($mail, $password) {
         $db = Database::getInstance()->getConnection();
@@ -59,14 +68,17 @@ final class AuthModel {
         $result = $stmt->get_result()->fetch_assoc();
 
         if ($result) {
-            $token = $this->generateToken($result['id_user'], $result['su']);
+            $this->setCookie($token = $this->generateToken($result['id_user'], $result['su']));
+            $_SESSION['User'] = $result;
             return ['token' => $token, 'user' => $result];
         }
         return ['error' => 'Credenziali non valide']; 
     }
 
     public function logout() {
-        echo 'logout';
+        setcookie('token', '', time() - 3600, '/');
+        session_destroy();
+        return ['message' => 'Logout effettuato'];
     }
 
     public function register() {

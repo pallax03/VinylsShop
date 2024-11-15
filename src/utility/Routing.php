@@ -12,11 +12,12 @@
     // [Auth]
     // $router->get('/login', [AuthController::class, 'login']);
     $router->post('/login', [AuthController::class, 'login']);
+    $router->get('/logout', [AuthController::class, 'logout']);
     
     // [DELETE] /api/user + '?id_user=2' + 'Authorization Bearer: token' -> deleteUser if isSuperUser logged
     $router->delete('/api/user', [AuthController::class, 'deleteUser']);
     // $router->get('/callback', [AuthController::class, 'callback']);
-    // $router->get('/logout', [AuthController::class, 'logout']);
+    
     // $router->get('/register', [AuthController::class, 'register']);
     // $router->post('/register', [AuthController::class, 'register']);
 

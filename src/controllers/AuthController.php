@@ -15,9 +15,9 @@ final class AuthController extends Controller {
         // $response->redirect('/');
     }
 
-    public function logout(Response $response) {
-        // $this->model->logout();
-        echo json_encode(['error' => 'Not implemented']);
+    public function logout(Request $request, Response $response) {
+        $this->model->logout();
+        $response->redirect('/');
     }
 
     public function register() {

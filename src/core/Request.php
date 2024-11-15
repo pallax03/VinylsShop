@@ -10,7 +10,7 @@ class Request
 
     public function getContentType()
     {
-        return $_SERVER['CONTENT_TYPE'];
+        return $_SERVER['CONTENT_TYPE'] ?? false;
     }
 
     public function getAuthentication()
@@ -59,7 +59,7 @@ class Request
             $data = $this->sanitazeData($_GET, INPUT_GET);
         }
         if ($this->isPost()) {
-            $data = $this->sanitazeData($this->getContentType() === 'application/json' ?  json_decode(file_get_contents('php://input'), true) : $_POST, INPUT_POST);
+            $data = $this->getContentType() === 'application/json' ?  json_decode(file_get_contents('php://input'), true) : $this->sanitazeData($_POST, INPUT_POST);
         }
         return $data;
     }

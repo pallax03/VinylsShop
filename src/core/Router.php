@@ -36,7 +36,7 @@ class Router {
         $method = $this->request->getMethod();
         $url = $this->request->getUrl();
         
-        $callback = $this->routes[$method][$url] ?? 'false';
+        $callback = $this->routes[$method][$url] ?? false;
         
         if ($callback === false) {
             throw new \Exception("No route found for URI: $url");

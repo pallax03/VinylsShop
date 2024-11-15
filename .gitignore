@@ -5,5 +5,5 @@
 # Project files
 /**/*.css
 /**/*.map
-# /**/.*.env
-# /**/.env
+/**/.*.env
+/**/.env
