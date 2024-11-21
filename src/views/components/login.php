@@ -1,15 +1,19 @@
 
-<form action="/login" method="post">
+<form id="login_form" action="/login" method="post">
     <h1>Login</h1>
     <ul>
         <li>
             <label for="mail">Mail:</label>
-            <input type="text" name="mail" value="admin" placeholder="Mail">
+            <input id="mail" type="text" name="mail" value="admin" placeholder="Mail">
         </li>
         <li>
             <label for="password">Password:</label>
-            <input type="password" value="admin" name="password" placeholder="Password">
+            <input id="password" type="password" value="admin" name="password" placeholder="Password">
         </li>
-        <button type="submit"></button>
+        <input type="button" id="login_submit" value="Login">
     </ul>
+    <div id="login_response">
+
+    </div>
 </form>
+<script src="/resources/js/auth.js"></script>

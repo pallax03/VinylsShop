@@ -28,43 +28,15 @@ class Session {
         return self::isSet('User') && self::get('User')['su'];
     }
     
-    public static function isUser() {
-        return self::isSet('User');
-    }
-    
     public static function isLogged() {
         return self::isSet('User');
     }
-    
-    public static function isAdmin() {
-        return self::isSet('User') && self::get('User')['su'];
+
+    public static function getUser() {
+        if (!self::isLogged() || !isset(self::get('User')['id_user'])) {
+            return false;
+        }
+        return self::get('User')['id_user'];
     }
-    
-    public static function isNotLogged() {
-        return !self::isSet('User');
-    }
-    
-    public static function isNotAdmin() {
-        return !self::isSet('User') || !self::get('User')['su'];
-    }
-    
-    public static function isNotSuperUser() {
-        return !self::isSet('User') || !self::get('User')['su'];
-    }
-    
-    public static function isNotUser() {
-        return !self::isSet('User');
-    }
-    
-    public static function isNot($key) {
-        return !self::isSet($key);
-    }
-    
-    public static function is($key) {
-        return self::isSet($key);
-    }
-    
-    public static function isNotSet($key) {
-        return !self::isSet($key);
-    }
+
 }

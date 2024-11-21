@@ -1,55 +1,49 @@
 <?php
 final class AuthModel {
 
-    # generate token with user id and isSuperUser.
+    private $cookieAuthName = 'user_auth';
+
+    private function encryptPassword($password) {
+        $key = $_ENV['JWT_SECRET_KEY'];
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+        $encrypted = openssl_encrypt($password, 'aes-256-cbc', $key, 0, $iv);
+        return base64_encode($encrypted . '::' . $iv);
+    }
+
     private function generateToken($userId, $isSuperUser) {
         $key = $_ENV['JWT_SECRET_KEY'];
-        $header = json_encode(['alg' => 'HS256', 'typ' => 'JWT']);
-        $payload = json_encode(['user_id' => $userId, 'isSuperUser' => $isSuperUser, 'exp' => time() + 3600]);  // Token valido per 1 ora
-    
-        // Codifica in base64
-        $base64UrlHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));
-        $base64UrlPayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($payload));
-    
-        // Crea la firma
-        $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $key, true);
-        $base64UrlSignature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
-    
-        // Token finale
-        return $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
+        $header = base64_encode(json_encode(['alg' => 'HS256', 'typ' => 'JWT']));
+        $payload = base64_encode(json_encode(['id_user' => $userId, 'isSuperUser' => $isSuperUser, 'exp' => time() + 3600]));
+        $signature = hash_hmac('sha256', "$header.$payload", $key, true);
+        $signature = base64_encode($signature);
+        return "$header.$payload.$signature";
     }
+
+    // refresh the session with the user info (id, su)
+    private function refreshSession($userInfo) {
+        Session::set('User', ['id_user' => $userInfo['id_user'], 'su' => $userInfo['isSuperUser']]);
+    }
+
+    // check if the token is valid, if it is refresh the session, else logout.
     private function verifyToken($token) {
         $key = $_ENV['JWT_SECRET_KEY'];
-        // check if token is Barer token or only token
-        if (strpos($token, 'Bearer ') !== false)
-            $token = str_replace('Bearer ', '', $token);
+        list($header, $payload, $signature) = explode('.', $token);
 
-        $parts = preg_split('/\./', $token);
-        
-        if (count($parts) === 3) {
-            $payload = base64_decode(str_replace(['-', '_'], ['+', '/'], $parts[1]));
-            $signatureProvided = $parts[2];
-    
-            // Verifica la firma
-            $signature = hash_hmac('sha256', $parts[0] . "." . $parts[1], $key, true);
-            $base64UrlSignature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
-    
-            if ($base64UrlSignature === $signatureProvided) {
-                $payloadArray = json_decode($payload, true);
-    
-                // Verifica se il token è scaduto
-                if ($payloadArray['exp'] >= time()) {
-                    return $payloadArray;  // Token valido
-                } else {
-                    return false;  // Token scaduto
-                }
+        $validSignature = hash_hmac('sha256', "$header.$payload", $key, true);
+        $validSignature = base64_encode($validSignature);
+
+        if ($signature === $validSignature) {
+            $userInfo = json_decode(base64_decode($payload), true);
+            if ($userInfo['exp'] > time()) {
+                $this->refreshSession($userInfo);
+                return $userInfo;
             }
         }
-        return false;  // Token non valido
+        $this->logout();
     }
 
     private function setCookie($token) {
-        setcookie('token', $token, [
+        setcookie($this->cookieAuthName, $token, [
             'expires' => time() + 3600,  // Scadenza di 1 ora (modificabile)
             'path' => '/',               // Disponibile su tutto il sito
             'secure' => true,            // Solo tramite HTTPS
@@ -58,41 +52,68 @@ final class AuthModel {
         ]);
     }
 
+    /*
+    * This function checks the authentication of the user
+    * setting the session if the token is valid
+    * else it returns false
+    * @param string $header
+    * @return bool
+    */
+    public function checkAuth() {
+        if (isset($_COOKIE[$this->cookieAuthName])) {
+            $this->verifyToken($_COOKIE[$this->cookieAuthName]);
+        }
+        return false;
+    }
+
     public function login($mail, $password) {
         $db = Database::getInstance()->getConnection();
 
         $query = "SELECT * FROM `Users` WHERE mail = ? AND password = ?";
         $stmt = $db->prepare($query);
-        $stmt->bind_param('ss', $mail, $password);
+        $stmt->bind_param('ss', $mail, $this->encryptPassword($password));
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
 
         if ($result) {
             $this->setCookie($token = $this->generateToken($result['id_user'], $result['su']));
-            $_SESSION['User'] = $result;
-            return ['token' => $token, 'user' => $result];
+            $this->refreshSession(['id_user' => $result['id_user'], 'isSuperUser' => $result['su']]);
+            return true;
         }
-        return ['error' => 'Credenziali non valide']; 
+        return false;
     }
 
     public function logout() {
-        setcookie('token', '', time() - 3600, '/');
-        session_destroy();
-        return ['message' => 'Logout effettuato'];
+        // delete cookie also if not exists
+        setcookie($this->cookieAuthName, '', [
+            'expires' => time() - 3600,
+            'path' => '/',
+            'secure' => true,
+            'httponly' => true,
+            'samesite' => 'Strict'
+        ]);
+        Session::destroy();
+        return true;
     }
 
-    public function register() {
-        echo 'register';
+    public function register($mail, $password, $su, $newsletter) {
+        $db = Database::getInstance()->getConnection();
+    
+        $query = "INSERT INTO `Users` (mail, password, su, newsletter) VALUES (?, ?, ?, ?)";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param('ssii', $mail, $this->encryptPassword($password), $su, $newsletter);
+        $stmt->execute();
+
+        return $stmt->affected_rows > 0;
     }
 
-    public function forgotPassword() {
-        echo 'forgotPassword';
+    public function forgotPassword($mail) {
+        return false;
     }
 
-    public function deleteUser($id_user, $token) {
-        $decoded = $this->verifyToken($token);
-        if (!$decoded || !$decoded['isSuperUser']) {
-            return ['message' => 'Accesso negato'];
+    public function deleteUser($id_user) {
+        if (!Session::isSuperUser()) {
+            return false;
         }
 
         $db = Database::getInstance()->getConnection();
@@ -102,10 +123,20 @@ final class AuthModel {
         $stmt->bind_param('i', $id_user);
         $stmt->execute();
 
-        if ($stmt->affected_rows > 0) {
-            return ['message' => 'Utente eliminato con successo'];
-        } else {
-            return ['message' => 'Nessun utente trovato'];
+        return $stmt->affected_rows > 0;
+    }
+
+    public function getUser($id_user) {
+        if ($id_user === Session::getUser() || Session::isSuperUser()) {
+            $db = Database::getInstance()->getConnection();
+
+            $query = "SELECT * FROM `Users` WHERE id_user = ?";
+            $stmt = $db->prepare($query);
+            $stmt->bind_param('i', $id_user);
+            $stmt->execute();
+            $result = $stmt->get_result()->fetch_assoc();
+            return $result;
         }
+        return false;
     }
 }

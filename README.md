@@ -1,4 +1,4 @@
-# Progetto web
+# Progetto web - VinylsShop
 > 💡 REPO:
 > - src
 > - mockup
@@ -9,12 +9,15 @@
 - browser compability
 - accessibility
 
-##### possibles Features
+##### Features possibili
 - Posizione mostra nazione
 - Preordinare
 - Newsletter 
 - Suggerimenti in base a:
     - nazione genere artisti preferiti
+
+## db:
+![Database Schema](/db/vinylsShop.png)
 
 ##### API che possiamo usare:
 - gravatar -> prendere il profilo (immagine pfp) di un account gravatar (il "portafoglio digitale" per l'email), se l'utente lo ha altrimenti si mostra un icona di default.
@@ -22,16 +25,9 @@
 - nominatim (open street map) -> autocompletamento degli indirizzi.
 - ...
 
-# PER SAM:
-allora sam stavo pensando, che te puoi partire con il fare pagine dove non serve l'autenticazione, almeno finchè non è pronta.
-magari inizia con fare delle richieste api [GET] che restituiscono json delle query.
-Tipo /api/artist [GET] -> restituisce un json di artisti, poi la evolvi man mano aggiungendo parametri, filtrandola ecc...
-
-Se hai delle idee inseriscile qui nel README cosi sappiamo cosa dobbiamo fare man mano che ci lavoriamo.
-
 ## Installation:
 Si può usare docker eseguendo un : ``` docker compose up ```
-Oppure copiare il progetto su XAMPP:
+### con XAMPP:
 - injectando il [`db`](/db/init.sql).
 - spostando il contenuto di [`src`](/src/) dentro la cartella `htdocs`.
 
@@ -51,14 +47,14 @@ Oppure copiare il progetto su XAMPP:
 ##### [⭐️ admin]
 - /dashboard
 
-
-
 ### APIs (/api/...) -> return json
 #### basic (no auth needed)
 - /api/vinyls [GET] + '?id_vinyl=' -> vinyl with this id.
     -  '+ &album=' -> vinyls of this album (title).
+    -  '+ &genre=' -> vinyls of this album (genre).
     -  '+ &track=' -> vinyls that contain this track (title).
     -  '+ &artist=' -> vinyls created by artist (name).
+    -  '+ &query=' -> the all-in-one ???.
 
 - /api/artists [GET] + '?id_artist=' -> return the artists or the artist with `id_artist`.
 - /api/tracks [GET] + '?id_track=' -> track with this id.
