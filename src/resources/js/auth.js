@@ -25,7 +25,7 @@ document.getElementById('login_submit').addEventListener('click', function() {
     .then(data => {
         document.getElementById('login_submit').disabled = true;
         document.getElementById('login_submit').style.visibility = false;
-        document.getElementById('login_response').innerHTML = '<p style="color: limegreen;">Logged in!</p>';
+        document.getElementById('login_response').innerHTML = '<p style="color: limegreen;">'+data['message']+'</p>';
 
         setTimeout(() => {
             window.location.href = '/';

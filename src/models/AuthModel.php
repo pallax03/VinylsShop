@@ -4,10 +4,7 @@ final class AuthModel {
     private $cookieAuthName = 'user_auth';
 
     private function encryptPassword($password) {
-        $key = $_ENV['JWT_SECRET_KEY'];
-        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
-        $encrypted = openssl_encrypt($password, 'aes-256-cbc', $key, 0, $iv);
-        return base64_encode($encrypted . '::' . $iv);
+        return md5($password);
     }
 
     private function generateToken($userId, $isSuperUser) {
@@ -66,12 +63,22 @@ final class AuthModel {
         return false;
     }
 
+    public function checkMail($mail) {
+        $db = Database::getInstance()->getConnection();
+        $query = "SELECT * FROM `Users` WHERE mail = ?";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param('s', $mail);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result == [] || $result == null ? false : true;
+    }
+
     public function login($mail, $password) {
         $db = Database::getInstance()->getConnection();
-
         $query = "SELECT * FROM `Users` WHERE mail = ? AND password = ?";
         $stmt = $db->prepare($query);
-        $stmt->bind_param('ss', $mail, $this->encryptPassword($password));
+        $password=$this->encryptPassword($password);
+        $stmt->bind_param('ss', $mail, $password);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
 
@@ -80,6 +87,7 @@ final class AuthModel {
             $this->refreshSession(['id_user' => $result['id_user'], 'isSuperUser' => $result['su']]);
             return true;
         }
+
         return false;
     }
 
@@ -96,15 +104,19 @@ final class AuthModel {
         return true;
     }
 
-    public function register($mail, $password, $su, $newsletter) {
-        $db = Database::getInstance()->getConnection();
-    
-        $query = "INSERT INTO `Users` (mail, password, su, newsletter) VALUES (?, ?, ?, ?)";
-        $stmt = $db->prepare($query);
-        $stmt->bind_param('ssii', $mail, $this->encryptPassword($password), $su, $newsletter);
-        $stmt->execute();
-
-        return $stmt->affected_rows > 0;
+    public function register($mail, $password, $newsletter) {
+        try {
+            $db = Database::getInstance()->getConnection();
+            $query = "INSERT INTO `Users` (mail, password, su, newsletter) VALUES (?, ?, 0, ?)";
+            $stmt = $db->prepare($query);
+            $password = $this->encryptPassword($password);
+            $stmt->bind_param('ssi', $mail, $password, $newsletter);
+            $stmt->execute();
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+        return false;
     }
 
     public function forgotPassword($mail) {
@@ -112,7 +124,7 @@ final class AuthModel {
     }
 
     public function deleteUser($id_user) {
-        if (!Session::isSuperUser()) {
+        if (!Session::isSuperUser() && $id_user !== Session::getUser()) {
             return false;
         }
 

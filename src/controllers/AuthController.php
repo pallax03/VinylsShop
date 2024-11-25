@@ -10,23 +10,30 @@ final class AuthController extends Controller {
 
     public function login(Request $request, Response $response) {
         $body = $request->getBody();
+        $message = "";
+
+        $userExist = $this->model->checkMail($body['mail']);
+        if (!$userExist) {
+            $result = $this->model->register($body['mail'], $body['password'], isset($body['su']) ? $body['su'] : '0', isset($body['newsletter']) ? $body['newsletter'] : '1');
+            if (!$result) {
+                $response->Error('Error while registering');
+                return ;
+            }
+        }
+        
         $result = $this->model->login($body['mail'], $body['password']);
+        $message = $userExist ? "Logged in, redirecting..." : "Registered, redirecting...";
+
         if ($result) {
-            $response->Success('Logged in, redirecting...');
+            $response->Success($message);
         } else {
-            $response->Error('invalid credentials');
+            $response->Error('Credentials not valid');
         }
     }
 
     public function logout(Request $request, Response $response) {
         $this->model->logout();
         $response->redirect('/');
-    }
-
-    public function register(Request $request, Response $response) {
-        $body = $request->getBody();
-        $result = $this->model->register($body['mail'], $body['password'], isset($body['su']) ? $body['su'] : '0', isset($body['newsletter']) ? $body['newsletter'] : '1');
-        echo json_encode($result);
     }
 
     public function forgotPassword() {

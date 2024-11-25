@@ -5,7 +5,7 @@ class Response
     public function Success($message)
     {
         $this->statusCode(200);
-        $this->json(['success' => $message]);
+        $this->json(['message' => $message]);
     }
 
     public function Error($message)

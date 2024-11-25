@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Users` (
   PRIMARY KEY (`id_user`), UNIQUE INDEX `mail_UNIQUE` (`mail` ASC));
 
 -- DEFAULT USERS
-INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('admin', '', 1);
-INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('alexmaz03@hotmail.it', '', 0);
+INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 1);
+INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('alexmaz03@hotmail.it', 'd41d8cd98f00b204e9800998ecf8427e', 0);
 
 
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Cards` (
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Cards` (
 
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Addresses` (
     `id_address` INT NOT NULL AUTO_INCREMENT,
-    `province` VARCHAR(100) NOT NULL,
+    `name` VARCHAR(55) NOT NULL,
     `city` VARCHAR(100) NOT NULL,
     `postal_code` VARCHAR(20) NOT NULL,
     `street_number` VARCHAR(20) NOT NULL,
@@ -84,19 +84,18 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Shipments` (
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Vinyls` (
     `id_vinyl` INT NOT NULL AUTO_INCREMENT,
     `cost` DECIMAL(10, 2) NOT NULL,
-    `colors` VARCHAR(50),
+    `rpm` INT NOT NULL,
+    `inch` INT NOT NULL,
     `quantity` INT NOT NULL,
-    `img` VARCHAR(255),
     `type` ENUM('LP', 'EP') NOT NULL,
     PRIMARY KEY (`id_vinyl`)
 );
 
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Carts` (
-    `id_cart` INT NOT NULL AUTO_INCREMENT,
-    `quantity` INT NOT NULL CHECK (`quantity` > 0),
     `id_vinyl` INT NOT NULL,
     `id_user` INT NOT NULL,
-    PRIMARY KEY (`id_cart`),
+    `quantity` INT NOT NULL CHECK (`quantity` > 0),
+    PRIMARY KEY (`id_vinyl`, `id_user`),
     FOREIGN KEY (`id_vinyl`) REFERENCES `VinylsShop`.`Vinyls` (`id_vinyl`),
     FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`)
 );

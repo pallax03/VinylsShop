@@ -36,8 +36,6 @@ Si può usare docker eseguendo un : ``` docker compose up ```
 - /artists
 - /cart -> also if u r not logged have a cart but its stored in $SESSION
 
-- /privacy -> bla bla bla
-- /api -> api docs
 - /devs -> this README.md! 
 
 ##### [user]
