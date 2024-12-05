@@ -10,11 +10,10 @@
 - accessibility
 
 ##### Features possibili
-- Posizione mostra nazione
-- Preordinare
-- Newsletter 
 - Suggerimenti in base a:
+    - mostra nazione (in base alla posizione)
     - nazione genere artisti preferiti
+- Newsletter 
 
 ## db:
 ![Database Schema](/db/RELAZIONALE.png)

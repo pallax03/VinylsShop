@@ -347,7 +347,7 @@ form ul li:last-child {
 
 @font-face {
   font-family: "parkinsons";
-  src: url("/fonts/Parkinsans-Regular.ttf");
+  src: url("/resources/fonts/Parkinsans-Regular.ttf");
   font-weight: normal;
   font-style: normal;
 }
