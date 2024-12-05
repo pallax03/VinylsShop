@@ -19,7 +19,7 @@ class Database {
     // Il costruttore è privato per impedire la creazione diretta di oggetti
     private function __construct() {
         $this->setConfigEnv();
-    
+
         $this->connection = new mysqli(self::$host, self::$username, self::$password, self::$database);
         if ($this->connection->connect_error) {
             die("Connection failed: " . $this->connection->connect_error);
@@ -33,7 +33,7 @@ class Database {
         self::$database = $_ENV['DB_NAME'] ?? self::$database;
         self::$port = $_ENV['DB_PORT'] ?? self::$port;
     }
-    
+
     public static function getInstance() {
         if (self::$instance === null) {
             self::$instance = new Database();

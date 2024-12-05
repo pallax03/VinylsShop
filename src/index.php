@@ -21,9 +21,10 @@ require_once CORE . 'Controller.php';
 
 # load utilities
 require_once UTILITY . 'Database.php';   // Database utility functions
+require_once UTILITY . 'Session.php';   // Session utility functions
 
 # start session
-session_start();
+Session::start();
 
 # instance the database
 Database::getInstance();

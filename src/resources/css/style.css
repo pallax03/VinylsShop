@@ -1,0 +1,208 @@
+@charset "UTF-8";
+@font-face {
+  font-family: "Consolas.ttf", sans-serif;
+  src: url(/assets/fonts/Consolas.ttf);
+}
+p {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  font-family: "Consolas.ttf", sans-serif;
+  background-color: #ffffff;
+}
+body > main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 2em;
+  height: 80dvh;
+}
+body form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: 1px solid #333;
+  padding: 2em;
+  scale: 2;
+}
+body form > ul {
+  list-style: none;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+body form > ul > li {
+  margin: 0.5em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+body form > ul > li > label {
+  margin-right: 1em;
+}
+body form > ul > li > input {
+  padding: 0.5em;
+  border: 1px solid #333;
+  border-radius: 5px;
+}
+body form > ul > li > input:focus {
+  outline: none;
+}
+body form button[type=submit] {
+  background-color: unset;
+  padding: 1em;
+  border: none;
+  cursor: pointer;
+}
+body form button[type=submit]:hover::before {
+  left: 100px;
+  font-size: 3em;
+}
+body form button[type=submit]::before {
+  content: "go 🚀";
+  font-size: 1em;
+  position: relative;
+  left: -100px;
+  -webkit-transition: all 1.6s ease-out;
+  transition: all 1.6s ease-out;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+}
+
+img.svg {
+  width: 30px;
+  height: 30px;
+  background-color: unset;
+}
+
+.island {
+  position: sticky;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0;
+  padding: 0;
+  bottom: 10%;
+  z-index: 2;
+}
+.island .track h6, .island .track p {
+  color: #fff;
+}
+.island > ul {
+  list-style-type: none;
+  padding: 1rem;
+  margin: 0;
+  background-color: #000;
+  border-radius: 25px;
+  width: clamp(80%, 250px, 600px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+.island > ul > li {
+  margin: 0.5em;
+}
+.island > ul > li > button {
+  padding: 0.8em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: none;
+  background-color: unset;
+  -webkit-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+}
+.island > ul > li > button:hover {
+  -webkit-transform: scale(1.4);
+          transform: scale(1.4);
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
