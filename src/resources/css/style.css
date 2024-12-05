@@ -1,52 +1,4 @@
 @charset "UTF-8";
-.sleeve {
-  position: relative;
-  width: 100%;
-  height: 50px;
-  z-index: 1;
-  background-image: url("https://picsum.photos/200");
-  background-size: cover;
-}
-
-.vinyl {
-  background-size: cover;
-  width: 78px;
-  height: 80px;
-  border-radius: 50%;
-  border: solid #fff;
-  -webkit-box-shadow: 0px 0px 3px #333, 0px 0px 0px 10px #fff, 0px 0px 15px #333, 0px 0px 0px 16px #000, 0px 0px 0px 17px #252424, 0px 0px 0px 18px #000, 0px 0px 0px 19px #313030, 0px 0px 0px 20px #000, 0px 0px 0px 21px #3a3838, 0px 0px 0px 22px #000, 0px 0px 0px 23px #2b2a2a, 0px 0px 0px 24px #000, 0px 0px 0px 25px #313030, 0px 0px 0px 26px #000, 0px 0px 0px 27px #313030, 0px 0px 0px 28px #000, 0px 0px 0px 29px #333333, 0px 0px 0px 30px #000, 0px 0px 0px 31px #333232, 0px 0px 0px 32px #000, 0px 0px 0px 33px #4c4a4a, 0px 0px 0px 34px #000, 0px 0px 0px 35px #2f2e2e, 0px 0px 0px 36px #000, 0px 0px 0px 37px #252424, 0px 0px 0px 38px #000, 0px 0px 0px 39px #2f2e2e, 0px 0px 0px 40px #000, 0px 0px 0px 41px #2f2e2e, 0px 0px 0px 42px #000, 0px 0px 0px 55px #2f2e2e, 0px 0px 0px 56px #000, 0px 0px 0px 57px #2f2e2e, 0px 0px 0px 58px #cecece, 0px 0px 12px 59px #2f2e2e;
-          box-shadow: 0px 0px 3px #333, 0px 0px 0px 10px #fff, 0px 0px 15px #333, 0px 0px 0px 16px #000, 0px 0px 0px 17px #252424, 0px 0px 0px 18px #000, 0px 0px 0px 19px #313030, 0px 0px 0px 20px #000, 0px 0px 0px 21px #3a3838, 0px 0px 0px 22px #000, 0px 0px 0px 23px #2b2a2a, 0px 0px 0px 24px #000, 0px 0px 0px 25px #313030, 0px 0px 0px 26px #000, 0px 0px 0px 27px #313030, 0px 0px 0px 28px #000, 0px 0px 0px 29px #333333, 0px 0px 0px 30px #000, 0px 0px 0px 31px #333232, 0px 0px 0px 32px #000, 0px 0px 0px 33px #4c4a4a, 0px 0px 0px 34px #000, 0px 0px 0px 35px #2f2e2e, 0px 0px 0px 36px #000, 0px 0px 0px 37px #252424, 0px 0px 0px 38px #000, 0px 0px 0px 39px #2f2e2e, 0px 0px 0px 40px #000, 0px 0px 0px 41px #2f2e2e, 0px 0px 0px 42px #000, 0px 0px 0px 55px #2f2e2e, 0px 0px 0px 56px #000, 0px 0px 0px 57px #2f2e2e, 0px 0px 0px 58px #cecece, 0px 0px 12px 59px #2f2e2e;
-}
-.vinyl:before {
-  content: "";
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0);
-  border-radius: 50%;
-}
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-@keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
 :root {
   --primary-color: #000000;
   --secondary-color: #fff;
@@ -59,6 +11,24 @@
   --border-radius: 10px;
   --transition-duration: 0.3s;
   --transition: all 0.3s ease-in-out;
+}
+
+:root {
+  --primary-color: #000000;
+  --secondary-color: #fff;
+  --text-color: #000000;
+  --selected-color: #5697ff;
+  --error-color: #ff0000;
+  --background-color: #fff;
+  --secondary-background-color: #333;
+  --border-color: #000;
+  --border-radius: 10px;
+  --transition-duration: 0.3s;
+  --transition: all 0.3s ease-in-out;
+}
+
+button {
+  cursor: pointer;
 }
 
 section > div {
@@ -172,6 +142,54 @@ section > i {
   color: black;
 }
 
+.sleeve {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  z-index: 1;
+  background-image: url("https://picsum.photos/200");
+  background-size: cover;
+}
+
+.vinyl {
+  background-size: cover;
+  width: 78px;
+  height: 80px;
+  border-radius: 50%;
+  border: solid #fff;
+  -webkit-box-shadow: 0px 0px 3px #333, 0px 0px 0px 10px #fff, 0px 0px 15px #333, 0px 0px 0px 16px #000, 0px 0px 0px 17px #252424, 0px 0px 0px 18px #000, 0px 0px 0px 19px #313030, 0px 0px 0px 20px #000, 0px 0px 0px 21px #3a3838, 0px 0px 0px 22px #000, 0px 0px 0px 23px #2b2a2a, 0px 0px 0px 24px #000, 0px 0px 0px 25px #313030, 0px 0px 0px 26px #000, 0px 0px 0px 27px #313030, 0px 0px 0px 28px #000, 0px 0px 0px 29px #333333, 0px 0px 0px 30px #000, 0px 0px 0px 31px #333232, 0px 0px 0px 32px #000, 0px 0px 0px 33px #4c4a4a, 0px 0px 0px 34px #000, 0px 0px 0px 35px #2f2e2e, 0px 0px 0px 36px #000, 0px 0px 0px 37px #252424, 0px 0px 0px 38px #000, 0px 0px 0px 39px #2f2e2e, 0px 0px 0px 40px #000, 0px 0px 0px 41px #2f2e2e, 0px 0px 0px 42px #000, 0px 0px 0px 55px #2f2e2e, 0px 0px 0px 56px #000, 0px 0px 0px 57px #2f2e2e, 0px 0px 0px 58px #cecece, 0px 0px 12px 59px #2f2e2e;
+          box-shadow: 0px 0px 3px #333, 0px 0px 0px 10px #fff, 0px 0px 15px #333, 0px 0px 0px 16px #000, 0px 0px 0px 17px #252424, 0px 0px 0px 18px #000, 0px 0px 0px 19px #313030, 0px 0px 0px 20px #000, 0px 0px 0px 21px #3a3838, 0px 0px 0px 22px #000, 0px 0px 0px 23px #2b2a2a, 0px 0px 0px 24px #000, 0px 0px 0px 25px #313030, 0px 0px 0px 26px #000, 0px 0px 0px 27px #313030, 0px 0px 0px 28px #000, 0px 0px 0px 29px #333333, 0px 0px 0px 30px #000, 0px 0px 0px 31px #333232, 0px 0px 0px 32px #000, 0px 0px 0px 33px #4c4a4a, 0px 0px 0px 34px #000, 0px 0px 0px 35px #2f2e2e, 0px 0px 0px 36px #000, 0px 0px 0px 37px #252424, 0px 0px 0px 38px #000, 0px 0px 0px 39px #2f2e2e, 0px 0px 0px 40px #000, 0px 0px 0px 41px #2f2e2e, 0px 0px 0px 42px #000, 0px 0px 0px 55px #2f2e2e, 0px 0px 0px 56px #000, 0px 0px 0px 57px #2f2e2e, 0px 0px 0px 58px #cecece, 0px 0px 12px 59px #2f2e2e;
+}
+.vinyl:before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0);
+  border-radius: 50%;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
 label {
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -325,20 +343,6 @@ form ul li:nth-last-child(-n+2) {
 }
 form ul li:last-child {
   margin-bottom: 3rem;
-}
-
-:root {
-  --primary-color: #000000;
-  --secondary-color: #fff;
-  --text-color: #000000;
-  --selected-color: #5697ff;
-  --error-color: #ff0000;
-  --background-color: #fff;
-  --secondary-background-color: #333;
-  --border-color: #000;
-  --border-radius: 10px;
-  --transition-duration: 0.3s;
-  --transition: all 0.3s ease-in-out;
 }
 
 @font-face {

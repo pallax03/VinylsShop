@@ -1,7 +1,7 @@
 <footer>
     <ul>
         <li>
-            <a href="">
+            <a href="https://www.unibo.it/it/studiare/dottorati-master-specializzazioni-e-altra-formazione/insegnamenti/insegnamento/2024/378225">
                 <ul>
                     <li>
                         <img width="100px" height="auto" src="https://www.unibo.it/it/++theme++unibotheme.portale/img/header/sigillo1x_xl.png?v=2" alt="" srcset="">
@@ -13,16 +13,16 @@
                             <p>Final project of the course: Tecnologie Web (41731)</p>
                         </span>
                     </li>
-                    <li>
-                        <button class="darkmode" id="btn-darkmode">darkmode:</button>
-                    </li>
                 </ul>
             </a>
         </li>
         <li>
+            <button class="darkmode" id="btn-darkmode">darkmode:</button>
+        </li>
+        <li>
             <ul>
                 <li>
-                    <a href="">
+                    <a href="https://github.com/pallax03/TecnologieWeb-Progetto">
                         <div>
                             <i class="bi bi-github"></i>
                             <p>About Us</p>
@@ -30,22 +30,22 @@
                     </a>
                 </li>
                 <li>
-                    <a href="form.html">
+                    <a href="/user">
                         <p>Login / Signup</p>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/cart">
                         <p>Cart</p>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/orders">
                         <p>Order</p>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/shipping">
                         <p>Shipping</p>
                     </a>
                 </li>

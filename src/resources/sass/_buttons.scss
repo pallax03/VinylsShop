@@ -1,5 +1,9 @@
 @import 'variables';
 
+button {
+    cursor: pointer;
+}
+
 section > div {
     display: flex;
     flex-direction: row;

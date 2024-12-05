@@ -1,5 +1,5 @@
 <?php
-class HomeController extends Controller {
+class UserController extends Controller {
 
     private $auth_model = null;
 
@@ -8,13 +8,12 @@ class HomeController extends Controller {
         $this->auth_model = new AuthModel();
     }
 
-    public function index(Request $request, Response $response) {
-        $data = $request->getBody();
-        $title = $data['title'] ?? 'Home';
-        $head = array('title' => $title, 'style'=> array(''),
+    public function index() {
+        $head = array('title' => 'Login / Signup', 'style'=> array(''),
          'header' => Database::getInstance()->getConnection() ? 'Database connected' : 'Database not connected');
 
-        $this->render('home', $head, $data);
+        $data = $this->auth_model->getUser(Session::getUser()) ?? [];
+        $this->render('user', $head, $data);
     }
 }
 ?>

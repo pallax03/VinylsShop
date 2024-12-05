@@ -63,6 +63,10 @@ final class AuthModel {
         return false;
     }
 
+    public function __construct() {
+        $this->checkAuth();
+    }
+
     public function checkMail($mail) {
         $db = Database::getInstance()->getConnection();
         $query = "SELECT * FROM `Users` WHERE mail = ?";

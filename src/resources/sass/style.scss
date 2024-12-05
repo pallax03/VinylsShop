@@ -1,8 +1,9 @@
 @use "sass:math";
-@use "vinyl";
-@use "form";
 
 @import "variables";
+@import "buttons";
+@import "vinyl";
+@import "form";
 
 @font-face {
     font-family: 'parkinsons';
