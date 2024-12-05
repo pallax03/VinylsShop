@@ -1,101 +1,37 @@
-@use "sass:map";
-@use "sass:list";
-@use "sass:math";
-
-$album-scale: 1.2;
 $sleeve-size: 80px;
-$vinyl-size: 60px;
-$album-size: $vinyl-size * 2 + $sleeve-size;
-$pull-out: 100px;
 
-.shelf {
-    margin: 4em;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    width: 80%;
-    min-height: 100vh;
-    background-color: #333;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: row;
+.sleeve {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    z-index: 1;
+    background-image: url('https://picsum.photos/200');
+    background-size: cover;
 }
-.album {
-    transform: scale($album-scale);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 1em;
-    flex-direction: column;
-    width: $album-size * 2;
-    height: $album-size * 2;
 
-    .vinyl-wrapper {
-        // transform: scale($vinyl-scale);
-        position: relative;
+.vinyl {
+    background-size: cover;
+    width: $sleeve-size - 2px;
+    height: $sleeve-size;
+    border-radius: 50%;
+    border: solid #fff;
+    box-shadow: 0px 0px 3px #333, 0px 0px 0px 10px #fff, 0px 0px 15px #333, 0px 0px 0px 16px #000, 0px 0px 0px 17px #252424, 0px 0px 0px 18px #000, 0px 0px 0px 19px #313030, 0px 0px 0px 20px #000, 0px 0px 0px 21px #3a3838, 0px 0px 0px 22px #000, 0px 0px 0px 23px #2b2a2a, 0px 0px 0px 24px #000, 0px 0px 0px 25px #313030, 0px 0px 0px 26px #000, 0px 0px 0px 27px #313030, 0px 0px 0px 28px #000, 0px 0px 0px 29px #333333, 0px 0px 0px 30px #000, 0px 0px 0px 31px #333232, 0px 0px 0px 32px #000, 0px 0px 0px 33px #4c4a4a, 0px 0px 0px 34px #000, 0px 0px 0px 35px #2f2e2e, 0px 0px 0px 36px #000, 0px 0px 0px 37px #252424, 0px 0px 0px 38px #000, 0px 0px 0px 39px #2f2e2e, 0px 0px 0px 40px #000, 0px 0px 0px 41px #2f2e2e, 0px 0px 0px 42px #000, 0px 0px 0px 55px #2f2e2e, 0px 0px 0px 56px #000, 0px 0px 0px 57px #2f2e2e, 0px 0px 0px 58px #cecece, 0px 0px 12px 59px #2f2e2e;
     
-        .sleeve {
-            position: relative;
-            width: $album-size;
-            height: $album-size;
-            border: 5px solid #000;
-            z-index: 1;
-            // tranform in js
-            // background-image: url(/assets/img/vinyl.jpeg);
-            background-size: cover;
-        }
-        .vinyl {
-            position: absolute;
-            background-size: cover;
-            width: $sleeve-size - 2px;
-            height: $sleeve-size;
-            border-radius: 50%;
-            left: $vinyl-size;
-            top: $vinyl-size;
-
-            border: solid #fff;
-            box-shadow: 0px 0px 3px #333, 0px 0px 0px 10px #fff, 0px 0px 15px #333, 0px 0px 0px 16px #000, 0px 0px 0px 17px #252424, 0px 0px 0px 18px #000, 0px 0px 0px 19px #313030, 0px 0px 0px 20px #000, 0px 0px 0px 21px #3a3838, 0px 0px 0px 22px #000, 0px 0px 0px 23px #2b2a2a, 0px 0px 0px 24px #000, 0px 0px 0px 25px #313030, 0px 0px 0px 26px #000, 0px 0px 0px 27px #313030, 0px 0px 0px 28px #000, 0px 0px 0px 29px #333333, 0px 0px 0px 30px #000, 0px 0px 0px 31px #333232, 0px 0px 0px 32px #000, 0px 0px 0px 33px #4c4a4a, 0px 0px 0px 34px #000, 0px 0px 0px 35px #2f2e2e, 0px 0px 0px 36px #000, 0px 0px 0px 37px #252424, 0px 0px 0px 38px #000, 0px 0px 0px 39px #2f2e2e, 0px 0px 0px 40px #000, 0px 0px 0px 41px #2f2e2e, 0px 0px 0px 42px #000, 0px 0px 0px 55px #2f2e2e, 0px 0px 0px 56px #000, 0px 0px 0px 57px #2f2e2e, 0px 0px 0px 58px #cecece, 0px 0px 12px 59px #2f2e2e;
-            
-            &:before {
-                content: "";
-                position: absolute;
-                width: 6px;
-                height: 6px;
-                background: rgba(255, 255, 255, 0);
-                top: calc(50% - 3px);
-                left: calc(50% - 3px);
-                border-radius: 50%;
-            }
-            &.pull-out {
-                animation: pull-out 1.3s;
-                left: $vinyl-size + $pull-out;
-            }
-            &.pull-in {
-                animation: pull-out 1.3s reverse;
-                left: $vinyl-size;
-            }
-            &.spin {
-                animation: spin 3s linear infinite; 
-            }
-        }
-          
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-      
-        @keyframes pull-out {
-            0% {
-                left: $vinyl-size;
-            }
-            100% {
-                left: $vinyl-size + $pull-out;
-            }
-        }
+    &:before {
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0);
+        border-radius: 50%;
     }
 }
-    
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
