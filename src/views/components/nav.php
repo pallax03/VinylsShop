@@ -8,7 +8,7 @@
         </li>
         <li class="search-container">
             <a href="" class="search">
-                <img class="svg" src="/resources/svg/ui/magnifyingglass.svg" alt="">
+                <i class="bi bi-search"></i>
                 <p>Search</p>
             </a>
             <!-- Elemento di input per la barra di ricerca -->
@@ -34,13 +34,13 @@
         </li>
         <li>
             <a href="/cart">
-                <img class="svg" src="/resources/svg/ecommerce/bag.fill.svg" alt="">
+                <i class="bi bi-bag-fill"></i>
                 <p>Cart</p>
             </a>
         </li>
         <li>
             <a href="/user">
-                <img class="svg" src="/resources/svg/ui/person.fill.svg" alt="">
+                <i class="bi bi-person-fill"></i>
                 <p>User</p>
             </a>
         </li>

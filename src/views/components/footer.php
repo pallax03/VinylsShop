@@ -24,7 +24,7 @@
                 <li>
                     <a href="https://github.com/pallax03/TecnologieWeb-Progetto">
                         <div>
-                            <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="" class="svg">
+                            <i class="bi bi-github"></i>
                             <p>About Us</p>
                         </div>
                     </a>

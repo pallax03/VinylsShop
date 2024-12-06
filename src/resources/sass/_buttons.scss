@@ -1,7 +1,3 @@
-button {
-    cursor: pointer;
-}
-
 section > div {
     display: flex;
     flex-direction: row;
@@ -86,6 +82,5 @@ div.button {
 
 section > i { 
     font-size: 10rem;
-
-    color: black;
+    color: var(--text-color);
 }

@@ -4,10 +4,11 @@
 @import "buttons";
 @import "vinyl";
 @import "form";
+@import "cards";
 
 @font-face {
     font-family: 'parkinsons';
-    src: url('/resources/fonts/Parkinsans-Regular.ttf') ;
+    src: url('/fonts/Parkinsans-Regular.ttf') ;
     font-weight: normal;
     font-style: normal;
 }
@@ -21,12 +22,6 @@
 
 a {
     user-select: none !important;
-}
-
-img.svg {
-    width: 40px;
-    color: var(--text-color);
-    height: 40px;
 }
 
 body {

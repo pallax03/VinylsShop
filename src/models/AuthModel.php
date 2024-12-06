@@ -36,7 +36,7 @@ final class AuthModel {
                 return $userInfo;
             }
         }
-        $this->logout();
+        return $this->logout();
     }
 
     private function setCookie($token) {
@@ -58,7 +58,7 @@ final class AuthModel {
     */
     public function checkAuth() {
         if (isset($_COOKIE[$this->cookieAuthName])) {
-            $this->verifyToken($_COOKIE[$this->cookieAuthName]);
+            return $this->verifyToken($_COOKIE[$this->cookieAuthName]) === false ? false : true;
         }
         return false;
     }

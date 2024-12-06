@@ -1,5 +1,5 @@
 {
-    "intelephense.environment.documentRoot": "/src/",
+    "intelephense.environment.documentRoot": "/src",
     "intelephense.files.maxSize": 5000000,
     "intelephense.environment.phpVersion": "8.1",
     "liveSassCompile.settings.formats": [

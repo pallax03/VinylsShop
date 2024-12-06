@@ -3,7 +3,7 @@
     // Controller has: Models (DB tables) -> views (🏠) and apis (🍽️) (requests)
 
     require_once CONTROLLERS . '/HomeController.php';       // 📀: Auth - Vinyl (Artist - Track) - Cart (🚩) -> 🏠 Home, Search, Login, Logout.
-    //require_once CONTROLLERS . '/CartController.php';       // 🛒: Vinyl (Artist - Track) - Cart - User (Address - Card) -> 🏠 Cart, ManageCart.
+    require_once CONTROLLERS . '/CartController.php';       // 🛒: Vinyl (Artist - Track) - Cart - User (Address - Card) -> 🏠 Cart, ManageCart.
     require_once CONTROLLERS . '/UserController.php';       // 👤: User (Address - Card) - Cart - Order ( + Shipping) - (Auth) -> 🏠 User, ManageAddress, ManageCard.
     //require_once CONTROLLERS . '/OrderController.php';      // 📦: Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth -> 🏠 Order, AddOrder.
     //require_once CONTROLLERS . '/DashboardController.php';  // 📊: (if Auth ⭐️) *EVERY MODEL* -> 🏠 Dashboard, AddVinyl (AddArtist - AddTrack), UpdateVinyl, AddAdmin.
@@ -32,7 +32,7 @@
     // 🛒:
     // --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 
     // # 🏠 [Cart] ~ Stored in session if logged need to SyncCart with DB -> Vinyl - Cart - User
-    // $router->get('/cart', [CartController::class, 'index']);
+    $router->get('/cart', [CartController::class, 'index']);
     // # 🍽️ [ManageCart] -> Vinyl - Cart - User
     // $router->post('/cart/manage', [CartController::class, 'manage']); 
     // # 🍽️ [SyncCart] -> Cart - User

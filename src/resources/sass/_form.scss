@@ -2,6 +2,8 @@ label {
     user-select: none;
 }
 input {
+    user-select: none;
+    color: var(--text-color);
     background-color: inherit;
 }
 
