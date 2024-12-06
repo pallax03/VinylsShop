@@ -145,23 +145,23 @@ VALUES
 (5, 2, 1),
 (6, 2, 1);
 
--- Insert COUPONS
-INSERT IGNORE INTO `VinylsShop`.`Coupons` (`discount_code`, `discount_percentage`, `expiration_date`)
-VALUES  
-('WELCOME10', 10, '2025-12-31'),
-('WINTER50', 50, '2024-01-31');
+-- -- Insert COUPONS
+-- INSERT IGNORE INTO `VinylsShop`.`Coupons` (`discount_code`, `discount_percentage`, `expiration_date`)
+-- VALUES  
+-- ('WELCOME10', 10, '2025-12-31'),
+-- ('WINTER50', 50, '2024-01-31');
 
 
--- Insert addresses
-INSERT IGNORE INTO `VinylsShop`.`Addresses` (`name`, `city`, `postal_code`, `street_number`, `id_user`)
-VALUES
-('Home', 'Milan', '20100', 'Via Roma 1', 2),
-('Work', 'Milan', '20100', 'Via Milano 2', 2);
+-- -- Insert addresses
+-- INSERT IGNORE INTO `VinylsShop`.`Addresses` (`name`, `city`, `postal_code`, `street_number`, `id_user`)
+-- VALUES
+-- ('Home', 'Milan', '20100', 'Via Roma 1', 2),
+-- ('Work', 'Milan', '20100', 'Via Milano 2', 2);
 
--- Insert cards
-INSERT IGNORE INTO `VinylsShop`.`Cards` (`card_number`, `cvc`, `expiration_date`, `id_user`)
-VALUES
-('1234567812345678', '123', '2027-12-31', 2),
-('8765432187654321', '321', '2027-12-31', 2);
+-- -- Insert cards
+-- INSERT IGNORE INTO `VinylsShop`.`Cards` (`card_number`, `cvc`, `expiration_date`, `id_user`)
+-- VALUES
+-- ('1234567812345678', '123', '2027-12-31', 2),
+-- ('8765432187654321', '321', '2027-12-31', 2);
 
--- Insert orders
+-- -- Insert orders

@@ -8,26 +8,12 @@ FLUSH PRIVILEGES;
 CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin';
 GRANT SELECT, INSERT, DELETE, UPDATE ON `VinylsShop`.* TO 'admin'@'%';
 
-
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Users` (
-  `id_user` INT NOT NULL AUTO_INCREMENT,
-  `mail` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  `balance` DECIMAL(10,2) NOT NULL DEFAULT 0,
-  `su` TINYINT(1) NOT NULL DEFAULT 0,
-  `newsletter` TINYINT(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id_user`), UNIQUE INDEX `mail_UNIQUE` (`mail` ASC));
-
--- DEFAULT USERS
-INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 1);
-INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('alexmaz03@hotmail.it', 'd41d8cd98f00b204e9800998ecf8427e', 0);
-
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Cards` (
     `id_card` INT NOT NULL AUTO_INCREMENT,
     `card_number` VARCHAR(16) NOT NULL,
     `cvc` VARCHAR(3) NOT NULL,
     `expiration_date` DATE NOT NULL,
-    `id_user` INT NOT NULL,
+    `id_user` INT,
     PRIMARY KEY (`id_card`),
     FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`)
 );
@@ -38,10 +24,28 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Addresses` (
     `city` VARCHAR(100) NOT NULL,
     `postal_code` VARCHAR(20) NOT NULL,
     `street_number` VARCHAR(20) NOT NULL,
-    `id_user` INT NOT NULL,
+    `id_user` INT,
     PRIMARY KEY (`id_address`),
     FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`)
 );
+
+CREATE TABLE IF NOT EXISTS `VinylsShop`.`Users` (
+    `id_user` INT NOT NULL AUTO_INCREMENT,
+    `mail` VARCHAR(45) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `balance` DECIMAL(10,2) NOT NULL DEFAULT 0,
+    `su` TINYINT(1) NOT NULL DEFAULT 0,
+    `newsletter` TINYINT(1) NOT NULL DEFAULT 1,
+    `default_card` INT,
+    `default_address` INT,
+    PRIMARY KEY (`id_user`), UNIQUE INDEX `mail_UNIQUE` (`mail` ASC),
+    FOREIGN KEY (`default_card`) REFERENCES `VinylsShop`.`Cards` (`id_card`),
+    FOREIGN KEY (`default_address`) REFERENCES `VinylsShop`.`Addresses` (`id_address`)
+);
+
+-- DEFAULT USERS
+INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 1);
+INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('alexmaz03@hotmail.it', 'd41d8cd98f00b204e9800998ecf8427e', 0);
 
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Artists` (
     `id_artist` INT NOT NULL AUTO_INCREMENT,
