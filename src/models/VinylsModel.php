@@ -92,21 +92,20 @@ final class VinylsModel {
             a.title,
             a.release_date,
             a.cover_img,
-            ar.name AS artist,
+            ar.name AS artist
             FROM 
             vinyls v
             JOIN albums a ON v.id_vinyl = a.id_album
-            JOIN inside_album ia ON a.id_album = ia.id_album
             JOIN artists ar ON ar.id_artist = a.id_artist
             WHERE v.id_vinyl = ?";
         // query to get the tracks from a vinyl [needs id_album from previous query]
         $tracks = "SELECT
-            t.title
+            t.title,
             t.duration
             FROM
             albums a
-            JOIN inside_album ia ON ia.id_album = a.id_album
-            JOIN tracks t ON t.id_track = ia.id_track
+            JOIN albumstracks ta ON ta.id_album = a.id_album
+            JOIN tracks t ON t.id_track = ta.id_track
             WHERE a.id_album = ?";
         // prepare statement
         $stmt = $this->conn->prepare($vinyl);
