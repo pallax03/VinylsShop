@@ -9,17 +9,17 @@
 - browser compability
 - accessibility
 
-##### Features possibili
+### Features possibili
 - Suggerimenti in base a:
     - mostra nazione (in base alla posizione)
     - nazione genere artisti preferiti
 - Newsletter 
 
-###### API che possiamo usare:
+### API che possiamo usare:
 - nominatim (open street map) -> autocompletamento degli indirizzi.
 - spotify -> permette di dare suggerimenti in base al proprio account (possibilità di loggarsi nel sito usando spotify).
 
-## db:
+### Database Schema:
 ![Database Schema](/db/RELAZIONALE.png)
 
 ## Installation:
@@ -29,99 +29,69 @@ Si può usare [docker](https://www.docker.com/) eseguendo un : ``` docker compos
 - spostando il contenuto di [`src`](/src/) dentro la cartella `htdocs`.
 
 ## Pages (aka Views) (🏠)
-- no auth:
-    - /user 
+- no auth 🌎:
+    - /user -> login / signup page
     - /cart -> also if u r not logged have a cart but its stored in $SESSION
     - /devs -> this README.md!
 
-- user auth:
-    - /checkout
-    - /order
-    - /address (🚩)
-    - /payment (🚩)
+- user auth 🔐:
+    - /user -> user infos (+ default card - address) + orders - shipping list
+    - /checkout -> checkout page with defaults info and cart items.
+    - /order + '?id_order=' -> if nothing as id show the last one made, check if the order id is made by the right user.
 
 - admin auth ⭐️:
     - /dashboard -> automatically redirected here from *every page* if logged as admin.
 
-### APIs (🍽️) -> return json
-- no auth:
+## APIs (🍽️) -> return json
+- no auth 🌎:
+    Home 🏠:
+    - /login [POST] -> mail and password, can be passed from json or form.
+    - /logout [GET] -> remove cookies and refresh session (redirect to /).
     - /search [GET] + '?id_vinyl=' -> vinyl with this id.
-        -  '+ &album=' -> vinyls of this album (title).
-        -  '+ &genre=' -> vinyls of this album (genre).
-        -  '+ &track=' -> vinyls that contain this track (title).
-        -  '+ &artist=' -> vinyls created by artist (name).
-    - /cart/manage  [POST]  -> add vinyl to cart into the session.
-    - /cart/sync    [GET]   -> sync cart from session to db.
+        -  '&album=' -> vinyls of this album (title).
+        -  '&genre=' -> vinyls of this album (genre).
+        -  '&track=' -> vinyls that contain this track (title).
+        -  '&artist=' -> vinyls created by artist (name).
+    Cart 🛒:
+    - /cart/manage  [POST]  -> add / delete / modify ([vinyl](#vinyl-cart-json)) to cart into the session.
 
-- user auth:
-    - /user/address
-    - /user/card
-    - /order/
+
+
+- user auth 🔐:
+    User 👤:
+    - /user/default [GET]   -> get user default address and payment:
+        - if '?id_card=' || '&id_address=' -> set as default.
+    - /user/address [GET] + '?id_address='  -> get all or a specific user's address.
+    - /user/address [DELETE] '?id_address=' -> delete a specific address.
+    - /user/address [POST]  -> add an address and set it as default.
+    - /user/card    [GET]    '?id_card=' -> get all or a specific user's card.
+    - /user/card    [POST]  -> add a card and set it as default.
+    - /user/card    [DELETE] '?id_card=' -> delete a specific card.
+    Cart 🛒:
+    - /cart/sync    [GET]   -> sync cart from session to db.
+    - /checkout     [POST]  -> try to do the checkout, if successfull:
+        - make the order.
+        - make the shipping.
+        - pop cart vinyls to Checkouts table.
+    Order 📦:
+    - /orders       [GET]   -> list of all the orders (🚩)
+
 
 
 - admin auth ⭐️:
+    Dashboard 📊:
     - /vinyl        [POST]  -> manage (add / update / delete) a vinyl. (completed json: (Album, Artist, Track))
     - /artist       [POST] -> manage an artist (🚩).
-    - /user         [POST] -> manage a user (🚩).
-    - /user         [POST] -> manage all the users (🚩).
+    - /users        [GET] -> list users (🚩).
+    - /user         [POST] -> manage user (🚩).
+    
+    
 
-#### basic (no auth needed)
-(aka search)
-- /api/vinyls [GET] + '?id_vinyl=' -> vinyl with this id.
-    -  '+ &album=' -> vinyls of this album (title).
-    -  '+ &genre=' -> vinyls of this album (genre).
-    -  '+ &track=' -> vinyls that contain this track (title).
-    -  '+ &artist=' -> vinyls created by artist (name).
-    -  '+ &query=' -> the all-in-one ???.
+### Jsons
 
-- /api/artists [GET] + '?id_artist=' -> return the artists or the artist with `id_artist`.
-- /api/tracks [GET] + '?id_track=' -> track with this id.
-    -  '+ &title=' -> tracks with this like title.
+##### Vinyl Cart Json
+```json
+{
 
-- /api/cart [GET]  -> 
-- /api/cart [POST] -> 
-
-#### user [need barer token (no admin privileges)]
-- /api/user [GET] -> user data.
-##### [Orders]
-- /api/orders [GET] ->
-- /api/shipment [GET] ->
-
-
-#### admin ⭐️ (need barer token with 'su'= 1 (admin privileges))
-##### [Vinyls]
-- /api/vinyl [POST] -> create a new vinyl if artist is not present insert also the artist and tracks.
-    example json (complete: artists and tracks)
-    ```
-    {
-        "title":"From Zero Vinile",
-        "album": {
-            "title":"From Zero",
-            "genere":"Alternative",
-            "img":"/resources/img/fromzero.webp",
-            "data_pubblicazione":"24 Settembre 2024",
-            "artist": {"nome":"LINKIN PARK"}
-        },
-        "tracks":[
-            {
-                "title":"The Emptiness Machine",
-                "durata":"3:10"
-            },
-            {
-                "title":"Heavy Is The Crown",
-                "durata":"2:47"
-            },
-            {
-                "title":"Over Each Other",
-                "durata":"2:50"
-            }
-        ]
-    }
-    ```json
-- /api/vinyl [DELETE] + '?id_vinyl=' -> delete a vinyl.
-
-##### [User]
-- /api/user [POST] -> add / modify user credentials.
-- /api/user [GET] + '?mail' -> get user credentials.
-
-##### [orders]
+}
+```
