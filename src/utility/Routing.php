@@ -23,9 +23,9 @@
     // # 🍽️ [Search] -> Vinyl
     // $router->get('/search', [HomeController::class, 'search']);
     // # 🍽️  [Login] ~ if mail not exists: register -> Auth
-    $router->post('/login', [AuthController::class, 'login']); 
+    $router->post('/login', [HomeController::class, 'login']); 
     // # 🍽️  [Logout] -> Auth
-    $router->get('/logout', [AuthController::class, 'logout']);
+    $router->get('/logout', [HomeController::class, 'logout']);
     // # 🏠 [Devs] ~ README.md
     // $router->get('/devs', [HomeController::class, 'devs']);
 
