@@ -15,12 +15,12 @@
     - nazione genere artisti preferiti
 - Newsletter 
 
-## db:
-![Database Schema](/db/RELAZIONALE.png)
-
-##### API che possiamo usare:
+###### API che possiamo usare:
 - nominatim (open street map) -> autocompletamento degli indirizzi.
 - spotify -> permette di dare suggerimenti in base al proprio account (possibilità di loggarsi nel sito usando spotify).
+
+## db:
+![Database Schema](/db/RELAZIONALE.png)
 
 ## Installation:
 Si può usare [docker](https://www.docker.com/) eseguendo un : ``` docker compose up ```
@@ -28,20 +28,43 @@ Si può usare [docker](https://www.docker.com/) eseguendo un : ``` docker compos
 - injectando il [`db`](/db/init.sql).
 - spostando il contenuto di [`src`](/src/) dentro la cartella `htdocs`.
 
-## Pages
-- /user
-- /cart -> also if u r not logged have a cart but its stored in $SESSION
+## Pages (aka Views) (🏠)
+- no auth:
+    - /user 
+    - /cart -> also if u r not logged have a cart but its stored in $SESSION
+    - /devs -> this README.md!
 
-- /devs -> this README.md! 
+- user auth:
+    - /checkout
+    - /order
+    - /address (🚩)
+    - /payment (🚩)
 
-##### [user]
-- /orders
-- /shipment
+- admin auth ⭐️:
+    - /dashboard -> automatically redirected here from *every page* if logged as admin.
 
-##### [admin] (⭐️ need su == 1) 
-- /dashboard -> automatically redirected here.
+### APIs (🍽️) -> return json
+- no auth:
+    - /search [GET] + '?id_vinyl=' -> vinyl with this id.
+        -  '+ &album=' -> vinyls of this album (title).
+        -  '+ &genre=' -> vinyls of this album (genre).
+        -  '+ &track=' -> vinyls that contain this track (title).
+        -  '+ &artist=' -> vinyls created by artist (name).
+    - /cart/manage  [POST]  -> add vinyl to cart into the session.
+    - /cart/sync    [GET]   -> sync cart from session to db.
 
-### APIs (/api/...) -> return json
+- user auth:
+    - /user/address
+    - /user/card
+    - /order/
+
+
+- admin auth ⭐️:
+    - /vinyl        [POST]  -> manage (add / update / delete) a vinyl. (completed json: (Album, Artist, Track))
+    - /artist       [POST] -> manage an artist (🚩).
+    - /user         [POST] -> manage a user (🚩).
+    - /user         [POST] -> manage all the users (🚩).
+
 #### basic (no auth needed)
 (aka search)
 - /api/vinyls [GET] + '?id_vinyl=' -> vinyl with this id.
