@@ -1,135 +1,131 @@
--- Insert albums
-INSERT IGNORE INTO `VinylsShop`.`Albums` (`id_album`, `title`, `genre`, `cover_img`, `release_date`)
-VALUES
-(1, 'The Black Parade', 'Rock', 'blackparade.webp', '2006-10-23'),
-(2, 'Dont Smile at Me', 'Pop', 'dontsmileatme.webp', '2017-08-11'),
-(3, 'When We All Fall Asleep, Where Do We Go?', 'Pop', 'fallasleep.webp', '2019-03-29'),
-(4, 'Interscope', 'Various', 'interscope.webp', '2020-01-01'),
-(5, 'Palaye Royale', 'Rock', 'palayeroyale.webp', '2016-06-24'),
-(6, 'Post Human: Survival Horror', 'Rock', 'posthuman.webp', '2020-10-30'),
-(7, 'Sempiternal', 'Metal', 'sempiternal.webp', '2013-04-01'),
-(8, 'Undertale Soundtrack', 'Soundtrack', 'undertale.webp', '2015-09-15');
+-- Insert artits
+INSERT IGNORE INTO `VinylsShop`.`Artists` (`id_artist`, `name`)
+VALUES 
+(1, 'Various Artists'),
+(2, 'My Chemical Romance'),
+(3, 'Billie Eilish'),
+(4, 'Palaye Royale'),
+(5, 'Bring Me The Horizon'),
+(6, 'Toby Fox');
 
+-- Insert albums
+INSERT IGNORE INTO `VinylsShop`.`Albums` (`id_album`, `title`, `genre`, `cover_img`, `release_date`, `id_artist`)
+VALUES
+(1, 'The Black Parade', 'Rock', 'blackparade.webp', '2006-10-23', 2),
+(2, 'Dont Smile at Me', 'Pop', 'dontsmileatme.webp', '2017-08-11', 3),
+(3, 'When We All Fall Asleep, Where Do We Go?', 'Pop', 'fallasleep.webp', '2019-03-29', 3),
+(4, 'Hit Me Hard And Soft', 'Pop', 'hitmehardandsoft.webp', '2024-05-17', 3),
+(5, 'Fever Dream', 'Rock', 'feverdream.webp', '2022-10-28', 4),
+(6, 'Post Human: Survival Horror', 'Rock', 'posthuman.webp', '2020-10-30', 5),
+(7, 'Sempiternal', 'Metal', 'sempiternal.webp', '2013-04-01', 5),
+(8, 'Undertale Soundtrack', 'Soundtrack', 'undertale.webp', '2015-09-15', 6);
+
+-- Insert tracks
+-- Insert multiple tracks for each album in the Tracks table
 INSERT IGNORE INTO `VinylsShop`.`Tracks` (`id_track`, `title`, `duration`)
 VALUES
-(1, 'The End.', '00:01:52'),
-(2, 'Dead!', '00:03:15'),
-(3, 'This Is How I Disappear', '00:03:59'),
-(4, 'The Sharpest Lives', '00:03:20'),
-(5, 'Welcome to the Black Parade', '00:05:11'),
-(6, 'I Dont Love You', '00:03:58'),
-(7, 'House of Wolves', '00:03:04'),
-(8, 'Cancer', '00:02:22'),
-(9, 'Mama', '00:04:39'),
-(10, 'Sleep', '00:04:43'),
-(11, 'Teenagers', '00:02:41'),
-(12, 'Disenchanted', '00:04:55'),
-(13, 'Famous Last Words', '00:04:59'),
-(14, 'Blood', '00:02:53'),
-(15, 'Ocean Eyes', '00:03:20'),
-(16, 'Bellyache', '00:03:00'),
-(17, 'Copycat', '00:03:14'),
-(18, 'Idontwannabeyouanymore', '00:03)24'),
--- The Black Parade
-(19, 'The Ghost of You', '00:03:22'),
-(20, 'Helena', '00:03:59'),
+-- Tracks for "The Black Parade" by My Chemical Romance (2006)
+(1, 'Welcome to the Black Parade', '5:11'),
+(2, 'I Don’t Love You', '3:59'),
+(3, 'Cancer', '2:23'),
+(4, 'Famous Last Words', '4:59'),
+(5, 'Dead!', '3:15'),
 
--- Dont Smile at Me
-(21, 'Watch', '00:02:57'),
-(22, 'My Boy', '00:02:50'),
-(23, 'Party Favor', '00:03:24'),
+-- Tracks for "Dont Smile at Me" by Billie Eilish (2017)
+(6, 'Copycat', '3:14'),
+(7, 'Ocean Eyes', '3:20'),
+(8, 'Idontwannabeyouanymore', '3:23'),
+(9, 'My Boy', '2:51'),
+(10, 'Watch', '2:57'),
 
--- When We All Fall Asleep, Where Do We Go?
-(24, 'Bad Guy', '00:03:14'),
-(25, 'Xanny', '00:04:03'),
-(26, 'All the Good Girls Go to Hell', '00:02:48'),
-(27, 'Bury a Friend', '00:03:13'),
-(28, 'Ilomilo', '00:02:36'),
+-- Tracks for "When We All Fall Asleep, Where Do We Go?" by Billie Eilish (2019)
+(11, 'Bad Guy', '3:14'),
+(12, 'Bury a Friend', '3:13'),
+(13, 'When the Party’s Over', '3:16'),
+(14, 'All the Good Girls Go to Hell', '2:48'),
+(15, 'You Should See Me in a Crown', '3:00'),
 
--- Interscope
-(29, 'Song for Zula', '00:05:58'),
-(30, 'The Knife', '00:04:20'),
+-- Tracks for "Fever Dream" by Palaye Royale (2022)
+(16, 'Fever Dream', '4:21'),
+(17, 'No Love in LA', '3:39'),
+(18, 'Broken', '3:10'),
+(19, 'Paranoid', '3:31'),
+(20, 'Eternal Life', '3:18'),
 
--- Palaye Royale
-(31, 'Mr. Doctor Man', '00:03:35'),
-(32, 'Get Higher', '00:03:15'),
-(33, 'Dying in a Hot Tub', '00:03:21'),
+-- Tracks for "Post Human: Survival Horror" by Bring Me The Horizon (2020)
+(21, 'Parasite Eve', '4:51'),
+(22, 'Teardrops', '3:35'),
+(23, 'Dear Diary,', '2:45'),
+(24, 'Obey', '3:41'),
+(25, 'Kingslayer', '4:09'),
 
--- Post Human: Survival Horror
-(34, 'Dear Diary', '00:02:44'),
-(35, 'Parasite Eve', '00:04:52'),
-(36, 'Teardrops', '00:03:35'),
+-- Tracks for "Sempiternal" by Bring Me The Horizon (2013)
+(26, 'Shadow Moses', '3:46'),
+(27, 'Sleepwalking', '3:50'),
+(28, 'Can You Feel My Heart', '3:48'),
+(29, 'Go to Hell, for Heaven’s Sake', '4:03'),
+(30, 'Empire (Let Them Sing)', '3:45'),
 
--- Sempiternal
-(37, 'Can You Feel My Heart', '00:03:48'),
-(38, 'Sleepwalking', '00:03:50'),
-(39, 'Go to Hell, for Heavens Sake', '00:04:02'),
+-- Tracks for "Undertale Soundtrack" by Toby Fox (2015)
+(31, 'Undertale', '3:45'),
+(32, 'His Theme', '2:05'),
+(33, 'Megalovania', '2:36'),
+(34, 'Hopes and Dreams', '3:00'),
+(35, 'Asgore', '3:27');
 
--- Undertale Soundtrack
-(40, 'Fallen Down', '00:02:01'),
-(41, 'Megalovania', '00:02:36'),
-(42, 'Hopes and Dreams', '00:03:03');
 
--- Insert inside_album entries to associate tracks with albums
-INSERT IGNORE INTO `VinylsShop`.`inside_album` (`id_album`, `id_track`)
-VALUES 
--- The Black Parade
-(1, 1),  -- The End.
-(1, 2),  -- Dead!
-(1, 3),  -- This Is How I Disappear
-(1, 4),  -- The Sharpest Lives
-(1, 5),  -- Welcome to the Black Parade
-(1, 6),  -- I Dont Love You
-(1, 7),  -- House of Wolves
-(1, 8),  -- Cancer
-(1, 9),  -- Mama
-(1, 10), -- Sleep
-(1, 11), -- Teenagers
-(1, 12), -- Disenchanted
-(1, 13), -- Famous Last Words
-(1, 14), -- Blood
-(1, 19), -- The Ghost of You
-(1, 20), -- Helena
+-- Insert tracks in album
+-- Associate tracks with corresponding albums in the AlbumsTracks table
+INSERT IGNORE INTO `VinylsShop`.`AlbumsTracks` (`id_album`, `id_track`)
+VALUES
+-- The Black Parade (2006) by My Chemical Romance
+(1, 1), -- Welcome to the Black Parade
+(1, 2), -- I Don’t Love You
+(1, 3), -- Cancer
+(1, 4), -- Famous Last Words
+(1, 5), -- Dead!
 
--- Dont Smile at Me
-(2, 15), -- Ocean Eyes
-(2, 16), -- Bellyache
-(2, 17), -- Copycat
-(2, 18), -- Idontwannabeyouanymore
-(2, 21), -- Watch
-(2, 22), -- My Boy
-(2, 23), -- Party Favor
+-- Dont Smile at Me (2017) by Billie Eilish
+(2, 6), -- Copycat
+(2, 7), -- Ocean Eyes
+(2, 8), -- Idontwannabeyouanymore
+(2, 9), -- My Boy
+(2, 10), -- Watch
 
--- When We All Fall Asleep, Where Do We Go?
-(3, 24), -- Bad Guy
-(3, 25), -- Xanny
-(3, 26), -- All the Good Girls Go to Hell
-(3, 27), -- Bury a Friend
-(3, 28), -- Ilomilo
+-- When We All Fall Asleep, Where Do We Go? (2019) by Billie Eilish
+(3, 11), -- Bad Guy
+(3, 12), -- Bury a Friend
+(3, 13), -- When the Party’s Over
+(3, 14), -- All the Good Girls Go to Hell
+(3, 15), -- You Should See Me in a Crown
 
--- Interscope
-(4, 29), -- Song for Zula
-(4, 30), -- The Knife
+-- Fever Dream (2022) by Palaye Royale
+(5, 16), -- Fever Dream
+(5, 17), -- No Love in LA
+(5, 18), -- Broken
+(5, 19), -- Paranoid
+(5, 20), -- Eternal Life
 
--- Palaye Royale
-(5, 31), -- Mr. Doctor Man
-(5, 32), -- Get Higher
-(5, 33), -- Dying in a Hot Tub
+-- Post Human: Survival Horror (2020) by Bring Me The Horizon
+(6, 21), -- Parasite Eve
+(6, 22), -- Teardrops
+(6, 23), -- Dear Diary,
+(6, 24), -- Obey
+(6, 25), -- Kingslayer
 
--- Post Human: Survival Horror
-(6, 34), -- Dear Diary
-(6, 35), -- Parasite Eve
-(6, 36), -- Teardrops
+-- Sempiternal (2013) by Bring Me The Horizon
+(7, 26), -- Shadow Moses
+(7, 27), -- Sleepwalking
+(7, 28), -- Can You Feel My Heart
+(7, 29), -- Go to Hell, for Heaven’s Sake
+(7, 30), -- Empire (Let Them Sing)
 
--- Sempiternal
-(7, 37), -- Can You Feel My Heart
-(7, 38), -- Sleepwalking
-(7, 39), -- Go to Hell, for Heaven's Sake
-
--- Undertale Soundtrack
-(8, 40), -- Fallen Down
-(8, 41), -- Megalovania
-(8, 42); -- Hopes and Dreams
+-- Undertale Soundtrack (2015) by Toby Fox
+(8, 31), -- Undertale
+(8, 32), -- His Theme
+(8, 33), -- Megalovania
+(8, 34), -- Hopes and Dreams
+(8, 35); -- Asgore
 
 -- Insert vinyls
 INSERT IGNORE INTO `VinylsShop`.`Vinyls` (`id_vinyl`, `cost`, `rpm`, `inch`, `quantity`, `type`, `id_album`)
@@ -148,3 +144,24 @@ INSERT IGNORE INTO `VinylsShop`.`Carts` (`id_vinyl`, `id_user`, `quantity`)
 VALUES
 (5, 2, 1),
 (6, 2, 1);
+
+-- Insert COUPONS
+INSERT IGNORE INTO `VinylsShop`.`Coupons` (`discount_code`, `discount_percentage`, `expiration_date`)
+VALUES  
+('WELCOME10', 10, '2025-12-31'),
+('WINTER50', 50, '2024-01-31');
+
+
+-- Insert addresses
+INSERT IGNORE INTO `VinylsShop`.`Addresses` (`name`, `city`, `postal_code`, `street_number`, `id_user`)
+VALUES
+('Home', 'Milan', '20100', 'Via Roma 1', 2),
+('Work', 'Milan', '20100', 'Via Milano 2', 2);
+
+-- Insert cards
+INSERT IGNORE INTO `VinylsShop`.`Cards` (`card_number`, `cvc`, `expiration_date`, `id_user`)
+VALUES
+('1234567812345678', '123', '2027-12-31', 2),
+('8765432187654321', '321', '2027-12-31', 2);
+
+-- Insert orders

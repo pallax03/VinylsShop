@@ -1,3 +1,4 @@
+<!-- TO DO -->
 <div class="flip">
     <div class="order card active">
         <header>
@@ -28,7 +29,7 @@
         </div>
         <footer>
             <button class="btn-specular">
-                <i class="bi bi-truck"></i>
+                <img class="svg" src="/resources/svg/ecommerce/truck.box.fill.svg" alt="">
                 <i class="bi bi-caret-right-fill"></i>
             </button>
             <span>

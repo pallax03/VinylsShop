@@ -1,67 +1,76 @@
 <?php
     # load Controllers
-    require_once CONTROLLERS . '/HomeController.php'; // Vinyl - Cart
-    require_once CONTROLLERS . '/AuthController.php'; // Login - Register - Logout
-    require_once CONTROLLERS . '/UserController.php'; // Models: Address - Payment - Order - (Auth).
-    // require_once CONTROLLERS . '/DashboardController.php'; // Models: Vinyl - Order - (Auth). ???
-    
+    // Controller has: Models (DB tables) -> views (🏠) and apis (🍽️) (requests)
+    require_once CONTROLLERS . '/HomeController.php';       // 📀: Vinyl (Artist - Track) - Cart (🚩) -> 🏠 Home, Search.
+    require_once CONTROLLERS . '/AuthController.php';       // 🔐: Auth -> Login, Logout.
+    //require_once CONTROLLERS . '/CartController.php';       // 🛒: Vinyl (Artist - Track) - Cart - User (Address - Card) -> 🏠 Cart, ManageCart.
+    require_once CONTROLLERS . '/UserController.php';       // 👤: User (Address - Card) - Cart - Order ( + Shipping) - (Auth) -> 🏠 User, ManageAddress, ManageCard.
+    //require_once CONTROLLERS . '/OrderController.php';      // 📦: Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth -> 🏠 Order, AddOrder.
+    //require_once CONTROLLERS . '/DashboardController.php';  // 📊: (if Auth ⭐️) *EVERY MODEL* -> 🏠 Dashboard, AddVinyl (AddArtist - AddTrack), UpdateVinyl, AddAdmin.
     
     $router = new Router(new Request(), new Response());
 
-    // # to understand the routing, maybe it can be part of HomeController
-    // $router->get('/login', [AuthController::class, 'login']);
-    $router->post('/login', [AuthController::class, 'login']); // if mail not exists, register user
-    $router->get('/logout', [AuthController::class, 'logout']);
-    // [POST] /register -> register a new user
-    // $router->post('/register', [AuthController::class, 'register']); 
+    // HowTo:
+        // --- Controller.php ---
+        // views (🏠) / apis (🍽️) ~ notes... -> needed models.php
 
-    // -----------------
-    // # PAGE [Home] -> (no need to be logged)          //HomeController.php (models: Vinyl - Cart) 
+
+    // 📀:
+    // --- HomeController.php --- (models: Vinyl)
+    // # 🏠 [Home] ~ (no need to be logged) -> Vinyl
     $router->get('/', [HomeController::class, 'index']);
-    $router->post('/', [HomeController::class, 'index']); // per sam allenati con le post request e vedi come funzionano
+    $router->post('/', [HomeController::class, 'index']); // // # [TODELETE] -> per sam allenati con le post request e vedi come funzionano
+    // # 🍽️ [Search] -> Vinyl
+    // $router->get('/search', [HomeController::class, 'search']); 
 
-    // ## [Vinyls]
-    // [GET] /api/vinyls-> get all vinyls (semplified json for *fast* searching)
-    // [GET] /api/vinyl + '?id_vinyl= ' -> get vinyl by id (full vinyl json (artist, album, tracks))
-    
-    // ## [Cart]
-    // [GET] /api/cart -> get cart of user / session
-    // [POST] /api/cart -> add vinyl to cart, update quantity of vinyl in cart (if 0 remove from cart)    
 
-    // -----------------
-    // # PAGE [User] -> (need to be logged)          //UserController.php (models: Auth - Address - Payment - Order)
+    // 🔐:
+    // --- AuthController.php --- (models: Auth) 
+    // 🍽️  [Login] ~ if mail not exists: register -> Auth
+    $router->post('/login', [AuthController::class, 'login']); 
+    // 🍽️  [Logout] -> Auth
+    $router->get('/logout', [AuthController::class, 'logout']);
+
+
+    // 🛒:
+    // --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 
+    // # 🏠 [Cart] ~ Stored in session if logged need to SyncCart with DB -> Vinyl - Cart - User
+    // $router->get('/cart', [CartController::class, 'index']);
+    // # 🍽️ [ManageCart] -> Vinyl - Cart - User
+    // $router->post('/cart/manage', [CartController::class, 'manage']); 
+    // # 🍽️ [SyncCart] -> Cart - User
+    // $router->get('/cart/sync', [CartController::class, 'sync']); 
+
+
+    // 👤:
+    // --- UserController.php --- (models: Auth - User (Address - Card))
+    // # 🏠 [User] ~ if not logged: *login form* else: user infos n' list of orders + shipping -> Auth - User - Order - Shipping
     $router->get('/user', [UserController::class, 'index']);
-    // ## [Address]
-    // [GET] /api/user/address -> get all address of user
-    // [POST] /api/user/address -> add new address or update an already existing address
-    // [DELETE] /api/user/address + '?id_address=2' -> delete an address
+    // # 🍽️ [ManageAddress] ~ get / add or update an address (made by the same method) -> User - Address
+    // $router->get('/user/address', [UserController::class, 'address']);
+    // $router->post('/user/address', [UserController::class, 'address']); -> return the address.
     
-    // ## [Payment] (Method of Payment)
-    // [GET] /api/user/payment -> get all payment of user
-    // [POST] /api/user/payment -> add new payment (cannot update payment)
-    // [DELETE] /api/user/payment + '?id_payment=2' -> delete a payment
-
-    // ## [Order]
-    // [GET] /api/user/orders -> get all order of user and the shipping of the order
-    // [POST] /api/user/order -> go to payment page and create an order (take all vinyls in cart) and create a shipping for the order.
+    // # 🍽️ [ManageCard] ~ get / add or update a card (maded by the same method) -> User - Card
+    // $router->get('/user/card', [UserController::class, 'card']); -> 🚩.
+    // $router->post('/user/card', [UserController::class, 'card']); -> return the card.
 
 
-    // -----------------
-    // ## [Dashboard]
+    // 📦:
+    // --- OrderController.php --- (models: Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth)
+    // # 🏠 [Order] ~  -> Auth - User - Order - Shipping - Vinyl
+    // $router->get('/order', [OrderController::class, 'index']);
+    // # 🍽️ [ManageOrder] ~ get / add or update an address (maded by the same method) -> User - Address
+    // $router->get('/user/address', [UserController::class, 'address']);
+    // $router->post('/user/address', [UserController::class, 'address']); -> return the address 
+    // # 🍽️ [ManageCard] ~ get / add or update a card (maded by the same method) -> User - Card
+    // $router->get('/user/card', [UserController::class, 'card']); -> + '?id=?' ???
+    // $router->post('/user/card', [UserController::class, 'card']); -> return the card 
 
-    // ## [Vinyl]
-    // [POST] /api/vinyl -> add new vinyl  or update an already existing vinyl (artist, album, tracks)
-    // [DELETE] /api/vinyl + '?id_vinyl=2' -> delete a vinyl
 
-    // ## [User]
-    // [GET] /api/users -> get all users (id, mail, isSuperUser, newsletter), address and payments of each user
-    // [POST] /api/admin -> add new admin user
-
-    // ### [Order]
-    // [GET] /api/orders + '?id_user' -> get all orders and the shipping of the order of a user
-    // [POST] /api/order + '?id_order=2' -> update an order (status, shipping)
-
-    // [DELETE] /api/user + '?id_user=2' + 'Authorization Bearer: token' -> deleteUser if isSuperUser logged
+    // 📊:
+    // --- DashboardController.php --- (models: *EVERY MODEL*)
+    // # 🏠 [Dashboard] ~ -> Auth.
+    // $router->get('/dashboard', [DashboardController::class, 'index']);
 
 
     # dispatch route

@@ -11,7 +11,7 @@ class UserController extends Controller {
     public function index() {
         $head = array('title' => 'Login / Signup', 'style'=> array(''),
          'header' => Database::getInstance()->getConnection() ? 'Database connected' : 'Database not connected');
-
+        
         $data = $this->auth_model->getUser(Session::getUser()) ?? [];
         $this->render('user', $head, $data);
     }
