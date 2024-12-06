@@ -43,6 +43,7 @@ Si può usare [docker](https://www.docker.com/) eseguendo un : ``` docker compos
 
 ### APIs (/api/...) -> return json
 #### basic (no auth needed)
+(aka search)
 - /api/vinyls [GET] + '?id_vinyl=' -> vinyl with this id.
     -  '+ &album=' -> vinyls of this album (title).
     -  '+ &genre=' -> vinyls of this album (genre).

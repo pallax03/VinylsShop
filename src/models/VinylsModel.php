@@ -8,8 +8,16 @@ final class VinylsModel {
 
     public function getVinyls($n = -1) {
         $vinyls = array();
-        $query = "SELECT * FROM vinyl";
-
+        $query = "SELECT
+            v.id_vinyl,
+            v.cost,
+            a.title,
+            a.cover_img,
+            a.genre,
+            ar.name AS artist,
+            FROM
+            vinyls v JOIN albums a ON v.id_album = a.id_album
+            JOIN artists ar ON a.id_artist = ar.id_artist;";
         if ($n > 0) {
             $query = $query . " LIMIT ?";
         }
@@ -20,16 +28,17 @@ final class VinylsModel {
         $result = $stmt->execute();
 
         foreach ($result->fetch_all() as $row) {
+            // create an empty object
+            $json = new stdClass();
             // extract datas from record
-            $id = $row["id_vinyl"];
-            $cost = $row["cost"];
-            $quantity = $row["quantity"];
-            $colors = $row["colors"];
-            $type = $row["type"];
-            $img = $row["img"];
+            $json->id = $row->id_vinyl;
+            $json->cost = $row->cost;
+            $json->title = $row->title;
+            $json->cover_img = $row->cover_img;
+            $json->genre = $row->genre;
+            $json->artist = $row->artist;
             // add new vinyl topo vinyls list
-            array_push($vinyls, new Vinyl($id, $cost, $quantity,
-                $colors, $type, $img));
+            array_push($vinyls, json_encode($json));
         }
         return $vinyls;
     }
