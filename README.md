@@ -10,30 +10,26 @@
 - accessibility
 
 ##### Features possibili
-- Posizione mostra nazione
-- Preordinare
-- Newsletter 
 - Suggerimenti in base a:
+    - mostra nazione (in base alla posizione)
     - nazione genere artisti preferiti
+- Newsletter 
 
 ## db:
-![Database Schema](/db/vinylsShop.png)
+![Database Schema](/db/RELAZIONALE.png)
 
 ##### API che possiamo usare:
-- gravatar -> prendere il profilo (immagine pfp) di un account gravatar (il "portafoglio digitale" per l'email), se l'utente lo ha altrimenti si mostra un icona di default.
-- spotify -> permette di dare suggerimenti in base al proprio account (possibilità di loggarsi nel sito usando spotify).
 - nominatim (open street map) -> autocompletamento degli indirizzi.
-- ...
+- spotify -> permette di dare suggerimenti in base al proprio account (possibilità di loggarsi nel sito usando spotify).
 
 ## Installation:
-Si può usare docker eseguendo un : ``` docker compose up ```
+Si può usare [docker](https://www.docker.com/) eseguendo un : ``` docker compose up ```
 ### con XAMPP:
 - injectando il [`db`](/db/init.sql).
 - spostando il contenuto di [`src`](/src/) dentro la cartella `htdocs`.
 
 ## Pages
-- /vinyls
-- /artists
+- /user
 - /cart -> also if u r not logged have a cart but its stored in $SESSION
 
 - /devs -> this README.md! 
@@ -42,8 +38,8 @@ Si può usare docker eseguendo un : ``` docker compose up ```
 - /orders
 - /shipment
 
-##### [⭐️ admin]
-- /dashboard
+##### [admin] (⭐️ need su == 1) 
+- /dashboard -> automatically redirected here.
 
 ### APIs (/api/...) -> return json
 #### basic (no auth needed)

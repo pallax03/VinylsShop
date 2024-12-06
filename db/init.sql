@@ -44,6 +44,36 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Addresses` (
     FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`)
 );
 
+CREATE TABLE IF NOT EXISTS `VinylsShop`.`Albums` (
+    `id_album` INT NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `genre` VARCHAR(100),
+    `cover_img` VARCHAR(255),
+    `release_date` DATE,
+    PRIMARY KEY (`id_album`)
+);
+
+CREATE TABLE IF NOT EXISTS `VinylsShop`.`Artists` (
+    `id_artist` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id_artist`)
+);
+
+CREATE TABLE IF NOT EXISTS `VinylsShop`.`Tracks` (
+    `id_track` INT NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `duration` TIME NOT NULL,
+    PRIMARY KEY (`id_track`)
+);
+
+CREATE TABLE IF NOT EXISTS `VinylsShop`.`inside_album` (
+    `id_album` INT NOT NULL,
+    `id_track` INT NOT NULL,
+    PRIMARY KEY (`id_album`, `id_track`),
+    FOREIGN KEY (`id_album`) REFERENCES `VinylsShop`.`Albums` (`id_album`),
+    FOREIGN KEY (`id_track`) REFERENCES `VinylsShop`.`Tracks` (`id_track`)
+);
+
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Coupons` (
     `id_coupon` INT NOT NULL AUTO_INCREMENT,
     `discount_code` VARCHAR(50) NOT NULL,
@@ -88,7 +118,9 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Vinyls` (
     `inch` INT NOT NULL,
     `quantity` INT NOT NULL,
     `type` ENUM('LP', 'EP') NOT NULL,
-    PRIMARY KEY (`id_vinyl`)
+    `id_album` INT NOT NULL,
+    PRIMARY KEY (`id_vinyl`),
+    FOREIGN KEY (`id_album`) REFERENCES `VinylsShop`.`Albums` (`id_album`)
 );
 
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Carts` (
@@ -100,34 +132,13 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Carts` (
     FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Albums` (
-    `id_album` INT NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(255) NOT NULL,
-    `genre` VARCHAR(100),
-    `cover_img` VARCHAR(255),
-    `release_date` DATE,
-    PRIMARY KEY (`id_album`)
-);
-
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Artists` (
-    `id_artist` INT NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`id_artist`)
-);
-
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Tracks` (
-    `id_track` INT NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(255) NOT NULL,
-    `duration` TIME NOT NULL,
-    PRIMARY KEY (`id_track`)
-);
-
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`inside_album` (
-    `id_album` INT NOT NULL,
-    `id_track` INT NOT NULL,
-    PRIMARY KEY (`id_album`, `id_track`),
-    FOREIGN KEY (`id_album`) REFERENCES `VinylsShop`.`Albums` (`id_album`),
-    FOREIGN KEY (`id_track`) REFERENCES `VinylsShop`.`Tracks` (`id_track`)
+CREATE TABLE IF NOT EXISTS `VinylsShop`.`order_vinyl` (
+    `id_order` INT NOT NULL,
+    `id_vinyl` INT NOT NULL,
+    `quantity` INT NOT NULL CHECK (`quantity` > 0),
+    PRIMARY KEY (`id_order`, `id_vinyl`),
+    FOREIGN KEY (`id_order`) REFERENCES `VinylsShop`.`Orders` (`id_order`),
+    FOREIGN KEY (`id_vinyl`) REFERENCES `VinylsShop`.`Vinyls` (`id_vinyl`)
 );
 
 -- Redundancy check for cost: ORDER->costo_totale = SHIPMENT(costo) + costo(VINYL)
@@ -138,3 +149,4 @@ JOIN `VinylsShop`.`Shipments` s ON o.id_order = s.id_order
 JOIN `VinylsShop`.`Carts` c ON c.id_user = o.id_user
 JOIN `VinylsShop`.`Vinyls` v ON c.id_vinyl = v.id_vinyl
 GROUP BY o.id_order;
+
