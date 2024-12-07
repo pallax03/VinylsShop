@@ -1,8 +1,13 @@
 # Progetto web - VinylsShop
+#### ( 5h per day: | 5d per week )
+##### expected deadline: 5 Jan 2025 (hours: 100)
+##### realistic deadline: 14 Jan 2025 (hours: 120)
+
 > 💡 REPO:
 > - src
 > - mockup
 > - relazione
+ 
 
 ## Warning ⚠️
 - mobile first
@@ -55,8 +60,6 @@ Si può usare [docker](https://www.docker.com/) eseguendo un: ``` docker compose
     - Cart 🛒:
         - /cart/manage  [POST]  -> add / delete / modify ([vinyl](#vinyl-cart-json)) to cart into the session.
 
-
-
 - user auth 🔐:
     - User 👤:
         - /user/default [GET]   -> get user default address and payment:
@@ -76,15 +79,12 @@ Si può usare [docker](https://www.docker.com/) eseguendo un: ``` docker compose
     - Order 📦:
         - /orders       [GET]   -> list of all the orders (🚩)
 
-
-
 - admin auth ⭐️:
     - Dashboard 📊:
         - /vinyl        [POST]  -> manage (add / update / delete) a vinyl. (completed json: (Album, Artist, Track))
         - /artist       [POST] -> manage an artist (🚩).
         - /users        [GET] -> list users (🚩).
         - /user         [POST] -> manage user (🚩).
-    
     
 
 ### Jsons

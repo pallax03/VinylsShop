@@ -5,8 +5,15 @@
             <h1>User</h1>
             <h2 id="user-mail"><?php echo $user['mail'] ?></h2>
             <p id="user-balance">Balance: <?php echo $user['balance'] ?> €</p>
+            <p id="user-newsletter">Newsletter: <?php echo $user['newsletter'] ? 'Subscribed' : 'Not subscribed' ?></p>
+
+            <?php
+                foreach ($user as $key => $value) {
+                    echo "<p id='user-$key'>$key: $value</p>";
+                }
+            ?>
             <a href="/logout">Logout</a>
-            
+            <button id="delete-account">Delete Account</button>
             <!-- <div class="input-group">
                 <div class="button">
                     <label for="">Address</label>
@@ -27,7 +34,7 @@
                     </button>
                 </div>
             </div> -->
-            
+            <script src="/resources/js/user.js"></script>
         </section>
         <section>
             <?php foreach ($orders as $order): ?>

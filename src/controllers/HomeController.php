@@ -19,24 +19,20 @@ class HomeController extends Controller {
 
     public function login(Request $request, Response $response) {
         $body = $request->getBody();
-        $message = "";
 
-        $userExist = $this->auth_model->checkMail($body['mail']);
-        if (!$userExist) {
-            $result = $this->auth_model->register($body['mail'], $body['password'], isset($body['su']) ? $body['su'] : '0', isset($body['newsletter']) ? $body['newsletter'] : '1');
-            if (!$result) {
-                $response->Error('Error while registering');
-                return ;
+        if ($this->auth_model->checkMail($body['mail'])) {
+            if ($this->auth_model->login($body['mail'], $body['password'])) {
+                $response->Success('Logged in, redirecting...');
+                return;
             }
-        }
-        
-        $result = $this->auth_model->login($body['mail'], $body['password']);
-        $message = $userExist ? "Logged in, redirecting..." : "Registered, redirecting...";
-
-        if ($result) {
-            $response->Success($message);
+            $response->Error('User found, but password is wrong...');
         } else {
-            $response->Error('Credentials not valid');
+            if ($this->auth_model->register($body['mail'], $body['password'])) {
+                $this->auth_model->login($body['mail'], $body['password']);
+                $response->Success('Registered, redirecting...');
+                return;
+            }
+            $response->Error('Error, while registering...');
         }
     }
 
@@ -46,16 +42,8 @@ class HomeController extends Controller {
     }
 
     public function forgotPassword() {
-        // $this->model->forgotPassword();
+        // $this->auth_model->forgotPassword();
         echo json_encode(['error' => 'Not implemented']);
-    }
-
-    public function deleteUser(Request $request, Response $response) {
-        $this->auth_model->checkAuth($request->getAuthentication()); // check Authentication
-
-        $body = $request->getBody();
-        $result = $this->auth_model->deleteUser($body['id_user']);
-        echo json_encode($result);
     }
 }
 ?>

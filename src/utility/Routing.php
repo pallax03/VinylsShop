@@ -49,6 +49,10 @@
     // --- UserController.php --- (models: Auth - User (Address - Card))
     // # 🏠 [User] ~ if not logged: *login form* else: user infos n' list of orders + shipping -> Auth - User - Order - Shipping
     $router->get('/user', [UserController::class, 'index']);
+    // # 🍽️ [UpdateUser] ~ update user infos -> Auth - User
+    $router->post('/user', [UserController::class, 'updateUser']);
+    // # 🍽️ [DeleteUser] ~ delete the user -> Auth - User
+    $router->delete('/user', [UserController::class, 'deleteUser']);
     // # 🍽️ [Default] ~ set an address or a card as default -> User - Address - Card
     // $router->get('/user/default', [UserController::class, 'default']); -> get or set the default address and card.
     // # 🍽️ [ManageAddress] ~ get / add or update an address (made by the same method) -> User - Address

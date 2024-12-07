@@ -68,26 +68,22 @@ final class AuthModel {
     }
 
     public function checkMail($mail) {
-        $db = Database::getInstance()->getConnection();
-        $query = "SELECT * FROM `Users` WHERE mail = ?";
-        $stmt = $db->prepare($query);
-        $stmt->bind_param('s', $mail);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
-        return $result == [] || $result == null ? false : true;
+        return Database::getInstance()->executeResults(
+            "SELECT * FROM `Users` WHERE mail = ?",
+            's',
+            $mail
+        ) != [];
     }
 
     public function login($mail, $password) {
-        $db = Database::getInstance()->getConnection();
-        $query = "SELECT * FROM `Users` WHERE mail = ? AND password = ?";
-        $stmt = $db->prepare($query);
-        $password=$this->encryptPassword($password);
-        $stmt->bind_param('ss', $mail, $password);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
+        $result = Database::getInstance()->executeResults(
+            "SELECT * FROM `Users` WHERE mail = ? AND password = ?",
+            'ss',
+            $mail, $this->encryptPassword($password)
+        );
 
         if ($result) {
-            $this->setCookie($token = $this->generateToken($result['id_user'], $result['su']));
+            $this->setCookie($this->generateToken($result['id_user'], $result['su']));
             $this->refreshSession(['id_user' => $result['id_user'], 'isSuperUser' => $result['su']]);
             return true;
         }
@@ -108,51 +104,24 @@ final class AuthModel {
         return true;
     }
 
-    public function register($mail, $password, $newsletter) {
-        try {
-            $db = Database::getInstance()->getConnection();
-            $query = "INSERT INTO `Users` (mail, password, su, newsletter) VALUES (?, ?, 0, ?)";
-            $stmt = $db->prepare($query);
-            $password = $this->encryptPassword($password);
-            $stmt->bind_param('ssi', $mail, $password, $newsletter);
-            $stmt->execute();
-            return true;
-        } catch (\Throwable $th) {
-            return false;
-        }
-        return false;
+    /*
+    * This function registers a new user
+    * @param string $mail
+    * @param string $password 
+    * @param int $su default 0
+    * @param int $newsletter default 0
+    * @return bool true if the user is registered, false otherwise
+    */
+    public function register($mail, $password, $su = 0, $newsletter = 0) {
+
+        return Database::getInstance()->executeQueryAffectRows(
+            "INSERT INTO `Users` (mail, password, su, newsletter) VALUES (?, ?, ?, ?)",
+            'ssii',
+            $mail, $this->encryptPassword($password), $su ?? 0, $newsletter ?? 0
+        );
     }
 
     public function forgotPassword($mail) {
-        return false;
-    }
-
-    public function deleteUser($id_user) {
-        if (!Session::isSuperUser() && $id_user !== Session::getUser()) {
-            return false;
-        }
-
-        $db = Database::getInstance()->getConnection();
-
-        $query = "DELETE FROM `Users` WHERE id_user = ?";
-        $stmt = $db->prepare($query);
-        $stmt->bind_param('i', $id_user);
-        $stmt->execute();
-
-        return $stmt->affected_rows > 0;
-    }
-
-    public function getUser($id_user) {
-        if ($id_user === Session::getUser() || Session::isSuperUser()) {
-            $db = Database::getInstance()->getConnection();
-
-            $query = "SELECT * FROM `Users` WHERE id_user = ?";
-            $stmt = $db->prepare($query);
-            $stmt->bind_param('i', $id_user);
-            $stmt->execute();
-            $result = $stmt->get_result()->fetch_assoc();
-            return $result;
-        }
-        return false;
+        throw new Exception('Not implemented');
     }
 }

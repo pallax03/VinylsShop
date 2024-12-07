@@ -45,15 +45,68 @@ class Database {
         return $this->connection;
     }
 
-    public function query($query) {
-        return $this->connection->query($query);
-    }
-
     public function closeConnection() {
         if ($this->connection !== null) {
             $this->connection->close();
         }
     }
+    
+    /*
+     * Prepare a query with parameters
+     * 
+     * @param string $query
+     * @param string $types
+     * @param mixed $params
+     * 
+     * @return mysqli_stmt 
+    */
+    private function executeQueryWithParams($query, $types, ...$params) {
+        $stmt = $this->connection->prepare($query);
+        if ($stmt === false) {
+            return false;
+        }
+        if (!$stmt->bind_param($types, ...$params)) {
+            return false;
+        }
+
+        $stmt->execute();
+        return $stmt;
+    }
+
+    /*
+     * @param mysqli_stmt $stmt
+     * 
+     * @return true if the query has thrown an exception, otherwise false
+    */
+    private function queryThrowException($stmt) {
+        return $stmt === false || $stmt->errno !== 0;
+    }
+
+    /*
+     * Execute a SELECT query
+     * 
+     * @return array the result of the query if successful, otherwise an empty array
+    */
+    public function executeResults($query, $types, ...$params) {
+        $stmt = $this->executeQueryWithParams($query, $types, ...$params);
+        $result = $stmt->get_result();
+        if ($this->queryThrowException($stmt) || $result->num_rows === 0) {
+            return [];
+        }
+        return $result->fetch_assoc() ?? [];
+    }
+
+
+    /*
+     * Execute a INSERT, UPDATE, DELETE query
+     * 
+     * @return bool true if the query affected rows, otherwise false
+    */
+    public function executeQueryAffectRows($query, $types, ...$params) {
+        $stmt = $this->executeQueryWithParams($query, $types, ...$params);
+        return !$this->queryThrowException($stmt) && $stmt->affected_rows > 0;
+    }
+
 }
     
 ?>
