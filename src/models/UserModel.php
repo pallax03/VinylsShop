@@ -72,7 +72,20 @@ final class UserModel {
         );
     }
 
-    public function setDefaults() {
-        return 'Not implemented';
+    public function setDefaults($id_card = null, $id_address = null) {
+        if (!Session::isLogged()) {
+            return false;
+        }
+
+        return Database::getInstance()->executeQueryAffectRows(
+            "INSERT INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`, `default_address`)
+                VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE 
+                    `default_card` = VALUES(`default_card`), 
+                    `default_address` = VALUES(`default_address`);",
+            'iii',
+            Session::getUser(),
+            $id_card == null || empty($id_user) ? -1 : $id_card,
+            $id_address == null || empty($id_address) ? -1 : $id_address
+        );
     }
 }

@@ -36,6 +36,15 @@ class UserController extends Controller {
         }
     }
 
+    public function setDefaults(Request $request, Response $response) {
+        $body = $request->getBody();
+        if ($this->user_model->setDefaults($body['id_card'] ?? null, $body['id_address'] ?? null)) {
+            $response->Success('Defaults set');
+        } else {
+            $response->Error('Not allowed to set defaults');
+        }
+    }
+
     public function deleteUser(Request $request, Response $response) {
         $body = $request->getBody();
         if ($this->user_model->deleteUser($body['id_user'] ?? null)) {

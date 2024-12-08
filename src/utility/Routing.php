@@ -15,12 +15,12 @@
         // views (🏠) / apis (🍽️) ~ notes... -> needed models.php
 
 
-    // 📀: !_!(ALEX & SAM)
+    // 📀: !!!(ALEX & SAM)
     // --- HomeController.php --- (models: Auth Vinyl)
     // # 🏠 [Home] ~ (no need to be logged) -> Vinyl
     $router->get('/', [HomeController::class, 'index']);
     $router->post('/', [HomeController::class, 'index']); // // # [TODELETE] -> per sam allenati con le post request e vedi come funzionano
-    // # 🍽️ [Search] -> Vinyl !_!(SAM)
+    // # 🍽️ [Search] -> Vinyl !!!(SAM)
     // $router->get('/search', [HomeController::class, 'search']);
     // # 🍽️  [Login] ~ if mail not exists: register -> Auth
     $router->post('/login', [HomeController::class, 'login']); 
@@ -29,7 +29,7 @@
     // # 🏠 [Devs] ~ README.md
     // $router->get('/devs', [HomeController::class, 'devs']);
 
-    // 🛒: !_!(SAM)
+    // 🛒: !!!(SAM)
     // --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 
     // # 🏠 [Cart] ~ Stored in session if logged need to SyncCart with DB -> Vinyl - Cart - User
     $router->get('/cart', [CartController::class, 'index']);
@@ -55,7 +55,8 @@
     // # 🍽️ [DeleteUser] ~ delete the user -> Auth - User
     $router->delete('/user', [UserController::class, 'deleteUser']);
     // # 🍽️ [Default] ~ set an address or a card as default -> User - Address - Card
-    // $router->get('/user/default', [UserController::class, 'default']); -> get or set the default address and card.
+    $router->get('/user/defaults', [UserController::class, 'setDefaults']); // -> get or set the default address and card.
+    $router->post('/user/defaults', [UserController::class, 'setDefaults']); // -> get or set the default address and card.
     // # 🍽️ [ManageAddress] ~ get / add or update an address (made by the same method) -> User - Address
     $router->get('/user/address', [UserController::class, 'getAddress']); // -> get all the addresses.
     // $router->post('/user/address', [UserController::class, 'address']); -> return the address.

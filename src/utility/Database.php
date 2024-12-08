@@ -78,13 +78,17 @@ class Database {
         foreach (str_split($types) as $i => $type) {
             if ($params[$i] !== null && !empty($params[$i])) {
                 $finalQuery .= $queryParts[$i] . '?';
-                $finalParams[] = $params[$i];
+                $finalParams[] = $params[$i] === -1 ? null : $params[$i];
                 $finalTypes .= $type;
             } else {
                 $finalQuery .= $queryParts[$i]; // Skip the placeholder
             }
         }
 
+        // Handle the remainder of the query if it has no placeholders (like the ON DUPLICATE KEY UPDATE part)
+        if (isset($queryParts[count($finalParams)])) {
+            $finalQuery .= $queryParts[count($finalParams)];
+        }
 
         $stmt = $this->connection->prepare($finalQuery);
         if ($stmt === false) {
@@ -109,6 +113,8 @@ class Database {
     }
 
     /*
+     * Check if the query has thrown an exception, maybe i can put an hanlder !!!
+     * 
      * @param mysqli_stmt $stmt
      * 
      * @return true if the query has thrown an exception, otherwise false
@@ -138,8 +144,8 @@ class Database {
      * 
      * @return bool true if the query affected rows, otherwise false
     */
-    public function executeQueryAffectRows($query, $types, ...$params) {
-        $stmt = $this->executeQueryWithParams($query, $types, ...$params);
+    public function executeQueryAffectRows($query, $types=null, ...$params) {
+        $stmt = $types === null || empty($types) ? $this->executeQuery($query) : $this->executeQueryWithParams($query, $types, ...$params);
         return !$this->queryThrowException($stmt) && $stmt->affected_rows > 0;
     }
 
