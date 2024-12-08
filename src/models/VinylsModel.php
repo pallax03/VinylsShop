@@ -59,7 +59,7 @@ final class VinylsModel {
             $query = $query . " LIMIT ?";
             $result = $this->db->executeResults($query, 'i', $n);
         } else {
-            $result = $this->db->executeResults($query, null);
+            $result = $this->db->executeResults($query);
         }
         foreach ($result as $row):
             // create an empty object
@@ -112,7 +112,7 @@ final class VinylsModel {
             JOIN tracks t ON t.id_track = ta.id_track
             WHERE a.id_album = ?";
         // prepare statement
-        $result = $this->db->executeResults($vinyl, "i", $id);
+        $result = $this->db->executeResults($vinyl, 'i', $id);
         if (!empty($result)):
             // store id_album for the next query
             $album =  $result["id_album"];
@@ -128,7 +128,7 @@ final class VinylsModel {
             $details["artist"] = $result["artist"];
         endif;
         // prepare second statement
-        $result = $this->db->executeResults($tracks, "i", $album);
+        $result = $this->db->executeResults($tracks, 'i', $album);
         // create a list to store all (title, duration) tracks
         $track_list = [];
         foreach ($result as $row):
@@ -163,7 +163,7 @@ final class VinylsModel {
             JOIN artists ar ON ar.id_artist = a.id_artist
             WHERE v.id_vinyl = ?";
         // execute query
-        $result = $this->db->executeResults($query, null);
+        $result = $this->db->executeResults($query);
         if (!empty($result)):
             // store results
             $preview["cost"] = $result["cost"];
