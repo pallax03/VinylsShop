@@ -2,10 +2,14 @@
 class CartController extends Controller {
 
     private $auth_model = null;
+    private $user_model = null;
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
         $this->auth_model = new AuthModel();
+
+        require_once MODELS . 'UserModel.php';
+        $this->user_model = new UserModel();
     }
 
     public function index(Request $request, Response $response) {
@@ -14,7 +18,7 @@ class CartController extends Controller {
         $head = array('title' => 'Cart', 'style'=> array(''),
          'header' => Database::getInstance()->getConnection() ? 'Database connected' : 'Database not connected');
         
-        $data = $this->auth_model->getUser(Session::getUser()) ?? [];
+        $data = $this->user_model->getUser(Session::getUser()) ?? [];
         $this->render('cart', $head, $data);
     }
 

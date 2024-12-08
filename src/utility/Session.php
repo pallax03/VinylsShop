@@ -24,19 +24,32 @@ class Session {
         unset($_SESSION[$key]);
     }
     
+
     public static function isSuperUser() {
-        return self::isSet('User') && self::get('User')['su'];
+        return self::isLogged() && self::get('User')['su'];
     }
     
+
     public static function isLogged() {
         return self::isSet('User');
     }
+
 
     public static function getUser() {
         if (!self::isLogged() || !isset(self::get('User')['id_user'])) {
             return false;
         }
         return self::get('User')['id_user'];
+    }
+
+    /**
+     * This function checks overall if the user isLogged, then
+     * if the id_user is the same as the logged user.
+     * @param int $id_user
+     * @return bool
+     */
+    public static function isHim($id_user = null) {
+        return $id_user ? self::getUser() == $id_user : self::isLogged();
     }
 
 }

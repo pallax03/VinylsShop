@@ -50,22 +50,47 @@ class Database {
             $this->connection->close();
         }
     }
-    
+
     /*
-     * Prepare a query with parameters
+     * Execute a query with parameters, filtering null values
+     * It allows to use optional parameters:
+     * parsing the query given, it will bind only the parameters that are not null
+     * U need to pass the final query:
+     * and ALL the parameters to bind
+     *  
      * 
-     * @param string $query
-     * @param string $types
-     * @param mixed $params
+     * @param string $query the query already prepared
+     * @param string $types the types of the parameters, and optional
+     * @param mixed ...$params all the parameters to bind, also optional
      * 
-     * @return mysqli_stmt 
+     * @return mysqli_stmt the statement if successful, otherwise false
     */
     private function executeQueryWithParams($query, $types, ...$params) {
-        $stmt = $this->connection->prepare($query);
+        // Build the final query and filter parameters
+        $finalQuery = '';
+        $finalParams = [];
+        $finalTypes = '';
+
+        // Split the query by conditionals (e.g., for WHERE clauses)
+        $queryParts = explode('?', $query);
+
+        // Iterate over the parameters to build the final query and types
+        foreach (str_split($types) as $i => $type) {
+            if ($params[$i] !== null && !empty($params[$i])) {
+                $finalQuery .= $queryParts[$i] . '?';
+                $finalParams[] = $params[$i];
+                $finalTypes .= $type;
+            } else {
+                $finalQuery .= $queryParts[$i]; // Skip the placeholder
+            }
+        }
+
+
+        $stmt = $this->connection->prepare($finalQuery);
         if ($stmt === false) {
             return false;
         }
-        if (!$stmt->bind_param($types, ...$params)) {
+        if (!$stmt->bind_param($finalTypes, ...$finalParams)) {
             return false;
         }
 
@@ -93,7 +118,8 @@ class Database {
         if ($this->queryThrowException($stmt) || $result->num_rows === 0) {
             return [];
         }
-        return $result->fetch_assoc() ?? [];
+
+        return $result->fetch_all(MYSQLI_ASSOC) ?? [];
     }
 
 

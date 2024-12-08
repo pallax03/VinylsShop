@@ -15,12 +15,12 @@
         // views (🏠) / apis (🍽️) ~ notes... -> needed models.php
 
 
-    // 📀:
+    // 📀: !_!(ALEX & SAM)
     // --- HomeController.php --- (models: Auth Vinyl)
     // # 🏠 [Home] ~ (no need to be logged) -> Vinyl
     $router->get('/', [HomeController::class, 'index']);
     $router->post('/', [HomeController::class, 'index']); // // # [TODELETE] -> per sam allenati con le post request e vedi come funzionano
-    // # 🍽️ [Search] -> Vinyl
+    // # 🍽️ [Search] -> Vinyl !_!(SAM)
     // $router->get('/search', [HomeController::class, 'search']);
     // # 🍽️  [Login] ~ if mail not exists: register -> Auth
     $router->post('/login', [HomeController::class, 'login']); 
@@ -29,7 +29,7 @@
     // # 🏠 [Devs] ~ README.md
     // $router->get('/devs', [HomeController::class, 'devs']);
 
-    // 🛒:
+    // 🛒: !_!(SAM)
     // --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 
     // # 🏠 [Cart] ~ Stored in session if logged need to SyncCart with DB -> Vinyl - Cart - User
     $router->get('/cart', [CartController::class, 'index']);
@@ -44,34 +44,33 @@
     // # 🍽️ [Checkout] ~ request the checkout can handle errors if valid make the order and shipping -> Auth - User (Address - Card)
     // $router->post('/checkout', [CartController::class, 'pay']); 
 
-
-    // 👤:
+    // 👤: (ALEX)
     // --- UserController.php --- (models: Auth - User (Address - Card))
     // # 🏠 [User] ~ if not logged: *login form* else: user infos n' list of orders + shipping -> Auth - User - Order - Shipping
     $router->get('/user', [UserController::class, 'index']);
+    // # 🍽️ [GetUser] ~ get user infos an admin can get all -> Auth - User
+    $router->get('/user/get', [UserController::class, 'getUser']);
     // # 🍽️ [UpdateUser] ~ update user infos -> Auth - User
-    $router->post('/user', [UserController::class, 'updateUser']);
+    // $router->post('/user', [UserController::class, 'updateUser']);
     // # 🍽️ [DeleteUser] ~ delete the user -> Auth - User
     $router->delete('/user', [UserController::class, 'deleteUser']);
     // # 🍽️ [Default] ~ set an address or a card as default -> User - Address - Card
     // $router->get('/user/default', [UserController::class, 'default']); -> get or set the default address and card.
     // # 🍽️ [ManageAddress] ~ get / add or update an address (made by the same method) -> User - Address
-    // $router->get('/user/address', [UserController::class, 'address']); -> get all the addresses.
+    $router->get('/user/address', [UserController::class, 'getAddress']); // -> get all the addresses.
     // $router->post('/user/address', [UserController::class, 'address']); -> return the address.
     // # 🍽️ [ManageCard] ~ get / add or update a card (maded by the same method) -> User - Card
     // $router->get('/user/card', [UserController::class, 'card']); ->get all the cards.
     // $router->post('/user/card', [UserController::class, 'card']); -> return the card.
 
-
-    // 📦:
+    // 📦: (ALEX)
     // --- OrderController.php --- (models: Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth)
     // # 🏠 [Order] ~ page of the specific order  -> Auth - User - Order - Shipping - Vinyl
     // $router->get('/order', [OrderController::class, 'index']);
     // # 🚩 🍽️ [Orders] ~ list of all the orders -> Auth - User - Order - Shipping - Vinyl
     // 🚩 $router->get('/orders', [OrderController::class, 'orders']);
 
-
-    // 📊:
+    // 📊: (SAM)
     // --- DashboardController.php --- (models: *EVERY MODEL*)
     // # 🏠 [Dashboard] ~ -> Auth.
     // $router->get('/dashboard', [DashboardController::class, 'index']);

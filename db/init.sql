@@ -16,8 +16,6 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Users` (
     `balance` DECIMAL(10,2) NOT NULL DEFAULT 0,
     `su` TINYINT(1) NOT NULL DEFAULT 0,
     `newsletter` TINYINT(1) NOT NULL DEFAULT 1,
-    `default_card` INT,
-    `default_address` INT,
     PRIMARY KEY (`id_user`), UNIQUE INDEX `mail_UNIQUE` (`mail` ASC)
 );
 
@@ -48,7 +46,8 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Addresses` (
     FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`)
 );
 
-
+-- UserPreferences: default_card and default_address are nullable
+-- because the user could not have them set
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`UserPreferences` (
     `id_user` INT NOT NULL,
     `default_card` INT,
@@ -96,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Coupons` (
     `id_coupon` INT NOT NULL AUTO_INCREMENT,
     `discount_code` VARCHAR(50) NOT NULL,
     `percentage` DECIMAL(10, 2) NOT NULL,
+    `valid_from` DATE NOT NULL,
     `valid_until` DATE NOT NULL,
     PRIMARY KEY (`id_coupon`),
     UNIQUE INDEX `code_UNIQUE` (`discount_code` ASC)
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Coupons` (
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Orders` (
     `id_order` INT NOT NULL AUTO_INCREMENT,
     `order_date` DATE NOT NULL,
-    `total_cost` DECIMAL(10, 2) NOT NULL,
+    `total_cost` DECIMAL(10, 2) NOT NULL DEFAULT 0,
     `id_card` INT,
     `order_status` VARCHAR(50) NOT NULL,
     `discount_code` VARCHAR(50),
