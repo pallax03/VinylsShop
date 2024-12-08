@@ -7,7 +7,7 @@ class HomeController extends Controller {
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
-        require_once MODELS . 'VinylsModel';
+        require_once MODELS . 'VinylsModel.php';
         $this->auth_model = new AuthModel();
         $this->vinyls_model = new VinylsModel();
     }
@@ -53,7 +53,8 @@ class HomeController extends Controller {
 
     public function search(Request $request, Response $response) {
         $body = $request->getBody();
-        // send json to the view (?)
+        // always gives OK, because there's no wrong search.
+        $response->Success($this->vinyls_model->getVinyls(null, $body));
     }
 }
 ?>

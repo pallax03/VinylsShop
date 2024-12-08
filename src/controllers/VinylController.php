@@ -1,15 +1,16 @@
 <?php
 final class VinylController extends Controller {
 
-    private $model = new VinylsModel();
+    private $model = null;
 
     function __construct() {
-        require_once MODELS . 'VinylsModel.php';
+        require_once MODELS . '/VinylsModel.php';
         $this->model = new VinylsModel();
     }
 
-    function getVinyls() {
-        
+    function getVinyls(Request $request, Response $response) {
+        $body = $request->getBody();
+        $response->Error($this->model->getVinyls(null, $body));
     }
 
     /*

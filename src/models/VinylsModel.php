@@ -1,7 +1,5 @@
 <?php
 
-require_once "Vinyl.php";
-
 final class VinylsModel {
 
     private $db = null;
@@ -37,21 +35,21 @@ final class VinylsModel {
         // get the first key and switch on it to get the right string added to the query
         switch (reset($keys)) {
             case "id":
-                $query = $query . " WHERE v.id_vinyl = " . $params->id;
+                $query = $query . " WHERE v.id_vinyl = " . $params["id"];
                 break;
             case "album":
-                $query = $query . " WHERE a.title LIKE '%" . $params->album . "%'";
+                $query = $query . " WHERE a.title LIKE '%" . $params["album"] . "%'";
                 break;
             case "genre":
-                $query = $query . " WHERE v.genre LIKE '% " . $params->album . "%'";
+                $query = $query . " WHERE a.genre LIKE '%" . $params["genre"] . "%'";
                 break;
             case "track":
                 $query = $query . " JOIN albumstracks ta
                     ON a.id_album = ta.id_album JOIN tracks t
-                    ON t.id_track = ta.id_track WHERE t.title LIKE '%". $params->track . "%'";
+                    ON t.id_track = ta.id_track WHERE t.title LIKE '%". $params["track"] . "%'";
                     break;
             case "artist":
-                $query = $query . " WHERE ar.name LIKE '%" . $params->artist . "%'";
+                $query = $query . " WHERE ar.name LIKE '%" . $params["artist"] . "%'";
                 break;
         }
         // in case it needs a limitation

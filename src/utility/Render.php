@@ -19,10 +19,16 @@
     
     <?php include COMPONENTS . '/nav.php' ?>
 
+    <main>
+        <ul id='search-content'>
+    </ul>
+    </main>
+
     <?php include $page ?>
     
     <?php include COMPONENTS . '/footer.php' ?>
 
     <script src="/resources/js/main.js"></script>
+    <script src="/resources/js/search.js"></script>
 </body>
 </html>
