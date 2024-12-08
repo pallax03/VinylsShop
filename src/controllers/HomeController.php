@@ -52,9 +52,7 @@ class HomeController extends Controller {
     }
 
     public function search(Request $request, Response $response) {
-        /* get whatever is on the search bar and pass it into $params */
-        /* convert it into a map */
-        $json = $this->vinyls_model->getVinyls(null, $params);
+        $body = $request->getBody();
         // send json to the view (?)
     }
 }
