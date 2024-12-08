@@ -4,7 +4,11 @@ require_once "Vinyl.php";
 
 final class VinylsModel {
 
-    private $db = Database::getInstance();
+    private $db = null;
+
+    public function __construct() {
+        $this->db = Database::getInstance();
+    }
 
     /**
      * Gets a specified number of vinyls from the database.
@@ -55,18 +59,18 @@ final class VinylsModel {
             $query = $query . " LIMIT ?";
             $result = $this->db->executeResults($query, "i", $n);
         } else {
-            $result = $this->db->executeResults($query);
+            $result = $this->db->executeResults($query, null);
         }
         foreach ($result as $row):
             // create an empty object
-            $json = new stdClass();
+            $json = [];
             // extract datas from record
-            $json->id = $row->id_vinyl;
-            $json->cost = $row->cost;
-            $json->title = $row->title;
-            $json->cover_img = $row->cover_img;
-            $json->genre = $row->genre;
-            $json->artist = $row->artist;
+            $json["id"] = $row["id_vinyl"];
+            $json["cost"] = $row["cost"];
+            $json["title"] = $row["title"];
+            $json["cover_img"] = $row["cover_img"];
+            $json["genre"] = $row["genre"];
+            $json["artist"] = $row["artist"];
             // add new vinyl topo vinyls list
             array_push($vinyls, $json);
         endforeach;
@@ -80,7 +84,7 @@ final class VinylsModel {
      * @return json containing details on the vinyl
      */
     public function getVinylDetails($id) {
-        $details = new stdClass();
+        $details = [];
         // query to get vinyls info
         $vinyl = "SELECT 
             v.id_vinyl,
@@ -111,17 +115,17 @@ final class VinylsModel {
         $result = $this->db->executeResults($vinyl, "i", $id);
         if (!empty($result)):
             // store id_album for the next query
-            $album =  $result->id_album;
+            $album =  $result["id_album"];
             // store the results
-            $details->id = $result->id_vinyl;
-            $details->cost = $result->cost;
-            $details->rpm = $result->rpm;
-            $details->inch = $result->inch;
-            $details->type = $result->type;
-            $details->title = $result->title;
-            $details->release_date = $result->release_date;
-            $details->cover_img = $result->cover_img;
-            $details->artist = $result->artist;
+            $details["id"] = $result["id_vinyl"];
+            $details["cost"] = $result["cost"];
+            $details["rpm"] = $result["rpm"];
+            $details["inch"] = $result["inch"];
+            $details["type"] = $result["type"];
+            $details["title"] = $result["title"];
+            $details["release_date"] = $result["release_date"];
+            $details["cover_img"] = $result["cover_img"];
+            $details["artist"] = $result["artist"];
         endif;
         // prepare second statement
         $result = $this->db->executeResults($tracks, "i", $album);
@@ -131,7 +135,7 @@ final class VinylsModel {
             array_push($track_list, [$row->title, $row->duration]);
         endforeach;
         // also add tracks to details
-        $details->tracks = $track_list;
+        $details["tracks"] = $track_list;
         return json_encode($details);
     }
 
@@ -142,7 +146,7 @@ final class VinylsModel {
      * @return json containing the information on the vinyl
      */
     public function getPreview($id) {
-        $preview = new stdClass();
+        $preview = [];
         // query to get vinyls info
         $query = "SELECT
             v.cost,
@@ -159,7 +163,7 @@ final class VinylsModel {
             JOIN artists ar ON ar.id_artist = a.id_artist
             WHERE v.id_vinyl = ?";
         // execute query
-        $result = $this->db->executeResults($query);
+        $result = $this->db->executeResults($query, null);
         if (!empty($result)):
             // store results
             $preview->cost = $result->cost;
@@ -181,7 +185,7 @@ final class VinylsModel {
      * @return json with the  preview infos
      */
     public function getUserOrderPreview($id) {
-        $preview = new stdClass();
+        $preview = [];
         $query = "SELECT
             v.cost,
             a.title,
@@ -228,7 +232,7 @@ final class VinylsModel {
         if (!empty($result)):
             $result = $this->db->executeResults($vinyls, ["s", "s", "i"], [$result->genre, $result->artist, $id]);
             foreach($result as $row):
-                $vinyl = new stdClass();
+                $vinyl = [];
                 $vinyl->cover_img = $row->cover_img;
                 $vinyl->title = $row->title;
                 array_push($suggested, $vinyl);

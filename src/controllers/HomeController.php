@@ -2,10 +2,14 @@
 class HomeController extends Controller {
 
     private $auth_model = null;
+    // vinylsmodel for search
+    private $vinyls_model = null;
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
+        require_once MODELS . 'VinylsModel';
         $this->auth_model = new AuthModel();
+        $this->vinyls_model = new VinylsModel();
     }
 
     public function index(Request $request, Response $response) {
@@ -45,5 +49,7 @@ class HomeController extends Controller {
         // $this->auth_model->forgotPassword();
         echo json_encode(['error' => 'Not implemented']);
     }
+
+    public function search() {}
 }
 ?>
