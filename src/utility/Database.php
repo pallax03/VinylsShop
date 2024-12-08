@@ -98,6 +98,16 @@ class Database {
         return $stmt;
     }
 
+    private function executeQuery($query) {
+        $stmt = $this->connection->prepare($query);
+        if ($stmt === false) {
+            return false;
+        }
+
+        $stmt->execute();
+        return $stmt;
+    }
+
     /*
      * @param mysqli_stmt $stmt
      * 
@@ -112,8 +122,8 @@ class Database {
      * 
      * @return array the result of the query if successful, otherwise an empty array
     */
-    public function executeResults($query, $types, ...$params) {
-        $stmt = $this->executeQueryWithParams($query, $types, ...$params);
+    public function executeResults($query, $types=null, ...$params) {
+        $stmt = $types === null || empty($types) ? $this->executeQuery($query) : $this->executeQueryWithParams($query, $types, ...$params);
         $result = $stmt->get_result();
         if ($this->queryThrowException($stmt) || $result->num_rows === 0) {
             return [];
