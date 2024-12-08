@@ -4,7 +4,7 @@ require_once "Vinyl.php";
 
 final class VinylsModel {
 
-    private $conn = Database::getInstance()->getConnection();
+    private $db = Database::getInstance();
 
     /**
      * get a specified number of vinyls from the database.
@@ -25,7 +25,7 @@ final class VinylsModel {
             a.title,
             a.cover_img,
             a.genre,
-            ar.name AS artist,
+            ar.name AS artist
             FROM
             vinyls v JOIN albums a ON v.id_album = a.id_album
             JOIN artists ar ON a.id_artist = ar.id_artist";
@@ -36,34 +36,28 @@ final class VinylsModel {
                 $query = $query . " WHERE v.id_vinyl = " . $params->id;
                 break;
             case "album":
-                $query = $query . " WHERE a.title = " . $params->album;
+                $query = $query . " WHERE a.title LIKE '%" . $params->album . "%'";
                 break;
             case "genre":
-                $query = $query . " WHERE v.genre = " . $params->album;
+                $query = $query . " WHERE v.genre LIKE '% " . $params->album . "%'";
                 break;
             case "track":
-                $query = $query . " JOIN inside_album ia
-                    ON a.id_album = ia.id_album JOIN tracks t
-                    ON t.id_track = ia.id_track WHERE t.title = ". $params->track;
+                $query = $query . " JOIN albumstracks ta
+                    ON a.id_album = ta.id_album JOIN tracks t
+                    ON t.id_track = ta.id_track WHERE t.title LIKE '%". $params->track . "%'";
                     break;
             case "artist":
-                $query = $query . " WHERE ar.name = " . $params->artist;
+                $query = $query . " WHERE ar.name LIKE '%" . $params->artist . "%'";
                 break;
         }
-        // in case it need a limitation
+        // in case it needs a limitation
         if ($n > 0) {
-            $query = $query . " LIMIT ?;";
+            $query = $query . " LIMIT ?";
+            $result = $this->db->executeResults($query, "i", $n);
         } else {
-            $query = $query . ";";
+            $result = $this->db->executeResults($query);
         }
-        // prepared statement
-        $stmt = $this->conn->prepare($query);
-        if ($n > 0) {
-            $stmt->bind_params("i", $n);
-        }
-        $result = $stmt->execute();
-
-        foreach ($result->fetch_all() as $row) {
+        foreach ($result as $row) {
             // create an empty object
             $json = new stdClass();
             // extract datas from record
@@ -79,6 +73,12 @@ final class VinylsModel {
         return json_encode($vinyls);
     }
 
+    /**
+     * gets the details of a single vinyl (vinyl page)
+     * from a given id.
+     * @param id of the vinyl in question
+     * @return json containing details on the vinyl
+     */
     public function getVinylDetails($id) {
         $details = new stdClass();
         // query to get vinyls info
@@ -108,34 +108,70 @@ final class VinylsModel {
             JOIN tracks t ON t.id_track = ta.id_track
             WHERE a.id_album = ?";
         // prepare statement
-        $stmt = $this->conn->prepare($vinyl);
-        $stmt->bind_params("i", $id);
-        $result = $stmt->execute();
-        $result = $result->fetch();
-        // store id_album for the next query
-        $album =  $result->id_album;
-        // store the results
-        $details->id = $result->id_vinyl;
-        $details->cost = $result->cost;
-        $details->rpm = $result->rpm;
-        $details->inch = $result->inch;
-        $details->type = $result->type;
-        $details->title = $result->title;
-        $details->release_date = $result->release_date;
-        $details->cover_img = $result->cover_img;
-        $details->artist = $result->artist;
+        $result = $this->db->executeResults($vinyl, "i", $id);
+        if (!empty($result)):
+            // store id_album for the next query
+            $album =  $result->id_album;
+            // store the results
+            $details->id = $result->id_vinyl;
+            $details->cost = $result->cost;
+            $details->rpm = $result->rpm;
+            $details->inch = $result->inch;
+            $details->type = $result->type;
+            $details->title = $result->title;
+            $details->release_date = $result->release_date;
+            $details->cover_img = $result->cover_img;
+            $details->artist = $result->artist;
+        endif;
         // prepare second statement
-        $stmt = $this->conn->prepare($tracks);
-        $stmt->bind_params("i", $album);
-        $result = $stmt->execute();
+        $result = $this->db->executeResults($tracks, "i", $album);
         // create a list to store all (title, duration) tracks
         $track_list = [];
-        foreach ($result->fetch_all() as $row) {
+        foreach ($result as $row) {
             array_push($track_list, [$row->title, $row->duration]);
         }
         // also add tracks to details
         $details->tracks = $track_list;
         return json_encode($details);
+    }
+
+    /**
+     * function to be called to get the preview of a vinyl
+     * (cart and checkout pages).
+     * @param id of the vinyl to get the preview of
+     * @return json containing the information on the vinyl
+     */
+    public function getPreview($id) {
+        $preview = new stdClass();
+        // query to get vinyls info
+        $query = "SELECT
+            v.cost,
+            v.rpm,
+            v.inch,
+            v.type,
+            a.title,
+            a.genre,
+            a.cover_img,
+            ar.name AS artist
+            FROM 
+            vinyls v
+            JOIN albums a ON v.id_vinyl = a.id_album
+            JOIN artists ar ON ar.id_artist = a.id_artist
+            WHERE v.id_vinyl = ?";
+        // execute query
+        $result = $this->db->executeResults($query);
+        if (!empty($result)):
+            // store results
+            $preview->cost = $result->cost;
+            $preview->rpm = $result->rpm;
+            $preview->inch = $result->inch;
+            $preview->genre = $result->genre;
+            $preview->type = $result->type;
+            $preview->title = $result->title;
+            $preview->cover_img = $result->cover_img;
+            $preview->artist = $result->artist;
+        endif;
+        return json_encode($preview);
     }
 }
 ?>
