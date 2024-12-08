@@ -51,6 +51,11 @@ class HomeController extends Controller {
         echo json_encode(['error' => 'Not implemented']);
     }
 
-    public function search() {}
+    public function search(Request $request, Response $response) {
+        /* get whatever is on the search bar and pass it into $params */
+        /* convert it into a map */
+        $json = $this->vinyls_model->getVinyls(null, $params);
+        // send json to the view (?)
+    }
 }
 ?>

@@ -21,7 +21,7 @@
     $router->get('/', [HomeController::class, 'index']);
     $router->post('/', [HomeController::class, 'index']); // // # [TODELETE] -> per sam allenati con le post request e vedi come funzionano
     // # 🍽️ [Search] -> Vinyl !_!(SAM)
-    // $router->get('/search', [HomeController::class, 'search']);
+    $router->get('/search', [HomeController::class, 'search']);
     // # 🍽️  [Login] ~ if mail not exists: register -> Auth
     $router->post('/login', [HomeController::class, 'login']); 
     // # 🍽️  [Logout] -> Auth

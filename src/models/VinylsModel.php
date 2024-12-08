@@ -74,7 +74,7 @@ final class VinylsModel {
             // add new vinyl topo vinyls list
             array_push($vinyls, $json);
         endforeach;
-        return json_encode($vinyls);
+        return $vinyls;
     }
 
     /**
@@ -136,7 +136,7 @@ final class VinylsModel {
         endforeach;
         // also add tracks to details
         $details["tracks"] = $track_list;
-        return json_encode($details);
+        return $details;
     }
 
     /**
@@ -175,7 +175,7 @@ final class VinylsModel {
             $preview["cover_img"] = $result["cover_img"];
             $preview["artist"] = $result["artist"];
         endif;
-        return json_encode($preview);
+        return $preview;
     }
 
     /**
@@ -202,7 +202,7 @@ final class VinylsModel {
             $preview["title"] = $result["title"];
             $preview["cover_img"] = $result["cover_img"];
         endif;
-        return json_encode($preview);
+        return $preview;
     }
 
     public function getSuggested($id) {
@@ -239,7 +239,7 @@ final class VinylsModel {
                 array_push($suggested, $vinyl);
             endforeach;
         endif;
-        return json_encode($suggested);
+        return $suggested;
     }
 }
 ?>
