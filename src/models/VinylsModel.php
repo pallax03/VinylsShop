@@ -57,7 +57,7 @@ final class VinylsModel {
         // in case it needs a limitation
         if ($n > 0) {
             $query = $query . " LIMIT ?";
-            $result = $this->db->executeResults($query, "i", $n);
+            $result = $this->db->executeResults($query, 'i', $n);
         } else {
             $result = $this->db->executeResults($query, null);
         }
@@ -166,14 +166,14 @@ final class VinylsModel {
         $result = $this->db->executeResults($query, null);
         if (!empty($result)):
             // store results
-            $preview->cost = $result->cost;
-            $preview->rpm = $result->rpm;
-            $preview->inch = $result->inch;
-            $preview->genre = $result->genre;
-            $preview->type = $result->type;
-            $preview->title = $result->title;
-            $preview->cover_img = $result->cover_img;
-            $preview->artist = $result->artist;
+            $preview["cost"] = $result["cost"];
+            $preview["rpm"] = $result["rpm"];
+            $preview["inch"] = $result["inch"];
+            $preview["genre"] = $result["genre"];
+            $preview["type"] = $result["type"];
+            $preview["title"] = $result["title"];
+            $preview["cover_img"] = $result["cover_img"];
+            $preview["artist"] = $result["artist"];
         endif;
         return json_encode($preview);
     }
@@ -192,14 +192,15 @@ final class VinylsModel {
             a.cover_img,
             FROM 
             vinyls v
-            JOIN albums a ON v.id_vinyl = a.id_album";
+            JOIN albums a ON v.id_vinyl = a.id_album
+            WHERE v.id_vinyl = ?";
         // execute query
-        $result = $this->db->executeResults($query);
+        $result = $this->db->executeResults($query, 'i', $id);
         if (!empty($result)):
             // store results
-            $preview->cost = $result->cost;
-            $preview->title = $result->title;
-            $preview->cover_img = $result->cover_img;
+            $preview["cost"] = $result["cost"];
+            $preview["title"] = $result["title"];
+            $preview["cover_img"] = $result["cover_img"];
         endif;
         return json_encode($preview);
     }
@@ -227,14 +228,14 @@ final class VinylsModel {
             AND v.id_vinyl <> ?
             LIMIT 6";
         // execute query
-        $result = $this->db->executeResults($infos, "i", $id);
+        $result = $this->db->executeResults($infos, 'i', $id);
         // store infos
         if (!empty($result)):
-            $result = $this->db->executeResults($vinyls, ["s", "s", "i"], [$result->genre, $result->artist, $id]);
+            $result = $this->db->executeResults($vinyls, 'ssi', $result["genre"], $result["artist"], $id);
             foreach($result as $row):
                 $vinyl = [];
-                $vinyl->cover_img = $row->cover_img;
-                $vinyl->title = $row->title;
+                $vinyl["cover_img"] = $row["cover_img"];
+                $vinyl["title"] = $row["title"];
                 array_push($suggested, $vinyl);
             endforeach;
         endif;
