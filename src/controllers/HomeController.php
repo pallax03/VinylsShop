@@ -9,6 +9,7 @@ class HomeController extends Controller {
     }
 
     public function index(Request $request, Response $response) {
+        $this->redirectSuperUser();
         $data = $request->getBody();
         $title = $data['title'] ?? 'Home';
         $head = array('title' => $title, 'style'=> array(''),
@@ -45,6 +46,19 @@ class HomeController extends Controller {
     public function forgotPassword() {
         // $this->auth_model->forgotPassword();
         echo json_encode(['error' => 'Not implemented']);
+    }
+
+    public function devs(Request $request, Response $response) {
+        $this->redirectSuperUser();
+        $data = $request->getBody();
+        $title = $data['title'] ?? 'Devs';
+        $head = array('title' => $title, 'style'=> array(''));
+
+        $this->render('devs', $head, $data);
+    }
+
+    public function dashboard(Request $request, Response $response) {
+        $this->renderDashboard();
     }
 }
 ?>

@@ -30,7 +30,7 @@ class UserController extends Controller {
         $body = $request->getBody();
         $data = $this->user_model->getUser($body['id_user'] ?? null);
         if (empty($data) || !is_array($data) || !$data) { 
-            $response->Error('User not found or not allowed to see this user');
+            $response->Error('User not found or not allowed to see this user ' . (Session::isLogged() ? 'logged' : 'not logged'));
         } else {
             $response->Success($data);
         }
@@ -41,7 +41,7 @@ class UserController extends Controller {
         if ($this->user_model->setDefaults($body['id_card'] ?? null, $body['id_address'] ?? null)) {
             $response->Success('Defaults set');
         } else {
-            $response->Error('Not allowed to set defaults');
+            $response->Error('Not allowed to set defaults or card/address not found (usage: ?id_card=x, ?id_address=x)');
         }
     }
 
@@ -59,6 +59,16 @@ class UserController extends Controller {
         $data = $this->user_model->getAddress($body['id_user'] ?? null, $body['id_address'] ?? null);
         if (empty($data) || !is_array($data) || !$data) { 
             $response->Error('Address not found or not allowed to see this address');
+        } else {
+            $response->Success($data);
+        }
+    }
+
+    public function getCard(Request $request, Response $response) {
+        $body = $request->getBody();
+        $data = $this->user_model->getCard($body['id_user'] ?? null, $body['id_card'] ?? null);
+        if (empty($data) || !is_array($data) || !$data) { 
+            $response->Error('Card not found or not allowed to see this card');
         } else {
             $response->Success($data);
         }

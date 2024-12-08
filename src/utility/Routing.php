@@ -56,12 +56,11 @@
     $router->delete('/user', [UserController::class, 'deleteUser']);
     // # 🍽️ [Default] ~ set an address or a card as default -> User - Address - Card
     $router->get('/user/defaults', [UserController::class, 'setDefaults']); // -> get or set the default address and card.
-    $router->post('/user/defaults', [UserController::class, 'setDefaults']); // -> get or set the default address and card.
     // # 🍽️ [ManageAddress] ~ get / add or update an address (made by the same method) -> User - Address
     $router->get('/user/address', [UserController::class, 'getAddress']); // -> get all the addresses.
     // $router->post('/user/address', [UserController::class, 'address']); -> return the address.
     // # 🍽️ [ManageCard] ~ get / add or update a card (maded by the same method) -> User - Card
-    // $router->get('/user/card', [UserController::class, 'card']); ->get all the cards.
+    $router->get('/user/card', [UserController::class, 'getCard']); // ->get all the cards.
     // $router->post('/user/card', [UserController::class, 'card']); -> return the card.
 
     // 📦: (ALEX)
@@ -74,7 +73,7 @@
     // 📊: (SAM)
     // --- DashboardController.php --- (models: *EVERY MODEL*)
     // # 🏠 [Dashboard] ~ -> Auth.
-    // $router->get('/dashboard', [DashboardController::class, 'index']);
+    $router->get('/dashboard', [HomeController::class, 'dashboard']);
     // # 🍽️ [AddVinyl] ~ add or update a vinyl -> Auth - Vinyl - Artist - Track.
     // $router->post('/vinyl', [DashboardController::class, 'addVinyl']);
     // # 🍽️ [DeleteVinyl] ~ -> Auth - Vinyl - Artist - Track.

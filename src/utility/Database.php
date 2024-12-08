@@ -9,6 +9,7 @@
 class Database {
     private static $instance = null;
     private $connection;
+    private $handler;
 
     private static string $host= 'localhost';
     private static string $username= 'user';
@@ -19,6 +20,8 @@ class Database {
     // Il costruttore è privato per impedire la creazione diretta di oggetti
     private function __construct() {
         $this->setConfigEnv();
+
+        $this->handler = $this->defaultHandler();
 
         $this->connection = new mysqli(self::$host, self::$username, self::$password, self::$database);
         if ($this->connection->connect_error) {
@@ -51,6 +54,20 @@ class Database {
         }
     }
 
+    private function defaultHandler() {
+        return function($finalQuery, $finalTypes, ...$params) {
+            echo 'Query: '.$finalQuery . "</br>";
+            echo 'Types: '.$finalTypes . "</br>";
+            foreach ($params as $param) {
+                echo ($param === null ? "NULL" : $param) . " ";
+            }
+        };
+    }
+
+    public function setHandler($handler) {
+        $this->handler = $handler;
+    }
+
     /*
      * Execute a query with parameters, filtering null values
      * It allows to use optional parameters:
@@ -74,31 +91,28 @@ class Database {
         // Split the query by conditionals (e.g., for WHERE clauses)
         $queryParts = explode('?', $query);
 
-        // Iterate over the parameters to build the final query and types
-        foreach (str_split($types) as $i => $type) {
-            if ($params[$i] !== null && !empty($params[$i])) {
-                $finalQuery .= $queryParts[$i] . '?';
-                $finalParams[] = $params[$i] === -1 ? null : $params[$i];
-                $finalTypes .= $type;
-            } else {
-                $finalQuery .= $queryParts[$i]; // Skip the placeholder
+        // echo 'Query: '.$query . "</br>";
+        foreach ($queryParts as $i => $part) {
+            $finalQuery .= $part;
+            if ($i < count($params) && $params[$i] !== null) {
+                $finalQuery .= '?';
+                $finalParams[$i] = $params[$i] === '' ? null : $params[$i];
+                $finalTypes .= $types[$i];
             }
         }
 
-        // Handle the remainder of the query if it has no placeholders (like the ON DUPLICATE KEY UPDATE part)
-        if (isset($queryParts[count($finalParams)])) {
-            $finalQuery .= $queryParts[count($finalParams)];
-        }
-
-        $stmt = $this->connection->prepare($finalQuery);
-        if ($stmt === false) {
-            return false;
-        }
-        if (!$stmt->bind_param($finalTypes, ...$finalParams)) {
+        try {
+            $stmt = $this->connection->prepare($finalQuery);    
+            $stmt->bind_param($finalTypes, ...$finalParams);
+            $stmt->execute();
+        } catch (\Throwable $th) {
+            echo 'Handler: </br>';
+            call_user_func($this->handler, $finalQuery, $finalTypes, ...$finalParams);
+            echo '</br>';
             return false;
         }
 
-        $stmt->execute();
+        
         return $stmt;
     }
 

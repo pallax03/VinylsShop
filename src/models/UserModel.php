@@ -72,20 +72,61 @@ final class UserModel {
         );
     }
 
+    public function getCard($id_user = null, $id_card = null) {
+        if (!Session::isSuperUser() && !Session::isHim($id_user)) {
+            return [];
+        }
+
+        return Database::getInstance()->executeResults(
+            "SELECT c.id_card, 
+                    c.card_number
+                FROM `VinylsShop`.`Cards` c
+                WHERE c.id_user = ? " . ($id_card ? "AND c.id_card = ?" : "") . ";",
+            'ii',
+            $id_user ?? Session::getUser(),
+            $id_card
+        );
+    }
+
     public function setDefaults($id_card = null, $id_address = null) {
         if (!Session::isLogged()) {
             return false;
         }
 
+
+        if($id_card !== null && $id_address !== null) {
+            return Database::getInstance()->executeQueryAffectRows(
+                "INSERT INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`, `default_address`) VALUES (?, ?, ?) 
+                    ON DUPLICATE KEY UPDATE `default_card` = VALUES(`default_card`), `default_address` = VALUES(`default_address`)",
+                'iii',
+                Session::getUser(),
+                $id_card,
+                $id_address
+            );
+        }
+        
+        if ($id_card !== null) {
+            return Database::getInstance()->executeQueryAffectRows(
+                "INSERT INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`) VALUES (?, ?) 
+                    ON DUPLICATE KEY UPDATE `default_card` = VALUES(`default_card`)",
+                'ii',
+                Session::getUser(),
+                $id_card
+            );
+        }
+        if ($id_address !== null) {
+            return Database::getInstance()->executeQueryAffectRows(
+                "INSERT INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_address`) VALUES (?, ?) 
+                    ON DUPLICATE KEY UPDATE `default_address` = VALUES(`default_address`)",
+                'ii',
+                Session::getUser(),
+                $id_address
+            );
+        }
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`, `default_address`)
-                VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE 
-                    `default_card` = VALUES(`default_card`), 
-                    `default_address` = VALUES(`default_address`);",
-            'iii',
-            Session::getUser(),
-            $id_card == null || empty($id_user) ? -1 : $id_card,
-            $id_address == null || empty($id_address) ? -1 : $id_address
+            "INSERT IGNORE INTO `VinylsShop`.`UserPreferences` (`id_user`) VALUES (?);",
+            'i',
+            Session::getUser()
         );
     }
 }
