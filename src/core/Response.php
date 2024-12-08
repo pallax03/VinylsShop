@@ -1,6 +1,7 @@
 <?php
 class Response
 {
+    
 
     public function Success($message)
     {
@@ -12,6 +13,13 @@ class Response
     {
         $this->statusCode(400);
         $this->json(['error' => $message]);
+    }
+
+    public function Debug($message)
+    {
+        $this->statusCode(500);
+        $this->json(['error' => $message]);
+        exit();
     }
 
     public function statusCode(int $code)

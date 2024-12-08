@@ -1,5 +1,5 @@
 <main>
-    <?php if (Session::isLogged()): ?>
+    <?php if (Session::getUser()): ?>
         <section aria-labelledby="user-info">
             <i class="bi bi-person-fill"></i>
             <h1>User</h1>
@@ -9,6 +9,9 @@
 
             <?php
                 foreach ($user as $key => $value) {
+                    if (in_array($key, ['id_user', 'mail', 'balance', 'newsletter'])) {
+                        continue;
+                    }
                     echo "<p id='user-$key'>$key: $value</p>";
                 }
             ?>

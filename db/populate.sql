@@ -139,29 +139,57 @@ VALUES
 (7, 20.00, 33, 12, 10, 'LP', 7),
 (8, 20.00, 33, 12, 10, 'LP', 8);
 
--- Insert cart items for user 1 "alexmaz03@hotmail.it"
+-- Insert Coupons
+INSERT IGNORE INTO `VinylsShop`.`Coupons` (`discount_code`, `percentage`, `valid_from`, `valid_until`)
+VALUES
+('HALLOWEEN10', 0.1, '2024-10-01', '2024-10-31'),
+('BLACKFRIDAY70', 0.7, '2024-11-20', '2024-11-30'),
+('CHRISTMAS20', 0.2, '2024-12-01', '2025-01-31'),
+('LOVE100', 1, '2025-02-01', '2025-02-14');
+
+-- USER 2 
+-- Insert addresses
+INSERT IGNORE INTO `VinylsShop`.`Addresses` (`name`, `city`, `postal_code`, `street_number`, `id_user`)
+VALUES
+('Home', 'Milan', '20100', 'Via Roma 1', 2),
+('Work', 'Milan', '20100', 'Via Milano 2', 2);
+
+-- Insert cards
+INSERT IGNORE INTO `VinylsShop`.`Cards` (`card_number`, `cvc`, `expiration_date`, `id_user`)
+VALUES
+('1234567812345678', '123', '2027-12-31', 2),
+('8765432187654321', '321', '2027-12-31', 2);
+
+INSERT IGNORE INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`, `default_address`)
+VALUES
+(2, 2, 1);
+
+-- Insert carts
 INSERT IGNORE INTO `VinylsShop`.`Carts` (`id_vinyl`, `id_user`, `quantity`)
 VALUES
-(5, 2, 1),
-(6, 2, 1);
+(5, 2, 10),
+(6, 2, 3);
 
--- -- Insert COUPONS
--- INSERT IGNORE INTO `VinylsShop`.`Coupons` (`discount_code`, `discount_percentage`, `expiration_date`)
--- VALUES  
--- ('WELCOME10', 10, '2025-12-31'),
--- ('WINTER50', 50, '2024-01-31');
+-- Insert orders
+INSERT IGNORE INTO `VinylsShop`.`Orders` (`order_date`, `total_cost`, `id_card`, `order_status`, `discount_code`, `id_user`)
+VALUES
+('2024-10-29', 74.00, 1, 'Completed', 'HALLOWEEN10', 2),
+('2024-11-21', 34.00, NULL, 'Completed', 'BLACKFRIDAY70', 2),
+('2024-12-06', 85.00, 2, 'Paid', 'CHRISTMAS20', 2);
 
 
--- -- Insert addresses
--- INSERT IGNORE INTO `VinylsShop`.`Addresses` (`name`, `city`, `postal_code`, `street_number`, `id_user`)
--- VALUES
--- ('Home', 'Milan', '20100', 'Via Roma 1', 2),
--- ('Work', 'Milan', '20100', 'Via Milano 2', 2);
+-- Insert Checkouts
+INSERT IGNORE INTO `VinylsShop`.`Checkouts` (`id_order`, `id_vinyl`, `quantity`)
+VALUES
+(1, 1, 1),
+(1, 2, 2),
+(2, 3, 4),
+(3, 4, 2),
+(3, 1, 3);
 
--- -- Insert cards
--- INSERT IGNORE INTO `VinylsShop`.`Cards` (`card_number`, `cvc`, `expiration_date`, `id_user`)
--- VALUES
--- ('1234567812345678', '123', '2027-12-31', 2),
--- ('8765432187654321', '321', '2027-12-31', 2);
-
--- -- Insert orders
+-- Insert shipments
+INSERT IGNORE INTO `VinylsShop`.`Shipments` (`tracking_number`, `shipment_date`, `delivery_date`, `shipment_status`, `carrier`, `notes`, `cost`, `id_order`, `id_address`)
+VALUES
+('1234567890', '2024-10-29', '2024-11-02', 'Delivered', 'UPS', 'attenti al lupo', 20.00, 1, 1),
+('0987654321', '2024-11-21', '2024-11-24', 'Delivered', 'DHL', 'da consegnare sul pianerottolo', 10.00, 2, 1),
+('1357924680', '2024-12-06', NULL, 'In transit', 'FedEx', NULL, 5.00, 3, 1);

@@ -36,7 +36,7 @@ final class AuthModel {
                 return $userInfo;
             }
         }
-        return $this->logout();
+        return false;
     }
 
     private function setCookie($token) {
@@ -49,25 +49,41 @@ final class AuthModel {
         ]);
     }
 
+    private function isValidMail($mail) {
+        return filter_var($mail, FILTER_VALIDATE_EMAIL);
+    }
+
     /*
-    * This function checks the authentication of the user
-    * setting the session if the token is valid
-    * else it returns false
-    * @param string $header
+    * This function checks if the user is logged in
+    * checks if the cookie is set, if it is, verifies the token and set is session
+    * after it checks if the user not exist in the database, if true logout.
     * @return bool
     */
     public function checkAuth() {
-        if (isset($_COOKIE[$this->cookieAuthName])) {
-            return $this->verifyToken($_COOKIE[$this->cookieAuthName]) === false ? false : true;
+        if (!isset($_COOKIE[$this->cookieAuthName])) {
+            return false;
         }
-        return false;
+        $this->verifyToken($_COOKIE[$this->cookieAuthName]);
+        if (!$this->fetchUser()) {
+            $this->logout();
+            header('Location: /user');
+        }
+    }
+
+
+    public function fetchUser() {
+        return Database::getInstance()->executeResults(
+            "SELECT * FROM `Users` WHERE id_user = ?",
+            'i',
+            Session::getUser()
+        );
     }
 
     public function __construct() {
         $this->checkAuth();
     }
 
-    public function checkMail($mail) {
+    public function checkUserMail($mail) {
         return Database::getInstance()->executeResults(
             "SELECT * FROM `Users` WHERE mail = ?",
             's',
@@ -113,6 +129,9 @@ final class AuthModel {
     * @return bool true if the user is registered, false otherwise
     */
     public function register($mail, $password, $su = 0, $newsletter = 0) {
+        if (!$this->isValidMail($mail)) {
+            return 'not a valid mail';
+        }
 
         return Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO `Users` (mail, password, su, newsletter) VALUES (?, ?, ?, ?)",

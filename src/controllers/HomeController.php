@@ -24,19 +24,20 @@ class HomeController extends Controller {
     public function login(Request $request, Response $response) {
         $body = $request->getBody();
 
-        if ($this->auth_model->checkMail($body['mail'])) {
+        if ($this->auth_model->checkUserMail($body['mail'])) {
             if ($this->auth_model->login($body['mail'], $body['password'])) {
                 $response->Success('Logged in, redirecting...');
                 return;
             }
             $response->Error('User found, but password is wrong...');
         } else {
-            if ($this->auth_model->register($body['mail'], $body['password'])) {
+            $message = $this->auth_model->register($body['mail'], $body['password']);
+            if ($message === true) {
                 $this->auth_model->login($body['mail'], $body['password']);
                 $response->Success('Registered, redirecting...');
                 return;
             }
-            $response->Error('Error, while registering...');
+            $response->Error($message ?? 'Query Error, please register...');
         }
     }
 

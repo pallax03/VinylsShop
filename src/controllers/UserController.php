@@ -21,9 +21,19 @@ class UserController extends Controller {
          'header' => 'todo');
         
         $data['user'] = $this->user_model->getUser();
-        // $data['orders'] = $this->order_model->getOrders(Session::getUser()) ?? [];
+        // $data['orders'] = $this->order_model->getOrders();
         $data['orders'] = ['a', 'b', 'c'];
         $this->render('user', $head, $data);
+    }
+
+    public function getUser(Request $request, Response $response) {
+        $body = $request->getBody();
+        $data = $this->user_model->getUser($body['id_user'] ?? null);
+        if (empty($data) || !is_array($data) || !$data) { 
+            $response->Error('User not found or not allowed to see this user');
+        } else {
+            $response->Success($data);
+        }
     }
 
     public function deleteUser(Request $request, Response $response) {
@@ -34,5 +44,16 @@ class UserController extends Controller {
             $response->Error('Not allowed to delete this user or user not found');
         }
     }
+
+    public function getAddress(Request $request, Response $response) {
+        $body = $request->getBody();
+        $data = $this->user_model->getAddress($body['id_user'] ?? null, $body['id_address'] ?? null);
+        if (empty($data) || !is_array($data) || !$data) { 
+            $response->Error('Address not found or not allowed to see this address');
+        } else {
+            $response->Success($data);
+        }
+    }
+
 }
 ?>
