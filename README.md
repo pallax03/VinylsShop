@@ -1,8 +1,13 @@
 # Progetto web - VinylsShop
+#### ( 5h per day: | 5d per week )
+##### expected deadline: 5 Jan 2025 (hours: 100)
+##### realistic deadline: 14 Jan 2025 (hours: 120)
+
 > 💡 REPO:
 > - src
 > - mockup
 > - relazione
+ 
 
 ## Warning ⚠️
 - mobile first
@@ -23,7 +28,7 @@
 ![Database Schema](/db/RELAZIONALE.png)
 
 ## Installation:
-Si può usare [docker](https://www.docker.com/) eseguendo un : ``` docker compose up ```
+Si può usare [docker](https://www.docker.com/) eseguendo un: ``` docker compose up ```
 ### con XAMPP:
 - injectando il [`db`](/db/init.sql).
 - spostando il contenuto di [`src`](/src/) dentro la cartella `htdocs`.
@@ -44,47 +49,42 @@ Si può usare [docker](https://www.docker.com/) eseguendo un : ``` docker compos
 
 ## APIs (🍽️) -> return json
 - no auth 🌎:
-    Home 🏠:
-    - /login [POST] -> mail and password, can be passed from json or form.
-    - /logout [GET] -> remove cookies and refresh session (redirect to /).
-    - /search [GET] + '?id_vinyl=' -> vinyl with this id.
-        -  '&album=' -> vinyls of this album (title).
-        -  '&genre=' -> vinyls of this album (genre).
-        -  '&track=' -> vinyls that contain this track (title).
-        -  '&artist=' -> vinyls created by artist (name).
-    Cart 🛒:
-    - /cart/manage  [POST]  -> add / delete / modify ([vinyl](#vinyl-cart-json)) to cart into the session.
-
-
+    - Home 🏠:
+        - /login [POST] -> mail and password, can be passed from json or form.
+        - /logout [GET] -> remove cookies and refresh session (redirect to /).
+        - /search [GET] + '?id_vinyl=' -> vinyl with this id.
+            -  '&album=' -> vinyls of this album (title).
+            -  '&genre=' -> vinyls of this album (genre).
+            -  '&track=' -> vinyls that contain this track (title).
+            -  '&artist=' -> vinyls created by artist (name).
+    - Cart 🛒:
+        - /cart/manage  [POST]  -> add / delete / modify ([vinyl](#vinyl-cart-json)) to cart into the session.
 
 - user auth 🔐:
-    User 👤:
-    - /user/default [GET]   -> get user default address and payment:
-        - if '?id_card=' || '&id_address=' -> set as default.
-    - /user/address [GET] + '?id_address='  -> get all or a specific user's address.
-    - /user/address [DELETE] '?id_address=' -> delete a specific address.
-    - /user/address [POST]  -> add an address and set it as default.
-    - /user/card    [GET]    '?id_card=' -> get all or a specific user's card.
-    - /user/card    [POST]  -> add a card and set it as default.
-    - /user/card    [DELETE] '?id_card=' -> delete a specific card.
-    Cart 🛒:
-    - /cart/sync    [GET]   -> sync cart from session to db.
-    - /checkout     [POST]  -> try to do the checkout, if successfull:
-        - make the order.
-        - make the shipping.
-        - pop cart vinyls to Checkouts table.
-    Order 📦:
-    - /orders       [GET]   -> list of all the orders (🚩)
-
-
+    - User 👤:
+        - /user/default [GET]   -> get user default address and payment:
+            - if '?id_card=' || '&id_address=' -> set as default.
+        - /user/address [GET] + '?id_address='  -> get all or a specific user's address.
+        - /user/address [DELETE] '?id_address=' -> delete a specific address.
+        - /user/address [POST]  -> add an address and set it as default.
+        - /user/card    [GET]    '?id_card=' -> get all or a specific user's card.
+        - /user/card    [POST]  -> add a card and set it as default.
+        - /user/card    [DELETE] '?id_card=' -> delete a specific card.
+    - Cart 🛒:
+        - /cart/sync    [GET]   -> sync cart from session to db.
+        - /checkout     [POST]  -> try to do the checkout, if successfull:
+            - make the order.
+            - make the shipping.
+            - pop cart vinyls to Checkouts table.
+    - Order 📦:
+        - /orders       [GET]   -> list of all the orders (🚩)
 
 - admin auth ⭐️:
-    Dashboard 📊:
-    - /vinyl        [POST]  -> manage (add / update / delete) a vinyl. (completed json: (Album, Artist, Track))
-    - /artist       [POST] -> manage an artist (🚩).
-    - /users        [GET] -> list users (🚩).
-    - /user         [POST] -> manage user (🚩).
-    
+    - Dashboard 📊:
+        - /vinyl        [POST]  -> manage (add / update / delete) a vinyl. (completed json: (Album, Artist, Track))
+        - /artist       [POST] -> manage an artist (🚩).
+        - /users        [GET] -> list users (🚩).
+        - /user         [POST] -> manage user (🚩).
     
 
 ### Jsons
