@@ -31,15 +31,12 @@ class Session {
     
 
     public static function isLogged() {
-        return self::isSet('User');
+        return self::isSet('User') && isset(self::get('User')['id_user']);
     }
 
 
     public static function getUser() {
-        if (!self::isLogged() || !isset(self::get('User')['id_user'])) {
-            return false;
-        }
-        return self::get('User')['id_user'];
+        return self::isLogged() ? self::get('User')['id_user'] : false;
     }
 
     /**

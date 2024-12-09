@@ -55,13 +55,16 @@
     // # 🍽️ [DeleteUser] ~ delete the user -> Auth - User
     $router->delete('/user', [UserController::class, 'deleteUser']);
     // # 🍽️ [Default] ~ set an address or a card as default -> User - Address - Card
-    $router->get('/user/defaults', [UserController::class, 'setDefaults']); // -> get or set the default address and card.
+    $router->post('/user/defaults', [UserController::class, 'setUserDefault']); // -> get or set the default address and card.
     // # 🍽️ [ManageAddress] ~ get / add or update an address (made by the same method) -> User - Address
     $router->get('/user/address', [UserController::class, 'getAddress']); // -> get all the addresses.
-    // $router->post('/user/address', [UserController::class, 'address']); -> return the address.
+    $router->delete('/user/address', [UserController::class, 'deleteAddress']); // -> delete the address.
+    $router->post('/user/address', [UserController::class, 'setAddress']); // -> return the address.
     // # 🍽️ [ManageCard] ~ get / add or update a card (maded by the same method) -> User - Card
     $router->get('/user/card', [UserController::class, 'getCard']); // ->get all the cards.
-    // $router->post('/user/card', [UserController::class, 'card']); -> return the card.
+    $router->delete('/user/card', [UserController::class, 'deleteCard']); // -> delete the card.
+    $router->post('/user/card', [UserController::class, 'setCard']); // -> return the card.
+    
 
     // 📦: (ALEX)
     // --- OrderController.php --- (models: Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth)
