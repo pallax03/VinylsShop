@@ -57,7 +57,7 @@
     // # 🍽️ [DeleteUser] ~ delete the user -> Auth - User
     $router->delete('/user', [UserController::class, 'deleteUser']);
     // # 🍽️ [Default] ~ set an address or a card as default -> User - Address - Card
-    $router->post('/user/defaults', [UserController::class, 'setUserDefault']); // -> get or set the default address and card.
+    $router->post('/user/defaults', [UserController::class, 'setUserDefaults']); // -> get or set the default address and card.
     // # 🍽️ [ManageAddress] ~ get / add or update an address (made by the same method) -> User - Address
     $router->get('/user/address', [UserController::class, 'getAddress']); // -> get all the addresses.
     $router->delete('/user/address', [UserController::class, 'deleteAddress']); // -> delete the address.

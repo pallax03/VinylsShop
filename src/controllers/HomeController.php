@@ -12,6 +12,7 @@ class HomeController extends Controller {
         $this->vinyls_model = new VinylsModel();
     }
 
+    
     public function index(Request $request, Response $response) {
         $this->redirectSuperUser();
         $data = $request->getBody();

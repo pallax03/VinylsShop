@@ -307,7 +307,7 @@ final class UserModel {
         }
 
         if ($id_card !== null && $id_address !== null) {
-            Database::getInstance()->executeQueryAffectRows(
+            return Database::getInstance()->executeQueryAffectRows(
                 "INSERT INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`, `default_address`)
                     VALUES (?, ?, ?)
                     ON DUPLICATE KEY UPDATE
@@ -318,20 +318,16 @@ final class UserModel {
                 $id_card ?? '',
                 $id_address ?? ''
             );
-            return !Database::getInstance()->GotException();
         }
 
         if ($id_card !== null) {
-            $this->setDefaultCard($id_card);
-            return !Database::getInstance()->GotException();
+            return $this->setDefaultCard($id_card);
         }
 
         if ($id_address !== null) {
-            $this->setDefaultAddress($id_address);
-            return !Database::getInstance()->GotException();
+            return $this->setDefaultAddress($id_address);
         }
         
-        $this->createDefaults(Session::getUser());
-        return !Database::getInstance()->GotException();
+        return $this->createDefaults(Session::getUser());
     }
 }

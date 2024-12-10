@@ -36,7 +36,7 @@ class UserController extends Controller {
         }
     }
 
-    public function setUserDefault(Request $request, Response $response) {
+    public function setUserDefaults(Request $request, Response $response) {
         $body = $request->getBody();
         if ($this->user_model->setDefaults($body['id_card'] ?? null, $body['id_address'] ?? null)) {
             $response->Success('Defaults set', $body);
