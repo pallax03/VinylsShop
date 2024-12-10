@@ -5,7 +5,7 @@ function updateResults(results) {
     console.log(results);
     Array.prototype.forEach.call(results, result => {
             const li = document.createElement('li');
-            li.textContent = result.json().title; // Supponiamo che ogni risultato abbia un campo "name"
+            li.textContent = result.title; // Supponiamo che ogni risultato abbia un campo "name"
             resultsList.appendChild(li);
         }
     );
