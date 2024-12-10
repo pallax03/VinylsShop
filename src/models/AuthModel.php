@@ -96,8 +96,7 @@ final class AuthModel {
             "SELECT * FROM `Users` WHERE mail = ? AND password = ?",
             'ss',
             $mail, $this->encryptPassword($password)
-        );
-
+        )[0];
         if ($result) {
             $this->setCookie($this->generateToken($result['id_user'], $result['su']));
             $this->refreshSession(['id_user' => $result['id_user'], 'isSuperUser' => $result['su']]);

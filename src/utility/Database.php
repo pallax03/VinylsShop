@@ -9,6 +9,8 @@
 class Database {
     private static $instance = null;
     private $connection;
+    private $handler;
+    private $got_exception;
 
     private static string $host= 'localhost';
     private static string $username= 'user';
@@ -16,16 +18,22 @@ class Database {
     private static string $database= 'mysql';
     private static string $port= '3306';
 
-    // Il costruttore è privato per impedire la creazione diretta di oggetti
+    
     private function __construct() {
         $this->setConfigEnv();
-
+        $this->handler = $this->defaultHandler();
+        $this->got_exception = false;
         $this->connection = new mysqli(self::$host, self::$username, self::$password, self::$database);
         if ($this->connection->connect_error) {
             die("Connection failed: " . $this->connection->connect_error);
         }
     }
 
+    /**
+     * Set the configuration from the environment variables
+     *
+     * @return void
+     */
     private function setConfigEnv() {
         self::$host = $_ENV['DB_HOST'] ?? self::$host;
         self::$username = $_ENV['DB_USER'] ?? self::$username;
@@ -34,6 +42,11 @@ class Database {
         self::$port = $_ENV['DB_PORT'] ?? self::$port;
     }
 
+    /**
+     * Get the instance of the Database class (Singleton)
+     *
+     * @return Database
+     */
     public static function getInstance() {
         if (self::$instance === null) {
             self::$instance = new Database();
@@ -41,30 +54,85 @@ class Database {
         return self::$instance;
     }
 
+    /**
+     * Get the connection to the database.
+     *
+     * @return mysqli_connection
+     */
     public function getConnection() {
         return $this->connection;
     }
 
+    /**
+     * Close the connection to the database.
+     *
+     * @return void
+     */
     public function closeConnection() {
         if ($this->connection !== null) {
             $this->connection->close();
         }
     }
 
-    /*
-     * Execute a query with parameters, filtering null values
-     * It allows to use optional parameters:
-     * parsing the query given, it will bind only the parameters that are not null
-     * U need to pass the final query:
-     * and ALL the parameters to bind
-     *  
+    private function defaultHandler() {
+        return function($query, $types=null, ...$params) {
+            echo 'Query: '.$query . "</br>";
+            if ($types !== null) {
+                echo 'Types: '.$types . "</br>";
+                foreach ($params as $param) {
+                    echo ($param === null ? "NULL" : $param) . " ";
+                }
+            }
+        };
+    }
+
+    /**
+     * Set the handler to manage the exceptions
+     *
+     * @param callable $handler
+     * @return void
+     */
+    public function setHandler($handler) {
+        $this->handler = $handler;
+    }
+
+
+    /**
+     * Check if the last query has thrown an exception.
+     *
+     * @return bool
+     */
+    public function GotException() {
+        return $this->got_exception;
+    }
+
+
+    /**
+     * Check if the query has thrown an exception
+     *
+     * @param my_sqli_stmt $stmt
+     * @return bool true if the query has thrown an exception, otherwise false
+     */
+    private function queryThrowException($stmt) {
+        return $this->got_exception = $stmt === false || $stmt->errno !== 0;
+    }
+
+
+    /**
+     * Execute a query with parameters
+     * Parsing the query and the parameters:
+     * - if null is passed, the params will not be binded
+     * - if empty is passed, it will be replaced with null
      * 
+     * IMPORTANT NOTES:
+     * - the query must be already prepared with the ? placeholders
+     * - the types and the params must be in the same order
+     *
      * @param string $query the query already prepared
-     * @param string $types the types of the parameters, and optional
-     * @param mixed ...$params all the parameters to bind, also optional
-     * 
-     * @return mysqli_stmt the statement if successful, otherwise false
-    */
+     * @param [type] $types the types of the parameters, and optional
+     * @param [type] ...$params all the parameters to bind, also optional
+     * @return mysqli_stmt the result of the query
+     */
     private function executeQueryWithParams($query, $types, ...$params) {
         // Build the final query and filter parameters
         $finalQuery = '';
@@ -72,77 +140,99 @@ class Database {
         $finalTypes = '';
 
         // Split the query by conditionals (e.g., for WHERE clauses)
-        $queryParts = explode('?', $query);
+        $splitQuery = explode('?', $query);
 
-        // Iterate over the parameters to build the final query and types
-        foreach (str_split($types) as $i => $type) {
-            if ($params[$i] !== null && !empty($params[$i])) {
-                $finalQuery .= $queryParts[$i] . '?';
-                $finalParams[] = $params[$i];
-                $finalTypes .= $type;
-            } else {
-                $finalQuery .= $queryParts[$i]; // Skip the placeholder
+        // parsing the query
+        for ($i = 0; $i < count($splitQuery); $i++) { 
+            $finalQuery .= $splitQuery[$i];
+            if ($i < count($splitQuery) - 1) {
+                $finalQuery .= '?';
+                $finalTypes .= $types[$i];
+                $finalParams[$i] = $params[$i] === '' ? null : $params[$i];
             }
         }
+        // var_dump($finalQuery);
+        // var_dump($finalTypes);
+        // var_dump($finalParams);
 
-
-        $stmt = $this->connection->prepare($finalQuery);
-        if ($stmt === false) {
+        try {
+            $stmt = $this->connection->prepare($finalQuery);    
+            $stmt->bind_param($finalTypes, ...$finalParams);
+            $stmt->execute();
+        } catch (\Throwable $th) {
+            if ($this->handler !== null) {
+                echo 'Query: </br>';
+                call_user_func($this->handler, $query, $types, ...$params);
+                echo '</br>';
+                echo 'Query Parsed: </br>';
+                call_user_func($this->handler, $finalQuery, $finalTypes, ...$finalParams);
+                echo '</br>';
+                var_dump($th->getMessage());
+            }
             return false;
         }
-        if (!$stmt->bind_param($finalTypes, ...$finalParams)) {
-            return false;
-        }
 
-        $stmt->execute();
+        $this->setHandler($this->defaultHandler());
         return $stmt;
     }
 
+
+    /**
+     * Execute a generic query without parameters
+     *
+     * @param string $query the query
+     * @return array the result of the query
+     */
     private function executeQuery($query) {
-        $stmt = $this->connection->prepare($query);
-        if ($stmt === false) {
+        try {
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
+        } catch (\Throwable $th) {
+            if ($this->handler !== null) {
+                echo 'Query: </br>';
+                call_user_func($this->handler, $query);
+                echo '</br>';
+                var_dump($th->getMessage());
+            }
             return false;
         }
-
-        $stmt->execute();
         return $stmt;
     }
 
-    /*
-     * @param mysqli_stmt $stmt
-     * 
-     * @return true if the query has thrown an exception, otherwise false
-    */
-    private function queryThrowException($stmt) {
-        return $stmt === false || $stmt->errno !== 0;
-    }
 
-    /*
-     * Execute a SELECT query
-     * 
-     * @return array the result of the query if successful, otherwise an empty array
-    */
+    /**
+     * Execute a query that return rows
+     * Use for SELECTs
+     *
+     * @param string $query the query already prepared
+     * @param string $types the types of the parameters, and optional
+     * @param [...] ...$params all the parameters to bind, also optional
+     * @return array the result of the query
+     */
     public function executeResults($query, $types=null, ...$params) {
         $stmt = $types === null || empty($types) ? $this->executeQuery($query) : $this->executeQueryWithParams($query, $types, ...$params);
         $result = $stmt->get_result();
-        if ($this->queryThrowException($stmt) || $result->num_rows === 0) {
+        $this->queryThrowException($stmt);
+        if ( $this->got_exception || $result->num_rows === 0) {
             return [];
         }
-
         return $result->fetch_all(MYSQLI_ASSOC) ?? [];
     }
 
 
-    /*
-     * Execute a INSERT, UPDATE, DELETE query
+    /**
+     * Execute a query that return a single row
+     * Use for INSERT, UPDATE, DELETE
      * 
-     * @return bool true if the query affected rows, otherwise false
-    */
-    public function executeQueryAffectRows($query, $types, ...$params) {
-        $stmt = $this->executeQueryWithParams($query, $types, ...$params);
-        return !$this->queryThrowException($stmt) && $stmt->affected_rows > 0;
+     * @param [type] $query the query already prepared
+     * @param [type] $types the types of the parameters, and optional
+     * @param [type] ...$params all the parameters to bind, also optional
+     * @return bool true if the query has affected rows, otherwise false
+     */
+    public function executeQueryAffectRows($query, $types=null, ...$params) {
+        $stmt = $types === null || empty($types) ? $this->executeQuery($query) : $this->executeQueryWithParams($query, $types, ...$params);
+        $this->queryThrowException($stmt);
+        return !$this->got_exception && $stmt->affected_rows > 0;
     }
-
 }
-    
 ?>

@@ -28,7 +28,7 @@
                 </div>
 
                 <button class="close-search" aria-label="Close search">
-                    <img class="svg" src="/resources/svg/ui/xmark.svg" alt="">
+                    <i class="bi bi-x"></i>
                 </button>
             </div>
         </li>

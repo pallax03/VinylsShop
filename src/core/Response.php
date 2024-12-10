@@ -3,16 +3,24 @@ class Response
 {
     
 
-    public function Success($message)
+    public function Success($message, $body=null)
     {
         $this->statusCode(200);
-        $this->json(['message' => $message]);
+        $this->json([
+            'message' => $message,
+            'logged' => Session::isLogged() ? 'logged as '. Session::getUser() : 'not logged',
+            'params' => $body
+        ]);
     }
 
-    public function Error($message)
+    public function Error($message, $body=null)
     {
         $this->statusCode(400);
-        $this->json(['error' => $message]);
+        $this->json([
+            'error' => $message, 
+            'logged' => Session::isLogged() ? 'logged as '. Session::getUser() : 'not logged',
+            'params' => $body
+        ]);
     }
 
     public function Debug($message)
