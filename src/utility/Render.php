@@ -19,12 +19,12 @@
     
     <?php include COMPONENTS . '/nav.php' ?>
 
-    <main>
-        <ul id='search-content'>
-    </ul>
+    <main id="main-content" aria-hidden="false">
+        <?php include $page ?>
     </main>
 
-    <?php include $page ?>
+    <section id="search-results" aria-hidden="true" hidden>
+    </section>
     
     <?php include COMPONENTS . '/footer.php' ?>
 
