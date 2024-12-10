@@ -1,7 +1,8 @@
 // Funzione per aggiornare i risultati nel DOM
 function updateResults(results) {
-    const resultsList = document.getElementById('search-content');
+    const resultsList = document.getElementById('sec-search_content');
     clear();
+    console.log(results);
     fetch('views/components/cards/vinyls.php')
     .then(response => {
         if (!response.ok) {
@@ -30,8 +31,15 @@ function updateResults(results) {
 }
 
 function clear() {
-    document.getElementById('search-content').innerHTML = ''; // Svuota i risultati precedenti
+    document.getElementById('sec-search_content').innerHTML = ''; // Svuota i risultati precedenti
 }
+
+document.getElementById('btn-search_close').addEventListener('click', function() {
+    document.getElementById('main-content').ariaHidden = 'false';
+    document.getElementById('sec-search_content').ariaHidden = 'true';
+    document.getElementById('main-content').style = 'display: block';
+    document.getElementById('sec-search_content').style = 'display: none';
+});
 
 document.getElementById('search-input').addEventListener('input', function() {
     const filter = document.getElementById('search-select');
@@ -45,6 +53,10 @@ document.getElementById('search-input').addEventListener('input', function() {
             }
         })
         .then(async (data) => {
+            document.getElementById('main-content').ariaHidden = 'true';
+            document.getElementById('sec-search_content').ariaHidden = 'false';
+            document.getElementById('main-content').style = 'display: none';
+            document.getElementById('sec-search_content').style = 'display: block';
             await updateResults(data);
         });
     } else {
