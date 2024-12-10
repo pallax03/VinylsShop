@@ -20,10 +20,18 @@
     <?php include COMPONENTS . '/nav.php' ?>
 
     <main id="main-content" aria-hidden="false">
-        <?php include $page ?>
+        <!-- <?php include $page ?>  FACCIO UNA PROVA PER LO STILE DI VINYL-->
+        <div class="card">
+            <img class="vinyl-cover" src="resources/img/albums/sempiternal.webp"/>
+            <p class="vinyl-title">Sempiternal</p>
+            <p class="vinyl-artist">Bring Me the Horizon</p>
+            <p class="vinyl-genre">Rock</p>
+            <p class="vinyl-cost">$20.00</p>
+        </div>
     </main>
 
-    <section id="search-results" aria-hidden="true" hidden>
+    <section id="sec-search_content" aria-hidden="true">
+        
     </section>
     
     <?php include COMPONENTS . '/footer.php' ?>

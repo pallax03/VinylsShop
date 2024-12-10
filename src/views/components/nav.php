@@ -27,7 +27,7 @@
                     </select>
                 </div>
                 
-                <button class="close-search" id="btn-search_close" aria-label="Close search">
+                <button class="close-search" id="btn-search_close" id="btn-search_close" aria-label="Close search">
                     <i class="bi bi-x"></i>
                 </button>
             </div>
