@@ -7,27 +7,27 @@
             </a>
         </li>
         <li class="search-container">
-            <a href="" class="search">
+            <button id="btn-search" class="search">
                 <i class="bi bi-search"></i>
                 <p>Search</p>
-            </a>
-            <!-- Elemento di input per la barra di ricerca -->
+            </button>
+            
             <div class="search-bar">
-                <label for="search-input" class="sr-only">Search</label>
-                <input id="search-input" type="text" placeholder="Search...">
+                <label for="input-search" class="sr-only">Search</label>
+                <input id="input-search" name="input-search" type="text" placeholder="Search...">
 
                 <div class="select-wrapper">
-                    <label for="search-select" class="sr-only">Search in</label>
+                    <label for="search_filter" class="sr-only">Search in</label>
                     <span class="label" aria-hidden="true">in</span>
-                    <select id="search-select" aria-label="Search in">
+                    <select id="select-search_filter" name="search_filter" aria-label="Search in">
                         <option value="album">album</option>
                         <option value="artist">artist</option>
                         <option value="genre">genre</option>
                         <option value="track">track</option>
                     </select>
                 </div>
-
-                <button class="close-search" aria-label="Close search">
+                
+                <button class="close-search" id="btn-search_close" aria-label="Close search">
                     <i class="bi bi-x"></i>
                 </button>
             </div>

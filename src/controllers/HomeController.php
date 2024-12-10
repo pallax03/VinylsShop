@@ -31,7 +31,7 @@ class HomeController extends Controller {
                 $response->Success('Logged in, redirecting...');
                 return;
             }
-            $response->Error('User found, but password is wrong...');
+            $response->Error('User found, but password is wrong...', $body);
         } else {
             $message = $this->auth_model->register($body['mail'], $body['password']);
             if ($message === true) {

@@ -214,7 +214,7 @@ class Database {
         $result = $stmt->get_result();
         $this->queryThrowException($stmt);
         if ( $this->got_exception || $result->num_rows === 0) {
-            return [];
+            return false;
         }
         return $result->fetch_all(MYSQLI_ASSOC) ?? [];
     }

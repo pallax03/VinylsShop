@@ -1,15 +1,15 @@
-document.getElementById("login_submit").addEventListener("click", function () {
-  url = document.getElementById("login_form").getAttribute("action");
-  method = document.getElementById("login_form").getAttribute("method");
+document.getElementById("btn-login_submit").addEventListener("click", function (event) {
+  event.preventDefault();
 
-  const mail = document.getElementById("mail").value;
-  const password = document.getElementById("password").value;
+  const mail = document.getElementById("input-login_mail").value;
+  const password = document.getElementById("input-login_password").value;
 
   const params = new URLSearchParams();
   params.append("mail", mail);
   params.append("password", password);
-  fetch(url, {
-    method: method,
+
+  fetch('/login', {
+    method: 'POST',
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
@@ -24,9 +24,8 @@ document.getElementById("login_submit").addEventListener("click", function () {
       });
     })
     .then((data) => {
-      document.getElementById("login_submit").disabled = true;
-      document.getElementById("login_submit").style.visibility = "hidden";
-      document.getElementById("login_response").innerHTML =
+      document.getElementById("btn-login_submit").disabled = true;
+      document.getElementById("div-login_response").innerHTML =
         '<p style="color: limegreen;">' + data.message + "</p>";
 
       setTimeout(() => {
@@ -34,7 +33,7 @@ document.getElementById("login_submit").addEventListener("click", function () {
       }, 2000);
     })
     .catch((error) => {
-      document.getElementById("login_response").innerHTML =
+      document.getElementById("div-login_response").innerHTML =
         '<p style="color: red;">' + error.message + "</p>";
     });
 });

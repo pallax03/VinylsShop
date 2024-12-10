@@ -205,6 +205,9 @@ nav {
                 padding: 0 1rem;
                 font-size: 2.6rem;
                 transition: all 0.3s ease-in-out;
+                background-color: inherit;
+                border: none;
+                cursor: pointer;
 
                 &:hover, &:focus {
                     div.vinyl {
@@ -431,21 +434,23 @@ section {
 
 // Desktop
 @media (min-width: $breakpoint) {
-    nav ul li a {
-        &:hover {
-            p { color: var(--selected-color);} 
-        }
-        div.vinyl {
-            &+p {
-                z-index: 1;
-                position: relative;
-                left: -30px;
+    nav ul li {
+        a, button {
+            &:hover {
+                p { color: var(--selected-color);} 
             }
-        }
-        p {
-            display: block;
-            font-size: 1.6rem;
-            margin-left: 1rem;
+            div.vinyl {
+                &+p {
+                    z-index: 1;
+                    position: relative;
+                    left: -30px;
+                }
+            }
+            p {
+                display: block;
+                font-size: 1.6rem;
+                margin-left: 1rem;
+            }
         }
     }
 

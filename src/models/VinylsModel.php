@@ -19,7 +19,7 @@ final class VinylsModel {
      *  }
      * @return json of vinyls data
      */    
-    public function getVinyls($n = -1, $params) {
+    public function getVinyls($n, $params) {
         $vinyls = [];
         $query = "SELECT
             v.id_vinyl,
