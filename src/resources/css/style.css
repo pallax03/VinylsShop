@@ -324,6 +324,20 @@ section > i {
   color: var(--text-color);
 }
 
+:root {
+  --primary-color: #000000;
+  --secondary-color: #fff;
+  --text-color: #000000;
+  --selected-color: #5697ff;
+  --error-color: #ff0000;
+  --background-color: #fff;
+  --secondary-background-color: #333;
+  --border-color: #000;
+  --border-radius: 10px;
+  --transition-duration: 0.3s;
+  --transition: all 0.3s ease-in-out;
+}
+
 .flip {
   transform-style: preserve-3d;
   transition: transform 0.5s;
@@ -679,8 +693,47 @@ section > i {
   height: 70px;
   margin-right: 0.5rem;
 }
-.vinyl-cover {
-  width: 100px;
+.search-card {
+  position: relative;
+  height: clamp(150px, 34%, 250px);
+  width: clamp(150px, 25%, 200px);
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 0.5rem;
+  padding: 0.5rem;
+  text-align: center;
+  display: inline-block;
+  padding: 10px;
+}
+.search-card .vinyl-title {
+  font-weight: bold;
+}
+.search-card .cover-container {
+  display: block;
+  padding: 5px;
+}
+.search-card .vinyl-cover {
+  width: clamp(80px, 80%, 150px);
+}
+.search-card .vinyl-info {
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 3px auto 10px;
+}
+.search-card .vinyl-info > p {
+  display: inline;
+  font-size: 10px;
+}
+.search-card .add-cart {
+  color: white;
+  background-color: black;
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  padding: 7px;
+  font-weight: bold;
 }
 
 @font-face {

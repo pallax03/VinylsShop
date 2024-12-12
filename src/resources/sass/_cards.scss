@@ -1,8 +1,13 @@
 @use "sass:math";
 @import "buttons";
+@import "variables";
 
 $card-width: clamp(360px, 90%, 600px);
 $card-height: 15vh;
+
+$preview-width: clamp(150px, 25%, 200px);
+$preview-height: clamp(150px, 34%, 250px);
+$preview-cover-size: clamp(80px, 80%, 150px);
 
 // rotating cards
 .flip {
@@ -414,6 +419,51 @@ $card-height: 15vh;
     }
 }
 
-.vinyl-cover {
-    width: 100px;
+.search-card {
+    position: relative;
+    height: $preview-height;
+    width: $preview-width;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: .5rem;
+    padding: 0.5rem;
+    text-align: center;
+    display: inline-block;
+    padding: 10px;
+
+    .vinyl-title {
+        font-weight: bold;
+    }
+    
+    .cover-container {
+        display: block;
+        padding: 5px;
+    }
+
+    .vinyl-cover {
+        width: $preview-cover-size;
+    }
+
+    .vinyl-info {
+        width: 75%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 3px auto 10px;
+    }
+
+    .vinyl-info > p {
+        display: inline;
+        font-size: 10px;
+    }
+
+    .add-cart {
+        color: white;
+        background-color: black;
+        text-decoration: none;
+        border-radius: var(--border-radius);
+        padding: 7px;
+        font-weight: bold;
+    }
 }

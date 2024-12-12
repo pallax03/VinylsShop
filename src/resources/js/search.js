@@ -2,7 +2,6 @@
 function updateResults(results) {
     const resultsList = document.getElementById('sec-search_content');
     clear();
-    console.log(results);
     fetch('views/components/cards/vinyls.php')
     .then(response => {
         if (!response.ok) {
@@ -22,8 +21,8 @@ function updateResults(results) {
             clone.querySelector(".vinyl-cover").src = "/resources/img/albums/" + result.cover_img;
             clone.querySelector(".vinyl-title").textContent = result.title;
             clone.querySelector(".vinyl-artist").textContent = result.artist;
-            clone.querySelector(".vinyl-genre").textContent = result.genre;
-            clone.querySelector(".vinyl-cost").textContent = result.cost;
+            clone.querySelector(".vinyl-genre").textContent = "#" + result.genre;
+            clone.querySelector(".add-cart").textContent = "Add to cart - €" + result.cost;
             resultsList.appendChild(clone);
         }
     );
