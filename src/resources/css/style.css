@@ -717,7 +717,7 @@ section > i {
   width: clamp(80px, 80%, 150px);
 }
 .search-card .vinyl-info {
-  width: 75%;
+  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -728,8 +728,8 @@ section > i {
   font-size: 10px;
 }
 .search-card .add-cart {
-  color: white;
-  background-color: black;
+  color: var(--text-color);
+  background-color: var(--secondary-color);
   text-decoration: none;
   border-radius: var(--border-radius);
   padding: 7px;

@@ -443,7 +443,7 @@ $preview-cover-size: clamp(80px, 80%, 150px);
     }
 
     .vinyl-info {
-        width: 75%;
+        width: 80%;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -456,8 +456,8 @@ $preview-cover-size: clamp(80px, 80%, 150px);
     }
 
     .add-cart {
-        color: white;
-        background-color: black;
+        color: var(--text-color);
+        background-color: var(--secondary-color);
         text-decoration: none;
         border-radius: var(--border-radius);
         padding: 7px;

@@ -20,18 +20,7 @@
     <?php include COMPONENTS . '/nav.php' ?>
 
     <main id="main-content" aria-hidden="false">
-        <!-- <?php include $page ?> -->
-        <div class="search-card">
-            <p class="vinyl-title">When we fall asleep where do we go?</p>
-            <div class="cover-container">
-                <img class="vinyl-cover" src="resources/img/albums/fallasleep.webp"/>
-            </div>
-            <div class="vinyl-info">
-                <p class="vinyl-artist">billie eillish</p>
-                <p class="vinyl-genre">#pop</p>
-            </div>
-            <a href="#" class="add-cart">Add to cart - $20.00</a>
-        </div>
+        <?php include $page ?>
     </main>
 
     <section id="sec-search_content" aria-hidden="true">
