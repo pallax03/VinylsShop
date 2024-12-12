@@ -24,8 +24,7 @@ function updateResults(results) {
             clone.querySelector(".vinyl-genre").textContent = "#" + result.genre;
             clone.querySelector(".add-cart").textContent = "Add to cart - €" + result.cost;
             resultsList.appendChild(clone);
-        }
-    );
+        });
     })
 }
 
@@ -37,6 +36,7 @@ document.getElementById('btn-search_close').addEventListener('click', function()
     document.getElementById('main-content').ariaHidden = 'false';
     document.getElementById('sec-search_content').ariaHidden = 'true';
     document.getElementById('main-content').style = 'display: block';
+    document.getElementById('search-input').value = "";
     document.getElementById('sec-search_content').style = 'display: none';
 });
 
