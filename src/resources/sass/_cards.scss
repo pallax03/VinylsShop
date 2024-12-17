@@ -1,8 +1,11 @@
 @use "sass:math";
 @import "buttons";
 
-$card-width: clamp(360px, 90%, 600px);
-$card-height: 15vh;
+// $card-width: clamp(360px, 90%, 600px);
+$card-width: clamp(360px, 100vw, 600px);
+$card-height:clamp(200px, 50%, 300px);
+$font-size: clamp(1rem, 2vw, 2rem);
+$vinyls_detail-width: 15vw;
 
 // rotating cards
 .flip {
@@ -47,6 +50,7 @@ $card-height: 15vh;
     position: relative;
     height: $card-height;
     width: $card-width;
+    max-width: 800px;
     background-color: var(--background-color);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -64,7 +68,7 @@ $card-height: 15vh;
         position: absolute;
         top: 0.5rem;
         i {
-            font-size: 1.5rem;
+            font-size: 8vw;
         }
         animation: highlight infinite reverse 3s ease-in-out;
     }
@@ -103,11 +107,10 @@ $card-height: 15vh;
             position: relative;
 
             i {
-                font-size: 4rem;
+                font-size: 12vw;
             }
-
             h2 {
-                font-size: 0.8rem;
+                font-size: 4.0vw;
             }
         }
     }
@@ -143,9 +146,10 @@ $card-height: 15vh;
                 position: relative;
                 margin: 0.2rem;
                 max-height: $card-height;
+                width: $vinyls_detail-width;
                 img {
-                    height: 40%;
-                    width: 40%;
+                    // height: $vinyls_detail-width;
+                    width: $vinyls_detail-width;
                     position: relative;
                 }
 
@@ -155,11 +159,11 @@ $card-height: 15vh;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    font-size: 0.6rem;
+                    font-size: 2vw;
                 }
 
                 p {
-                    font-size: 0.5rem;
+                    font-size: 2vw;
                 }
             }
         }
@@ -167,24 +171,14 @@ $card-height: 15vh;
 
     footer {
         width: 10%;
+        height: 100%;
         float: right;
-        display: inline-flex;
+        display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: end;
         align-items: center;
         padding: 0.5rem;
 
-        // width: 100%;
-        // height: 100%;
-        // color: var(--text-color);
-        // text-decoration: none;
-        // display: flex;
-        // flex-direction: column;
-        // justify-content: end;
-        // position: relative;
-        // height: 80px;
-        // width: 60px;
-        // padding: 0.5rem;
         .btn-specular {
             right: 0;
         }

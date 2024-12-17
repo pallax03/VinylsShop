@@ -30,5 +30,6 @@
 
     <script src="/resources/js/main.js"></script>
     <script src="/resources/js/search.js"></script>
+    <script src="/resources/js/cards.js"></script>
 </body>
 </html>

@@ -1,3 +1,27 @@
+// Search bar
+document.querySelector('.search').addEventListener('click', function (e) {
+    e.preventDefault();
+    const searchContainer = this.closest('.search-container');
+    searchContainer.classList.toggle('active');
+    document.querySelectorAll('nav ul li').forEach(function (li) {
+        if (!(li.classList.contains('search-container'))) {
+            li.classList.toggle('hide-item');
+        }
+    });
+});
+
+document.querySelector('.close-search').addEventListener('click', function (e) {
+    e.preventDefault();
+    const searchContainer = this.closest('.search-container');
+    searchContainer.classList.remove('active');
+
+    document.querySelectorAll('nav ul li').forEach(function (li) {
+        if (!li.classList.contains('search-container')) {
+            li.classList.toggle('hide-item');
+        }
+    });
+});
+
 // Funzione per aggiornare i risultati nel DOM
 function updateResults(results) {
     const resultsList = document.getElementById('search-content');

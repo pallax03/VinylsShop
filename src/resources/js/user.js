@@ -1,4 +1,3 @@
-
 document.getElementById('delete-account').addEventListener('click', function() {
     fetch('/user', {
         method: 'DELETE',

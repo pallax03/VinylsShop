@@ -9,7 +9,7 @@ VALUES
 (6, 'Toby Fox');
 
 -- Insert albums
-INSERT IGNORE INTO `VinylsShop`.`Albums` (`id_album`, `title`, `genre`, `cover_img`, `release_date`, `id_artist`)
+INSERT IGNORE INTO `VinylsShop`.`Albums` (`id_album`, `title`, `genre`, `cover`, `release_date`, `id_artist`)
 VALUES
 (1, 'The Black Parade', 'Rock', 'blackparade.webp', '2006-10-23', 2),
 (2, 'Dont Smile at Me', 'Pop', 'dontsmileatme.webp', '2017-08-11', 3),
@@ -188,7 +188,7 @@ VALUES
 (3, 1, 3);
 
 -- Insert shipments
-INSERT IGNORE INTO `VinylsShop`.`Shipments` (`tracking_number`, `shipment_date`, `delivery_date`, `shipment_status`, `carrier`, `notes`, `cost`, `id_order`, `id_address`)
+INSERT IGNORE INTO `VinylsShop`.`Shipments` (`tracking_number`, `shipment_date`, `delivery_date`, `shipment_status`, `courier`, `notes`, `cost`, `id_order`, `id_address`)
 VALUES
 ('1234567890', '2024-10-29', '2024-11-02', 'Delivered', 'UPS', 'attenti al lupo', 20.00, 1, 1),
 ('0987654321', '2024-11-21', '2024-11-24', 'Delivered', 'DHL', 'da consegnare sul pianerottolo', 10.00, 2, 1),

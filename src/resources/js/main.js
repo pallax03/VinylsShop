@@ -21,31 +21,6 @@ document.addEventListener('touchstart', function(e) {
     }
 }, false);
 
-// Search bar
-document.querySelector('.search').addEventListener('click', function (e) {
-    e.preventDefault();
-    const searchContainer = this.closest('.search-container');
-    searchContainer.classList.toggle('active');
-    document.querySelectorAll('nav ul li').forEach(function (li) {
-        if (!(li.classList.contains('search-container'))) {
-            li.classList.toggle('hide-item');
-        }
-    });
-});
-
-document.querySelector('.close-search').addEventListener('click', function (e) {
-    e.preventDefault();
-    const searchContainer = this.closest('.search-container');
-    searchContainer.classList.remove('active');
-
-    document.querySelectorAll('nav ul li').forEach(function (li) {
-        if (!li.classList.contains('search-container')) {
-            li.classList.toggle('hide-item');
-        }
-    });
-});
-
-
 // Toggles
 document.querySelectorAll('.toggle').forEach(function (toggle) {
     toggle.addEventListener('click', function (e) {
@@ -84,6 +59,11 @@ function updateDarkmodeButton() {
     document.getElementById('btn-darkmode').classList.toggle('active', checkDarkmode());
 }
 
+
+
+
+
 window.onload = function() {
     updateDarkmodeButton();
 }
+
