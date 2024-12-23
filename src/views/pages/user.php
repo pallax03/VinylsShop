@@ -1,47 +1,45 @@
 <?php if (Session::getUser()): ?>
     <section aria-labelledby="user-info">
         <i class="bi bi-person-fill"></i>
-        <h1>User</h1>
         <h2 id="user-mail"><?php echo $user['mail'] ?></h2>
-        <p id="user-balance">Balance: <?php echo $user['balance'] ?> €</p>
         <p id="user-newsletter">Newsletter: <?php echo $user['newsletter'] ? 'Subscribed' : 'Not subscribed' ?></p>
-        <?php
-            foreach ($user as $key => $value) {
-                if (in_array($key, ['id_user', 'mail', 'balance', 'newsletter'])) {
-                    continue;
-                }
-                echo "<p id='user-$key'>$key: $value</p>";
-            }
-        ?>
         <a href="/logout">Logout</a>
         <button id="delete-account">Delete Account</button>
-        <!-- <div class="input-group">
-            <div class="button">
-                <label for="">Address</label>
-                <i class="bi bi-geo-alt-fill"></i>
-                <button>
-                    <i class="bi bi-caret-left-fill"></i>
-                    <i class="bi bi-plus"></i>
-                    <i class="bi bi-caret-right-fill"></i>
-                </button>
-            </div>
-            <div class="button">
-                <label for="">Payment</label>
-                <i class="bi bi-credit-card-fill"></i>
-                <button>
-                    <i class="bi bi-caret-left-fill"></i>
-                    <i class="bi bi-plus"></i>
-                    <i class="bi bi-caret-right-fill"></i>
-                </button>
-            </div>
-        </div> -->
         <script src="/resources/js/user.js"></script>
     </section>
-    <section>
-        <?php foreach ($orders as $order): ?>
-            <?php include COMPONENTS . '/cards/orders.php' ?>
-        <?php endforeach; ?>
+    <form aria-label="Defaults" id="form-user_defaults">
+        <ul>
+            <li>
+                <label for="default_address">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    Address:
+                </label>
+                <input type="text" id="input-default_address" value="<?php echo (isset($user['default_address']) && !empty($user['default_address'])) ? ( $user['street_number'] . ' - '. $user['city'] . ' (' . $user['postal_code'] .')' ) : 'no default address.' ?>" name="default_address" disabled />
+                <a href="user/addresses"><i class="bi bi-caret-right-fill"></i></a>
+            </li>
+            <li>
+                <label for="default_card">
+                    <i class="bi bi-credit-card-fill"></i>
+                    Card:
+                </label>
+                <input type="text" id="input-default_card" value="<?php echo (isset($user['default_card']) && !empty($user['default_card'])) ? ('**** **** **** ' . substr($user['card_number'], -4)) : ('Balance: '. $user['balance'] . ' €') ?>" name="default_card" disabled />
+                <a href="/user/cards"><i class="bi bi-caret-right-fill"></i></a>
+            </li>
+        </ul>
+    </form>
+    <section class="cards">
+        <?php
+        if (isset($orders) && count($orders) > 0) {
+            echo "<h1>Orders</h1>";
+            foreach ($orders as $order) {
+                include COMPONENTS . '/cards/order.php';
+            }
+        } else {
+            echo "<h1>No orders found!</h1>";
+        }
+        ?>
     </section>
 <?php else: ?>
     <?php include COMPONENTS . 'login.php' ?>
+    <script src="/resources/js/auth.js"></script>
 <?php endif; ?>

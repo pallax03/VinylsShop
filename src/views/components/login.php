@@ -11,7 +11,7 @@
         </li>
         <li>
             <label class="checkbox" for="remember">Stay signed:
-                <input type="checkbox" id="input-login_remember" name="remember" checked disabled />
+                <input type="checkbox" id="input-login_remember" name="remember" checked />
                 <span class="checkmark"><i class="bi bi-check"></i></span>
             </label>
         </li>
@@ -26,4 +26,3 @@
         </li>
     </ul>
 </form>
-<script src="/resources/js/auth.js"></script>

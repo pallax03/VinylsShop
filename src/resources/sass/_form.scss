@@ -17,6 +17,9 @@ form {
         font-size: 2rem;
         font-weight: bold;
     }
+    h2 {
+        font-size: 1.5rem;
+    }
     ul {
         list-style: none;
         padding: 0;
@@ -102,15 +105,17 @@ form {
                 }
             }
 
-            &:nth-last-child(-n + 2) {
-                margin-top: 0;
-                margin-bottom: 0;
-                padding: 0;
-            }
-            &:last-child {
-                margin-bottom: 3rem;
+            a {
+                text-decoration: none;
+                color: var(--text-color);   
+                text-align: center;
+                &:hover {
+                    color: var(--secondary-color);
+                }
+                i {
+                    font-size: 3.2rem;
+                }
             }
         }
-        
     }
 }

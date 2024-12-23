@@ -1,3 +1,7 @@
+document.querySelector('.checkbox').addEventListener('click', function () {
+  document.getElementById('input-login_remember').checked = !document.getElementById('input-login_remember').checked;
+});
+
 document.getElementById("btn-login_submit").addEventListener("click", function (event) {
   event.preventDefault();
 
@@ -7,7 +11,7 @@ document.getElementById("btn-login_submit").addEventListener("click", function (
   const params = new URLSearchParams();
   params.append("mail", mail);
   params.append("password", password);
-
+  params.append("remember", document.getElementById("input-login_remember").checked);
   fetch('/login', {
     method: 'POST',
     headers: {

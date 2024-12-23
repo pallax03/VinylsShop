@@ -21,8 +21,9 @@ class UserController extends Controller {
          'header' => 'todo');
         
         $data['user'] = $this->user_model->getUser();
-        // $data['orders'] = $this->order_model->getOrders();
-        $data['orders'] = ['a', 'b', 'c'];
+        $data['orders'] = $this->order_model->getOrders();
+        $data['cards'] = $this->user_model->getCard();
+        $data['addresses'] = $this->user_model->getAddress();
         $this->render('user', $head, $data);
     }
 

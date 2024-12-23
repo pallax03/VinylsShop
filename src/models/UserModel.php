@@ -58,7 +58,7 @@ final class UserModel {
                     up.default_card, 
                     c.card_number, 
                     up.default_address, 
-                    a.street_number, a.city, a.postal_code
+                    a.name, a.street_number, a.city, a.postal_code
                 FROM `VinylsShop`.`Users` u
                 LEFT JOIN `VinylsShop`.`UserPreferences` up ON u.id_user = up.id_user
                 LEFT JOIN `VinylsShop`.`Cards` c ON up.default_card = c.id_card
@@ -84,7 +84,8 @@ final class UserModel {
         }
 
         return Database::getInstance()->executeResults(
-            "SELECT a.id_address, 
+            "SELECT a.id_address,
+                    a.name,
                     a.street_number, 
                     a.city, 
                     a.postal_code

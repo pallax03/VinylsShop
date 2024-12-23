@@ -91,7 +91,7 @@ final class AuthModel {
         ) != [];
     }
 
-    public function login($mail, $password) {
+    public function login($mail, $password, $remember) {
         $result = Database::getInstance()->executeResults(
             "SELECT * FROM `Users` WHERE `mail` = ? AND `password` = ?",
             'ss',
@@ -99,7 +99,9 @@ final class AuthModel {
         );
         $result = !empty($result) && count($result) > 0 ? $result[0] : false;
         if ($result) {
-            $this->setCookie($this->generateToken($result['id_user'], $result['su']));
+            if ($remember) {
+                $this->setCookie($this->generateToken($result['id_user'], $result['su']));
+            }
             $this->refreshSession(['id_user' => $result['id_user'], 'isSuperUser' => $result['su']]);
             return true;
         }

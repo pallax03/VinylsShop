@@ -12,3 +12,5 @@ document.getElementById('delete-account').addEventListener('click', function() {
         window.location.href = '/logout';
     });
 });
+
+

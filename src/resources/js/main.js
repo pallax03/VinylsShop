@@ -25,7 +25,7 @@ document.addEventListener('touchstart', function(e) {
 document.querySelectorAll('.toggle').forEach(function (toggle) {
     toggle.addEventListener('click', function (e) {
         e.preventDefault();
-        toggle.classList.toggle('active');
+        toggle.classList.toggle('expanded');
     });
 });
 
@@ -59,6 +59,10 @@ function updateDarkmodeButton() {
     document.getElementById('btn-darkmode').classList.toggle('active', checkDarkmode());
 }
 
+
+function redirect(url) {
+    window.location.href = 'url';
+}
 
 
 
