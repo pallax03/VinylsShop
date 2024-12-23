@@ -65,6 +65,22 @@ function redirect(url) {
 }
 
 
+function defaultParse(value) { 
+    return value == '' || value == null;
+}
+
+function validateData(...args) {
+    let valid = true;
+    
+    args.forEach(function (arg) {
+        arg.classList.remove('error');
+        if (arg.parse == '' || arg.parse == null ? !defaultParse(arg.value) : arg.value.match(arg.parse)) {
+            valid = false;
+            arg.classList.add('error');
+        }
+    });
+    return valid;
+}
 
 
 window.onload = function() {

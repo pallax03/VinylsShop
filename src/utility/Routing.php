@@ -58,10 +58,14 @@
     $router->delete('/user', [UserController::class, 'deleteUser']);
     // # 🍽️ [Default] ~ set an address or a card as default -> User - Address - Card
     $router->post('/user/defaults', [UserController::class, 'setUserDefaults']); // -> get or set the default address and card.
+    // # 🏠 [Addresses] ~ if not logged: return to /user else: user's addresses -> Auth - User (Addresses)
+    $router->get('/user/addresses', [UserController::class, 'addresses']);
     // # 🍽️ [ManageAddress] ~ get / add or update an address (made by the same method) -> User - Address
     $router->get('/user/address', [UserController::class, 'getAddress']); // -> get all the addresses.
     $router->delete('/user/address', [UserController::class, 'deleteAddress']); // -> delete the address.
     $router->post('/user/address', [UserController::class, 'setAddress']); // -> return the address.
+    // # 🏠 [Cards] ~ if not logged: return to /user else: user's cards -> Auth - User (Card)
+    $router->get('/user/cards', [UserController::class, 'cards']);
     // # 🍽️ [ManageCard] ~ get / add or update a card (maded by the same method) -> User - Card
     $router->get('/user/card', [UserController::class, 'getCard']); // ->get all the cards.
     $router->delete('/user/card', [UserController::class, 'deleteCard']); // -> delete the card.
@@ -69,8 +73,8 @@
     
 
     // 📦: (ALEX)
-    // --- OrderController.php --- (models: Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth)
-    // # 🏠 [Order] ~ page of the specific order  -> Auth - User - Order - Shipping - Vinyl
+    // --- OrderController.php --- (models:  Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth)
+    // # 🏠 [Order] ~ page of the specific order '?id_order='  -> Auth - User - Order - Shipping - Vinyl
     // $router->get('/order', [OrderController::class, 'index']);
     // # 🚩 🍽️ [Orders] ~ list of all the orders -> Auth - User - Order - Shipping - Vinyl
     // 🚩 $router->get('/orders', [OrderController::class, 'orders']);

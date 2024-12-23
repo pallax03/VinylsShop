@@ -18,13 +18,31 @@ class UserController extends Controller {
 
     public function index() {
         $head = array('title' => 'Login / Signup', 'style'=> array(''),
-         'header' => 'todo');
+         'header' => '');
         
         $data['user'] = $this->user_model->getUser();
         $data['orders'] = $this->order_model->getOrders();
-        $data['cards'] = $this->user_model->getCard();
-        $data['addresses'] = $this->user_model->getAddress();
         $this->render('user', $head, $data);
+    }
+
+    public function addresses() {
+        $this->auth_model->checkAuth();
+        $head = array('title' => 'Addresses', 'style'=> array(''),
+         'header' => '');
+        
+        $data['user'] = $this->user_model->getUser();
+        $data['addresses'] = $this->user_model->getAddress();
+        $this->render('addresses', $head, $data);
+    }
+
+    public function cards() {
+        $this->auth_model->checkAuth();
+        $head = array('title' => 'Cards', 'style'=> array(''),
+         'header' => '');
+        
+        $data['user'] = $this->user_model->getUser();
+        $data['cards'] = $this->user_model->getCard();
+        $this->render('cards', $head, $data);
     }
 
     public function getUser(Request $request, Response $response) {

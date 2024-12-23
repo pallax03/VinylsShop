@@ -5,9 +5,9 @@
         <p id="user-newsletter">Newsletter: <?php echo $user['newsletter'] ? 'Subscribed' : 'Not subscribed' ?></p>
         <a href="/logout">Logout</a>
         <button id="delete-account">Delete Account</button>
-        <script src="/resources/js/user.js"></script>
     </section>
     <form aria-label="Defaults" id="form-user_defaults">
+        <h3>Defaults</h2>
         <ul>
             <li>
                 <label for="default_address">
@@ -18,7 +18,7 @@
                 <a href="user/addresses"><i class="bi bi-caret-right-fill"></i></a>
             </li>
             <li>
-                <label for="default_card">
+            <label for="default_card">
                     <i class="bi bi-credit-card-fill"></i>
                     Card:
                 </label>
@@ -39,6 +39,7 @@
         }
         ?>
     </section>
+    <script src="/resources/js/user.js"></script>
 <?php else: ?>
     <?php include COMPONENTS . 'login.php' ?>
     <script src="/resources/js/auth.js"></script>

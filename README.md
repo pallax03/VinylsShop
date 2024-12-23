@@ -22,7 +22,6 @@
 
 ### API che possiamo usare:
 - nominatim (open street map) -> autocompletamento degli indirizzi.
-- spotify -> permette di dare suggerimenti in base al proprio account (possibilità di loggarsi nel sito usando spotify).
 
 ### Database Schema:
 ![Database Schema](/db/RELAZIONALE.png)

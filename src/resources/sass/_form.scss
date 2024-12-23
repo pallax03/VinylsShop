@@ -14,11 +14,13 @@ form {
     justify-content: center;
     align-items: center;
     h1 {
-        font-size: 2rem;
-        font-weight: bold;
+        font-size: 3rem;
     }
     h2 {
-        font-size: 1.5rem;
+        font-size: 2.2rem;
+    }
+    h3 {
+        font-size: 1.8rem;
     }
     ul {
         list-style: none;
@@ -34,6 +36,14 @@ form {
             flex-direction: row;
             align-content: center;
             justify-content: center;
+            &.split {
+                min-width: 160px;
+                display: inline-flex;
+                margin-top: 0;
+            }
+            &:nth-last-child(1) {
+                margin: 0;
+            }
             .input-group {
                 position: relative;
                 width: 100%;
@@ -62,7 +72,10 @@ form {
                 border: 4px solid var(--border-color);
                 border-radius: 15px;
                 &:focus {
-                    border: 4px solid var(--selected-color);
+                    border: 4px solid var(--selected-color) !important;
+                }
+                &.error {
+                    border: 4px solid var(--error-color);
                 }
             }
             label[for="remember"] {

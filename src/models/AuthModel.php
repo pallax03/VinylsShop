@@ -54,16 +54,20 @@ final class AuthModel {
     }
 
     /*
-    * This function checks if the user is logged in
     * checks if the cookie is set, if it is, verifies the token and set is session
     * after it checks if the user not exist in the database, if true logout.
-    * @return bool
+    * return false if cookie is not set
     */
-    public function checkAuth() {
+    public function checkCookie() {
         if (!isset($_COOKIE[$this->cookieAuthName])) {
             return false;
         }
         $this->verifyToken($_COOKIE[$this->cookieAuthName]);
+        $this->checkAuth();
+    }
+
+    
+    public function checkAuth() {
         if (!$this->fetchUser()) {
             $this->logout();
             header('Location: /user');
@@ -80,7 +84,7 @@ final class AuthModel {
     }
 
     public function __construct() {
-        $this->checkAuth();
+        $this->checkCookie();
     }
 
     public function checkUserMail($mail) {
@@ -99,7 +103,7 @@ final class AuthModel {
         );
         $result = !empty($result) && count($result) > 0 ? $result[0] : false;
         if ($result) {
-            if ($remember) {
+            if (filter_var($remember, FILTER_VALIDATE_BOOLEAN)) {
                 $this->setCookie($this->generateToken($result['id_user'], $result['su']));
             }
             $this->refreshSession(['id_user' => $result['id_user'], 'isSuperUser' => $result['su']]);
