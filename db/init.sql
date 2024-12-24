@@ -27,8 +27,8 @@ INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('alex
 
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Cards` (
     `id_card` INT NOT NULL AUTO_INCREMENT,
-    `card_number` VARCHAR(16) NOT NULL,
-    `expiration_date` DATE NOT NULL,
+    `card_number` VARCHAR(255) NOT NULL,
+    `exp_date` VARCHAR(5) NOT NULL,
     `cvc` VARCHAR(3) NOT NULL,
     `id_user` INT,
     PRIMARY KEY (`id_card`),
@@ -38,9 +38,9 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Cards` (
 CREATE TABLE IF NOT EXISTS `VinylsShop`.`Addresses` (
     `id_address` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(55) NOT NULL,
-    `city` VARCHAR(55) NOT NULL,
+    `city` VARCHAR(100) NOT NULL,
     `postal_code` VARCHAR(5) NOT NULL,
-    `street_number` VARCHAR(100) NOT NULL,
+    `street_number` VARCHAR(255) NOT NULL,
     `id_user` INT,
     PRIMARY KEY (`id_address`),
     FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`)

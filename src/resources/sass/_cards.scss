@@ -49,6 +49,7 @@ $vinyls_detail-width: 50px;
     position: relative;
     height: $card-height;
     width: $card-width;
+    max-width: 800px;
     background-color: var(--background-color);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

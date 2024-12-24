@@ -111,11 +111,6 @@ final class UserModel {
             return [];
         }
 
-        if ($name == '') {
-            $last_address = count($this->getAddress($id_user ?? Session::getUser()));
-            $name = 'Address ' . $last_address + 1;
-        }
-
         return Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO `VinylsShop`.`Addresses` (`id_user`, `name`, `street_number`, `city`, `postal_code`) VALUES (?, ?, ?, ?, ?);",
             'issss',
@@ -136,6 +131,10 @@ final class UserModel {
     public function deleteAddress($id_address, $id_user = null) {
         if (Session::isSuperUser() ? Session::isHim($id_user) : !Session::isHim($id_user)) {
             return false;
+        }
+
+        if ($id_address == $this->getUser($id_user)['default_address']) {
+            $this->setDefaultAddress(id_address: '');
         }
 
         Database::getInstance()->setHandler(null); // reset the handler to avoid the error
@@ -187,20 +186,20 @@ final class UserModel {
      * Set the card for the logged user.
      * 
      * @param [string] $card_number the card number
-     * @param [string] $expiration_date the expiration date
+     * @param [string] $exp_date the expiration date
      * @param [string] $cvc the cvc
      * @return [array|bool] the cards of the user, false if query failed.
      */
-    public function setCard($card_number, $expiration_date, $cvc) {
+    public function setCard($card_number, $exp_date, $cvc) {
         if (!Session::isLogged()) {
             return [];
         }
 
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `VinylsShop`.`Cards` (`id_user`, `card_number`, `expiration_date`, `cvc`) VALUES (?, ?, ?, ?);",
+            "INSERT INTO `VinylsShop`.`Cards` (`id_user`, `card_number`, `exp_date`, `cvc`) VALUES (?, ?, ?, ?);",
             'isss',
             Session::getUser(),
-            $card_number, $expiration_date, $cvc
+            $card_number, $exp_date, $cvc
         );
     }
 
@@ -220,7 +219,7 @@ final class UserModel {
 
         // if the card is the default card, set the default card to null
         if ($id_card == $this->getUser($id_user)['default_card']) {
-            $this->setDefaultCard(null);
+            $this->setDefaultCard(id_card: '');
         }
 
         Database::getInstance()->setHandler(null); // reset the handler to avoid the error

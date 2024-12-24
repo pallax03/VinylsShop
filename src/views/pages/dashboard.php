@@ -14,10 +14,10 @@
             <h1>Dashboard</h1>
             <p>Welcome to the dashboard</p>
             <p>admin page</p>
+            <div class="div"></div>
+            <a class="error" href="/logout">Logout</a>
         </section>
-        <a href="/logout">
-            <button>Logout</button>
-        </a>
+        
     </main>
     <script src="/resources/js/main.js"></script>
 </body>

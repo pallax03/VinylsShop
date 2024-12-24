@@ -21,7 +21,9 @@
 }
 
 a {
+    cursor: pointer;
     user-select: none !important;
+    color: var(--text-color);
 }
 
 body {
@@ -56,6 +58,11 @@ body {
                 justify-content: center;
                 align-items: center;
                 padding: 1rem 0;
+                .div {
+                    width: 80%;
+                    border-top: 1px solid #fff;
+                    margin: 1rem 0;
+                }
                 .darkmode {
                     margin-top: 1rem;
                     color: #fff;
@@ -182,7 +189,6 @@ nav {
     justify-content: center;
     align-items: center;
     z-index: 99;
-    margin-bottom: 1.6rem;
     ul {
         background-color: var(--primary-color);
         display: flex;
@@ -222,8 +228,6 @@ nav {
 
                 div.vinyl {
                     scale: 0.3;
-                    background-image: url("./memoji.png");
-                    animation: spin 3s linear infinite;
                     // transition: var{--transiiton};
                 }
 
@@ -390,7 +394,7 @@ main {
     align-items: center;
     min-height: 70dvh;
 
-    section {
+    section, form {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -398,15 +402,15 @@ main {
         width: 100%;
         padding: 2rem;
         & > h1 {
-            font-size: 2.6rem;
+            font-size: 6vw;
             margin-bottom: 1rem;
         }
         & > h2 {
-            font-size: 2rem;
+            font-size: 5vw;
             margin-bottom: 1rem;
         }
         & > h3 {
-            font-size: 2.2rem;
+            font-size: 4vw;
             margin-bottom: 1rem;
         }
         a {
@@ -420,7 +424,7 @@ main {
             padding: 0.5rem 1rem;
 
             &:hover {
-                animation: alternate-reverse 0.3s ease-in-out;
+                color: var(--selected-color);
             }
             i {
 
@@ -444,6 +448,9 @@ main {
             }
 
         }
+        p {
+            font-size: 4vw;
+        }
     }
 }
 
@@ -464,7 +471,7 @@ main {
 
 .div {
     width: 80%;
-    border-top: 1px solid #fff;
+    border-top: 1px solid var(--text-color);
     margin: 1rem 0;
 }
 
@@ -473,6 +480,42 @@ main {
     opacity: 1 !important;
 }
 
+.error {
+    color: var(--error-color);
+    border: 2px solid var(--error-color);
+}
+
+.delete {
+    &:hover {
+        color: var(--error-color);
+    }
+}
+
+.stars {
+    
+    &:hover {
+        color: yellow;
+        animation: on-hover-spin 1.2s infinite ;
+    }
+}
+
+@keyframes on-hover-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    60% {
+        transform: rotate(360deg);
+        scale: 1.5;
+    }
+    100% {
+        transform: rotate(360deg);
+        scale: 1.8;
+    }
+}
+
+.no-margin {
+    margin: 0;
+}
 
 // Desktop
 @media (min-width: $breakpoint) {
@@ -505,5 +548,16 @@ main {
     footer {
         
         font-size: 1.6rem;
+    }
+
+
+    main {
+        section, form {
+            .card {
+                p {
+                    font-size: 2rem;
+                }
+            }
+        }
     }
 }

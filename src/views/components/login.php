@@ -22,7 +22,7 @@
             </div>
         </li>
         <li>
-            <div id="div-login_response"></div>
+            <div class="message" id="div-login_response"></div>
         </li>
     </ul>
 </form>

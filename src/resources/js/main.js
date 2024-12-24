@@ -74,7 +74,7 @@ function validateData(...args) {
     
     args.forEach(function (arg) {
         arg.classList.remove('error');
-        if (arg.parse == '' || arg.parse == null ? !defaultParse(arg.value) : arg.value.match(arg.parse)) {
+        if (arg.parse==null || arg.parse == '' ? defaultParse(arg.value) : !arg.value.match(arg.parse)) {
             valid = false;
             arg.classList.add('error');
         }
@@ -82,6 +82,21 @@ function validateData(...args) {
     return valid;
 }
 
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        const activeElement = document.activeElement;
+        if (activeElement && activeElement.tagName === 'INPUT' && activeElement.type !== 'submit') {
+            const form = activeElement.form;
+            if (form) {
+                const submitButton = form.querySelector('button, input[type="button"]');
+                if (submitButton) {
+                    submitButton.click();
+                }
+            }
+        }
+    }
+});
 
 window.onload = function() {
     updateDarkmodeButton();

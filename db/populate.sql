@@ -151,14 +151,14 @@ VALUES
 -- Insert addresses
 INSERT IGNORE INTO `VinylsShop`.`Addresses` (`name`, `city`, `postal_code`, `street_number`, `id_user`)
 VALUES
-('Home', 'Milan', '20100', 'Via Roma 1', 2),
-('Work', 'Milan', '20100', 'Via Milano 2', 2);
+('Alex Mazzoni', 'Milano', '20100', 'Parco della vittoria 200', 2),
+('Samuele Casadei', 'Roma', '20100', 'Via Colazione 32', 2);
 
 -- Insert cards
-INSERT IGNORE INTO `VinylsShop`.`Cards` (`card_number`, `cvc`, `expiration_date`, `id_user`)
+INSERT IGNORE INTO `VinylsShop`.`Cards` (`card_number`, `cvc`, `exp_date`, `id_user`)
 VALUES
-('1234567812345678', '123', '2027-12-31', 2),
-('8765432187654321', '321', '2027-12-31', 2);
+('1234567812345678', '12/27', '123', 2),
+('8765432187654321', '01/26', '321', 2);
 
 INSERT IGNORE INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`, `default_address`)
 VALUES

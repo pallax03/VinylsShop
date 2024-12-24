@@ -86,11 +86,8 @@ class UserController extends Controller {
 
     public function setAddress(Request $request, Response $response) {
         $body = $request->getBody();
-        if ($this->user_model->setAddress($body['name'] ?? null, $body['street_number'] ?? null, $body['city'] ?? null, $body['postal_code'] ?? null)) { 
-            $response->Success('Address set', $body);
-        } else {
-            $response->Error('Cannot set address', $body);
-        }
+        $this->user_model->setAddress($body['address_name'] ?? null, $body['address_street'] ?? null, $body['address_city'] ?? null, $body['address_cap'] ?? null);
+        $response->redirect('/user/addresses');
     }
 
     public function deleteAddress(Request $request, Response $response) {
@@ -114,11 +111,8 @@ class UserController extends Controller {
 
     public function setCard(Request $request, Response $response) {
         $body = $request->getBody();
-        if ($this->user_model->setCard($body['card_number'] ?? null, $body['expiration_date'] ?? null, $body['cvc'] ?? null)) { 
-            $response->Success('Card set', $body);
-        } else {
-            $response->Error('Cannot set card', $body);
-        }
+        $this->user_model->setCard($body['card_number'] ?? null, $body['card_exp'] ?? null, $body['card_cvc'] ?? null);
+        $response->redirect('/user/cards');
     }
 
     public function deleteCard(Request $request, Response $response) {
