@@ -65,7 +65,7 @@ function deleteAddress(id) {
 document.getElementById('btn-address_submit').addEventListener('click', function() {
     street_and_number = document.getElementById('input-address_street');
     city = document.getElementById('input-address_city');
-    cap = document.getElementById('input-address_postalcode');
+    cap = document.getElementById('input-address_cap');
     cap.parse = /^\d{5}$/;
     if(validateData(street_and_number, city, cap)) {
         document.getElementById('form-address').submit();

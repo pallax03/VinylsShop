@@ -17,12 +17,12 @@
         // views (🏠) / apis (🍽️) ~ notes... -> needed models.php
 
 
-    // 📀: !!!(ALEX & SAM)
+    // 📀:
     // --- HomeController.php --- (models: Auth Vinyl)
     // # 🏠 [Home] ~ (no need to be logged) -> Vinyl
     $router->get('/', [HomeController::class, 'index']);
     $router->post('/', [HomeController::class, 'index']); // // # [TODELETE] -> per sam allenati con le post request e vedi come funzionano
-    // # 🍽️ [Search] -> Vinyl !!!(SAM)
+    // # 🍽️ [Search] -> Vinyl
     $router->get('/search', [HomeController::class, 'search']);
     // # 🍽️  [Login] ~ if mail not exists: register -> Auth
     $router->post('/login', [HomeController::class, 'login']); 
@@ -31,7 +31,7 @@
     // # 🏠 [Devs] ~ README.md
     // $router->get('/devs', [HomeController::class, 'devs']);
 
-    // 🛒: !!!(SAM)
+    // 🛒:
     // --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 
     // # 🏠 [Cart] ~ Stored in session if logged need to SyncCart with DB -> Vinyl - Cart - User
     $router->get('/cart', [CartController::class, 'index']);
@@ -46,30 +46,32 @@
     // # 🍽️ [Checkout] ~ request the checkout can handle errors if valid make the order and shipping -> Auth - User (Address - Card)
     // $router->post('/checkout', [CartController::class, 'pay']); 
 
-    // 👤: (ALEX)
+    // 👤:
     // --- UserController.php --- (models: Auth - User (Address - Card))
     // # 🏠 [User] ~ if not logged: *login form* else: user infos n' list of orders + shipping -> Auth - User - Order - Shipping
     $router->get('/user', [UserController::class, 'index']);
     // # 🍽️ [GetUser] ~ get user infos an admin can get all -> Auth - User
     $router->get('/user/get', [UserController::class, 'getUser']);
     // # 🍽️ [UpdateUser] ~ update user infos -> Auth - User
-    // $router->post('/user', [UserController::class, 'updateUser']);
-    // # 🍽️ [DeleteUser] ~ delete the user -> Auth - User
+    $router->post('/user', [UserController::class, 'updateUser']); // like newsletter i can update the user in defaults.
+    // 🚩 # 🍽️ [DeleteUser] ~ delete the user -> Auth - User
     $router->delete('/user', [UserController::class, 'deleteUser']);
     // # 🍽️ [Default] ~ set an address or a card as default -> User - Address - Card
-    $router->post('/user/defaults', [UserController::class, 'setUserDefaults']); // -> get or set the default address and card.
+    $router->post('/user/defaults', [UserController::class, 'setUserDefaults']); // -> set the default address and card.
+    
     // # 🏠 [Addresses] ~ if not logged: return to /user else: user's addresses -> Auth - User (Addresses)
     $router->get('/user/addresses', [UserController::class, 'addresses']);
     // # 🍽️ [ManageAddress] ~ get / add or update an address (made by the same method) -> User - Address
-    $router->get('/user/address', [UserController::class, 'getAddress']); // -> get all the addresses.
+    $router->get('/user/address', [UserController::class, 'getAddress']); // -> get all or an addresses.
     $router->delete('/user/address', [UserController::class, 'deleteAddress']); // -> delete the address.
-    $router->post('/user/address', [UserController::class, 'setAddress']); // -> return the address.
+    $router->post('/user/address', [UserController::class, 'setAddress']); // -> add a new address.
+
     // # 🏠 [Cards] ~ if not logged: return to /user else: user's cards -> Auth - User (Card)
     $router->get('/user/cards', [UserController::class, 'cards']);
     // # 🍽️ [ManageCard] ~ get / add or update a card (maded by the same method) -> User - Card
-    $router->get('/user/card', [UserController::class, 'getCard']); // ->get all the cards.
+    $router->get('/user/card', [UserController::class, 'getCard']); // ->get all or a card.
     $router->delete('/user/card', [UserController::class, 'deleteCard']); // -> delete the card.
-    $router->post('/user/card', [UserController::class, 'setCard']); // -> return the card.
+    $router->post('/user/card', [UserController::class, 'setCard']); // -> add a new card.
     
 
     // 📦: (ALEX)

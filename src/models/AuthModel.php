@@ -147,6 +147,21 @@ final class AuthModel {
     }
 
     public function forgotPassword($mail) {
-        throw new Exception('Not implemented');
+        if (!$this->isValidMail($mail)) {
+            return 'not a valid mail';
+        }
+
+        $newPassword = bin2hex(random_bytes(8));
+        $result = Database::getInstance()->executeQueryAffectRows(
+            "UPDATE `Users` SET password = ? WHERE mail = ?",
+            'ss',
+            $this->encryptPassword($newPassword), $mail
+        );
+
+        if ($result) {
+            return true;
+        }
+
+        return false;
     }
 }

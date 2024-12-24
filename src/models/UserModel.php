@@ -17,26 +17,6 @@ final class UserModel {
     }
 
     /**
-     * Deletes a user from the database.
-     * A super user can delete any user except himself.
-     * A user can delete only himself.
-     *
-     * @param [int|null] $id_user the user to delete, if null, the logged user
-     * @return bool true if the user is deleted, false otherwise
-     */
-    public function deleteUser($id_user = null) {
-        if (Session::isSuperUser() ? Session::isHim($id_user) : !Session::isHim($id_user)) {
-            return false;
-        }
-
-        return Database::getInstance()->executeQueryAffectRows(
-            "DELETE FROM `Users` WHERE id_user = ?",
-            'i',
-            $id_user ?? Session::getUser()
-        );
-    }
-
-    /**
      * This function returns the user info from the database.
      * infos: id_user, mail, balance, newsletter, default_card, card_number, default_address, street_number, city, postal_code
      * a super user can get any user
@@ -67,6 +47,52 @@ final class UserModel {
             'i',
             $id_user ?? Session::getUser()
         )[0];
+    }
+
+
+    /**
+     * Update the user in the database.
+     * A super user can update any user.
+     * A user can update only himself.
+     *
+     * @param [int|null] $id_user the user to update, if null, the logged user
+     * @param [string|null] $newsletter the newsletter value
+     * @return bool true if the user is updated, false otherwise
+     */
+    public function updateUser($id_user = null, $newsletter = null) {
+        if (!Session::isSuperUser() && !Session::isHim($id_user)) {
+            return false;
+        }
+
+        return Database::getInstance()->executeQueryAffectRows(
+            "UPDATE `VinylsShop`.`Users` SET"
+                . ($newsletter ? "newsletter = ?, " : "")
+                . " WHERE id_user = ?;",
+            'ii',
+            $id_user ?? Session::getUser(),
+            $newsletter
+        );
+    }
+
+
+    /**
+     * Deletes a user from the database.
+     * A super user can delete any user except himself.
+     * A user can delete only himself.
+     *
+     * @param [int|null] $id_user the user to delete, if null, the logged user
+     * @return bool true if the user is deleted, false otherwise
+     */
+    public function deleteUser($id_user = null) {
+        if (Session::isSuperUser() ? Session::isHim($id_user) : !Session::isHim($id_user)) {
+            return false;
+        }
+
+        return Database::getInstance()->executeQueryAffectRows(
+            "DELETE FROM `Users` WHERE id_user = ?",
+            'i',
+            $id_user ?? Session::getUser()
+        );
     }
 
 

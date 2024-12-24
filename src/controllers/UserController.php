@@ -64,6 +64,12 @@ class UserController extends Controller {
         }
     }
 
+    public function updateUser(Request $request, Response $response) {
+        $body = $request->getBody();
+        $this->user_model->updateUser($body['id_user'] ?? null, $body['user_name'] ?? null, $body['newsletter'] ?? null);
+        $response->redirect('/user');
+    }
+
     public function deleteUser(Request $request, Response $response) {
         $body = $request->getBody();
         if ($this->user_model->deleteUser($body['id_user'] ?? null)) {
