@@ -410,10 +410,6 @@ $preview-cover-size: clamp(80px, 80%, 150px);
         }
 
     }
-
-    footer {
-
-    }
 }
 
 .search-card {
@@ -423,7 +419,7 @@ $preview-cover-size: clamp(80px, 80%, 150px);
     background-color: var(--background-color);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin: .5rem;
+    margin: 10px;
     padding: 0.5rem;
     text-align: center;
     display: inline-block;
@@ -456,11 +452,12 @@ $preview-cover-size: clamp(80px, 80%, 150px);
     }
 
     .add-cart {
-        color: var(--text-color);
-        background-color: var(--secondary-color);
+        color: var(--secondary-color);
+        background-color: var(--text-color);
         text-decoration: none;
         border-radius: var(--border-radius);
         padding: 7px;
         font-weight: bold;
+        display: block;
     }
 }

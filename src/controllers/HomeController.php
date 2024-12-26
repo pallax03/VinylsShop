@@ -7,8 +7,9 @@ class HomeController extends Controller {
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
-        require_once MODELS . 'VinylsModel.php';
         $this->auth_model = new AuthModel();
+
+        require_once MODELS . 'VinylsModel.php';
         $this->vinyls_model = new VinylsModel();
     }
 

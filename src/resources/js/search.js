@@ -49,11 +49,21 @@ function updateResults(results) {
             clone.querySelector(".add-cart").textContent = "Add to cart - €" + result.cost;
             resultsList.appendChild(clone);
         });
+        
+        // Se non ci sono risultati
+        if(results.message.length === 0) {
+            fill();
+        }
     })
 }
 
 function clear() {
     document.getElementById('sec-search_content').innerHTML = ''; // Svuota i risultati precedenti
+}
+
+// Aggiunge un div vuoto che dia spessore tra header e footer
+function fill() {
+    document.getElementById('sec-search_content').innerHTML = '<div style="height: 300px;"></div>'; // Svuota i risultati precedenti
 }
 
 document.getElementById('btn-search_close').addEventListener('click', function() {
@@ -83,6 +93,6 @@ document.getElementById('search-input').addEventListener('input', function() {
             await updateResults(data);
         });
     } else {
-        clear();
+        fill();
     }
 });
