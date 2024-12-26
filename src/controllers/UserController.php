@@ -18,12 +18,31 @@ class UserController extends Controller {
 
     public function index() {
         $head = array('title' => 'Login / Signup', 'style'=> array(''),
-         'header' => 'todo');
+         'header' => '');
         
         $data['user'] = $this->user_model->getUser();
-        // $data['orders'] = $this->order_model->getOrders();
-        $data['orders'] = ['a', 'b', 'c'];
+        $data['orders'] = $this->order_model->getOrders();
         $this->render('user', $head, $data);
+    }
+
+    public function addresses() {
+        $this->auth_model->checkAuth();
+        $head = array('title' => 'Addresses', 'style'=> array(''),
+         'header' => '');
+        
+        $data['user'] = $this->user_model->getUser();
+        $data['addresses'] = $this->user_model->getAddress();
+        $this->render('addresses', $head, $data);
+    }
+
+    public function cards() {
+        $this->auth_model->checkAuth();
+        $head = array('title' => 'Cards', 'style'=> array(''),
+         'header' => '');
+        
+        $data['user'] = $this->user_model->getUser();
+        $data['cards'] = $this->user_model->getCard();
+        $this->render('cards', $head, $data);
     }
 
     public function getUser(Request $request, Response $response) {
@@ -36,13 +55,19 @@ class UserController extends Controller {
         }
     }
 
-    public function setUserDefault(Request $request, Response $response) {
+    public function setUserDefaults(Request $request, Response $response) {
         $body = $request->getBody();
         if ($this->user_model->setDefaults($body['id_card'] ?? null, $body['id_address'] ?? null)) {
             $response->Success('Defaults set', $body);
         } else {
             $response->Error('Not allowed to set defaults or card/address not found', $body);
         }
+    }
+
+    public function updateUser(Request $request, Response $response) {
+        $body = $request->getBody();
+        $this->user_model->updateUser($body['id_user'] ?? null, $body['user_name'] ?? null, $body['newsletter'] ?? null);
+        $response->redirect('/user');
     }
 
     public function deleteUser(Request $request, Response $response) {
@@ -67,11 +92,8 @@ class UserController extends Controller {
 
     public function setAddress(Request $request, Response $response) {
         $body = $request->getBody();
-        if ($this->user_model->setAddress($body['name'] ?? null, $body['street_number'] ?? null, $body['city'] ?? null, $body['postal_code'] ?? null)) { 
-            $response->Success('Address set', $body);
-        } else {
-            $response->Error('Cannot set address', $body);
-        }
+        $this->user_model->setAddress($body['address_name'] ?? null, $body['address_street'] ?? null, $body['address_city'] ?? null, $body['address_cap'] ?? null);
+        $response->redirect('/user/addresses');
     }
 
     public function deleteAddress(Request $request, Response $response) {
@@ -95,11 +117,8 @@ class UserController extends Controller {
 
     public function setCard(Request $request, Response $response) {
         $body = $request->getBody();
-        if ($this->user_model->setCard($body['card_number'] ?? null, $body['expiration_date'] ?? null, $body['cvc'] ?? null)) { 
-            $response->Success('Card set', $body);
-        } else {
-            $response->Error('Cannot set card', $body);
-        }
+        $this->user_model->setCard($body['card_number'] ?? null, $body['card_exp'] ?? null, $body['card_cvc'] ?? null);
+        $response->redirect('/user/cards');
     }
 
     public function deleteCard(Request $request, Response $response) {

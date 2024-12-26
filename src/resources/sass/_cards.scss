@@ -2,8 +2,10 @@
 @import "buttons";
 @import "variables";
 
-$card-width: clamp(360px, 90%, 600px);
-$card-height: 15vh;
+// $card-width: clamp(360px, 90%, 600px);
+$card-width: 100vw;
+$card-height: clamp(200px, 50%, 300px); 
+$vinyls_detail-width: 50px;
 
 $preview-width: clamp(150px, 25%, 200px);
 $preview-height: clamp(150px, 34%, 250px);
@@ -52,6 +54,7 @@ $preview-cover-size: clamp(80px, 80%, 150px);
     position: relative;
     height: $card-height;
     width: $card-width;
+    max-width: 800px;
     background-color: var(--background-color);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -69,9 +72,8 @@ $preview-cover-size: clamp(80px, 80%, 150px);
         position: absolute;
         top: 0.5rem;
         i {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
         }
-        animation: highlight infinite reverse 3s ease-in-out;
     }
 }
 
@@ -81,38 +83,40 @@ $preview-cover-size: clamp(80px, 80%, 150px);
     display: inline-block;
     
     header {
+        height: $card-height;
         float: left;
-        display: inline-flex;
+        display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         border-right: 2px solid var(--border-color);
-        padding: 0.5rem;
+        padding: .5rem;
+        
 
         span {
-            font-size: .8rem;
+            font-size: clamp(0.6rem, 2vw, 1.2rem); 
             position: absolute;
             top: 10px;
             left: 10px;
         }
 
         a {
+            height: $card-height;
+            width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            width: 100%;
-            height: 100%;
+            margin-top: .8rem;
             color: var(--text-color);
             text-decoration: none;
-            position: relative;
 
             i {
-                font-size: 4rem;
+                font-size: 1.6rem;
             }
-
             h2 {
-                font-size: 0.8rem;
+                font-size: .6rem;
+                width: 40px;
             }
         }
     }
@@ -126,32 +130,25 @@ $preview-cover-size: clamp(80px, 80%, 150px);
         flex-wrap: nowrap;
         flex-direction: row;
         align-content: center;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
         ul {
-            max-height: $card-height;
             list-style: none;
             padding: 0;
             margin: 0;
-            display: inline-flex;
-            justify-content: space-between;
-            flex-direction: row;
-            align-items: center;
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
 
             li {
                 display: flex;
                 justify-content: center;
                 align-items: flex-start;
                 flex-direction: column;
-                color: var(--text-color);
-                text-decoration: none;
-                position: relative;
+                text-align: center;
                 margin: 0.2rem;
-                max-height: $card-height;
                 img {
-                    height: 40%;
-                    width: 40%;
-                    position: relative;
+                    width: $vinyls_detail-width;
                 }
 
                 h6 {
@@ -160,11 +157,11 @@ $preview-cover-size: clamp(80px, 80%, 150px);
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    font-size: 0.6rem;
+                    font-size: .6rem;
                 }
 
                 p {
-                    font-size: 0.5rem;
+                    font-size: .8rem;
                 }
             }
         }
@@ -172,39 +169,32 @@ $preview-cover-size: clamp(80px, 80%, 150px);
 
     footer {
         width: 10%;
+        height: $card-height;
         float: right;
-        display: inline-flex;
+        display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: end;
         align-items: center;
         padding: 0.5rem;
+        position: relative;
 
-        // width: 100%;
-        // height: 100%;
-        // color: var(--text-color);
-        // text-decoration: none;
-        // display: flex;
-        // flex-direction: column;
-        // justify-content: end;
-        // position: relative;
-        // height: 80px;
-        // width: 60px;
-        // padding: 0.5rem;
         .btn-specular {
             right: 0;
         }
 
         span {
-            display: inline-block;
+            position: absolute;
+            top: 40px;
+            right: 5px;
 
             p:first-child {
                 display: block;
-                font-size: 0.4rem;
+                font-size: .6rem;
             }
 
             p {
                 display: block;
-                font-size: 0.6rem;
+                font-size: 1rem;
             }
         }
     }
@@ -228,15 +218,18 @@ $preview-cover-size: clamp(80px, 80%, 150px);
         }
         span {
             h4 {
-                font-size: 0.6rem;
+                &::before {
+                    content: "#";
+                }
+                font-size: .8rem;
             }
             p {
-                font-size: 0.4rem;
+                font-size: .7rem;
             }
         }
         i {
             margin-left: 0.5rem;
-            font-size: 1.4rem;
+            font-size: 1.6rem;
         }
     }
 
@@ -251,7 +244,8 @@ $preview-cover-size: clamp(80px, 80%, 150px);
 
 
         p {
-            font-size: 0.3rem;
+            font-size: 0.6rem;
+            margin: 0.2rem;
         }
         .progress-bar {
             margin-left: 1rem;
@@ -289,11 +283,11 @@ $preview-cover-size: clamp(80px, 80%, 150px);
                         border: 0.2px solid var(--selected-color);
                     }
                     p {
-                        font-size: 0.4rem;
+                        font-size: 0.6rem;
                         position: absolute;
-                        bottom: -10px;
-                        min-width: 40px;
-                        right: -15px;
+                        bottom: -20px;
+                        min-width: 60px;
+                        right: -30px;
                     }
                 }
             }
@@ -321,11 +315,12 @@ $preview-cover-size: clamp(80px, 80%, 150px);
             float: left;
             width: 50%;
             cursor: s-resize;
-            &.active {
+            &.expanded {
                 cursor: n-resize;
                 p {
                     visibility: visible;
                     opacity: 1;
+                    height: fit-content;
                 }
             }
             span {
@@ -335,16 +330,18 @@ $preview-cover-size: clamp(80px, 80%, 150px);
                 p {
                     visibility: visible;
                     opacity: 1;
-                    font-size: 0.4rem;
+                    font-size: .8rem;
+                    height: fit-content;
                 }
                 i {
-                    font-size: 0.6rem;
+                    font-size: 1.2rem;
                 }
             }
             p {
-                font-size: 0.3rem;
+                font-size: .6rem;
                 visibility: hidden;
                 opacity: 0;
+                height: 0;
             }
         }
     }
@@ -373,13 +370,13 @@ $preview-cover-size: clamp(80px, 80%, 150px);
                 border-radius: 15px;
                 background-color: inherit;
                 i {
-                    font-size: 1.2rem;
+                    @include scale-font-size(1.5);
                 }
             }
             select {
                 width: 100%;
                 height: 100%;
-                font-size: 0.6rem;
+                @include scale-font-size(1.5);
                 border: 0;
                 border-radius: 5px;
                 background-color: var(--background-color);

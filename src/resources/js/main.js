@@ -21,36 +21,11 @@ document.addEventListener('touchstart', function(e) {
     }
 }, false);
 
-// Search bar
-document.querySelector('.search').addEventListener('click', function (e) {
-    e.preventDefault();
-    const searchContainer = this.closest('.search-container');
-    searchContainer.classList.toggle('active');
-    document.querySelectorAll('nav ul li').forEach(function (li) {
-        if (!(li.classList.contains('search-container'))) {
-            li.classList.toggle('hide-item');
-        }
-    });
-});
-
-document.querySelector('.close-search').addEventListener('click', function (e) {
-    e.preventDefault();
-    const searchContainer = this.closest('.search-container');
-    searchContainer.classList.remove('active');
-
-    document.querySelectorAll('nav ul li').forEach(function (li) {
-        if (!li.classList.contains('search-container')) {
-            li.classList.toggle('hide-item');
-        }
-    });
-});
-
-
 // Toggles
 document.querySelectorAll('.toggle').forEach(function (toggle) {
     toggle.addEventListener('click', function (e) {
         e.preventDefault();
-        toggle.classList.toggle('active');
+        toggle.classList.toggle('expanded');
     });
 });
 
@@ -84,6 +59,46 @@ function updateDarkmodeButton() {
     document.getElementById('btn-darkmode').classList.toggle('active', checkDarkmode());
 }
 
+
+function redirect(url) {
+    window.location.href = 'url';
+}
+
+
+function defaultParse(value) { 
+    return value == '' || value == null;
+}
+
+function validateData(...args) {
+    let valid = true;
+    
+    args.forEach(function (arg) {
+        arg.classList.remove('error');
+        if (arg.parse==null || arg.parse == '' ? defaultParse(arg.value) : !arg.value.match(arg.parse)) {
+            valid = false;
+            arg.classList.add('error');
+        }
+    });
+    return valid;
+}
+
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        const activeElement = document.activeElement;
+        if (activeElement && activeElement.tagName === 'INPUT' && activeElement.type !== 'submit') {
+            const form = activeElement.form;
+            if (form) {
+                const submitButton = form.querySelector('button, input[type="button"]');
+                if (submitButton) {
+                    submitButton.click();
+                }
+            }
+        }
+    }
+});
+
 window.onload = function() {
     updateDarkmodeButton();
 }
+

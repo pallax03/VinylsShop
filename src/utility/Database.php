@@ -13,9 +13,9 @@ class Database {
     private $got_exception;
 
     private static string $host= 'localhost';
-    private static string $username= 'user';
-    private static string $password= 'password';
-    private static string $database= 'mysql';
+    private static string $username= 'admin';
+    private static string $password= 'admin';
+    private static string $database= 'VinylsShop';
     private static string $port= '3306';
 
     
@@ -129,8 +129,8 @@ class Database {
      * - the types and the params must be in the same order
      *
      * @param string $query the query already prepared
-     * @param [type] $types the types of the parameters, and optional
-     * @param [type] ...$params all the parameters to bind, also optional
+     * @param string $types the types of the parameters, and optional
+     * @param [any_type] ...$params all the parameters to bind, also optional
      * @return mysqli_stmt the result of the query
      */
     private function executeQueryWithParams($query, $types, ...$params) {
@@ -214,7 +214,7 @@ class Database {
         $result = $stmt->get_result();
         $this->queryThrowException($stmt);
         if ( $this->got_exception || $result->num_rows === 0) {
-            return [];
+            return false;
         }
         return $result->fetch_all(MYSQLI_ASSOC) ?? [];
     }

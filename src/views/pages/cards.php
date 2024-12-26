@@ -1,0 +1,44 @@
+<section>
+    <?php
+    if (isset($cards) && $cards !== false) {
+        echo "<h1>Cards</h1>";
+        foreach ($cards as $card) {
+            include COMPONENTS . '/cards/card.php';
+        }
+    } else {
+        echo "<h1>No cards found!</h1>";
+    }
+    ?>
+    </ul>
+</section>
+<div class="div"></div>
+<form action="/user/card" id="form-card" method="post">
+    <h2>Card</h2>
+    <ul>
+        <li>
+            <label for="input-card_number">Number:</label>
+            <input placeholder="xxxx xxxx xxxx xxxx" type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}"
+                autocomplete="cc-number" maxlength="19" id="input-card_number" name="card_number"
+                aria-describedby="card-number-description" required />
+        </li>
+        <li class="split">
+            <label for="input-card_exp">Exp:</label>
+            <input type="text" id="input-card_exp" name="card_exp"
+                inputmode="numeric" pattern="[0-9]{2}/[0-9]{2}" placeholder="MM/AA"
+                aria-describedby="card-exp-description" autocomplete="cc-exp" required />
+        </li>
+        <li class="split">
+            <label for="input-card_cvc">CVC:</label>
+            <input type="text" id="input-card_cvc" name="card_cvc"
+                inputmode="numeric" pattern="[0-9]{3,4}" maxlength="4"
+                aria-describedby="card-cvc-description" autocomplete="cc-csc" required />
+        </li>
+        <li>
+            <div class="large button">
+                <i class="bi bi-credit-card-fill"></i>
+                <input type="button" id="btn-card_submit" value="Add Card" />
+            </div>
+        </li>
+    </ul>
+</form>
+<script src="/resources/js/card.js"></script>

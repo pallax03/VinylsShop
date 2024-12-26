@@ -9,7 +9,7 @@ VALUES
 (6, 'Toby Fox');
 
 -- Insert albums
-INSERT IGNORE INTO `VinylsShop`.`Albums` (`id_album`, `title`, `genre`, `cover_img`, `release_date`, `id_artist`)
+INSERT IGNORE INTO `VinylsShop`.`Albums` (`id_album`, `title`, `genre`, `cover`, `release_date`, `id_artist`)
 VALUES
 (1, 'The Black Parade', 'Rock', 'blackparade.webp', '2006-10-23', 2),
 (2, 'Dont Smile at Me', 'Pop', 'dontsmileatme.webp', '2017-08-11', 3),
@@ -151,14 +151,14 @@ VALUES
 -- Insert addresses
 INSERT IGNORE INTO `VinylsShop`.`Addresses` (`name`, `city`, `postal_code`, `street_number`, `id_user`)
 VALUES
-('Home', 'Milan', '20100', 'Via Roma 1', 2),
-('Work', 'Milan', '20100', 'Via Milano 2', 2);
+('Alex Mazzoni', 'Milano', '20100', 'Parco della vittoria 200', 2),
+('Samuele Casadei', 'Roma', '20100', 'Via Colazione 32', 2);
 
 -- Insert cards
-INSERT IGNORE INTO `VinylsShop`.`Cards` (`card_number`, `cvc`, `expiration_date`, `id_user`)
+INSERT IGNORE INTO `VinylsShop`.`Cards` (`card_number`, `cvc`, `exp_date`, `id_user`)
 VALUES
-('1234567812345678', '123', '2027-12-31', 2),
-('8765432187654321', '321', '2027-12-31', 2);
+('1234567812345678', '12/27', '123', 2),
+('8765432187654321', '01/26', '321', 2);
 
 INSERT IGNORE INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`, `default_address`)
 VALUES
@@ -188,7 +188,7 @@ VALUES
 (3, 1, 3);
 
 -- Insert shipments
-INSERT IGNORE INTO `VinylsShop`.`Shipments` (`tracking_number`, `shipment_date`, `delivery_date`, `shipment_status`, `carrier`, `notes`, `cost`, `id_order`, `id_address`)
+INSERT IGNORE INTO `VinylsShop`.`Shipments` (`tracking_number`, `shipment_date`, `delivery_date`, `shipment_status`, `courier`, `notes`, `cost`, `id_order`, `id_address`)
 VALUES
 ('1234567890', '2024-10-29', '2024-11-02', 'Delivered', 'UPS', 'attenti al lupo', 20.00, 1, 1),
 ('0987654321', '2024-11-21', '2024-11-24', 'Delivered', 'DHL', 'da consegnare sul pianerottolo', 10.00, 2, 1),

@@ -13,6 +13,7 @@ class HomeController extends Controller {
         $this->vinyls_model = new VinylsModel();
     }
 
+    
     public function index(Request $request, Response $response) {
         $this->redirectSuperUser();
         $data = $request->getBody();
@@ -23,23 +24,24 @@ class HomeController extends Controller {
         $this->render('home', $head, $data);
     }
 
+    // All in One
     public function login(Request $request, Response $response) {
         $body = $request->getBody();
 
         if ($this->auth_model->checkUserMail($body['mail'])) {
-            if ($this->auth_model->login($body['mail'], $body['password'])) {
+            if ($this->auth_model->login($body['mail'], $body['password'], $body['remember'])) {
                 $response->Success('Logged in, redirecting...');
                 return;
             }
-            $response->Error('User found, but password is wrong...');
+            $response->Error('User found, but password is wrong...', $body);
         } else {
             $message = $this->auth_model->register($body['mail'], $body['password']);
             if ($message === true) {
-                $this->auth_model->login($body['mail'], $body['password']);
+                $this->auth_model->login($body['mail'], $body['password'], $body['remember']);
                 $response->Success('Registered, redirecting...');
                 return;
             }
-            $response->Error($message ?? 'Query Error, please register...');
+            $response->Error($message ?? 'Register Error, please try again...');
         }
     }
 

@@ -17,26 +17,6 @@ final class UserModel {
     }
 
     /**
-     * Deletes a user from the database.
-     * A super user can delete any user except himself.
-     * A user can delete only himself.
-     *
-     * @param [int|null] $id_user the user to delete, if null, the logged user
-     * @return bool true if the user is deleted, false otherwise
-     */
-    public function deleteUser($id_user = null) {
-        if (Session::isSuperUser() ? Session::isHim($id_user) : !Session::isHim($id_user)) {
-            return false;
-        }
-
-        return Database::getInstance()->executeQueryAffectRows(
-            "DELETE FROM `Users` WHERE id_user = ?",
-            'i',
-            $id_user ?? Session::getUser()
-        );
-    }
-
-    /**
      * This function returns the user info from the database.
      * infos: id_user, mail, balance, newsletter, default_card, card_number, default_address, street_number, city, postal_code
      * a super user can get any user
@@ -58,7 +38,7 @@ final class UserModel {
                     up.default_card, 
                     c.card_number, 
                     up.default_address, 
-                    a.street_number, a.city, a.postal_code
+                    a.name, a.street_number, a.city, a.postal_code
                 FROM `VinylsShop`.`Users` u
                 LEFT JOIN `VinylsShop`.`UserPreferences` up ON u.id_user = up.id_user
                 LEFT JOIN `VinylsShop`.`Cards` c ON up.default_card = c.id_card
@@ -67,6 +47,52 @@ final class UserModel {
             'i',
             $id_user ?? Session::getUser()
         )[0];
+    }
+
+
+    /**
+     * Update the user in the database.
+     * A super user can update any user.
+     * A user can update only himself.
+     *
+     * @param [int|null] $id_user the user to update, if null, the logged user
+     * @param [string|null] $newsletter the newsletter value
+     * @return bool true if the user is updated, false otherwise
+     */
+    public function updateUser($id_user = null, $newsletter = null) {
+        if (!Session::isSuperUser() && !Session::isHim($id_user)) {
+            return false;
+        }
+
+        return Database::getInstance()->executeQueryAffectRows(
+            "UPDATE `VinylsShop`.`Users` SET"
+                . ($newsletter ? "newsletter = ?, " : "")
+                . " WHERE id_user = ?;",
+            'ii',
+            $id_user ?? Session::getUser(),
+            $newsletter
+        );
+    }
+
+
+    /**
+     * Deletes a user from the database.
+     * A super user can delete any user except himself.
+     * A user can delete only himself.
+     *
+     * @param [int|null] $id_user the user to delete, if null, the logged user
+     * @return bool true if the user is deleted, false otherwise
+     */
+    public function deleteUser($id_user = null) {
+        if (Session::isSuperUser() ? Session::isHim($id_user) : !Session::isHim($id_user)) {
+            return false;
+        }
+
+        return Database::getInstance()->executeQueryAffectRows(
+            "DELETE FROM `Users` WHERE id_user = ?",
+            'i',
+            $id_user ?? Session::getUser()
+        );
     }
 
 
@@ -84,7 +110,8 @@ final class UserModel {
         }
 
         return Database::getInstance()->executeResults(
-            "SELECT a.id_address, 
+            "SELECT a.id_address,
+                    a.name,
                     a.street_number, 
                     a.city, 
                     a.postal_code
@@ -110,11 +137,6 @@ final class UserModel {
             return [];
         }
 
-        if ($name == '') {
-            $last_address = count($this->getAddress($id_user ?? Session::getUser()));
-            $name = 'Address ' . $last_address + 1;
-        }
-
         return Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO `VinylsShop`.`Addresses` (`id_user`, `name`, `street_number`, `city`, `postal_code`) VALUES (?, ?, ?, ?, ?);",
             'issss',
@@ -135,6 +157,10 @@ final class UserModel {
     public function deleteAddress($id_address, $id_user = null) {
         if (Session::isSuperUser() ? Session::isHim($id_user) : !Session::isHim($id_user)) {
             return false;
+        }
+
+        if ($id_address == $this->getUser($id_user)['default_address']) {
+            $this->setDefaultAddress(id_address: '');
         }
 
         Database::getInstance()->setHandler(null); // reset the handler to avoid the error
@@ -186,20 +212,20 @@ final class UserModel {
      * Set the card for the logged user.
      * 
      * @param [string] $card_number the card number
-     * @param [string] $expiration_date the expiration date
+     * @param [string] $exp_date the expiration date
      * @param [string] $cvc the cvc
      * @return [array|bool] the cards of the user, false if query failed.
      */
-    public function setCard($card_number, $expiration_date, $cvc) {
+    public function setCard($card_number, $exp_date, $cvc) {
         if (!Session::isLogged()) {
             return [];
         }
 
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `VinylsShop`.`Cards` (`id_user`, `card_number`, `expiration_date`, `cvc`) VALUES (?, ?, ?, ?);",
+            "INSERT INTO `VinylsShop`.`Cards` (`id_user`, `card_number`, `exp_date`, `cvc`) VALUES (?, ?, ?, ?);",
             'isss',
             Session::getUser(),
-            $card_number, $expiration_date, $cvc
+            $card_number, $exp_date, $cvc
         );
     }
 
@@ -219,7 +245,7 @@ final class UserModel {
 
         // if the card is the default card, set the default card to null
         if ($id_card == $this->getUser($id_user)['default_card']) {
-            $this->setDefaultCard(null);
+            $this->setDefaultCard(id_card: '');
         }
 
         Database::getInstance()->setHandler(null); // reset the handler to avoid the error
@@ -307,7 +333,7 @@ final class UserModel {
         }
 
         if ($id_card !== null && $id_address !== null) {
-            Database::getInstance()->executeQueryAffectRows(
+            return Database::getInstance()->executeQueryAffectRows(
                 "INSERT INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`, `default_address`)
                     VALUES (?, ?, ?)
                     ON DUPLICATE KEY UPDATE
@@ -318,20 +344,16 @@ final class UserModel {
                 $id_card ?? '',
                 $id_address ?? ''
             );
-            return !Database::getInstance()->GotException();
         }
 
         if ($id_card !== null) {
-            $this->setDefaultCard($id_card);
-            return !Database::getInstance()->GotException();
+            return $this->setDefaultCard($id_card);
         }
 
         if ($id_address !== null) {
-            $this->setDefaultAddress($id_address);
-            return !Database::getInstance()->GotException();
+            return $this->setDefaultAddress($id_address);
         }
         
-        $this->createDefaults(Session::getUser());
-        return !Database::getInstance()->GotException();
+        return $this->createDefaults(Session::getUser());
     }
 }
