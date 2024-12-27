@@ -626,14 +626,15 @@ section.cards {
       -ms-flex-direction: column;
           flex-direction: column;
   text-align: center;
-  margin-top: 0.6rem;
-  margin-right: 0.6rem;
+  margin-top: 0.2rem;
+  margin-right: 0.2rem;
   padding: 0.2rem;
   color: var(--text-color);
   text-decoration: none;
 }
 .order header a i {
-  font-size: 1.6rem;
+  font-size: 2.2rem;
+  margin: 0;
 }
 .order header a h2 {
   text-align: center;
@@ -728,11 +729,12 @@ section.cards {
 }
 .order footer .btn-specular {
   right: 0;
+  top: 0;
 }
 .order footer span {
   position: absolute;
-  top: 40px;
-  right: 5px;
+  top: 60px;
+  right: 0;
 }
 .order footer span p:first-child {
   display: block;
@@ -1032,7 +1034,7 @@ section.cards {
   border-radius: var(--border-radius);
   -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin: 10px;
+  margin: 25px;
   padding: 0.5rem;
   text-align: center;
   display: inline-block;
@@ -1051,6 +1053,7 @@ section.cards {
 }
 .search-card .vinyl-cover {
   width: 80%;
+  border: 4px solid var(--border-color);
 }
 .search-card .vinyl-info {
   width: 80%;
@@ -1570,6 +1573,10 @@ main section a, main form a {
 main section a:hover, main form a:hover {
   color: var(--selected-color);
 }
+main section a i, main form a i {
+  font-size: 2.2rem;
+  margin-left: 1rem;
+}
 main section a h6, main form a h6 {
   font-size: 1.6rem;
   margin-left: 1rem;
@@ -1591,7 +1598,21 @@ main section p, main form p {
 }
 
 .search-content {
-  min-height: 100dvh;
+  min-height: 80dvh;
+  display: none;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  width: 100%;
 }
 
 .container {

@@ -16,12 +16,13 @@ class HomeController extends Controller {
     
     public function index(Request $request, Response $response) {
         $this->redirectSuperUser();
-        $data = $request->getBody();
-        $title = $data['title'] ?? 'Home';
+        $title = 'Home';
         $head = array('title' => $title, 'style'=> array(''),
          'header' => Database::getInstance()->getConnection() ? 'Database connected' : 'Database not connected');
 
-        $this->render('home', $head, $data);
+
+        
+        $this->render('home', $head);
     }
 
     // All in One

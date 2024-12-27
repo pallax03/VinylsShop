@@ -83,7 +83,7 @@ document.getElementById('input-search').addEventListener('input', function() {
             document.getElementById('main-content').ariaHidden = 'true';
             document.getElementById('sec-search_content').ariaHidden = 'false';
             document.getElementById('main-content').style = 'display: none';
-            document.getElementById('sec-search_content').style = 'display: block';
+            document.getElementById('sec-search_content').style = 'display: flex';
             await updateResults(data);
         });
     } else {

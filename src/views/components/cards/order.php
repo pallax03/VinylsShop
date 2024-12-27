@@ -2,7 +2,7 @@
     <div class="order card active">
         <header>
             <span><?php echo $n ?></span>
-            <a href="">
+            <a href="/order?id_order=<?php echo $order['id_order'] ?>">
                 <i class="bi bi-box-seam-fill"></i>
                 <h2><? echo $order['order_status']?></h2>
             </a>
