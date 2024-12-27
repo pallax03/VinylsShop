@@ -49,6 +49,18 @@ class Session {
         return $id_user ? self::getUser() == $id_user : self::isLogged();
     }
 
+
+    /**
+     * A super user can update any user, and himself.
+     * A user can update only himself.
+     *
+     * @param [int] $id_user if null, it will check if the user is logged.
+     * @return bool 
+     */
+    public static function haveAdminUserRights($id_user = null) {
+        return Session::isSuperUser() || Session::isHim($id_user);
+    }
+
     public static function getCard() {
         return self::isSet('Card') ? self::get('Card') : false;
     }

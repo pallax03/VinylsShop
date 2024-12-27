@@ -26,7 +26,7 @@ final class UserModel {
      * @return [array|bool] the user if exists, false if the query failed.
      */
     public function getUser($id_user = null) {
-        if (!Session::isSuperUser() && !Session::isHim($id_user)) {
+        if (!Session::haveAdminUserRights($id_user)) {
             return [];
         }
 
@@ -60,7 +60,7 @@ final class UserModel {
      * @return bool true if the user is updated, false otherwise
      */
     public function updateUser($id_user = null, $newsletter = null) {
-        if (!Session::isSuperUser() && !Session::isHim($id_user)) {
+        if (!Session::haveAdminUserRights($id_user)) {
             return false;
         }
 
@@ -105,7 +105,7 @@ final class UserModel {
      * @return [array|bool] the addresses of the user, false if query failed.
      */
     public function getAddress($id_user = null, $id_address = null) {
-        if (!Session::isSuperUser() && !Session::isHim($id_user)) { 
+        if (!Session::haveAdminUserRights($id_user)) {
             return [];
         }
 
@@ -147,7 +147,7 @@ final class UserModel {
 
     /**
      * Delete an address from the database.
-     * A super user can delete any address.
+     * A super user can delete any address of any user, but not his addresses.
      * A user can delete only his addresses.
      *
      * @param [int] $id_address the address to delete
@@ -155,7 +155,7 @@ final class UserModel {
      * @return bool true if the address is deleted, false otherwise
      */
     public function deleteAddress($id_address, $id_user = null) {
-        if (Session::isSuperUser() ? Session::isHim($id_user) : !Session::isHim($id_user)) {
+        if (!Session::haveAdminUserRights($id_user)) {
             return false;
         }
 
@@ -193,7 +193,7 @@ final class UserModel {
      * @return [array | false] the cards of the user, false if query failed.
      */
     public function getCard($id_user = null, $id_card = null) {
-        if (!Session::isSuperUser() && !Session::isHim($id_user)) { 
+        if (!Session::haveAdminUserRights($id_user)) {
             return [];
         }
 
@@ -239,7 +239,7 @@ final class UserModel {
      * @return bool true if the card is deleted, false otherwise
      */
     public function deleteCard($id_card, $id_user = null) {
-        if (Session::isSuperUser() ? Session::isHim($id_user) : !Session::isHim($id_user)) {
+        if (!Session::haveAdminUserRights($id_user)) {
             return false;
         }
 
