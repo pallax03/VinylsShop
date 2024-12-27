@@ -8,9 +8,11 @@ final class VinylController extends Controller {
         $this->model = new VinylsModel();
     }
 
-    function getVinyls(Request $request, Response $response) {
+    function index(Request $request, Response $response) {
         $body = $request->getBody();
-        $response->Error($this->model->getVinyls(null, $body));
+        $result['details'] = $this->model->getVinylDetails($body['id']);
+        $result['suggested'] = $this->model->getSuggested($body['id']);
+        $response->Success($result);
     }
 
     /*

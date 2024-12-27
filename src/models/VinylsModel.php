@@ -25,7 +25,7 @@ final class VinylsModel {
             v.id_vinyl,
             v.cost,
             a.title,
-            a.cover_img,
+            a.cover,
             a.genre,
             ar.name AS artist
             FROM
@@ -59,19 +59,21 @@ final class VinylsModel {
         } else {
             $result = $this->db->executeResults($query);
         }
-        foreach ($result as $row):
-            // create an empty object
-            $json = [];
-            // extract datas from record
-            $json["id"] = $row["id_vinyl"];
-            $json["cost"] = $row["cost"];
-            $json["title"] = $row["title"];
-            $json["cover_img"] = $row["cover_img"];
-            $json["genre"] = $row["genre"];
-            $json["artist"] = $row["artist"];
-            // add new vinyl topo vinyls list
-            array_push($vinyls, $json);
-        endforeach;
+        if ($result) {
+            foreach ($result as $row):
+                // create an empty object
+                $json = [];
+                // extract datas from record
+                $json["id"] = $row["id_vinyl"];
+                $json["cost"] = $row["cost"];
+                $json["title"] = $row["title"];
+                $json["cover"] = $row["cover"];
+                $json["genre"] = $row["genre"];
+                $json["artist"] = $row["artist"];
+                // add new vinyl topo vinyls list
+                array_push($vinyls, $json);
+            endforeach;
+        }
         return $vinyls;
     }
 
@@ -93,7 +95,7 @@ final class VinylsModel {
             a.id_album,
             a.title,
             a.release_date,
-            a.cover_img,
+            a.cover,
             ar.name AS artist
             FROM 
             vinyls v
@@ -122,7 +124,7 @@ final class VinylsModel {
             $details["type"] = $result["type"];
             $details["title"] = $result["title"];
             $details["release_date"] = $result["release_date"];
-            $details["cover_img"] = $result["cover_img"];
+            $details["cover"] = $result["cover"];
             $details["artist"] = $result["artist"];
         endif;
         // prepare second statement
@@ -153,7 +155,7 @@ final class VinylsModel {
             v.type,
             a.title,
             a.genre,
-            a.cover_img,
+            a.cover,
             ar.name AS artist
             FROM 
             vinyls v
@@ -170,7 +172,7 @@ final class VinylsModel {
             $preview["genre"] = $result["genre"];
             $preview["type"] = $result["type"];
             $preview["title"] = $result["title"];
-            $preview["cover_img"] = $result["cover_img"];
+            $preview["cover"] = $result["cover"];
             $preview["artist"] = $result["artist"];
         endif;
         return $preview;
@@ -187,7 +189,7 @@ final class VinylsModel {
         $query = "SELECT
             v.cost,
             a.title,
-            a.cover_img,
+            a.cover,
             FROM 
             vinyls v
             JOIN albums a ON v.id_vinyl = a.id_album
@@ -198,7 +200,7 @@ final class VinylsModel {
             // store results
             $preview["cost"] = $result["cost"];
             $preview["title"] = $result["title"];
-            $preview["cover_img"] = $result["cover_img"];
+            $preview["cover"] = $result["cover"];
         endif;
         return $preview;
     }
@@ -216,7 +218,7 @@ final class VinylsModel {
             WHERE v.id_vinyl = ?";
         $vinyls = "SELECT
             v.id_vinyl,
-            a.cover_img,
+            a.cover,
             a.title
             FROM
             vinyls v
@@ -232,7 +234,7 @@ final class VinylsModel {
             $result = $this->db->executeResults($vinyls, 'ssi', $result["genre"], $result["artist"], $id);
             foreach($result as $row):
                 $vinyl = [];
-                $vinyl["cover_img"] = $row["cover_img"];
+                $vinyl["cover"] = $row["cover"];
                 $vinyl["title"] = $row["title"];
                 array_push($suggested, $vinyl);
             endforeach;

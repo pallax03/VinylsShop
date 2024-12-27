@@ -454,6 +454,10 @@ main {
     }
 }
 
+.search-content {
+    min-height: 100dvh;
+}
+
 .container{
     display: flex;
     justify-content: center;
@@ -559,5 +563,9 @@ main {
                 }
             }
         }
+    }
+
+    .search-content {
+        min-height: 60dvh;
     }
 }

@@ -91,7 +91,7 @@
     // $router->delete('/vinyl', [DashboardController::class, 'deleteVinyl']);
 
     // [Vinyls]
-    // $router->get('/vinyls', [VinylController::class, 'index']); per restituire la pagina
+    $router->get('/vinyls', [VinylController::class, 'index']); // per restituire la pagina
     // $router->get('/api/vinyls', [VinylController::class, 'getVinyls']); per cercare i vinili
 
     // dispatch route

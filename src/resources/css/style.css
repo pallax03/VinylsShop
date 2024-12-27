@@ -55,7 +55,7 @@ div.button > i::after {
   background-color: var(--background-color);
   z-index: -1;
 }
-div.button button {
+div.button button, div.button input[type=button] {
   cursor: pointer;
   width: 100%;
   height: 100%;
@@ -68,21 +68,21 @@ div.button button {
   position: relative;
   color: white;
 }
-div.button button i {
+div.button button i, div.button input[type=button] i {
   font-size: 1.2em;
 }
-div.button button i:nth-child(2) {
+div.button button i:nth-child(2), div.button input[type=button] i:nth-child(2) {
   position: absolute;
   bottom: -3px;
   font-size: 1.8rem;
 }
-div.button button.error {
+div.button button.error, div.button input[type=button].error {
   background-color: var(--error-color);
 }
-div.button button.animate {
+div.button button.animate, div.button input[type=button].animate {
   transition: all 0.6s ease-in-out;
 }
-div.button button.animate:hover {
+div.button button.animate:hover, div.button input[type=button].animate:hover {
   transform: scale(1.1);
   background-color: var(--selected-color);
 }
@@ -141,14 +141,7 @@ input {
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-form h1 {
-  font-size: 2rem;
-  font-weight: bold;
+  padding: 0;
 }
 form ul {
   list-style: none;
@@ -165,6 +158,14 @@ form ul li {
   flex-direction: row;
   align-content: center;
   justify-content: center;
+  align-items: center;
+}
+form ul li.split {
+  min-width: 141px;
+  width: 49%;
+  margin-top: 0;
+  margin: 0;
+  display: inline-block;
 }
 form ul li .input-group {
   position: relative;
@@ -179,13 +180,13 @@ form ul li label {
   position: absolute;
   background-color: var(--background-color);
   font-size: 1.2rem;
-  top: 0;
+  top: -5px;
   left: 20px;
   padding: 0 0.5rem;
   margin-top: -0.5rem;
   z-index: 1;
 }
-form ul li input[type=email], form ul li input[type=password], form ul li input[type=text] {
+form ul li input[type=email], form ul li input[type=tel], form ul li input[type=password], form ul li input[type=text] {
   position: relative;
   height: 50px;
   width: 100%;
@@ -194,8 +195,11 @@ form ul li input[type=email], form ul li input[type=password], form ul li input[
   border: 4px solid var(--border-color);
   border-radius: 15px;
 }
-form ul li input[type=email]:focus, form ul li input[type=password]:focus, form ul li input[type=text]:focus {
-  border: 4px solid var(--selected-color);
+form ul li input[type=email]:focus, form ul li input[type=tel]:focus, form ul li input[type=password]:focus, form ul li input[type=text]:focus {
+  border: 4px solid var(--selected-color) !important;
+}
+form ul li input[type=email].error, form ul li input[type=tel].error, form ul li input[type=password].error, form ul li input[type=text].error {
+  border: 4px solid var(--error-color);
 }
 form ul li label[for=remember] {
   display: inline-flex;
@@ -207,6 +211,7 @@ form ul li label.checkbox {
   align-items: center;
   justify-content: center;
   position: relative;
+  left: 0;
   cursor: pointer;
 }
 form ul li label.checkbox input[type=checkbox] {
@@ -218,31 +223,54 @@ form ul li label.checkbox input[type=checkbox] {
 form ul li label.checkbox span.checkmark {
   width: 20px;
   height: 20px;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   border-radius: 30%;
   background-color: var(--secondary-color);
   position: relative;
   margin: 0.5rem;
 }
 form ul li label.checkbox span.checkmark i {
-  font-size: 1.4rem;
-  color: var(--primary-color);
+  position: absolute;
+  top: -35px;
+  left: -18px;
+  font-size: 3.4rem;
+  color: var(--selected-color);
   visibility: hidden;
 }
 form ul li label.checkbox input[type=checkbox]:checked + span.checkmark {
   background-color: var(--background-color);
-  border: 1px solid var(--selected-color);
 }
 form ul li label.checkbox input[type=checkbox]:checked + span.checkmark i {
   visibility: visible;
 }
-form ul li:nth-last-child(-n+2) {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding: 0;
+form ul li a {
+  display: contents;
+  text-decoration: none;
+  color: var(--text-color);
+  text-align: center;
 }
-form ul li:last-child {
-  margin-bottom: 3rem;
+form ul li a:hover {
+  color: var(--selected-color);
+}
+form ul li a i {
+  font-size: 2.2rem;
+}
+form ul li div.message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+}
+form ul li div.message p {
+  padding: 0.5rem 1rem;
+  font-size: 1.6rem;
+  border: 2px solid var(--selected-color);
+  color: var(--selected-color);
+}
+form ul li div.message p.error {
+  color: var(--error-color);
+  border: 2px solid red;
 }
 
 section > div {
@@ -287,7 +315,7 @@ div.button > i::after {
   background-color: var(--background-color);
   z-index: -1;
 }
-div.button button {
+div.button button, div.button input[type=button] {
   cursor: pointer;
   width: 100%;
   height: 100%;
@@ -300,21 +328,21 @@ div.button button {
   position: relative;
   color: white;
 }
-div.button button i {
+div.button button i, div.button input[type=button] i {
   font-size: 1.2em;
 }
-div.button button i:nth-child(2) {
+div.button button i:nth-child(2), div.button input[type=button] i:nth-child(2) {
   position: absolute;
   bottom: -3px;
   font-size: 1.8rem;
 }
-div.button button.error {
+div.button button.error, div.button input[type=button].error {
   background-color: var(--error-color);
 }
-div.button button.animate {
+div.button button.animate, div.button input[type=button].animate {
   transition: all 0.6s ease-in-out;
 }
-div.button button.animate:hover {
+div.button button.animate:hover, div.button input[type=button].animate:hover {
   transform: scale(1.1);
   background-color: var(--selected-color);
 }
@@ -374,8 +402,9 @@ section > i {
 }
 .card {
   position: relative;
-  height: 15vh;
-  width: clamp(360px, 90%, 600px);
+  height: clamp(200px, 50%, 300px);
+  width: 100vw;
+  max-width: 800px;
   background-color: var(--background-color);
   border-radius: var(--border-radius);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -392,18 +421,18 @@ section > i {
   color: var(--text-color);
   position: absolute;
   top: 0.5rem;
-  animation: highlight infinite reverse 3s ease-in-out;
 }
 .card .btn-specular i {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 
 .order {
   display: inline-block;
 }
 .order header {
+  height: clamp(200px, 50%, 300px);
   float: left;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -411,27 +440,28 @@ section > i {
   padding: 0.5rem;
 }
 .order header span {
-  font-size: 0.8rem;
+  font-size: clamp(0.6rem, 2vw, 1.2rem);
   position: absolute;
   top: 10px;
   left: 10px;
 }
 .order header a {
+  height: clamp(200px, 50%, 300px);
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  margin-top: 0.8rem;
   color: var(--text-color);
   text-decoration: none;
-  position: relative;
 }
 .order header a i {
-  font-size: 4rem;
+  font-size: 1.6rem;
 }
 .order header a h2 {
-  font-size: 0.8rem;
+  font-size: 0.6rem;
+  width: 40px;
 }
 .order .order-details {
   height: 100%;
@@ -442,34 +472,27 @@ section > i {
   flex-wrap: nowrap;
   flex-direction: row;
   align-content: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 }
 .order .order-details ul {
-  max-height: 15vh;
   list-style: none;
   padding: 0;
   margin: 0;
-  display: inline-flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 .order .order-details ul li {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
-  color: var(--text-color);
-  text-decoration: none;
-  position: relative;
+  text-align: center;
   margin: 0.2rem;
-  max-height: 15vh;
 }
 .order .order-details ul li img {
-  height: 40%;
-  width: 40%;
-  position: relative;
+  width: 50px;
 }
 .order .order-details ul li h6 {
   max-width: 40px;
@@ -480,30 +503,34 @@ section > i {
   font-size: 0.6rem;
 }
 .order .order-details ul li p {
-  font-size: 0.5rem;
+  font-size: 0.8rem;
 }
 .order footer {
   width: 10%;
+  height: clamp(200px, 50%, 300px);
   float: right;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
   padding: 0.5rem;
+  position: relative;
 }
 .order footer .btn-specular {
   right: 0;
 }
 .order footer span {
-  display: inline-block;
+  position: absolute;
+  top: 40px;
+  right: 5px;
 }
 .order footer span p:first-child {
   display: block;
-  font-size: 0.4rem;
+  font-size: 0.6rem;
 }
 .order footer span p {
   display: block;
-  font-size: 0.6rem;
+  font-size: 1rem;
 }
 
 .shipping {
@@ -523,14 +550,17 @@ section > i {
   left: 0;
 }
 .shipping header span h4 {
-  font-size: 0.6rem;
+  font-size: 0.8rem;
+}
+.shipping header span h4::before {
+  content: "#";
 }
 .shipping header span p {
-  font-size: 0.4rem;
+  font-size: 0.7rem;
 }
 .shipping header i {
   margin-left: 0.5rem;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 .shipping .tracking {
   margin-top: 0.5rem;
@@ -542,7 +572,8 @@ section > i {
   flex-wrap: nowrap;
 }
 .shipping .tracking p {
-  font-size: 0.3rem;
+  font-size: 0.6rem;
+  margin: 0.2rem;
 }
 .shipping .tracking .progress-bar {
   margin-left: 1rem;
@@ -581,11 +612,11 @@ section > i {
   border: 0.2px solid var(--selected-color);
 }
 .shipping .tracking .progress-bar .bar .progress p {
-  font-size: 0.4rem;
+  font-size: 0.6rem;
   position: absolute;
-  bottom: -10px;
-  min-width: 40px;
-  right: -15px;
+  bottom: -20px;
+  min-width: 60px;
+  right: -30px;
 }
 @keyframes progress {
   0% {
@@ -610,12 +641,14 @@ section > i {
   width: 50%;
   cursor: s-resize;
 }
-.shipping footer .toggle.active {
+.shipping footer .toggle.expanded {
   cursor: n-resize;
 }
-.shipping footer .toggle.active p {
+.shipping footer .toggle.expanded p {
   visibility: visible;
   opacity: 1;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 .shipping footer .toggle span {
   display: inline-flex;
@@ -625,15 +658,18 @@ section > i {
 .shipping footer .toggle span p {
   visibility: visible;
   opacity: 1;
-  font-size: 0.4rem;
+  font-size: 0.8rem;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 .shipping footer .toggle span i {
-  font-size: 0.6rem;
+  font-size: 1.2rem;
 }
 .shipping footer .toggle p {
-  font-size: 0.3rem;
+  font-size: 0.6rem;
   visibility: hidden;
   opacity: 0;
+  height: 0;
 }
 
 .cart {
@@ -662,12 +698,12 @@ section > i {
   background-color: inherit;
 }
 .cart header .controls button i {
-  font-size: 1.2rem;
+  font-size: clamp(1.5rem, 3vw, 3rem);
 }
 .cart header .controls select {
   width: 100%;
   height: 100%;
-  font-size: 0.6rem;
+  font-size: clamp(1.5rem, 3vw, 3rem);
   border: 0;
   border-radius: 5px;
   background-color: var(--background-color);
@@ -697,7 +733,7 @@ section > i {
 .search-card {
   position: relative;
   height: clamp(150px, 34%, 250px);
-  width: clamp(150px, 25%, 200px);
+  width: 350px;
   background-color: var(--background-color);
   border-radius: var(--border-radius);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -715,7 +751,7 @@ section > i {
   padding: 5px;
 }
 .search-card .vinyl-cover {
-  width: clamp(80px, 80%, 150px);
+  width: 80%;
 }
 .search-card .vinyl-info {
   width: 80%;
@@ -736,11 +772,12 @@ section > i {
   padding: 7px;
   font-weight: bold;
   display: block;
+  width: 100%;
 }
 
 @font-face {
   font-family: "parkinsons";
-  src: url("/fonts/Parkinsans-Regular.ttf");
+  src: url("../fonts/Parkinsans-Regular.ttf");
   font-weight: normal;
   font-style: normal;
 }
@@ -752,9 +789,11 @@ section > i {
 }
 
 a {
+  cursor: pointer;
   -webkit-user-select: none !important;
      -moz-user-select: none !important;
           user-select: none !important;
+  color: var(--text-color);
 }
 
 body {
@@ -768,12 +807,12 @@ body > header {
   padding: 1rem 2rem;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
 }
 body > header p {
   font-size: 0.8rem;
 }
 body > footer {
+  margin-top: 2rem;
   background-color: var(--primary-color);
   color: #fff;
   text-align: center;
@@ -792,6 +831,11 @@ body > footer ul li {
   justify-content: center;
   align-items: center;
   padding: 1rem 0;
+}
+body > footer ul li .div {
+  width: 80%;
+  border-top: 1px solid #fff;
+  margin: 1rem 0;
 }
 body > footer ul li .darkmode {
   margin-top: 1rem;
@@ -894,7 +938,7 @@ body > footer ul li > ul li a p {
 
 nav {
   position: sticky;
-  top: 1rem;
+  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -905,8 +949,7 @@ nav ul {
   display: flex;
   list-style: none;
   padding: 1.2rem;
-  border-radius: 50px;
-  width: clamp(360px, 90%, 760px);
+  width: clamp(360px, 100%, 760px);
   height: 90px;
   display: inline-flex;
   justify-content: space-between;
@@ -922,6 +965,9 @@ nav ul li a, nav ul li button {
   padding: 0 1rem;
   font-size: 2.6rem;
   transition: all 0.3s ease-in-out;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
 }
 nav ul li a:hover div.vinyl, nav ul li a:focus div.vinyl, nav ul li button:hover div.vinyl, nav ul li button:focus div.vinyl {
   border-color: var(--selected-color);
@@ -931,8 +977,6 @@ nav ul li a:hover i, nav ul li a:focus i, nav ul li button:hover i, nav ul li bu
 }
 nav ul li a div.vinyl, nav ul li button div.vinyl {
   scale: 0.3;
-  background-image: url("./memoji.png");
-  animation: spin 3s linear infinite;
 }
 nav ul li a i, nav ul li button i {
   color: #fff;
@@ -1071,17 +1115,61 @@ main {
   align-items: center;
   min-height: 70dvh;
 }
-main section > h1 {
-  font-size: 2.6rem;
-  margin-bottom: 1rem;
-}
-
-section {
+main section, main form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding: 2rem;
+}
+main section > h1, main form > h1 {
+  font-size: 6vw;
+  margin-bottom: 1rem;
+}
+main section > h2, main form > h2 {
+  font-size: 5vw;
+  margin-bottom: 1rem;
+}
+main section > h3, main form > h3 {
+  font-size: 4vw;
+  margin-bottom: 1rem;
+}
+main section a, main form a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.6rem;
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: baseline;
+  padding: 0.5rem 1rem;
+}
+main section a:hover, main form a:hover {
+  color: var(--selected-color);
+}
+main section a h6, main form a h6 {
+  font-size: 1.6rem;
+  margin-left: 1rem;
+}
+main section a h6 i, main form a h6 i {
+  font-size: 2.2rem;
+}
+main section a p, main form a p {
+  font-size: 1rem;
+  margin-left: 1rem;
+  text-align: center;
+  width: 200px;
+  border: 4px solid var(--primary-color);
+  padding: 0.5rem;
+  border-radius: 50px;
+}
+main section p, main form p {
+  font-size: 4vw;
+}
+
+.search-content {
+  min-height: 100dvh;
 }
 
 .container {
@@ -1099,7 +1187,8 @@ section {
 
 .div {
   width: 80%;
-  border-top: 1px solid #fff;
+  border-top: 1px solid var(--text-color);
+  margin: 1rem 0;
 }
 
 .active {
@@ -1107,21 +1196,64 @@ section {
   opacity: 1 !important;
 }
 
+.error {
+  color: var(--error-color);
+  border: 2px solid var(--error-color);
+}
+
+.delete:hover {
+  color: var(--error-color);
+}
+
+.stars:hover {
+  color: yellow;
+  animation: on-hover-spin 1.2s infinite;
+}
+
+@keyframes on-hover-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  60% {
+    transform: rotate(360deg);
+    scale: 1.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    scale: 1.8;
+  }
+}
+.no-margin {
+  margin: 0;
+}
+
 @media (min-width: 768px) {
-  nav ul li a:hover p {
+  nav {
+    top: 1rem;
+  }
+  nav ul {
+    border-radius: 50px;
+  }
+  nav ul li a:hover p, nav ul li button:hover p {
     color: var(--selected-color);
   }
-  nav ul li a div.vinyl + p {
+  nav ul li a div.vinyl + p, nav ul li button div.vinyl + p {
     z-index: 1;
     position: relative;
     left: -30px;
   }
-  nav ul li a p {
+  nav ul li a p, nav ul li button p {
     display: block;
     font-size: 1.6rem;
     margin-left: 1rem;
   }
   footer {
     font-size: 1.6rem;
+  }
+  main section .card p, main form .card p {
+    font-size: 2rem;
+  }
+  .search-content {
+    min-height: 60dvh;
   }
 }
