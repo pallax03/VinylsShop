@@ -20,18 +20,21 @@
     <?php include COMPONENTS . '/nav.php' ?>
 
     <main id="main-content" aria-hidden="false">
-        <!-- <?php include $page ?>  FACCIO UNA PROVA PER LO STILE DI VINYL-->
-        <div class="card">
-            <img class="vinyl-cover" src="resources/img/albums/sempiternal.webp"/>
-            <p class="vinyl-title">Sempiternal</p>
-            <p class="vinyl-artist">Bring Me the Horizon</p>
-            <p class="vinyl-genre">Rock</p>
-            <p class="vinyl-cost">$20.00</p>
+        <!-- <?php include $page ?> -->
+        <div class="search-card">
+            <p class="vinyl-title">When we fall asleep where do we go?</p>
+            <div class="cover-container">
+                <img class="vinyl-cover" src="resources/img/albums/fallasleep.webp"/>
+            </div>
+            <div class="vinyl-info">
+                <p class="vinyl-artist">billie eillish</p>
+                <p class="vinyl-genre">#pop</p>
+            </div>
+            <a href="#" class="add-cart">Add to cart - $20.00</a>
         </div>
     </main>
 
     <section id="sec-search_content" aria-hidden="true">
-        
     </section>
     
     <?php include COMPONENTS . '/footer.php' ?>
