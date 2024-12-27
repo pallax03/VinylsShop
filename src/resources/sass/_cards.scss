@@ -430,6 +430,11 @@ $preview-cover-size: 80%;
         text-overflow: ellipsis;
         margin: .8rem;
     }
+
+    .vinyl-preview {
+        width: 100%;
+        z-index: 0;
+    }
     
     .cover-container {
         display: block;
@@ -462,5 +467,6 @@ $preview-cover-size: 80%;
         font-weight: bold;
         display: block;
         width: 100%;
+        z-index: 1;
     }
 }

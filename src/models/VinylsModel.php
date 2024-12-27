@@ -84,7 +84,6 @@ final class VinylsModel {
      * @return json containing details on the vinyl
      */
     public function getVinylDetails($id) {
-        $details = [];
         // query to get vinyls info
         $vinyl = "SELECT 
             v.id_vinyl,
@@ -112,31 +111,15 @@ final class VinylsModel {
             JOIN tracks t ON t.id_track = ta.id_track
             WHERE a.id_album = ?";
         // prepare statement
-        $result = $this->db->executeResults($vinyl, 'i', $id);
-        if (!empty($result)):
+        $result["details"] = $this->db->executeResults($vinyl, "i", $id)[0];
+        if ($result):
             // store id_album for the next query
-            $album =  $result["id_album"];
-            // store the results
-            $details["id"] = $result["id_vinyl"];
-            $details["cost"] = $result["cost"];
-            $details["rpm"] = $result["rpm"];
-            $details["inch"] = $result["inch"];
-            $details["type"] = $result["type"];
-            $details["title"] = $result["title"];
-            $details["release_date"] = $result["release_date"];
-            $details["cover"] = $result["cover"];
-            $details["artist"] = $result["artist"];
+            $album =  $result["details"]["id_album"];
+            // prepare second statement
+            $result["tracks"] = $this->db->executeResults($tracks, 'i', $album);
         endif;
-        // prepare second statement
-        $result = $this->db->executeResults($tracks, 'i', $album);
-        // create a list to store all (title, duration) tracks
-        $track_list = [];
-        foreach ($result as $row):
-            array_push($track_list, [$row->title, $row->duration]);
-        endforeach;
-        // also add tracks to details
-        $details["tracks"] = $track_list;
-        return $details;
+        
+        return $result;
     }
 
     /**
@@ -206,9 +189,7 @@ final class VinylsModel {
     }
 
     public function getSuggested($id) {
-        $suggested = [];
         $infos = "SELECT
-            v.id_vinyl
             a.genre,
             ar.name AS artist
             FROM
@@ -228,18 +209,10 @@ final class VinylsModel {
             AND v.id_vinyl <> ?
             LIMIT 6";
         // execute query
-        $result = $this->db->executeResults($infos, 'i', $id);
+        $info = $this->db->executeResults($infos, "i", $id)[0];
         // store infos
-        if (!empty($result)):
-            $result = $this->db->executeResults($vinyls, 'ssi', $result["genre"], $result["artist"], $id);
-            foreach($result as $row):
-                $vinyl = [];
-                $vinyl["cover"] = $row["cover"];
-                $vinyl["title"] = $row["title"];
-                array_push($suggested, $vinyl);
-            endforeach;
-        endif;
-        return $suggested;
+        $result = $this->db->executeResults($vinyls, "ssi", $info["genre"], $info["artist"], $id);
+        return $result;
     }
 }
 ?>

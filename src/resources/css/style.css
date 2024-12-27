@@ -750,6 +750,10 @@ section > i {
   text-overflow: ellipsis;
   margin: 0.8rem;
 }
+.search-card .vinyl-preview {
+  width: 100%;
+  z-index: 0;
+}
 .search-card .cover-container {
   display: block;
   padding: 5px;
@@ -777,6 +781,7 @@ section > i {
   font-weight: bold;
   display: block;
   width: 100%;
+  z-index: 1;
 }
 
 @font-face {

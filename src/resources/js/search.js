@@ -45,6 +45,7 @@ function updateResults(results) {
             Array.prototype.forEach.call(results.message, result => {
                 const clone = template.content.cloneNode(true);
                 clone.querySelector(".vinyl-cover").src = "/resources/img/albums/" + result.cover;
+                clone.querySelector(".vinyl-preview").href = "/vinyls?id=" + result.id_vinyl;
                 clone.querySelector(".vinyl-title").textContent = result.title;
                 clone.querySelector(".vinyl-title").title = result.title;
                 clone.querySelector(".vinyl-artist").textContent = result.artist;
