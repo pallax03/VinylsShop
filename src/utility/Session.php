@@ -49,4 +49,16 @@ class Session {
         return $id_user ? self::getUser() == $id_user : self::isLogged();
     }
 
+    public static function getCard() {
+        return self::isSet('Card') ? self::get('Card') : false;
+    }
+
+    public static function setToCart($vinyl, $quantity) {
+        if (!self::isSet('Cart')) {
+            self::set('Cart', []);
+        }
+        $cart = self::get('Cart');
+        $cart[$vinyl] = $quantity;
+        self::set('Cart', $cart);
+    }
 }
