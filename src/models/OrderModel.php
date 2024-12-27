@@ -86,6 +86,10 @@ final class OrderModel
                     o.order_date,
                     o.total_cost,
                     o.order_status,
+                    o.id_card,
+                    c.card_number,
+                    o.discount_code,
+                    p.percentage AS discount_percentage,
                     s.tracking_number,
                     s.shipment_date,
                     s.delivery_date,
@@ -100,20 +104,29 @@ final class OrderModel
                 FROM `vinylsshop`.`orders` o
                 JOIN `vinylsshop`.`shipments` s ON o.id_order = s.id_order
                 JOIN `vinylsshop`.`addresses` ad ON s.id_address = ad.id_address
+                LEFT JOIN `vinylsshop`.`cards` c ON o.id_card = c.id_card
+                LEFT JOIN `vinylsshop`.`coupons` p ON o.discount_code = p.discount_code
                 WHERE o.id_user = ? AND o.id_order = ?;",
             'ii',
             $id_user ?? Session::getUser(),
             $id_order
-        );
+        )[0];
 
         $order['vinyls'] = Database::getInstance()->executeResults(
             "SELECT 
+                    co.quantity,
                     v.cost AS price,
-                    a.title AS album_title,
-                    a.cover AS album_cover
+                    v.type
+                    v.rpm
+                    v.inch
+                    a.genre
+                    a.title
+                    a.cover
+                    t.name AS artist_name
                 FROM `vinylsshop`.`checkouts` co
                 JOIN `vinylsshop`.`vinyls` v ON co.id_vinyl = v.id_vinyl
                 JOIN `vinylsshop`.`albums` a ON v.id_album = a.id_album
+                JOIN `vinylsshop`.`artists` t ON v.id_artist = t.id_artist
                 WHERE co.id_order = ?;",
             'i',
             $id_order
