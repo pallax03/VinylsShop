@@ -77,8 +77,6 @@ $preview-cover-size: 80%;
     }
 }
 
-
-
 .order {
     display: inline-block;
     
@@ -427,6 +425,10 @@ $preview-cover-size: 80%;
 
     .vinyl-title {
         font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: .8rem;
     }
     
     .cover-container {

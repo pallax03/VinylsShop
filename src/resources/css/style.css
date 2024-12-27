@@ -745,6 +745,10 @@ section > i {
 }
 .search-card .vinyl-title {
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0.8rem;
 }
 .search-card .cover-container {
   display: block;

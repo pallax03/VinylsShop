@@ -46,6 +46,7 @@ function updateResults(results) {
                 const clone = template.content.cloneNode(true);
                 clone.querySelector(".vinyl-cover").src = "/resources/img/albums/" + result.cover;
                 clone.querySelector(".vinyl-title").textContent = result.title;
+                clone.querySelector(".vinyl-title").title = result.title;
                 clone.querySelector(".vinyl-artist").textContent = result.artist;
                 clone.querySelector(".vinyl-genre").textContent = "#" + result.genre;
                 clone.querySelector(".add-cart").textContent = "Add to cart - €" + result.cost;
