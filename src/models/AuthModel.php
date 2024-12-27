@@ -77,7 +77,7 @@ final class AuthModel {
 
     public function fetchUser() {
         return Database::getInstance()->executeResults(
-            "SELECT * FROM `Users` WHERE id_user = ?",
+            "SELECT * FROM `users` WHERE id_user = ?",
             'i',
             Session::getUser()
         );
@@ -89,7 +89,7 @@ final class AuthModel {
 
     public function checkUserMail($mail) {
         return Database::getInstance()->executeResults(
-            "SELECT * FROM `Users` WHERE mail = ?",
+            "SELECT * FROM `users` WHERE mail = ?",
             's',
             $mail
         ) != [];
@@ -97,7 +97,7 @@ final class AuthModel {
 
     public function login($mail, $password, $remember) {
         $result = Database::getInstance()->executeResults(
-            "SELECT * FROM `Users` WHERE `mail` = ? AND `password` = ?",
+            "SELECT * FROM `users` WHERE `mail` = ? AND `password` = ?",
             'ss',
             $mail, $this->encryptPassword($password)
         );
@@ -140,7 +140,7 @@ final class AuthModel {
         }
 
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `Users` (mail, password, su, newsletter) VALUES (?, ?, ?, ?)",
+            "INSERT INTO `users` (mail, password, su, newsletter) VALUES (?, ?, ?, ?)",
             'ssii',
             $mail, $this->encryptPassword($password), $su ?? 0, $newsletter ?? 0
         );
@@ -153,7 +153,7 @@ final class AuthModel {
 
         $newPassword = bin2hex(random_bytes(8));
         $result = Database::getInstance()->executeQueryAffectRows(
-            "UPDATE `Users` SET password = ? WHERE mail = ?",
+            "UPDATE `users` SET password = ? WHERE mail = ?",
             'ss',
             $this->encryptPassword($newPassword), $mail
         );

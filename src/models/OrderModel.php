@@ -24,9 +24,9 @@ final class OrderModel
                     ad.city AS address_city,
                     ad.postal_code AS address_postal_code,
                     ad.street_number AS address_street_number
-                FROM `VinylsShop`.`Orders` o
-                JOIN `VinylsShop`.`Shipments` s ON o.id_order = s.id_order
-                JOIN `VinylsShop`.`Addresses` ad ON s.id_address = ad.id_address
+                FROM `vinylsshop`.`orders` o
+                JOIN `vinylsshop`.`shipments` s ON o.id_order = s.id_order
+                JOIN `vinylsshop`.`addresses` ad ON s.id_address = ad.id_address
                 WHERE o.id_user = ?
                 ORDER BY o.order_date DESC;",
             'i',
@@ -39,9 +39,9 @@ final class OrderModel
                         v.cost AS price,
                         a.title AS album_title,
                         a.cover AS album_cover
-                    FROM `VinylsShop`.`Checkouts` co
-                    JOIN `VinylsShop`.`Vinyls` v ON co.id_vinyl = v.id_vinyl
-                    JOIN `VinylsShop`.`Albums` a ON v.id_album = a.id_album
+                    FROM `vinylsshop`.`checkouts` co
+                    JOIN `vinylsshop`.`vinyls` v ON co.id_vinyl = v.id_vinyl
+                    JOIN `vinylsshop`.`albums` a ON v.id_album = a.id_album
                     WHERE co.id_order = ?;",
                 'i',
                 $order['id_order']

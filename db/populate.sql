@@ -1,5 +1,5 @@
 -- Insert artits
-INSERT IGNORE INTO `VinylsShop`.`Artists` (`id_artist`, `name`)
+INSERT IGNORE INTO `vinylsshop`.`artists` (`id_artist`, `name`)
 VALUES 
 (1, 'Various Artists'),
 (2, 'My Chemical Romance'),
@@ -9,7 +9,7 @@ VALUES
 (6, 'Toby Fox');
 
 -- Insert albums
-INSERT IGNORE INTO `VinylsShop`.`Albums` (`id_album`, `title`, `genre`, `cover`, `release_date`, `id_artist`)
+INSERT IGNORE INTO `vinylsshop`.`albums` (`id_album`, `title`, `genre`, `cover`, `release_date`, `id_artist`)
 VALUES
 (1, 'The Black Parade', 'Rock', 'blackparade.webp', '2006-10-23', 2),
 (2, 'Dont Smile at Me', 'Pop', 'dontsmileatme.webp', '2017-08-11', 3),
@@ -21,52 +21,52 @@ VALUES
 (8, 'Undertale Soundtrack', 'Soundtrack', 'undertale.webp', '2015-09-15', 6);
 
 -- Insert tracks
--- Insert multiple tracks for each album in the Tracks table
-INSERT IGNORE INTO `VinylsShop`.`Tracks` (`id_track`, `title`, `duration`)
+-- Insert multiple tracks for each album in the tracks table
+INSERT IGNORE INTO `vinylsshop`.`tracks` (`id_track`, `title`, `duration`)
 VALUES
--- Tracks for "The Black Parade" by My Chemical Romance (2006)
+-- tracks for "The Black Parade" by My Chemical Romance (2006)
 (1, 'Welcome to the Black Parade', '5:11'),
 (2, 'I Don’t Love You', '3:59'),
 (3, 'Cancer', '2:23'),
 (4, 'Famous Last Words', '4:59'),
 (5, 'Dead!', '3:15'),
 
--- Tracks for "Dont Smile at Me" by Billie Eilish (2017)
+-- tracks for "Dont Smile at Me" by Billie Eilish (2017)
 (6, 'Copycat', '3:14'),
 (7, 'Ocean Eyes', '3:20'),
 (8, 'Idontwannabeyouanymore', '3:23'),
 (9, 'My Boy', '2:51'),
 (10, 'Watch', '2:57'),
 
--- Tracks for "When We All Fall Asleep, Where Do We Go?" by Billie Eilish (2019)
+-- tracks for "When We All Fall Asleep, Where Do We Go?" by Billie Eilish (2019)
 (11, 'Bad Guy', '3:14'),
 (12, 'Bury a Friend', '3:13'),
 (13, 'When the Party’s Over', '3:16'),
 (14, 'All the Good Girls Go to Hell', '2:48'),
 (15, 'You Should See Me in a Crown', '3:00'),
 
--- Tracks for "Fever Dream" by Palaye Royale (2022)
+-- tracks for "Fever Dream" by Palaye Royale (2022)
 (16, 'Fever Dream', '4:21'),
 (17, 'No Love in LA', '3:39'),
 (18, 'Broken', '3:10'),
 (19, 'Paranoid', '3:31'),
 (20, 'Eternal Life', '3:18'),
 
--- Tracks for "Post Human: Survival Horror" by Bring Me The Horizon (2020)
+-- tracks for "Post Human: Survival Horror" by Bring Me The Horizon (2020)
 (21, 'Parasite Eve', '4:51'),
 (22, 'Teardrops', '3:35'),
 (23, 'Dear Diary,', '2:45'),
 (24, 'Obey', '3:41'),
 (25, 'Kingslayer', '4:09'),
 
--- Tracks for "Sempiternal" by Bring Me The Horizon (2013)
+-- tracks for "Sempiternal" by Bring Me The Horizon (2013)
 (26, 'Shadow Moses', '3:46'),
 (27, 'Sleepwalking', '3:50'),
 (28, 'Can You Feel My Heart', '3:48'),
 (29, 'Go to Hell, for Heaven’s Sake', '4:03'),
 (30, 'Empire (Let Them Sing)', '3:45'),
 
--- Tracks for "Undertale Soundtrack" by Toby Fox (2015)
+-- tracks for "Undertale Soundtrack" by Toby Fox (2015)
 (31, 'Undertale', '3:45'),
 (32, 'His Theme', '2:05'),
 (33, 'Megalovania', '2:36'),
@@ -75,8 +75,8 @@ VALUES
 
 
 -- Insert tracks in album
--- Associate tracks with corresponding albums in the AlbumsTracks table
-INSERT IGNORE INTO `VinylsShop`.`AlbumsTracks` (`id_album`, `id_track`)
+-- Associate tracks with corresponding albums in the albumstracks table
+INSERT IGNORE INTO `vinylsshop`.`albumstracks` (`id_album`, `id_track`)
 VALUES
 -- The Black Parade (2006) by My Chemical Romance
 (1, 1), -- Welcome to the Black Parade
@@ -128,7 +128,7 @@ VALUES
 (8, 35); -- Asgore
 
 -- Insert vinyls
-INSERT IGNORE INTO `VinylsShop`.`Vinyls` (`id_vinyl`, `cost`, `rpm`, `inch`, `quantity`, `type`, `id_album`)
+INSERT IGNORE INTO `vinylsshop`.`vinyls` (`id_vinyl`, `cost`, `rpm`, `inch`, `quantity`, `type`, `id_album`)
 VALUES
 (1, 20.00, 33, 12, 10, 'LP', 1),
 (2, 20.00, 33, 12, 10, 'LP', 2),
@@ -139,8 +139,8 @@ VALUES
 (7, 20.00, 33, 12, 10, 'LP', 7),
 (8, 20.00, 33, 12, 10, 'LP', 8);
 
--- Insert Coupons
-INSERT IGNORE INTO `VinylsShop`.`Coupons` (`discount_code`, `percentage`, `valid_from`, `valid_until`)
+-- Insert coupons
+INSERT IGNORE INTO `vinylsshop`.`coupons` (`discount_code`, `percentage`, `valid_from`, `valid_until`)
 VALUES
 ('HALLOWEEN10', 0.1, '2024-10-01', '2024-10-31'),
 ('BLACKFRIDAY70', 0.7, '2024-11-20', '2024-11-30'),
@@ -149,46 +149,47 @@ VALUES
 
 -- USER 2 
 -- Insert addresses
-INSERT IGNORE INTO `VinylsShop`.`Addresses` (`name`, `city`, `postal_code`, `street_number`, `id_user`)
+INSERT IGNORE INTO `vinylsshop`.`addresses` (`name`, `city`, `postal_code`, `street_number`, `id_user`)
 VALUES
 ('Alex Mazzoni', 'Milano', '20100', 'Parco della vittoria 200', 2),
 ('Samuele Casadei', 'Roma', '20100', 'Via Colazione 32', 2);
 
 -- Insert cards
-INSERT IGNORE INTO `VinylsShop`.`Cards` (`card_number`, `cvc`, `exp_date`, `id_user`)
+INSERT IGNORE INTO `vinylsshop`.`cards` (`card_number`, `cvc`, `exp_date`, `id_user`)
 VALUES
 ('1234567812345678', '12/27', '123', 2),
 ('8765432187654321', '01/26', '321', 2);
 
-INSERT IGNORE INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`, `default_address`)
+INSERT IGNORE INTO `vinylsshop`.`userpreferences` (`id_user`, `default_card`, `default_address`)
 VALUES
 (2, 2, 1);
 
 -- Insert carts
-INSERT IGNORE INTO `VinylsShop`.`Carts` (`id_vinyl`, `id_user`, `quantity`)
+INSERT IGNORE INTO `vinylsshop`.`carts` (`id_vinyl`, `id_user`, `quantity`)
 VALUES
 (5, 2, 10),
 (6, 2, 3);
 
 -- Insert orders
-INSERT IGNORE INTO `VinylsShop`.`Orders` (`order_date`, `total_cost`, `id_card`, `order_status`, `discount_code`, `id_user`)
+INSERT IGNORE INTO `vinylsshop`.`orders` (`order_date`, `total_cost`, `id_card`, `order_status`, `discount_code`, `id_user`)
 VALUES
 ('2024-10-29', 74.00, 1, 'Completed', 'HALLOWEEN10', 2),
 ('2024-11-21', 34.00, NULL, 'Completed', 'BLACKFRIDAY70', 2),
 ('2024-12-06', 85.00, 2, 'Paid', 'CHRISTMAS20', 2);
 
 
--- Insert Checkouts
-INSERT IGNORE INTO `VinylsShop`.`Checkouts` (`id_order`, `id_vinyl`, `quantity`)
+-- Insert checkouts
+INSERT IGNORE INTO `vinylsshop`.`checkouts` (`id_order`, `id_vinyl`, `quantity`)
 VALUES
 (1, 1, 1),
+(1, 3, 1),
 (1, 2, 2),
 (2, 3, 4),
 (3, 4, 2),
 (3, 1, 3);
 
 -- Insert shipments
-INSERT IGNORE INTO `VinylsShop`.`Shipments` (`tracking_number`, `shipment_date`, `delivery_date`, `shipment_status`, `courier`, `notes`, `cost`, `id_order`, `id_address`)
+INSERT IGNORE INTO `vinylsshop`.`shipments` (`tracking_number`, `shipment_date`, `delivery_date`, `shipment_status`, `courier`, `notes`, `cost`, `id_order`, `id_address`)
 VALUES
 ('1234567890', '2024-10-29', '2024-11-02', 'Delivered', 'UPS', 'attenti al lupo', 20.00, 1, 1),
 ('0987654321', '2024-11-21', '2024-11-24', 'Delivered', 'DHL', 'da consegnare sul pianerottolo', 10.00, 2, 1),

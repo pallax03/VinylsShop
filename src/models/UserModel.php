@@ -12,7 +12,7 @@ final class UserModel {
         }
 
         return Database::getInstance()->executeResults(
-            "SELECT id_user, mail FROM `VinylsShop`.`Users`"
+            "SELECT id_user, mail FROM `vinylsshop`.`users`"
         );
     }
 
@@ -39,10 +39,10 @@ final class UserModel {
                     c.card_number, 
                     up.default_address, 
                     a.name, a.street_number, a.city, a.postal_code
-                FROM `VinylsShop`.`Users` u
-                LEFT JOIN `VinylsShop`.`UserPreferences` up ON u.id_user = up.id_user
-                LEFT JOIN `VinylsShop`.`Cards` c ON up.default_card = c.id_card
-                LEFT JOIN `VinylsShop`.`Addresses` a ON up.default_address = a.id_address
+                FROM `vinylsshop`.`users` u
+                LEFT JOIN `vinylsshop`.`userpreferences` up ON u.id_user = up.id_user
+                LEFT JOIN `vinylsshop`.`cards` c ON up.default_card = c.id_card
+                LEFT JOIN `vinylsshop`.`addresses` a ON up.default_address = a.id_address
                 WHERE u.id_user = ?;",
             'i',
             $id_user ?? Session::getUser()
@@ -65,7 +65,7 @@ final class UserModel {
         }
 
         return Database::getInstance()->executeQueryAffectRows(
-            "UPDATE `VinylsShop`.`Users` SET"
+            "UPDATE `vinylsshop`.`users` SET"
                 . ($newsletter ? "newsletter = ?, " : "")
                 . " WHERE id_user = ?;",
             'ii',
@@ -89,7 +89,7 @@ final class UserModel {
         }
 
         return Database::getInstance()->executeQueryAffectRows(
-            "DELETE FROM `Users` WHERE id_user = ?",
+            "DELETE FROM `users` WHERE id_user = ?",
             'i',
             $id_user ?? Session::getUser()
         );
@@ -115,7 +115,7 @@ final class UserModel {
                     a.street_number, 
                     a.city, 
                     a.postal_code
-                FROM `VinylsShop`.`Addresses` a
+                FROM `vinylsshop`.`addresses` a
                 WHERE a.id_user = ? " . ($id_address ? "AND a.id_address = ?" : "") . ";",
             'ii',
             $id_user ?? Session::getUser(),
@@ -138,7 +138,7 @@ final class UserModel {
         }
 
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `VinylsShop`.`Addresses` (`id_user`, `name`, `street_number`, `city`, `postal_code`) VALUES (?, ?, ?, ?, ?);",
+            "INSERT INTO `vinylsshop`.`addresses` (`id_user`, `name`, `street_number`, `city`, `postal_code`) VALUES (?, ?, ?, ?, ?);",
             'issss',
             $id_user ?? Session::getUser(),
             $name, $street_number, $city, $postal_code
@@ -165,14 +165,14 @@ final class UserModel {
 
         Database::getInstance()->setHandler(null); // reset the handler to avoid the error
         $result = Database::getInstance()->executeQueryAffectRows(
-            "DELETE FROM `Addresses` WHERE id_user = ? AND id_address = ?",
+            "DELETE FROM `addresses` WHERE id_user = ? AND id_address = ?",
             'ii',
             $id_user ?? Session::getUser(),
             $id_address
         );
         if (!$result) {
             $result = Database::getInstance()->executeQueryAffectRows(
-                "UPDATE `VinylsShop`.`Addresses`
+                "UPDATE `vinylsshop`.`addresses`
                     SET `id_user` = NULL
                     WHERE `id_user` = ? AND `id_address` = ?;",
                 'ii',
@@ -200,7 +200,7 @@ final class UserModel {
         return Database::getInstance()->executeResults(
             "SELECT c.id_card, 
                     c.card_number
-                FROM `VinylsShop`.`Cards` c
+                FROM `vinylsshop`.`cards` c
                 WHERE c.id_user = ? " . ($id_card ? "AND c.id_card = ?" : "") . ";",
             'ii',
             $id_user ?? Session::getUser(),
@@ -222,7 +222,7 @@ final class UserModel {
         }
 
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `VinylsShop`.`Cards` (`id_user`, `card_number`, `exp_date`, `cvc`) VALUES (?, ?, ?, ?);",
+            "INSERT INTO `vinylsshop`.`cards` (`id_user`, `card_number`, `exp_date`, `cvc`) VALUES (?, ?, ?, ?);",
             'isss',
             Session::getUser(),
             $card_number, $exp_date, $cvc
@@ -250,7 +250,7 @@ final class UserModel {
 
         Database::getInstance()->setHandler(null); // reset the handler to avoid the error
         $result = Database::getInstance()->executeQueryAffectRows(
-            "DELETE FROM `Cards` WHERE id_user = ? AND id_card = ?",
+            "DELETE FROM `cards` WHERE id_user = ? AND id_card = ?",
             'ii',
             $id_user ?? Session::getUser(),
             $id_card
@@ -258,7 +258,7 @@ final class UserModel {
 
         if (!$result) {
             $result = Database::getInstance()->executeQueryAffectRows(
-                "UPDATE `VinylsShop`.`Cards`
+                "UPDATE `vinylsshop`.`cards`
                     SET `id_user` = NULL
                     WHERE `id_user` = ? AND `id_card` = ?;",
                 'ii',
@@ -278,7 +278,7 @@ final class UserModel {
      */
     private function createDefaults($id_user = null) {
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT IGNORE INTO `VinylsShop`.`UserPreferences` (`id_user`) VALUES (?)",
+            "INSERT IGNORE INTO `vinylsshop`.`userpreferences` (`id_user`) VALUES (?)",
             'i',
             $id_user ?? Session::getUser()
         );
@@ -292,7 +292,7 @@ final class UserModel {
      */
     private function setDefaultCard($id_card) {
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`)
+            "INSERT INTO `vinylsshop`.`userpreferences` (`id_user`, `default_card`)
                 VALUES (?, ?)
                 ON DUPLICATE KEY UPDATE
                 `default_card` = VALUES(`default_card`);",
@@ -310,7 +310,7 @@ final class UserModel {
      */
     private function setDefaultAddress($id_address) {
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_address`)
+            "INSERT INTO `vinylsshop`.`userpreferences` (`id_user`, `default_address`)
                 VALUES (?, ?)
                 ON DUPLICATE KEY UPDATE
                 `default_address` = VALUES(`default_address`);",
@@ -334,7 +334,7 @@ final class UserModel {
 
         if ($id_card !== null && $id_address !== null) {
             return Database::getInstance()->executeQueryAffectRows(
-                "INSERT INTO `VinylsShop`.`UserPreferences` (`id_user`, `default_card`, `default_address`)
+                "INSERT INTO `vinylsshop`.`userpreferences` (`id_user`, `default_card`, `default_address`)
                     VALUES (?, ?, ?)
                     ON DUPLICATE KEY UPDATE
                     `default_card` = VALUES(`default_card`),
