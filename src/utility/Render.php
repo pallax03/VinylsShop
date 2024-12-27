@@ -23,7 +23,7 @@
         <?php include $page ?>
     </main>
 
-    <section id="sec-search_content" aria-hidden="true">
+    <section id="sec-search_content" class="search-content" aria-hidden="true">
     </section>
     
     <?php include COMPONENTS . '/footer.php' ?>
