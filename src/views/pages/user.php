@@ -27,9 +27,10 @@
     <section class="cards">
         <?php
         if (isset($orders) && count($orders) > 0) {
-            echo "<h3>Orders</h3>";
+            $n = 0;
             foreach ($orders as $order) {
-                include COMPONENTS . '/cards/order.php';
+                $n++;
+                include COMPONENTS . 'cards/order.php';
             }
         } else {
             echo "<h3>No orders found!</h3>";

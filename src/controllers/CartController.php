@@ -4,6 +4,7 @@ class CartController extends Controller {
     private $auth_model = null;
     private $user_model = null;
     private $vinyls_model = null;
+    private $cart_model = null;
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
@@ -14,6 +15,9 @@ class CartController extends Controller {
 
         require_once MODELS . 'VinylsModel.php';
         $this->vinyls_model = new VinylsModel();
+
+        require_once MODELS . 'CartModel.php';
+        $this->cart_model = new CartModel();
     }
 
     public function index(Request $request, Response $response) {
@@ -33,14 +37,16 @@ class CartController extends Controller {
         $this->render('checkout', $head);
     }
 
-    // public function manage(Request $request, Response $response) {
-    //     $data = $request->getBody();
-    //     $cart = Session::getCart();
-    //     $cart[$data['id']] = $data['quantity'];
-    //     Session::setCart($cart);
-    //     $response->redirect('/cart');
-    // }
-
+    public function manage(Request $request, Response $response) {
+        $data = $request->getBody();
+        
+        if ($this->cart_model->setCart($data['vinyl'], $data['quantity'])) {
+            $response->Success('Cart updated', $data);
+        } else {
+            $response->Error('Cart not updated');
+        }
+        
+    }
 
 }
 ?>

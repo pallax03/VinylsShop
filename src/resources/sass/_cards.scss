@@ -2,6 +2,11 @@
 @import "buttons";
 @import "variables";
 
+
+section.cards {
+    padding: 0;
+}
+
 // $card-width: clamp(360px, 90%, 600px);
 $card-width: 100vw;
 $card-height: clamp(200px, 50%, 300px); 
@@ -105,7 +110,10 @@ $preview-cover-size: 80%;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            margin-top: .8rem;
+            text-align: center;
+            margin-top: 0.6rem;
+            margin-right: 0.6rem;
+            padding: .2rem;
             color: var(--text-color);
             text-decoration: none;
 
@@ -113,8 +121,9 @@ $preview-cover-size: 80%;
                 font-size: 1.6rem;
             }
             h2 {
+                text-align: center;
                 font-size: .6rem;
-                width: 40px;
+                width: 60px;
             }
         }
     }
@@ -135,7 +144,7 @@ $preview-cover-size: 80%;
             padding: 0;
             margin: 0;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-evenly;
             width: 100%;
 
             li {
@@ -226,8 +235,8 @@ $preview-cover-size: 80%;
             }
         }
         i {
-            margin-left: 0.5rem;
-            font-size: 1.6rem;
+            margin-left: .8rem;
+            font-size: 2.2rem;
         }
     }
 

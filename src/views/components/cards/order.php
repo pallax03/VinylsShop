@@ -1,7 +1,7 @@
 <div class="flip">
     <div class="order card active">
         <header>
-            <span>01</span>
+            <span><?php echo $n ?></span>
             <a href="">
                 <i class="bi bi-box-seam-fill"></i>
                 <h2><? echo $order['order_status']?></h2>
@@ -9,9 +9,9 @@
         </header>
         <div class="order-details">
             <ul>
-                <?php foreach ($order['vinyls'] as $vinyl): ?>
+                <?php foreach (array_slice($order['vinyls'], 0, 3) as $vinyl): ?>
                     <li>
-                        <img src="<? echo $vinyl['album_cover']?>" alt="album cover">
+                        <img src="/resources/img/albums/<? echo $vinyl['album_cover']?>" alt="album cover">
                         <h6><? echo $vinyl['album_title']?></h6>
                         <p><? echo $vinyl['price']?> €</p>
                     </li>
@@ -25,7 +25,7 @@
             </button>
             <span>
                 <p>Total: </p>
-                <p><?php echo $order['price'] ?>€</p>
+                <p><?php echo $order['total_cost'] ?>€</p>
             </span>
         </footer>
     </div>
@@ -64,10 +64,10 @@
             </div>
             <div class="toggle">
                 <span>
-                    <p>To: (address_name)</p>
+                    <p>To: (<?php echo $order['address_name'] ?>)</p>
                     <i class="bi bi-caret-down-fill"></i>
                 </span>
-                <p><?php echo $order['shipment_address'] ?></p>
+                <p><?php echo $order['address_street_number'] . ' - ' . $order['address_city'] . ' (' . $order['address_postal_code'] . ')' ?></p>
             </div>
         </footer>
     </div>
