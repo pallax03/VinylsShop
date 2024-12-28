@@ -7,14 +7,13 @@ final class VinylController extends Controller {
         require_once MODELS . '/VinylsModel.php';
         $this->model = new VinylsModel();
     }
-
-    function index(Request $request, Response $response) {
     function index(Request $request, Response $response) {
         $body = $request->getBody();
         $result['vinyl'] = $this->model->getVinylDetails($body['id']);
         $result['suggested'] = $this->model->getSuggested($body['id']);
         $response->Success("", $result);
     }
+}
 
     /*
     public function login(Request $request, Response $response) {
@@ -30,4 +29,3 @@ final class VinylController extends Controller {
         echo json_encode(['error' => 'Not implemented']);
     }
     */
-}

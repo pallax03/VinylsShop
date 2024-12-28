@@ -25,7 +25,7 @@ document.querySelector('.close-search').addEventListener('click', function (e) {
 // Funzione per aggiornare i risultati nel DOM
 function updateResults(results) {
     const resultsList = document.getElementById('sec-search_content');
-    fetch('views/components/cards/vinyl.php');
+    fetch('views/components/cards/vinyl.php')
     .then(response => {
         if (!response.ok) {
             throw new Error(`Errore nel caricamento del template: ${response.status}`);
@@ -61,18 +61,6 @@ function clear() {
     document.getElementById('sec-search_content').innerHTML = ''; // Svuota i risultati precedenti
 }
 
-document.getElementById('btn-search_close').addEventListener('click', function() {
-    document.getElementById('main-content').ariaHidden = 'false';
-    document.getElementById('sec-search_content').ariaHidden = 'true';
-    document.getElementById('main-content').style = 'display: block';
-    document.getElementById('input-search').value = "";
-    document.getElementById('sec-search_content').style = 'display: none';
-});
-
-document.getElementById('input-search').addEventListener('input', function() {
-    const filter = document.getElementById('select-search_filter');
-    if (document.getElementById('input-search').value !== '') {
-        fetch(`/search?${filter.value}=${encodeURIComponent(document.getElementById('input-search').value)}`)
 document.getElementById('btn-search_close').addEventListener('click', function() {
     document.getElementById('main-content').ariaHidden = 'false';
     document.getElementById('sec-search_content').ariaHidden = 'true';

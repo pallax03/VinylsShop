@@ -114,17 +114,9 @@ final class VinylsModel {
         $result["details"] = $this->db->executeResults($vinyl, "i", $id)[0];
         if ($result):
             // store id_album for the next query
-            $album =  $result["id_album"];
-            // store the results
-            $details["id"] = $result["id_vinyl"];
-            $details["cost"] = $result["cost"];
-            $details["rpm"] = $result["rpm"];
-            $details["inch"] = $result["inch"];
-            $details["type"] = $result["type"];
-            $details["title"] = $result["title"];
-            $details["release_date"] = $result["release_date"];
-            $details["cover_img"] = $result["cover_img"];
-            $details["artist"] = $result["artist"];
+            $album =  $result["details"]["id_album"];
+            // prepare second statement
+            $result["tracks"] = $this->db->executeResults($tracks, 'i', $album);
         endif;
         
         return $result;
@@ -219,16 +211,8 @@ final class VinylsModel {
         // execute query
         $info = $this->db->executeResults($infos, "i", $id)[0];
         // store infos
-        if (!empty($result)):
-            $result = $this->db->executeResults($vinyls, 'ssi', $result["genre"], $result["artist"], $id);
-            foreach($result as $row):
-                $vinyl = [];
-                $vinyl["cover_img"] = $row["cover_img"];
-                $vinyl["title"] = $row["title"];
-                array_push($suggested, $vinyl);
-            endforeach;
-        endif;
-        return $suggested;
+        $result = $this->db->executeResults($vinyls, "ssi", $info["genre"], $info["artist"], $id);
+        return $result;
     }
 }
 ?>
