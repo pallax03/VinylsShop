@@ -78,14 +78,8 @@ final class CartModel {
             implode(',', array_keys(Session::get('Cart')))
         );
 
-        // store the cart in the session.
-        foreach ($cart as $vinyl) {
-            if ($vinyl['quantity'] > 0) {
-                Session::setToCart($vinyl, Session::get('Cart')[$vinyl['id_vinyl']]['quantity']);
-            } else {
-                Session::removeFromCart($vinyl['id_vinyl']);
-            }
-        }    
+        // check if the vinyls are still available.
+        
     }
 
     /**
@@ -126,14 +120,15 @@ final class CartModel {
             's',
             implode(',', array_keys(Session::get('Cart')))
         );
+        return $cart;
 
         // check if the vinyls are still available.
         // if not, remove them from the cart.
-        foreach ($cart as $vinyl) {
-            if (!$this->checkVinyl($vinyl['id_vinyl'])) {
-                Session::removeFromCart($vinyl['id_vinyl']);
-            }
-        }
+        // foreach ($cart as $vinyl) {
+        //     if (!$this->checkVinyl($vinyl['id_vinyl'])) {
+        //         Session::removeFromCart($vinyl['id_vinyl']);
+        //     }
+        // }
 
     }
 

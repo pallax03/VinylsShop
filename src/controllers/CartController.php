@@ -37,6 +37,10 @@ class CartController extends Controller {
         }
     }
 
+    public function sync(Request $request, Response $response) {
+        $response->Success('Cart synced', $this->cart_model->syncCart());
+    }
+
     public function checkout(Request $request, Response $response) {
         $this->redirectUser();
 

@@ -70,16 +70,6 @@ class Session {
         return self::isSet('Card') ? self::get('Card') : self::set('Card', []);
     }
 
-    /**
-     * Remove a vinyl from the cart.
-     *
-     * @param [int] $id_vinyl the id of the vinyl to remove.
-     * @return array it return getCart
-     */
-    public static function removeFromCart($id_vinyl) {
-        self::set('Card', array_values(array_filter(self::getCart(), fn($vinyl) => $vinyl['vinyl']['id_vinyl'] != $id_vinyl)));
-        return self::getCart();
-    }
 
     /**
      * Set the cart of the user, quantity can be negative.
@@ -91,10 +81,32 @@ class Session {
      * @param [int | null] $quantity, if null, it will be set to 1.
      * @return array it return getCart
      */
-    public static function setToCart($vinyl, $quantity = null) {
-        // self::set('Card', array_merge(self::getCart(), [['vinyl' => $vinyl, 'quantity' => $quantity ?? 1]]));
-        
+    public static function setToCart($vinyl, $quantity = null) { 
+        if (!isset($vinyl['id_vinyl']) ) {
+            return self::getCart();
+        }
+        $quantity = $quantity ?? 1;
 
+        // take the vinyls from the cart, and do the operation.
+        // after all, re-set the cart.
+        $cart = self::getCart();
+        $found = false;
+        foreach ($cart as $key => $item) { // if the vinyl is found, update his quantity.
+            if ($item['vinyl']['id_vinyl'] === $vinyl['id_vinyl']) {
+                $found = true;
+                $cart[$key]['quantity'] += $quantity;
+                if ($cart[$key]['quantity'] <= 0) {  // if the quantity is 0 or negative, remove the vinyl from the cart.
+                    unset($cart[$key]); 
+                }
+                break;
+            }
+        }
+        
+        if (!$found && $quantity > 0) { // if the vinyl is not found, and the quantity is positive, add it.
+            array_push($cart, ['vinyl' => $vinyl, 'quantity' => $quantity]);
+        }
+
+        self::set('Card', $cart);
         return self::getCart();
     }
 }
