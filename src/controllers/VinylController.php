@@ -9,6 +9,7 @@ final class VinylController extends Controller {
     }
 
     function index(Request $request, Response $response) {
+    function index(Request $request, Response $response) {
         $body = $request->getBody();
         $result['vinyl'] = $this->model->getVinylDetails($body['id']);
         $result['suggested'] = $this->model->getSuggested($body['id']);

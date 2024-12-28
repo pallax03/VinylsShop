@@ -1,11 +1,16 @@
 @use "sass:math";
 @import "buttons";
 @import "variables";
+@import "variables";
 
 // $card-width: clamp(360px, 90%, 600px);
 $card-width: 100vw;
 $card-height: clamp(200px, 50%, 300px); 
 $vinyls_detail-width: 50px;
+
+$preview-width: 350px;
+$preview-height: clamp(150px, 34%, 250px);
+$preview-cover-size: 80%;
 
 $preview-width: 350px;
 $preview-height: clamp(150px, 34%, 250px);
