@@ -41,7 +41,8 @@ function updateResults(results) {
 
         // Se non ci sono risultati
         if (results.message.length !== 0) {
-            clear()
+            clear();
+            console.log(results);
             Array.prototype.forEach.call(results.message, result => {
                 const clone = template.content.cloneNode(true);
                 clone.querySelector(".vinyl-cover").src = "/resources/img/albums/" + result.cover;

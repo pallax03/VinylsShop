@@ -9,9 +9,11 @@ final class VinylController extends Controller {
     }
     function index(Request $request, Response $response) {
         $body = $request->getBody();
-        $result['vinyl'] = $this->model->getVinylDetails($body['id']);
-        $result['suggested'] = $this->model->getSuggested($body['id']);
-        $response->Success("", $result);
+        $data['vinyl'] = $this->model->getVinylDetails($body['id']);
+        $data['suggested'] = $this->model->getSuggested($body['id']);
+        $head = array('title' => $data["vinyl"]["details"]["title"], 'style'=> array(''),
+         'header' => "Oltre i €100 spedizione gratuita!");
+        $this->render('vinyls', $head, $data);
     }
 }
 

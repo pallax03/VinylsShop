@@ -20,7 +20,6 @@ final class VinylsModel {
      * @return json of vinyls data
      */    
     public function getVinyls($n, $params) {
-        $vinyls = [];
         $query = "SELECT
             v.id_vinyl,
             v.cost,
@@ -59,22 +58,7 @@ final class VinylsModel {
         } else {
             $result = $this->db->executeResults($query);
         }
-        if ($result) {
-            foreach ($result as $row):
-                // create an empty object
-                $json = [];
-                // extract datas from record
-                $json["id"] = $row["id_vinyl"];
-                $json["cost"] = $row["cost"];
-                $json["title"] = $row["title"];
-                $json["cover"] = $row["cover"];
-                $json["genre"] = $row["genre"];
-                $json["artist"] = $row["artist"];
-                // add new vinyl topo vinyls list
-                array_push($vinyls, $json);
-            endforeach;
-        }
-        return $vinyls;
+        return $result;
     }
 
     /**
@@ -112,13 +96,10 @@ final class VinylsModel {
             WHERE a.id_album = ?";
         // prepare statement
         $result["details"] = $this->db->executeResults($vinyl, "i", $id)[0];
-        if ($result):
-            // store id_album for the next query
-            $album =  $result["details"]["id_album"];
-            // prepare second statement
-            $result["tracks"] = $this->db->executeResults($tracks, 'i', $album);
-        endif;
-        
+        // store id_album for the next query
+        $album =  $result["details"]["id_album"];
+        // prepare second statement
+        $result["tracks"] = $this->db->executeResults($tracks, "i", $album);
         return $result;
     }
 
