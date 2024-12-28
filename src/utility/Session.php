@@ -61,16 +61,40 @@ class Session {
         return Session::isSuperUser() || Session::isHim($id_user);
     }
 
-    public static function getCard() {
-        return self::isSet('Card') ? self::get('Card') : false;
+    /**
+     * get the cart of the logged user.
+     *
+     * @return array the vinyl into the cart.
+     */
+    public static function getCart() {
+        return self::isSet('Card') ? self::get('Card') : self::set('Card', []);
     }
 
-    public static function setToCart($vinyl, $quantity) {
-        if (!self::isSet('Cart')) {
-            self::set('Cart', []);
-        }
-        $cart = self::get('Cart');
-        $cart[$vinyl] = $quantity;
-        self::set('Cart', $cart);
+    /**
+     * Remove a vinyl from the cart.
+     *
+     * @param [int] $id_vinyl the id of the vinyl to remove.
+     * @return array it return getCart
+     */
+    public static function removeFromCart($id_vinyl) {
+        self::set('Card', array_values(array_filter(self::getCart(), fn($vinyl) => $vinyl['vinyl']['id_vinyl'] != $id_vinyl)));
+        return self::getCart();
+    }
+
+    /**
+     * Set the cart of the user, quantity can be negative.
+     * Checking:
+     * - if the vinyl is already present.
+     * - if the quantity of a present vinyl go to 0, it will be removed.
+     * 
+     * @param [array] $vinyl the vinyl to add to the cart.
+     * @param [int | null] $quantity, if null, it will be set to 1.
+     * @return array it return getCart
+     */
+    public static function setToCart($vinyl, $quantity = null) {
+        // self::set('Card', array_merge(self::getCart(), [['vinyl' => $vinyl, 'quantity' => $quantity ?? 1]]));
+        
+
+        return self::getCart();
     }
 }

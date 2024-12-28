@@ -32,8 +32,9 @@ class OrderController extends Controller {
     }
 
     public function getOrders(Request $request, Response $response) {
+        $this->auth_model->checkAuth();
         $body = $request->getBody();
-
+        
         $data = $this->order_model->getOrders($body['id_user'] ?? null);
         if (empty($data) || !is_array($data) || !$data) { 
             $response->Error('User not found or not allowed to see those orders ' , $body);

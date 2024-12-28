@@ -1,7 +1,7 @@
 <div class="address card" id="card-address_<?php echo $address['id_address']?>">
     <header>
         <?php if($user['default_address'] == $address['id_address']): ?>
-            <a class="stars" onclick="setDefaultAddress(<?php echo ''?>)">
+            <a class="stars selected" onclick="setDefaultAddress(<?php echo ''?>)">
                 <i class="bi bi-star-fill"></i>    
             </a>
         <?php else: ?>

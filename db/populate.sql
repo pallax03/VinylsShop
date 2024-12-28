@@ -173,9 +173,9 @@ VALUES
 -- Insert orders
 INSERT IGNORE INTO `vinylsshop`.`orders` (`order_date`, `total_cost`, `id_card`, `order_status`, `discount_code`, `id_user`)
 VALUES
-('2024-10-29', 74.00, 1, 'Completed', 'HALLOWEEN10', 2),
-('2024-11-21', 34.00, NULL, 'Completed', 'BLACKFRIDAY70', 2),
-('2024-12-06', 85.00, 2, 'Paid', 'CHRISTMAS20', 2);
+('2024-10-29', 72.00, 1, 'Completed', 'HALLOWEEN10', 2),
+('2024-11-21', 9.00, NULL, 'Completed', 'BLACKFRIDAY70', 2),
+('2024-12-06', 36.00, 2, 'Paid', 'CHRISTMAS20', 2);
 
 
 -- Insert checkouts

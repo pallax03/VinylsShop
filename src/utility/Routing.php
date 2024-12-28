@@ -44,7 +44,7 @@
     // # 🏠 [Cart] ~ Stored in session if logged need to SyncCart with DB -> Vinyl - Cart - User
     $router->get('/cart', [CartController::class, 'index']);
     // # 🍽️ [ManageCart] -> Vinyl - Cart - User
-    $router->post('/cart/manage', [CartController::class, 'manage']); 
+    $router->post('/cart', [CartController::class, 'manage']); 
     // # 🍽️ [SyncCart] -> Cart - User
     $router->get('/cart/sync', [CartController::class, 'sync']); 
     // 🚩 # 🍽️ [Price] ~ preview price -> Cart - Vinyl - Shipping 

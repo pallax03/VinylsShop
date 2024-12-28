@@ -78,10 +78,10 @@ final class VinylsModel {
     }
 
     /**
-     * Gets the details of a single vinyl (vinyl page)
+     * Gets the full of a single vinyl (vinyl page)
      * from a given id.
      * @param id of the vinyl in question
-     * @return json containing details on the vinyl
+     * @return array containing details on the vinyl
      */
     public function getVinylDetails($id) {
         $details = [];
@@ -140,10 +140,38 @@ final class VinylsModel {
     }
 
     /**
+     * get the vinyl details from the database (without tracks)
+     * 
+     * @param id_vinyl the id of the vinyl to get the details of
+     * 
+     * @return array containing the details of the vinyl
+     */
+    public function getVinyl($id_vinyl) {
+        return Database::getInstance()->executeResults(
+            "SELECT 
+                v.id_vinyl,
+                v.cost,
+                v.rpm,
+                v.inch,
+                v.type,
+                a.title,
+                a.genre,
+                a.cover,
+                ar.name AS artist_name
+                FROM vinyls v 
+                JOIN albums a ON v.id_vinyl = a.id_album
+                WHERE id_vinyl = ?",
+            'i',
+            $id_vinyl
+        )[0];
+    }
+
+
+    /**
      * Function to be called to get the preview of a vinyl
      * (cart, checkout and order pages).
      * @param id of the vinyl to get the preview of
-     * @return json containing the information on the vinyl
+     * @return array containing the information on the vinyl
      */
     public function getPreview($id) {
         $preview = [];

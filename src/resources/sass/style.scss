@@ -400,24 +400,27 @@ main {
         justify-content: center;
         align-items: center;
         width: 100%;
-        padding: 2rem;
-        & > h1 {
+        padding: 1.2rem;
+        h1 {
             font-size: 6vw;
             margin-bottom: 1rem;
         }
-        & > h2 {
+        h2 {
             font-size: 5vw;
             margin-bottom: 1rem;
         }
-        & > h3 {
+        h3 {
             font-size: 4vw;
+            margin-bottom: 1rem;
+        }
+        h4 {
+            font-size: 3vw;
             margin-bottom: 1rem;
         }
         a {
             color: var(--text-color);
             text-decoration: none;
             font-size: 1.6rem;
-            margin-top: 1rem;
             display: inline-flex;
             align-items: center;
             justify-content: baseline;
@@ -467,8 +470,6 @@ main {
 
 .container{
     display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
 
     &.vertical {
@@ -478,12 +479,81 @@ main {
     &.horizontal {
         flex-direction: row;
     }
+
+    &.inline {
+        display: inline-flex;
+        flex-direction: row;
+    }
+
+    &.table {
+        padding: .5rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        align-content: center;
+        text-align: left;
+        > p.th {
+            font-size: .8rem;
+            font-weight: bold;
+            width: 100px;
+        }
+        p {
+            font-size: .6rem;
+            width: 95px;
+        }
+        p:nth-last-child(1) {
+            &::before {
+                margin-right: .5rem;
+                content: "→";
+            }
+        }
+    }
+
+    &.center {
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        text-align: center;
+    }
+
+    &.space-between {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        display: inline-flex;
+        justify-content: space-between;
+        padding: 0 1rem 0 1rem;
+        h4 {
+            float: left;
+            display: inline-flex;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            width: 20%;
+            font-size: 1rem;
+            b {
+                margin-right: .5rem;
+                font-size: 1.6rem;
+                font-weight: bold;
+            }
+        }
+        p {
+            float: right;
+            font-size: .8rem;
+            margin: 0;
+            padding: 0;
+        }
+    }
 }
 
 .div {
     width: 80%;
     border-top: 1px solid var(--text-color);
     margin: 1rem 0;
+}
+
+.selected {
+    color: var(--selected-color);
 }
 
 .active {
@@ -503,29 +573,23 @@ main {
 }
 
 .stars {
-    
-    &:hover {
-        color: yellow;
-        animation: on-hover-spin 1.2s infinite ;
+
+    &:hover, &:focus {
+        transform-origin: 50% 50%;
+        color: var(--selected-color);
+        scale: 1.4;
     }
 }
 
-@keyframes on-hover-spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    60% {
-        transform: rotate(360deg);
-        scale: 1.5;
-    }
-    100% {
-        transform: rotate(360deg);
-        scale: 1.8;
-    }
+.padding-1 {
+    padding: 1rem;
 }
 
 .no-margin {
     margin: 0;
+}
+.margin-top {
+    margin-top: 1rem;
 }
 
 // Desktop

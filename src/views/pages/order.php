@@ -1,6 +1,3 @@
-<?php
-var_dump($order);
-?>
 <section aria-labelledby="user-info">
     <i class="bi bi-box-seam-fill"></i>
     <h1>#<?php echo $order['tracking_number'] ?></h1>
@@ -21,48 +18,54 @@ var_dump($order);
     ?>
 </section>
 <section>
-    <ul class="table">
-        <li>
-            <p>Vinyls Total:</p>
+    <div class="container table">
+        <p class="th">Vinyls Total:</p>
+        <p>
+            <?php
+                $total = 0;
+                foreach ($order['vinyls'] as $vinyl) {
+                    $total += $vinyl['price'];
+                }
+                echo round($total, 2);
+            ?>
+            €
+        </p>
+        <p>22% (incl. IVAs)</p>
+    </div>
+    <div class="container table">
+        <p class="th">Shipping fee:</p>
+        <p><?php echo round($order['shipment_cost'], 2) ?> €</p>
+        <p></p>
+    </div>
+    <?php if (isset($order['discount_code']) && $order['discount_code'] != null): ?>
+        <div class="container table">
+            <p class="th">Discount Code:</p>
             <p>
-                <?php
-                    $total = 0;
-                    foreach ($order['vinyls'] as $vinyl) {
-                        $total += $vinyl['price'];
-                    }
-                    echo $total;
-                ?>€
+                -
+                <?php 
+                    $total += $order['shipment_cost'];
+                    echo round($total * $order['discount_percentage'], 2);
+                ?>
+                €
             </p>
-            <p>22% (incl. IVAs)</p>
-        </li>
-        <li>
-            <p>Shipping fee:</p>
-            <p><?php echo $order['shipment_cost'] ?></p>
-            <p></p>
-        </li>
-        <?php if (isset($order['discount_code']) && $order['discount_code'] != null): ?>
-            <li>
-                <p>Discount Code:</p>
-                <p>
-                    <?php echo $order['discount_code'] ?>
-                </p>
-                <p>
-                    <?php echo $order['discount_percentage'] * 100 ?>%
-                </p>
-            </li>
-        <?php endif; ?>
-    </ul>
+            <p>
+                <?php echo round($order['discount_percentage'] * 100, 2) ?>%
+            </p>
+        </div>
+    <?php endif; ?>
     <div class="div"></div>
-    <span>
+    <div class="container inline center space-between">
         <p>Total: </p>
-        <p><?php echo $order['total_cost'] ?>€</p>
-    </span>
+        <p><?php echo round($order['total_cost'], 2) ?>€</p>
+    </div>
 </section>
 <div class="div"></div>
-<section>
-    <span>
-        <h4><strong>Paid</strong> with:</h4>
-        <p><?php echo (!$order['id_card']) ? substr($card['card_number'], -4) : 'Balance' ?></p>
-    </span>
+<section class="padding-1">
+    <div class="container inline center space-between">
+        <h4><b>Paid</b> with:</h4>
+        <p>
+            <?php echo (isset($order['id_card']) && $order['id_card'] != null) ? ('**** **** **** ' .substr($order['card_number'], -4)) : 'Balance' ?>
+        </p>
+    </div>
 </section>
 <!-- <script src="/resources/js/user.js"></script> -->

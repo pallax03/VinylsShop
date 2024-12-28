@@ -16,8 +16,7 @@ final class OrderModel
         }
 
         $orders = Database::getInstance()->executeResults(
-            "SELECT 
-                    o.id_order,
+            "SELECT o.id_order,
                     o.order_date,
                     o.total_cost,
                     o.order_status,
@@ -44,6 +43,7 @@ final class OrderModel
         foreach ($orders as $key => $order) {
             $orders[$key]['vinyls'] = Database::getInstance()->executeResults(
                 "SELECT 
+                        v.id_vinyl,
                         v.cost AS price,
                         a.title AS album_title,
                         a.cover AS album_cover
@@ -67,7 +67,7 @@ final class OrderModel
      * @param [int] $id_order, if null, return the last order
      * @return Array of order
      */
-    public function getOrder($id_user=null, $id_order=null) {
+    public function getOrder($id_order=null, $id_user=null) {
         if (!Session::haveAdminUserRights($id_user)) {
             return [];
         }
@@ -81,8 +81,7 @@ final class OrderModel
         }
 
         $order = Database::getInstance()->executeResults(
-            "SELECT 
-                    o.id_order,
+            "SELECT o.id_order,
                     o.order_date,
                     o.total_cost,
                     o.order_status,
@@ -113,21 +112,21 @@ final class OrderModel
         )[0];
 
         $order['vinyls'] = Database::getInstance()->executeResults(
-            "SELECT 
-                    co.quantity,
+            "SELECT co.quantity,
+                    v.id_vinyl,
                     v.cost AS price,
-                    v.type
-                    v.rpm
-                    v.inch
-                    a.genre
-                    a.title
-                    a.cover
-                    t.name AS artist_name
-                FROM `vinylsshop`.`checkouts` co
-                JOIN `vinylsshop`.`vinyls` v ON co.id_vinyl = v.id_vinyl
-                JOIN `vinylsshop`.`albums` a ON v.id_album = a.id_album
-                JOIN `vinylsshop`.`artists` t ON v.id_artist = t.id_artist
-                WHERE co.id_order = ?;",
+                    v.type,
+                    v.rpm, 
+                    v.inch, 
+                    a.genre, 
+                    a.title, 
+                    a.cover, 
+                    t.name AS artist_name 	
+                FROM `vinylsshop`.`checkouts` co 
+	            JOIN `vinylsshop`.`vinyls` v ON co.id_vinyl = v.id_vinyl
+	            JOIN `vinylsshop`.`albums` a ON v.id_album = a.id_album 
+	            JOIN `vinylsshop`.`artists` t ON a.id_artist = t.id_artist 
+	            WHERE co.id_order = ?;",
             'i',
             $id_order
         );

@@ -671,9 +671,10 @@ section.cards {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  margin-left: 0.2rem;
   width: 100%;
 }
 .order .order-details ul li {
@@ -691,21 +692,46 @@ section.cards {
       -ms-flex-direction: column;
           flex-direction: column;
   text-align: center;
-  margin: 0.2rem;
+  margin: 0.4rem;
 }
-.order .order-details ul li img {
+.order .order-details ul li a {
+  text-decoration: none;
+  color: var(--text-color);
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: 50px;
 }
-.order .order-details ul li h6 {
-  max-width: 40px;
-  text-align: center;
+.order .order-details ul li a img {
+  width: 50px;
+}
+.order .order-details ul li a h6 {
+  max-width: 60px;
+  font-size: 0.6rem;
+  margin: 0;
+  padding: 0;
+  text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 0.6rem;
 }
-.order .order-details ul li p {
+.order .order-details ul li a p {
   font-size: 0.8rem;
+  margin: 0;
+  border: 0;
 }
 .order footer {
   width: 10%;
@@ -733,7 +759,7 @@ section.cards {
 }
 .order footer span {
   position: absolute;
-  top: 60px;
+  top: 40px;
   right: 0;
 }
 .order footer span p:first-child {
@@ -1540,25 +1566,28 @@ main section, main form {
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
-  padding: 2rem;
+  padding: 1.2rem;
 }
-main section > h1, main form > h1 {
+main section h1, main form h1 {
   font-size: 6vw;
   margin-bottom: 1rem;
 }
-main section > h2, main form > h2 {
+main section h2, main form h2 {
   font-size: 5vw;
   margin-bottom: 1rem;
 }
-main section > h3, main form > h3 {
+main section h3, main form h3 {
   font-size: 4vw;
+  margin-bottom: 1rem;
+}
+main section h4, main form h4 {
+  font-size: 3vw;
   margin-bottom: 1rem;
 }
 main section a, main form a {
   color: var(--text-color);
   text-decoration: none;
   font-size: 1.6rem;
-  margin-top: 1rem;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -1619,12 +1648,6 @@ main section p, main form p {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   width: 100%;
 }
 .container.vertical {
@@ -1639,11 +1662,102 @@ main section p, main form p {
       -ms-flex-direction: row;
           flex-direction: row;
 }
+.container.inline {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+.container.table {
+  padding: 0.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  text-align: left;
+}
+.container.table > p.th {
+  font-size: 0.8rem;
+  font-weight: bold;
+  width: 100px;
+}
+.container.table p {
+  font-size: 0.6rem;
+  width: 95px;
+}
+.container.table p:nth-last-child(1)::before {
+  margin-right: 0.5rem;
+  content: "→";
+}
+.container.center {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  text-align: center;
+}
+.container.space-between {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 0 1rem 0 1rem;
+}
+.container.space-between h4 {
+  float: left;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0;
+  padding: 0;
+  width: 20%;
+  font-size: 1rem;
+}
+.container.space-between h4 b {
+  margin-right: 0.5rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+.container.space-between p {
+  float: right;
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 0;
+}
 
 .div {
   width: 80%;
   border-top: 1px solid var(--text-color);
   margin: 1rem 0;
+}
+
+.selected {
+  color: var(--selected-color);
 }
 
 .active {
@@ -1660,47 +1774,23 @@ main section p, main form p {
   color: var(--error-color);
 }
 
-.stars:hover {
-  color: yellow;
-  -webkit-animation: on-hover-spin 1.2s infinite;
-          animation: on-hover-spin 1.2s infinite;
+.stars:hover, .stars:focus {
+  -webkit-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
+  color: var(--selected-color);
+  scale: 1.4;
 }
 
-@-webkit-keyframes on-hover-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  60% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-    scale: 1.5;
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-    scale: 1.8;
-  }
+.padding-1 {
+  padding: 1rem;
 }
 
-@keyframes on-hover-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  60% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-    scale: 1.5;
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-    scale: 1.8;
-  }
-}
 .no-margin {
   margin: 0;
+}
+
+.margin-top {
+  margin-top: 1rem;
 }
 
 @media (min-width: 768px) {
