@@ -15,7 +15,7 @@ class Database {
     private static string $host= 'localhost';
     private static string $username= 'admin';
     private static string $password= 'admin';
-    private static string $database= 'VinylsShop';
+    private static string $database= 'vinylsshop';
     private static string $port= '3306';
 
     
@@ -214,7 +214,7 @@ class Database {
         $result = $stmt->get_result();
         $this->queryThrowException($stmt);
         if ( $this->got_exception || $result->num_rows === 0) {
-            return false;
+            return [];
         }
         return $result->fetch_all(MYSQLI_ASSOC) ?? [];
     }

@@ -3,6 +3,11 @@
 @import "variables";
 @import "variables";
 
+
+section.cards {
+    padding: 0;
+}
+
 // $card-width: clamp(360px, 90%, 600px);
 $card-width: 100vw;
 $card-height: clamp(200px, 50%, 300px); 
@@ -110,16 +115,21 @@ $preview-cover-size: 80%;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            margin-top: .8rem;
+            text-align: center;
+            margin-top: 0.2rem;
+            margin-right: 0.2rem;
+            padding: .2rem;
             color: var(--text-color);
             text-decoration: none;
 
             i {
-                font-size: 1.6rem;
+                font-size: 2.2rem;
+                margin: 0;
             }
             h2 {
+                text-align: center;
                 font-size: .6rem;
-                width: 40px;
+                width: 60px;
             }
         }
     }
@@ -140,7 +150,8 @@ $preview-cover-size: 80%;
             padding: 0;
             margin: 0;
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-start;
+            margin-left: .2rem;
             width: 100%;
 
             li {
@@ -149,22 +160,38 @@ $preview-cover-size: 80%;
                 align-items: flex-start;
                 flex-direction: column;
                 text-align: center;
-                margin: 0.2rem;
-                img {
+                margin: 0.4rem;
+                a {
+                    text-decoration: none;
+                    color: var(--text-color);
+                    padding: 0;
+                    margin: 0;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
                     width: $vinyls_detail-width;
-                }
 
-                h6 {
-                    max-width: 40px;
-                    text-align: center;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    font-size: .6rem;
-                }
+                    img {
+                        width: $vinyls_detail-width;
+                    }
 
-                p {
-                    font-size: .8rem;
+                    h6 {
+                        max-width: 60px;
+                        font-size: .6rem;
+                        margin: 0;
+                        padding: 0;
+                        text-align: left;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        font-size: .6rem;
+                    }
+                    p {
+                        font-size: .8rem;
+                        margin: 0;
+                        border: 0;
+                    }
                 }
             }
         }
@@ -183,12 +210,13 @@ $preview-cover-size: 80%;
 
         .btn-specular {
             right: 0;
+            top: 0;
         }
 
         span {
             position: absolute;
             top: 40px;
-            right: 5px;
+            right: 0;
 
             p:first-child {
                 display: block;
@@ -231,8 +259,8 @@ $preview-cover-size: 80%;
             }
         }
         i {
-            margin-left: 0.5rem;
-            font-size: 1.6rem;
+            margin-left: .8rem;
+            font-size: 2.2rem;
         }
     }
 
@@ -422,8 +450,8 @@ $preview-cover-size: 80%;
     background-color: var(--background-color);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin: 10px;
-    padding: 0.5rem;
+    margin: 25px;
+    padding: .5rem;
     text-align: center;
     display: inline-block;
     padding: 10px;
@@ -449,6 +477,7 @@ $preview-cover-size: 80%;
 
     .vinyl-cover {
         width: $preview-cover-size;
+        border: 4px solid var(--border-color);
     }
 
     .vinyl-info {

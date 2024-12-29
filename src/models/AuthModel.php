@@ -66,7 +66,13 @@ final class AuthModel {
         $this->checkAuth();
     }
 
-    
+    /**
+     * Check if the user is logged in, if not redirect to the login page
+     * If the user is logged in, fetch the user from the database
+     * If the user is not in the database, logout
+     *
+     * @return void
+     */
     public function checkAuth() {
         if (!$this->fetchUser()) {
             $this->logout();
@@ -74,10 +80,14 @@ final class AuthModel {
         }
     }
 
-
+    /**
+     * Fetch the user from the database
+     * 
+     * @return array the user fetched from the database
+     */
     public function fetchUser() {
         return Database::getInstance()->executeResults(
-            "SELECT * FROM `Users` WHERE id_user = ?",
+            "SELECT * FROM `users` WHERE id_user = ?",
             'i',
             Session::getUser()
         );
@@ -87,17 +97,31 @@ final class AuthModel {
         $this->checkCookie();
     }
 
+    /**
+     * Check if the mail is already in the database
+     *
+     * @param [string] $mail
+     * @return bool true if the mail is already in the database, false otherwise
+     */
     public function checkUserMail($mail) {
         return Database::getInstance()->executeResults(
-            "SELECT * FROM `Users` WHERE mail = ?",
+            "SELECT * FROM `users` WHERE mail = ?",
             's',
             $mail
         ) != [];
     }
 
+    /**
+     * Login the user
+     *
+     * @param [string] $mail
+     * @param [string] $password
+     * @param [bool] $remember, if the user wants to be remembered stored in a crypted token cookie
+     * @return bool true if the user is logged in, false otherwise
+     */
     public function login($mail, $password, $remember) {
         $result = Database::getInstance()->executeResults(
-            "SELECT * FROM `Users` WHERE `mail` = ? AND `password` = ?",
+            "SELECT * FROM `users` WHERE `mail` = ? AND `password` = ?",
             'ss',
             $mail, $this->encryptPassword($password)
         );
@@ -113,6 +137,11 @@ final class AuthModel {
         return false;
     }
 
+    /**
+     * Logout the user
+     *
+     * @return bool true if the user is logged out, false otherwise
+     */
     public function logout() {
         // delete cookie also if not exists
         setcookie($this->cookieAuthName, '', [
@@ -126,21 +155,22 @@ final class AuthModel {
         return true;
     }
 
-    /*
-    * This function registers a new user
-    * @param string $mail
-    * @param string $password 
-    * @param int $su default 0
-    * @param int $newsletter default 0
-    * @return bool true if the user is registered, false otherwise
-    */
+    /**
+     * Register a new user
+     *
+     * @param [string] $mail
+     * @param [string] $password
+     * @param int $su, if the user is a super user
+     * @param int $newsletter, if the user wants to receive the newsletter
+     * @return bool true if the user is registered, false otherwise
+     */
     public function register($mail, $password, $su = 0, $newsletter = 0) {
         if (!$this->isValidMail($mail)) {
             return 'not a valid mail';
         }
 
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `Users` (mail, password, su, newsletter) VALUES (?, ?, ?, ?)",
+            "INSERT INTO `users` (mail, password, su, newsletter) VALUES (?, ?, ?, ?)",
             'ssii',
             $mail, $this->encryptPassword($password), $su ?? 0, $newsletter ?? 0
         );
@@ -153,7 +183,7 @@ final class AuthModel {
 
         $newPassword = bin2hex(random_bytes(8));
         $result = Database::getInstance()->executeQueryAffectRows(
-            "UPDATE `Users` SET password = ? WHERE mail = ?",
+            "UPDATE `users` SET password = ? WHERE mail = ?",
             'ss',
             $this->encryptPassword($newPassword), $mail
         );

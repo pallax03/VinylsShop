@@ -52,6 +52,9 @@ function updateResults(results) {
                 clone.querySelector(".vinyl-artist").textContent = result.artist;
                 clone.querySelector(".vinyl-genre").textContent = "#" + result.genre;
                 clone.querySelector(".add-cart").textContent = "Add to cart - €" + result.cost;
+                clone.querySelector(".add-cart").onclick = function() {
+                    addToCart(result.id, 1);
+                };
                 resultsList.appendChild(clone);
             });
         }
@@ -85,7 +88,7 @@ document.getElementById('input-search').addEventListener('input', function() {
             document.getElementById('main-content').ariaHidden = 'true';
             document.getElementById('sec-search_content').ariaHidden = 'false';
             document.getElementById('main-content').style = 'display: none';
-            document.getElementById('sec-search_content').style = 'display: block';
+            document.getElementById('sec-search_content').style = 'display: flex';
             await updateResults(data);
         });
     } else {

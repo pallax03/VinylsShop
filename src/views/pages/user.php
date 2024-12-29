@@ -1,9 +1,13 @@
 <?php if (Session::getUser()): ?>
     <section aria-labelledby="user-info">
         <i class="bi bi-person-fill"></i>
-        <h1 id="user-mail"><?php echo $user['mail'] ?></h1>
-        <p id="user-newsletter">Newsletter: <?php echo $user['newsletter'] ? 'Subscribed' : 'Not subscribed' ?></p>
-        <a class="error" href="/logout">Logout</a>
+        <div class="container center vertical">
+            <h1 id="user-mail"><?php echo $user['mail'] ?></h1>
+            <p id="user-newsletter">Newsletter: <?php echo $user['newsletter'] ? 'Subscribed' : 'Not subscribed' ?></p>
+        </div>
+        <div class="container center margin-top">
+            <a class="error" href="/logout">Logout</a>
+        </div>
     </section>
     <div class="div"></div>
     <form aria-label="Defaults" id="form-user_defaults">
@@ -26,14 +30,15 @@
     <div class="div"></div>
     <section class="cards">
         <?php
-        if (isset($orders) && count($orders) > 0) {
-            echo "<h3>Orders</h3>";
-            foreach ($orders as $order) {
-                include COMPONENTS . '/cards/order.php';
+            if (isset($orders) && count($orders) > 0) {
+                $n = 0;
+                foreach ($orders as $order) {
+                    $n++;
+                    include COMPONENTS . 'cards/order.php';
+                }
+            } else {
+                echo "<h3>No orders found!</h3>";
             }
-        } else {
-            echo "<h3>No orders found!</h3>";
-        }
         ?>
     </section>
     <script src="/resources/js/user.js"></script>

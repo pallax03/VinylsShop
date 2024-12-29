@@ -82,6 +82,18 @@ function validateData(...args) {
     return valid;
 }
 
+function addToCart(id, quantity) {
+    fetch('/cart', { 
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id_vinyl: id, quantity: quantity})
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        }
+    );
+}
 
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {

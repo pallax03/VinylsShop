@@ -2,13 +2,14 @@
     // Load Controllers
     // Controller has: Models (DB tables) -> views (🏠) and apis (🍽️) (requests)
 
-    require_once CONTROLLERS . '/HomeController.php';       // 📀: Auth - Vinyl (Artist - Track) - Cart (🚩) -> 🏠 Home, Search, Login, Logout.
+    require_once CONTROLLERS . '/HomeController.php';       // 🏡: Auth - Vinyl (Artist - Track) -> 🏠 Home, Search, Login, Logout.
+    require_once CONTROLLERS .'/VinylController.php';       // 📀: Vinyl (Artist - Track) - Cart -> 🏠 Vinyl.
     require_once CONTROLLERS . '/CartController.php';       // 🛒: Vinyl (Artist - Track) - Cart - User (Address - Card) -> 🏠 Cart, ManageCart.
     require_once CONTROLLERS . '/UserController.php';       // 👤: User (Address - Card) - Cart - Order ( + Shipping) - (Auth) -> 🏠 User, ManageAddress, ManageCard.
-    //require_once CONTROLLERS . '/OrderController.php';      // 📦: Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth -> 🏠 Order, AddOrder.
+    require_once CONTROLLERS . '/OrderController.php';      // 📦: Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth -> 🏠 Order, AddOrder.
     //require_once CONTROLLERS . '/DashboardController.php';  // 📊: (if Auth ⭐️) *EVERY MODEL* -> 🏠 Dashboard, AddVinyl (AddArtist - AddTrack), UpdateVinyl, AddAdmin.
     //DELETEME
-    require_once CONTROLLERS .'/VinylController.php';
+    
     
     $router = new Router(new Request(), new Response());
 
@@ -17,7 +18,7 @@
         // views (🏠) / apis (🍽️) ~ notes... -> needed models.php
 
 
-    // 📀:
+    // 🏡:
     // --- HomeController.php --- (models: Auth Vinyl)
     // # 🏠 [Home] ~ (no need to be logged) -> Vinyl
     $router->get('/', [HomeController::class, 'index']);
@@ -30,21 +31,33 @@
     $router->get('/logout', [HomeController::class, 'logout']);
     // # 🏠 [Devs] ~ README.md
     // $router->get('/devs', [HomeController::class, 'devs']);
+    
+    // DESTROY ALL (SESSION)
+    $router->get('/cache', [HomeController::class, 'reset']);
+
+
+    // 📀:
+    // --- VinylController.php --- (models: Vinyl (Artist - Track) - Cart)
+    // # 🏠 [Vinyl] ~ page of the specific vinyl '?id_vinyl=' -> Vinyl (Artist - Track)
+    $router->get('/vinyl', [VinylController::class, 'index']);
+
 
     // 🛒:
     // --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 
     // # 🏠 [Cart] ~ Stored in session if logged need to SyncCart with DB -> Vinyl - Cart - User
     $router->get('/cart', [CartController::class, 'index']);
     // # 🍽️ [ManageCart] -> Vinyl - Cart - User
-    // $router->post('/cart/manage', [CartController::class, 'manage']); 
+    $router->post('/cart', [CartController::class, 'manage']); 
     // # 🍽️ [SyncCart] -> Cart - User
-    // $router->get('/cart/sync', [CartController::class, 'sync']); 
+    $router->get('/cart/sync', [CartController::class, 'sync']); 
     // 🚩 # 🍽️ [Price] ~ preview price -> Cart - Vinyl - Shipping 
     // 🚩 $router->get('/cart/price', [CartController::class, 'price']); 
+
     // # 🏠 [Checkout] ~ go onto the checkout page -> Auth - User (Address - Card) - Cart - Vinyl (Artist) - Shipping - Order - Discount.
     // $router->get('/checkout', [CartController::class, 'checkout']);
     // # 🍽️ [Checkout] ~ request the checkout can handle errors if valid make the order and shipping -> Auth - User (Address - Card)
     // $router->post('/checkout', [CartController::class, 'pay']); 
+
 
     // 👤:
     // --- UserController.php --- (models: Auth - User (Address - Card))
@@ -77,9 +90,10 @@
     // 📦: (ALEX)
     // --- OrderController.php --- (models:  Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth)
     // # 🏠 [Order] ~ page of the specific order '?id_order='  -> Auth - User - Order - Shipping - Vinyl
-    // $router->get('/order', [OrderController::class, 'index']);
-    // # 🚩 🍽️ [Orders] ~ list of all the orders -> Auth - User - Order - Shipping - Vinyl
-    // 🚩 $router->get('/orders', [OrderController::class, 'orders']);
+    $router->get('/order', [OrderController::class, 'index']);
+    // # 🍽️ [Orders] ~ list of all the orders -> Auth - User - Order - Shipping - Vinyl
+    $router->get('/orders', [OrderController::class, 'orders']);
+
 
     // 📊: (SAM)
     // --- DashboardController.php --- (models: *EVERY MODEL*)

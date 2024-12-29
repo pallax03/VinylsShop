@@ -3,7 +3,7 @@ class CartController extends Controller {
 
     private $auth_model = null;
     private $user_model = null;
-    private $vinyls_model = null;
+    private $cart_model = null;
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
@@ -12,8 +12,8 @@ class CartController extends Controller {
         require_once MODELS . 'UserModel.php';
         $this->user_model = new UserModel();
 
-        require_once MODELS . 'VinylsModel.php';
-        $this->vinyls_model = new VinylsModel();
+        require_once MODELS . 'CartModel.php';
+        $this->cart_model = new CartModel();
     }
 
     public function index(Request $request, Response $response) {
@@ -22,8 +22,25 @@ class CartController extends Controller {
         $head = array('title' => 'Cart', 'style'=> array(''),
          'header' => Database::getInstance()->getConnection() ? 'Database connected' : 'Database not connected');
         
-        $data = $this->user_model->getUser(Session::getUser()) ?? [];
+        $data['user'] = $this->user_model->getUser(Session::getUser());
+        $data['cart'] = $this->cart_model->getCart();
+        $data['total'] = $this->cart_model->getTotal();
+
         $this->render('cart', $head, $data);
+    }
+
+    public function manage(Request $request, Response $response) {
+        $body = $request->getBody();
+        
+        if ($this->cart_model->setCart($body['id_vinyl'], $body['quantity'])) {
+            $response->Success('Cart updated', $body);
+        } else {
+            $response->Error('Cart not updated', $body);
+        }
+    }
+
+    public function sync(Request $request, Response $response) {
+        $response->Success('Cart synced', $this->cart_model->syncCart());
     }
 
     public function checkout(Request $request, Response $response) {
@@ -32,15 +49,6 @@ class CartController extends Controller {
         $head = array('title' => 'Checkout', 'style'=> array(''));
         $this->render('checkout', $head);
     }
-
-    // public function manage(Request $request, Response $response) {
-    //     $data = $request->getBody();
-    //     $cart = Session::getCart();
-    //     $cart[$data['id']] = $data['quantity'];
-    //     Session::setCart($cart);
-    //     $response->redirect('/cart');
-    // }
-
 
 }
 ?>

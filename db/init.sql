@@ -1,15 +1,15 @@
-CREATE DATABASE IF NOT EXISTS `VinylsShop`;
+CREATE DATABASE IF NOT EXISTS `vinylsshop`;
 
--- add privileges to the user 'admin'@'%' with password 'admin' to access the database 'VinylsShop' from any host 
+-- add privileges to the user 'admin'@'%' with password 'admin' to access the database 'vinylsshop' from any host 
 -- and grant SELECT, INSERT, UPDATE, DELETE, FILE privileges on all tables to the user 'admin'@'%'
 -- for security reasons.
 
 FLUSH PRIVILEGES;
 CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin';
-GRANT SELECT, INSERT, DELETE, UPDATE ON `VinylsShop`.* TO 'admin'@'%';
+GRANT SELECT, INSERT, DELETE, UPDATE ON `vinylsshop`.* TO 'admin'@'%';
 
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Users` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`users` (
     `id_user` INT NOT NULL AUTO_INCREMENT,
     `mail` VARCHAR(45) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
@@ -21,21 +21,21 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Users` (
 
 
 -- DEFAULT USERS
-INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 1);
-INSERT IGNORE INTO `VinylsShop`.`Users` (`mail`, `password`, `su`) VALUES ('alexmaz03@hotmail.it', 'd41d8cd98f00b204e9800998ecf8427e', 0);
+INSERT IGNORE INTO `vinylsshop`.`users` (`mail`, `password`, `su`) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 1);
+INSERT IGNORE INTO `vinylsshop`.`users` (`mail`, `password`, `su`) VALUES ('alexmaz03@hotmail.it', 'd41d8cd98f00b204e9800998ecf8427e', 0);
 
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Cards` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`cards` (
     `id_card` INT NOT NULL AUTO_INCREMENT,
     `card_number` VARCHAR(255) NOT NULL,
     `exp_date` VARCHAR(5) NOT NULL,
     `cvc` VARCHAR(3) NOT NULL,
     `id_user` INT,
     PRIMARY KEY (`id_card`),
-    FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`)
+    FOREIGN KEY (`id_user`) REFERENCES `vinylsshop`.`users` (`id_user`)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Addresses` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`addresses` (
     `id_address` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(55) NOT NULL,
     `city` VARCHAR(100) NOT NULL,
@@ -43,29 +43,29 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Addresses` (
     `street_number` VARCHAR(255) NOT NULL,
     `id_user` INT,
     PRIMARY KEY (`id_address`),
-    FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`)
+    FOREIGN KEY (`id_user`) REFERENCES `vinylsshop`.`users` (`id_user`)
 );
 
--- UserPreferences: default_card and default_address are nullable
+-- userpreferences: default_card and default_address are nullable
 -- because the user could not have them set
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`UserPreferences` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`userpreferences` (
     `id_user` INT NOT NULL,
     `default_card` INT,
     `default_address` INT,
     PRIMARY KEY (`id_user`),
-    FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`),
-    FOREIGN KEY (`default_card`) REFERENCES `VinylsShop`.`Cards` (`id_card`),
-    FOREIGN KEY (`default_address`) REFERENCES `VinylsShop`.`Addresses` (`id_address`)
+    FOREIGN KEY (`id_user`) REFERENCES `vinylsshop`.`users` (`id_user`),
+    FOREIGN KEY (`default_card`) REFERENCES `vinylsshop`.`cards` (`id_card`),
+    FOREIGN KEY (`default_address`) REFERENCES `vinylsshop`.`addresses` (`id_address`)
 );
 
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Artists` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`artists` (
     `id_artist` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id_artist`)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Albums` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`albums` (
     `id_album` INT NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
     `genre` VARCHAR(100),
@@ -73,25 +73,25 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Albums` (
     `release_date` DATE,
     `id_artist` INT NOT NULL,
     PRIMARY KEY (`id_album`),
-    FOREIGN KEY (`id_artist`) REFERENCES `VinylsShop`.`Artists` (`id_artist`)
+    FOREIGN KEY (`id_artist`) REFERENCES `vinylsshop`.`artists` (`id_artist`)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Tracks` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`tracks` (
     `id_track` INT NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
     `duration` TIME NOT NULL,
     PRIMARY KEY (`id_track`)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`AlbumsTracks` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`albumstracks` (
     `id_album` INT NOT NULL,
     `id_track` INT NOT NULL,
     PRIMARY KEY (`id_album`, `id_track`),
-    FOREIGN KEY (`id_album`) REFERENCES `VinylsShop`.`Albums` (`id_album`),
-    FOREIGN KEY (`id_track`) REFERENCES `VinylsShop`.`Tracks` (`id_track`)
+    FOREIGN KEY (`id_album`) REFERENCES `vinylsshop`.`albums` (`id_album`),
+    FOREIGN KEY (`id_track`) REFERENCES `vinylsshop`.`tracks` (`id_track`)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Coupons` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`coupons` (
     `id_coupon` INT NOT NULL AUTO_INCREMENT,
     `discount_code` VARCHAR(50) NOT NULL,
     `percentage` DECIMAL(10, 2) NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Coupons` (
     UNIQUE INDEX `code_UNIQUE` (`discount_code` ASC)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Orders` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`orders` (
     `id_order` INT NOT NULL AUTO_INCREMENT,
     `order_date` DATE NOT NULL,
     `total_cost` DECIMAL(10, 2) NOT NULL DEFAULT 0,
@@ -110,12 +110,12 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Orders` (
     `discount_code` VARCHAR(50),
     `id_user` INT NOT NULL,
     PRIMARY KEY (`id_order`),
-    FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`),
-    FOREIGN KEY (`id_card`) REFERENCES `VinylsShop`.`Cards` (`id_card`),
-    FOREIGN KEY (`discount_code`) REFERENCES `VinylsShop`.`Coupons` (`discount_code`)
+    FOREIGN KEY (`id_user`) REFERENCES `vinylsshop`.`users` (`id_user`),
+    FOREIGN KEY (`id_card`) REFERENCES `vinylsshop`.`cards` (`id_card`),
+    FOREIGN KEY (`discount_code`) REFERENCES `vinylsshop`.`coupons` (`discount_code`)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Shipments` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`shipments` (
     `id_shipment` INT NOT NULL AUTO_INCREMENT,
     `tracking_number` VARCHAR(100) NOT NULL,
     `shipment_date` DATE NOT NULL,
@@ -127,11 +127,11 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Shipments` (
     `id_order` INT NOT NULL,
     `id_address` INT NOT NULL,
     PRIMARY KEY (`id_shipment`),
-    FOREIGN KEY (`id_order`) REFERENCES `VinylsShop`.`Orders` (`id_order`),
-    FOREIGN KEY (`id_address`) REFERENCES `VinylsShop`.`Addresses` (`id_address`)
+    FOREIGN KEY (`id_order`) REFERENCES `vinylsshop`.`orders` (`id_order`),
+    FOREIGN KEY (`id_address`) REFERENCES `vinylsshop`.`addresses` (`id_address`)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Vinyls` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`vinyls` (
     `id_vinyl` INT NOT NULL AUTO_INCREMENT,
     `cost` DECIMAL(10, 2) NOT NULL,
     `rpm` INT NOT NULL,
@@ -140,32 +140,32 @@ CREATE TABLE IF NOT EXISTS `VinylsShop`.`Vinyls` (
     `type` ENUM('LP', 'EP') NOT NULL,
     `id_album` INT NOT NULL,
     PRIMARY KEY (`id_vinyl`),
-    FOREIGN KEY (`id_album`) REFERENCES `VinylsShop`.`Albums` (`id_album`)
+    FOREIGN KEY (`id_album`) REFERENCES `vinylsshop`.`albums` (`id_album`)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Carts` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`carts` (
     `id_vinyl` INT NOT NULL,
     `id_user` INT NOT NULL,
     `quantity` INT NOT NULL CHECK (`quantity` > 0),
     PRIMARY KEY (`id_vinyl`, `id_user`),
-    FOREIGN KEY (`id_vinyl`) REFERENCES `VinylsShop`.`Vinyls` (`id_vinyl`),
-    FOREIGN KEY (`id_user`) REFERENCES `VinylsShop`.`Users` (`id_user`)
+    FOREIGN KEY (`id_vinyl`) REFERENCES `vinylsshop`.`vinyls` (`id_vinyl`),
+    FOREIGN KEY (`id_user`) REFERENCES `vinylsshop`.`users` (`id_user`)
 );
 
-CREATE TABLE IF NOT EXISTS `VinylsShop`.`Checkouts` (
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`checkouts` (
     `id_order` INT NOT NULL,
     `id_vinyl` INT NOT NULL,
     `quantity` INT NOT NULL CHECK (`quantity` > 0),
     PRIMARY KEY (`id_order`, `id_vinyl`),
-    FOREIGN KEY (`id_order`) REFERENCES `VinylsShop`.`Orders` (`id_order`),
-    FOREIGN KEY (`id_vinyl`) REFERENCES `VinylsShop`.`Vinyls` (`id_vinyl`)
+    FOREIGN KEY (`id_order`) REFERENCES `vinylsshop`.`orders` (`id_order`),
+    FOREIGN KEY (`id_vinyl`) REFERENCES `vinylsshop`.`vinyls` (`id_vinyl`)
 );
 
 -- Redundancy check for cost: ORDER->costo_totale = SHIPMENT(costo) + costo(VINYL)
-CREATE OR REPLACE VIEW `VinylsShop`.`order_total_cost` AS
+CREATE OR REPLACE VIEW `vinylsshop`.`order_total_cost` AS
 SELECT o.id_order, (s.cost + SUM(v.cost * c.quantity)) AS total_cost
-FROM `VinylsShop`.`Orders` o
-JOIN `VinylsShop`.`Shipments` s ON o.id_order = s.id_order
-JOIN `VinylsShop`.`Carts` c ON c.id_user = o.id_user
-JOIN `VinylsShop`.`Vinyls` v ON c.id_vinyl = v.id_vinyl
+FROM `vinylsshop`.`orders` o
+JOIN `vinylsshop`.`shipments` s ON o.id_order = s.id_order
+JOIN `vinylsshop`.`carts` c ON c.id_user = o.id_user
+JOIN `vinylsshop`.`vinyls` v ON c.id_vinyl = v.id_vinyl
 GROUP BY o.id_order;

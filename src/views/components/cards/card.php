@@ -1,7 +1,7 @@
 <div class="credit card" id="card-card_<?php echo $card['id_card']?>">
     <header>
         <?php if($user['default_card'] == $card['id_card']): ?>
-            <a class="stars" onclick="setDefaultCard(<?php echo ''?>)">
+            <a class="stars selected" onclick="setDefaultCard(<?php echo ''?>)">
                 <i class="bi bi-star-fill"></i>    
             </a>
         <?php else: ?>
