@@ -7,6 +7,7 @@ final class CartModel {
         require_once MODELS . 'VinylsModel.php';
         $this->vinyls_model = new VinylsModel();
 
+        $this->loadCart();
         $this->syncCart();
     }
 
@@ -112,9 +113,7 @@ final class CartModel {
      * @return array the cart of the user.
      */
     public function getCart() {
-        if (Session::isLogged()) {
-            $this->syncCart();
-        }
+        $this->syncCart();
         return Session::getCart();;
     }
 
@@ -132,7 +131,7 @@ final class CartModel {
             return false;
         }
         Session::addToCart($this->vinyls_model->getVinyl($id_vinyl), $quantity);
-        
+        var_dump(Session::getCart());
         //need to sync after the set? (90% yes)
         $this->syncCart();
         return true;
@@ -179,6 +178,7 @@ final class CartModel {
      * @return bool true if the cart is synced, false otherwise.
      */
     private function syncAndCheckCart() {
+        //TODO: when i want to delete a vinyl i can't because in Session does not exist but in DB yes.
         foreach (Session::getCart() as $item) {
             $this->setUserCart($item['vinyl']['id_vinyl'], $this->checkVinyl($item['vinyl']['id_vinyl'], $item['quantity']));
         }
@@ -200,7 +200,7 @@ final class CartModel {
         if (!Session::isLogged()) {
             return false;
         }
-        $this->loadCart();
+        
         $this->syncAndCheckCart();
         return Session::getCart();
     }

@@ -142,7 +142,7 @@ class Session {
      */
     public static function addToCart($vinyl, $quantity = 1) {
         $old_quantity = self::getVinylFromCart($vinyl['id_vinyl']);
-        return self::setToCart($vinyl, isset($old_quantity['quantity']) ? $old_quantity + $quantity : $quantity);
+        return self::setToCart($vinyl, isset($old_quantity['quantity']) ? $old_quantity['quantity'] + $quantity : $quantity);
     }
 
     public static function resetCart() {

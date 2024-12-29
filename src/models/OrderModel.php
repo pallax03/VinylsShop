@@ -114,7 +114,7 @@ final class OrderModel
         $order['vinyls'] = Database::getInstance()->executeResults(
             "SELECT co.quantity,
                     v.id_vinyl,
-                    v.cost AS price,
+                    v.cost,
                     v.type,
                     v.rpm, 
                     v.inch, 

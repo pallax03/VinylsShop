@@ -1,11 +1,11 @@
 <div class="card cart">
     <header>
         <div class="controls" id="controls-vinyl_<?php echo $item['vinyl']['id_vinyl']; ?>">
-            <button>
+            <button onclick="addToCart(<?php echo $item['vinyl']['id_vinyl'];?>, 1)">
                 <i class="bi bi-caret-up-fill"></i>
             </button>
             <p id="quantity-vinyl_<?php echo $item['vinyl']['id_vinyl']; ?>"><?php echo $item['quantity']?></p>
-            <button>
+            <button onclick="addToCart(<?php echo $item['vinyl']['id_vinyl'];?>, -1)">
                 <i class="bi bi-caret-down-fill"></i>
             </button>
         </div>

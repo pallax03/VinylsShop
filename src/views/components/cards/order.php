@@ -14,7 +14,7 @@
                         <a href="/vinyl?id_vinyl=<?php echo $vinyl['id_vinyl'] ?>"">
                             <img src="/resources/img/albums/<? echo $vinyl['cover']?>" alt="album cover">
                             <h6><? echo $vinyl['album_title']?></h6>
-                            <p><? echo $vinyl['price']?> €</p>
+                            <p><? echo $vinyl['cost']?> €</p>
                         </a>
                     </li>
                 <?php endforeach; ?>
