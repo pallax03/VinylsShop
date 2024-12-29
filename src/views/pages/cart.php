@@ -5,12 +5,15 @@
 <?php if (isset($cart) && count($cart) > 0): ?>
     <section class="cards">
         <?php
-            foreach ($cart as $vinyl) {
+            foreach ($cart as $item) {
                 include COMPONENTS . 'cards/cart.php';
             }
         ?>
     </section>
-    
+    <div class="large button">
+        <i class="bi bi-credit-card-fill"></i>
+        <input type="button" id="btn-card_submit" value="Checkout - <?php echo $total ?> €" />
+    </div>
 <? else: ?>
     <div class="div"></div>
     <div class="container center vertical">

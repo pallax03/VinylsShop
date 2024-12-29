@@ -44,9 +44,9 @@ final class OrderModel
             $orders[$key]['vinyls'] = Database::getInstance()->executeResults(
                 "SELECT 
                         v.id_vinyl,
-                        v.cost AS price,
-                        a.title AS album_title,
-                        a.cover AS album_cover
+                        v.cost,
+                        a.title,
+                        a.cover
                     FROM `vinylsshop`.`checkouts` co
                     JOIN `vinylsshop`.`vinyls` v ON co.id_vinyl = v.id_vinyl
                     JOIN `vinylsshop`.`albums` a ON v.id_album = a.id_album

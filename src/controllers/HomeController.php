@@ -74,5 +74,9 @@ class HomeController extends Controller {
     public function dashboard(Request $request, Response $response) {
         $this->renderDashboard();
     }
+
+    public function reset() {
+        Session::destroy();
+    }
 }
 ?>

@@ -24,7 +24,7 @@
             <?php
                 $total = 0;
                 foreach ($order['vinyls'] as $vinyl) {
-                    $total += $vinyl['price'];
+                    $total += $vinyl['cost'];
                 }
                 echo round($total, 2);
             ?>

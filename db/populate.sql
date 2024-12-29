@@ -6,7 +6,8 @@ VALUES
 (3, 'Billie Eilish'),
 (4, 'Palaye Royale'),
 (5, 'Bring Me The Horizon'),
-(6, 'Toby Fox');
+(6, 'Toby Fox'),
+(7, 'Pinguini Tattici Nucleari');
 
 -- Insert albums
 INSERT IGNORE INTO `vinylsshop`.`albums` (`id_album`, `title`, `genre`, `cover`, `release_date`, `id_artist`)
@@ -18,7 +19,8 @@ VALUES
 (5, 'Fever Dream', 'Rock', 'feverdream.webp', '2022-10-28', 4),
 (6, 'Post Human: Survival Horror', 'Rock', 'posthuman.webp', '2020-10-30', 5),
 (7, 'Sempiternal', 'Metal', 'sempiternal.webp', '2013-04-01', 5),
-(8, 'Undertale Soundtrack', 'Soundtrack', 'undertale.webp', '2015-09-15', 6);
+(8, 'Undertale Soundtrack', 'Soundtrack', 'undertale.webp', '2015-09-15', 6),
+(9, 'Hello World', 'Pop', 'helloworld.webp', '2024-12-06', 7);
 
 -- Insert tracks
 -- Insert multiple tracks for each album in the tracks table
@@ -71,8 +73,14 @@ VALUES
 (32, 'His Theme', '2:05'),
 (33, 'Megalovania', '2:36'),
 (34, 'Hopes and Dreams', '3:00'),
-(35, 'Asgore', '3:27');
+(35, 'Asgore', '3:27'),
 
+-- tracks for "Hello World" by Pinguini Tattici Nucleari (2024)
+(36, 'Hello World', '1:31'),
+(37, 'Nativi Digitali', '4:04'),
+(38, 'Piccola Volpe', '2:52'),
+(39, 'Fuck You Vincenzo', '3:13'),
+(40, 'Your Dog', '2:53');
 
 -- Insert tracks in album
 -- Associate tracks with corresponding albums in the albumstracks table
@@ -125,19 +133,27 @@ VALUES
 (8, 32), -- His Theme
 (8, 33), -- Megalovania
 (8, 34), -- Hopes and Dreams
-(8, 35); -- Asgore
+(8, 35), -- Asgore
+
+-- Hello World (2024) by Pinguini Tattici Nucleari
+(9, 36), -- Hello World
+(9, 37), -- Nativi Digitali
+(9, 38), -- Piccola Volpe
+(9, 39), -- Fuck You Vincenzo
+(9, 40); -- Your Dog
 
 -- Insert vinyls
 INSERT IGNORE INTO `vinylsshop`.`vinyls` (`id_vinyl`, `cost`, `rpm`, `inch`, `quantity`, `type`, `id_album`)
 VALUES
-(1, 20.00, 33, 12, 10, 'LP', 1),
-(2, 20.00, 33, 12, 10, 'LP', 2),
-(3, 20.00, 33, 12, 10, 'LP', 3),
-(4, 20.00, 33, 12, 10, 'LP', 4),
-(5, 20.00, 33, 12, 10, 'LP', 5),
-(6, 20.00, 33, 12, 10, 'LP', 6),
-(7, 20.00, 33, 12, 10, 'LP', 7),
-(8, 20.00, 33, 12, 10, 'LP', 8);
+(1, 21.00, 33, 12, 10, 'EP', 1),
+(2, 30.00, 33, 12, 10, 'LP', 2),
+(3, 23.00, 33, 12, 10, 'EP', 3),
+(4, 15.00, 33, 12, 10, 'LP', 4),
+(5, 32.00, 33, 12, 10, 'LP', 5),
+(6, 40.00, 33, 12, 10, 'LP', 6),
+(7, 27.00, 33, 12, 10, 'EP', 7),
+(8, 24.00, 33, 12, 10, 'LP', 8),
+(9, 44.00, 33, 12, 10, 'EP', 9);
 
 -- Insert coupons
 INSERT IGNORE INTO `vinylsshop`.`coupons` (`discount_code`, `percentage`, `valid_from`, `valid_until`)
@@ -168,7 +184,10 @@ VALUES
 INSERT IGNORE INTO `vinylsshop`.`carts` (`id_vinyl`, `id_user`, `quantity`)
 VALUES
 (5, 2, 10),
-(6, 2, 3);
+(6, 2, 3),
+(7, 2, 4),
+(8, 2, 2),
+(9, 2, 1);
 
 -- Insert orders
 INSERT IGNORE INTO `vinylsshop`.`orders` (`order_date`, `total_cost`, `id_card`, `order_status`, `discount_code`, `id_user`)
@@ -176,7 +195,6 @@ VALUES
 ('2024-10-29', 72.00, 1, 'Completed', 'HALLOWEEN10', 2),
 ('2024-11-21', 9.00, NULL, 'Completed', 'BLACKFRIDAY70', 2),
 ('2024-12-06', 36.00, 2, 'Paid', 'CHRISTMAS20', 2);
-
 
 -- Insert checkouts
 INSERT IGNORE INTO `vinylsshop`.`checkouts` (`id_order`, `id_vinyl`, `quantity`)

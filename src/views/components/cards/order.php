@@ -12,7 +12,7 @@
                 <?php foreach (array_slice($order['vinyls'], 0, 3) as $vinyl): ?>
                     <li>
                         <a href="/vinyl?id_vinyl=<?php echo $vinyl['id_vinyl'] ?>"">
-                            <img src="/resources/img/albums/<? echo $vinyl['album_cover']?>" alt="album cover">
+                            <img src="/resources/img/albums/<? echo $vinyl['cover']?>" alt="album cover">
                             <h6><? echo $vinyl['album_title']?></h6>
                             <p><? echo $vinyl['price']?> €</p>
                         </a>

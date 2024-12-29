@@ -1,17 +1,10 @@
 <div class="card cart">
     <header>
-        <div class="controls">
+        <div class="controls" id="controls-vinyl_<?php echo $item['vinyl']['id_vinyl']; ?>">
             <button>
                 <i class="bi bi-caret-up-fill"></i>
             </button>
-            <select name="" id="">
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
+            <p id="quantity-vinyl_<?php echo $item['vinyl']['id_vinyl']; ?>"><?php echo $item['quantity']?></p>
             <button>
                 <i class="bi bi-caret-down-fill"></i>
             </button>
@@ -19,15 +12,15 @@
     </header>
     <div class="product-details">
         <div>
-            <img src="https://picsum.photos/200" alt="Vinyl Title">
+        <img src="/resources/img/albums/<? echo $item['vinyl']['cover']?>" alt="album cover">
         </div>
         <div class="info">
-            <h2>Vinyl Title</h2>
-            <p>Album title: artist_name - album genre</p>
-            <p>LP - 33rpm - 12"</p>
+            <h3><?php echo $item['vinyl']['title']; ?></h3>
+            <p><?php echo $item['vinyl']['artist_name'] ?> #<?php echo $item['vinyl']['genre'] ?></p>
+            <p><?php echo $item['vinyl']['type'] ?> - <?php echo $item['vinyl']['rpm'] ?>rpm - <?php echo $item['vinyl']['inch'] ?>"</p>
         </div>
     </div>
     <footer>
-        <p>00,00 €</p>
+        <p><?php echo $item['vinyl']['cost']?> €</p>
     </footer>
 </div>

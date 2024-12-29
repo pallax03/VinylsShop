@@ -150,6 +150,7 @@ final class VinylsModel {
         return Database::getInstance()->executeResults(
             "SELECT 
                 v.id_vinyl,
+                v.quantity,
                 v.cost,
                 v.rpm,
                 v.inch,
@@ -160,6 +161,7 @@ final class VinylsModel {
                 ar.name AS artist_name
                 FROM vinyls v 
                 JOIN albums a ON v.id_vinyl = a.id_album
+                JOIN artists ar ON a.id_artist = ar.id_artist
                 WHERE id_vinyl = ?",
             'i',
             $id_vinyl

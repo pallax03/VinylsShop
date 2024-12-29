@@ -24,6 +24,8 @@ class CartController extends Controller {
         
         $data['user'] = $this->user_model->getUser(Session::getUser());
         $data['cart'] = $this->cart_model->getCart();
+        $data['total'] = $this->cart_model->getTotal();
+
         $this->render('cart', $head, $data);
     }
 

@@ -67,9 +67,11 @@ class Session {
      * @return array the vinyl into the cart.
      */
     public static function getCart() {
-        return self::isSet('Card') ? self::get('Card') : self::set('Card', []);
+        if(!self::isSet('Cart')) {
+            self::set('Cart', []);
+        }
+        return self::get('Cart');
     }
-
 
     /**
      * Set the cart of the user, quantity can be negative.
@@ -82,7 +84,7 @@ class Session {
      * @return array it return getCart
      */
     public static function setToCart($vinyl, $quantity = null) { 
-        if (!isset($vinyl['id_vinyl']) ) {
+        if (empty($vinyl) || !isset($vinyl['id_vinyl']) ) {
             return self::getCart();
         }
         $quantity = $quantity ?? 1;
@@ -94,7 +96,7 @@ class Session {
         foreach ($cart as $key => $item) { // if the vinyl is found, update his quantity.
             if ($item['vinyl']['id_vinyl'] === $vinyl['id_vinyl']) {
                 $found = true;
-                $cart[$key]['quantity'] += $quantity;
+                $cart[$key]['quantity'] = $quantity;
                 if ($cart[$key]['quantity'] <= 0) {  // if the quantity is 0 or negative, remove the vinyl from the cart.
                     unset($cart[$key]); 
                 }
@@ -106,7 +108,39 @@ class Session {
             array_push($cart, ['vinyl' => $vinyl, 'quantity' => $quantity]);
         }
 
-        self::set('Card', $cart);
+        self::set('Cart', $cart);
         return self::getCart();
+    }
+
+    public static function getVinylFromCart($id_vinyl) {
+        foreach (self::getCart() as $item) {
+            if ($item['vinyl']['id_vinyl'] === $id_vinyl) {
+                return $item;
+            }
+        }
+    }
+
+    public static function removeVinylFromCart($id_vinyl) {
+        $cart = self::getCart();
+        $cart = array_filter($cart, function($item) use ($id_vinyl) {
+            return $item['vinyl']['id_vinyl'] !== $id_vinyl;
+        });
+        self::set('Cart', array_values($cart)); // Re-index the array
+    }
+
+    /**
+     * add a vinyl to the cart.
+     *
+     * @param [type] $vinyl
+     * @param [type] $quantity
+     * @return void
+     */
+    public static function addToCart($vinyl, $quantity = null) {
+
+        return self::setToCart($vinyl, $quantity);  
+    }
+
+    public static function resetCart() {
+        self::set('Cart', []);
     }
 }
