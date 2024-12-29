@@ -15,8 +15,8 @@ final class CartModel {
      * Get the cart of a specific user or the logged user.
      * a super user can get any user's cart
      * 
-     * @param [int|null] $id_user if null, the logged user
-     * @return [array|bool] the cart of the user, false if query failed.
+     * @param int|null $id_user if null, the logged user
+     * @return array the cart of the user, false if query failed.
      */
     public function getUserCart($id_user = null) {
         if (!Session::haveAdminUserRights($id_user)) {
@@ -38,8 +38,11 @@ final class CartModel {
      * a super user can update any user's cart
      * if the quantity is <= 0, the vinyl will be removed from the cart.
      *
-     * @param [int|null] $id_user, if null, the logged user
-     * @return [bool] true if the cart is updated, false otherwise.
+     * @param int $id_vinyl
+     * @param int $quantity
+     * @param int|null $id_user, if null, the logged user
+     * 
+     * @return bool true if the cart is updated, false otherwise.
      */
     public function setUserCart($id_vinyl, $quantity, $id_user = null) {
         if (!Session::haveAdminUserRights($id_user)) {
@@ -83,8 +86,10 @@ final class CartModel {
      * Remove a vinyl from the cart of a specific user or the logged user.
      * a super user can remove any user's vinyl from the cart.
      *
-     * @param [int|null] $id_user, if null, the logged user
-     * @return [bool] true if the vinyl is removed, false otherwise.
+     * @param int $id_vinyl
+     * @param int|null $id_user, if null, the logged user
+     * 
+     * @return bool true if the vinyl is removed, false otherwise.
      */
     public function removeUserCart($id_vinyl, $id_user = null) {
         if (!Session::haveAdminUserRights($id_user)) {
@@ -101,11 +106,9 @@ final class CartModel {
     }
 
     /**
-     * Get the cart of the user.
+     * Get the cart of the logged user.
      * sync the session cart with the database.
-     * of the logged user.
      *
-     * @param int $id_user
      * @return array the cart of the user.
      */
     public function getCart() {
@@ -128,10 +131,10 @@ final class CartModel {
         if (!($id_vinyl && $quantity)) {
             return false;
         }
-        Session::setToCart($this->vinyls_model->getVinyl($id_vinyl), $quantity);
+        Session::addToCart($this->vinyls_model->getVinyl($id_vinyl), $quantity);
         
         //need to sync after the set? (90% yes)
-        // $this->syncCart();
+        $this->syncCart();
         return true;
     } 
 
@@ -155,11 +158,12 @@ final class CartModel {
     }
 
     /**
-     * Check if the vinyls are still available.
+     * Check if the wanted quantity is available for the vinyl.
      * 
      * @param int $id_vinyl the id of the vinyl.
+     * @param int $wanted_quantity the quantity wanted.
      *
-     * @return bool true if the vinyl is still available, false otherwise.
+     * @return int the minimum quantity of the vinyl available.
      */
     private function checkVinyl($id_vinyl, $wanted_quantity) {
         $quantity = $this->vinyls_model->getVinyl($id_vinyl)['quantity'];

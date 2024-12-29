@@ -4,11 +4,11 @@ final class UserModel {
     /**
      * Get all the users from the database. (⭐️ only for super users).
      *
-     * @return [array|false] the users if the query is successful, false otherwise.
+     * @return array the users if the query is successful, false otherwise.
      */
     public function getUsers() {
         if (!Session::isSuperUser()) {
-            return false;
+        return [];
         }
 
         return Database::getInstance()->executeResults(
@@ -22,8 +22,10 @@ final class UserModel {
      * a super user can get any user
      * Cannot get a user if:
      * - the user is not logged
-     * @param [int|null] $id_user if null, the logged user
-     * @return [array|bool] the user if exists, false if the query failed.
+     * 
+     * @param int|null $id_user if null, the logged user
+     * 
+     * @return array the user if exists, false if the query failed.
      */
     public function getUser($id_user = null) {
         if (!Session::haveAdminUserRights($id_user)) {
@@ -55,8 +57,8 @@ final class UserModel {
      * A super user can update any user.
      * A user can update only himself.
      *
-     * @param [int|null] $id_user the user to update, if null, the logged user
-     * @param [string|null] $newsletter the newsletter value
+     * @param int|null $id_user the user to update, if null, the logged user
+     * @param string|null $newsletter the newsletter value
      * @return bool true if the user is updated, false otherwise
      */
     public function updateUser($id_user = null, $newsletter = null) {
@@ -80,7 +82,7 @@ final class UserModel {
      * A super user can delete any user except himself.
      * A user can delete only himself.
      *
-     * @param [int|null] $id_user the user to delete, if null, the logged user
+     * @param int|null $id_user the user to delete, if null, the logged user
      * @return bool true if the user is deleted, false otherwise
      */
     public function deleteUser($id_user = null) {
@@ -100,9 +102,9 @@ final class UserModel {
      * Get the address of a user specific user or the logged user.
      * a super user can get any user's addresses
      * 
-     * @param [int|null] $id_user if null, the logged user
-     * @param [int|null] $id_address if null, all the addresses
-     * @return [array|bool] the addresses of the user, false if query failed.
+     * @param int|null $id_user if null, the logged user
+     * @param int|null $id_address if null, all the addresses
+     * @return array the addresses of the user, false if query failed.
      */
     public function getAddress($id_user = null, $id_address = null) {
         if (!Session::haveAdminUserRights($id_user)) {
@@ -126,15 +128,15 @@ final class UserModel {
     /**
      * Set the address for the logged user.
      * 
-     * @param [string] $name the name of the address
-     * @param [string] $street_number the street number of the address
-     * @param [string] $city the city of the address
-     * @param [string] $postal_code the postal code of the address
-     * @return [array|bool] the addresses of the user, false if query failed.
+     * @param string $name the name of the address
+     * @param string $street_number the street number of the address
+     * @param string $city the city of the address
+     * @param string $postal_code the postal code of the address
+     * @return bool the addresses of the user, false if query failed.
      */
     public function setAddress($name, $street_number, $city, $postal_code) {
         if (!Session::isLogged()) {
-            return [];
+            return false;
         }
 
         return Database::getInstance()->executeQueryAffectRows(
@@ -150,8 +152,8 @@ final class UserModel {
      * A super user can delete any address of any user, but not his addresses.
      * A user can delete only his addresses.
      *
-     * @param [int] $id_address the address to delete
-     * @param [int|null] $id_user if null, the logged user
+     * @param int $id_address the address to delete
+     * @param int|null $id_user if null, the logged user
      * @return bool true if the address is deleted, false otherwise
      */
     public function deleteAddress($id_address, $id_user = null) {
@@ -188,9 +190,9 @@ final class UserModel {
      * Get the cards of a specific user or the logged user.
      * a super user can get any user's cards
      *
-     * @param [int | null] $id_user null if the logged user 
-     * @param [int | null] $id_card null if all the cards
-     * @return [array | false] the cards of the user, false if query failed.
+     * @param int|null $id_user null if the logged user 
+     * @param int|null $id_card null if all the cards
+     * @return array the cards of the user, false if query failed.
      */
     public function getCard($id_user = null, $id_card = null) {
         if (!Session::haveAdminUserRights($id_user)) {
@@ -211,14 +213,14 @@ final class UserModel {
     /**
      * Set the card for the logged user.
      * 
-     * @param [string] $card_number the card number
-     * @param [string] $exp_date the expiration date
-     * @param [string] $cvc the cvc
-     * @return [array|bool] the cards of the user, false if query failed.
+     * @param string $card_number the card number
+     * @param string $exp_date the expiration date
+     * @param string $cvc the cvc
+     * @return bool the cards of the user, false if query failed.
      */
     public function setCard($card_number, $exp_date, $cvc) {
         if (!Session::isLogged()) {
-            return [];
+            return false;
         }
 
         return Database::getInstance()->executeQueryAffectRows(
@@ -234,8 +236,8 @@ final class UserModel {
      * A super user can delete any card.
      * A user can delete only his cards.
      *
-     * @param [int] $id_card the card to delete
-     * @param [int|null] $id_user if null, the logged user
+     * @param int $id_card the card to delete
+     * @param int|null $id_user if null, the logged user
      * @return bool true if the card is deleted, false otherwise
      */
     public function deleteCard($id_card, $id_user = null) {
@@ -273,7 +275,7 @@ final class UserModel {
     /**
      * Create the default preferences for a user if do not exists.
      *
-     * @param [int|null] $id_user if null, the logged user
+     * @param int|null $id_user if null, the logged user
      * @return bool true if the preferences are created, false otherwise
      */
     private function createDefaults($id_user = null) {
@@ -287,8 +289,8 @@ final class UserModel {
     /**
      * Set the default card for the logged user.
      * 
-     * @param [int] $id_card the id of the card
-     * @return [array|bool] the cards of the user, false if query failed.
+     * @param int $id_card the id of the card
+     * @return bool the cards of the user, false if query failed.
      */
     private function setDefaultCard($id_card) {
         return Database::getInstance()->executeQueryAffectRows(
@@ -305,7 +307,7 @@ final class UserModel {
     /**
      * Set the default address for the logged user.
      * 
-     * @param [int] $id_address the id of the address
+     * @param int $id_address the id of the address
      * @return bool true if the address is set, false otherwise
      */
     private function setDefaultAddress($id_address) {
@@ -323,8 +325,8 @@ final class UserModel {
     /**
      * Set the default address and card for the logged user.
      *
-     * @param [int|null] $id_card
-     * @param [int|null] $id_address
+     * @param int|null $id_card
+     * @param int|null $id_address
      * @return bool true if the address and card are set, false otherwise
      */
     public function setDefaults($id_card = null, $id_address = null) {

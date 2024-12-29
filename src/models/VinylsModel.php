@@ -142,7 +142,7 @@ final class VinylsModel {
     /**
      * get the vinyl details from the database (without tracks)
      * 
-     * @param id_vinyl the id of the vinyl to get the details of
+     * @param int $id_vinyl the id of the vinyl to get the details of
      * 
      * @return array containing the details of the vinyl
      */
@@ -172,7 +172,7 @@ final class VinylsModel {
     /**
      * Function to be called to get the preview of a vinyl
      * (cart, checkout and order pages).
-     * @param id of the vinyl to get the preview of
+     * @param int $id of the vinyl to get the preview of
      * @return array containing the information on the vinyl
      */
     public function getPreview($id) {

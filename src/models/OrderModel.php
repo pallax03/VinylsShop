@@ -7,8 +7,8 @@ final class OrderModel
      * An admin can get any user orders
      * A user can only get his own orders
      *
-     * @param [int] $id_user, if null, return the logged user
-     * @return Array of orders
+     * @param int $id_user, if null, return the logged user
+     * @return array of orders
      */
     public function getOrders($id_user = null) {
         if (!Session::haveAdminUserRights($id_user)) {
@@ -63,9 +63,9 @@ final class OrderModel
      * A user can only get his own orders
      * An admin can get any order
      *
-     * @param [int] $id_user, if null, return the logged user
-     * @param [int] $id_order, if null, return the last order
-     * @return Array of order
+     * @param int|null $id_user, if null, return the logged user
+     * @param int|null $id_order, if null, return the last order
+     * @return array of order
      */
     public function getOrder($id_order=null, $id_user=null) {
         if (!Session::haveAdminUserRights($id_user)) {

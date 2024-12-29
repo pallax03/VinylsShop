@@ -20,7 +20,6 @@ class HomeController extends Controller {
         $head = array('title' => $title, 'style'=> array(''),
          'header' => Database::getInstance()->getConnection() ? 'Database connected' : 'Database not connected');
 
-
         
         $this->render('home', $head);
     }

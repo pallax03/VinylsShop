@@ -1,7 +1,7 @@
 <?php
 final class AuthModel {
 
-    private $cookieAuthName = 'user_auth';
+    private static $cookieAuthName = 'user_auth';
 
     private function encryptPassword($password) {
         return md5($password);
@@ -16,12 +16,19 @@ final class AuthModel {
         return "$header.$payload.$signature";
     }
 
-    // refresh the session with the user info (id, su)
+    /**
+     * Set the user info into the session
+     */
     private function refreshSession($userInfo) {
         Session::set('User', ['id_user' => $userInfo['id_user'], 'su' => $userInfo['isSuperUser']]);
     }
 
-    // check if the token is valid, if it is refresh the session, else logout.
+    /**
+     * verify the token, extracting the user info.
+     *
+     * @param string $token
+     * @return array user info.
+     */
     private function verifyToken($token) {
         $key = $_ENV['JWT_SECRET_KEY'];
         list($header, $payload, $signature) = explode('.', $token);
@@ -36,11 +43,11 @@ final class AuthModel {
                 return $userInfo;
             }
         }
-        return false;
+        return [];
     }
 
     private function setCookie($token) {
-        setcookie($this->cookieAuthName, $token, [
+        setcookie(self::$cookieAuthName, $token, [
             'expires' => time() + 3600,  // Scadenza di 1 ora (modificabile)
             'path' => '/',               // Disponibile su tutto il sito
             'secure' => true,            // Solo tramite HTTPS
@@ -53,17 +60,19 @@ final class AuthModel {
         return filter_var($mail, FILTER_VALIDATE_EMAIL);
     }
 
-    /*
-    * checks if the cookie is set, if it is, verifies the token and set is session
-    * after it checks if the user not exist in the database, if true logout.
-    * return false if cookie is not set
-    */
+    /**
+     * Checks if the cookie is set, if it is, verifies the token and set is session
+     *  after it checks if the user not exist in the database, if true logout.
+     *
+     * @return bool
+     */
     public function checkCookie() {
-        if (!isset($_COOKIE[$this->cookieAuthName])) {
+        if (!isset($_COOKIE[self::$cookieAuthName])) {
             return false;
         }
-        $this->verifyToken($_COOKIE[$this->cookieAuthName]);
+        $this->verifyToken($_COOKIE[self::$cookieAuthName]);
         $this->checkAuth();
+        return true;
     }
 
     /**
@@ -100,7 +109,7 @@ final class AuthModel {
     /**
      * Check if the mail is already in the database
      *
-     * @param [string] $mail
+     * @param string $mail
      * @return bool true if the mail is already in the database, false otherwise
      */
     public function checkUserMail($mail) {
@@ -112,11 +121,12 @@ final class AuthModel {
     }
 
     /**
-     * Login the user
+     * Login the user.
      *
-     * @param [string] $mail
-     * @param [string] $password
-     * @param [bool] $remember, if the user wants to be remembered stored in a crypted token cookie
+     * @param string $mail
+     * @param string $password
+     * @param bool $remember, if the user wants to be remembered stored in a crypted token cookie
+     * 
      * @return bool true if the user is logged in, false otherwise
      */
     public function login($mail, $password, $remember) {
@@ -138,13 +148,13 @@ final class AuthModel {
     }
 
     /**
-     * Logout the user
+     * Logout the user.
      *
      * @return bool true if the user is logged out, false otherwise
      */
     public function logout() {
         // delete cookie also if not exists
-        setcookie($this->cookieAuthName, '', [
+        setcookie(self::$cookieAuthName, '', [
             'expires' => time() - 3600,
             'path' => '/',
             'secure' => true,
@@ -158,15 +168,16 @@ final class AuthModel {
     /**
      * Register a new user
      *
-     * @param [string] $mail
-     * @param [string] $password
-     * @param int $su, if the user is a super user
-     * @param int $newsletter, if the user wants to receive the newsletter
+     * @param string $mail
+     * @param string $password
+     * @param int|null $su, if the user is a super user (default no).
+     * @param int|null $newsletter, if the user wants to receive the newsletter (default no).
+     * 
      * @return bool true if the user is registered, false otherwise
      */
     public function register($mail, $password, $su = 0, $newsletter = 0) {
         if (!$this->isValidMail($mail)) {
-            return 'not a valid mail';
+            return false;
         }
 
         return Database::getInstance()->executeQueryAffectRows(
@@ -176,22 +187,21 @@ final class AuthModel {
         );
     }
 
+    /**
+     * Send an mail (fake send), it set as password 'forgot'.
+     *
+     * @param string $mail
+     * @return bool
+     */
     public function forgotPassword($mail) {
         if (!$this->isValidMail($mail)) {
-            return 'not a valid mail';
+            return false;
         }
 
-        $newPassword = bin2hex(random_bytes(8));
-        $result = Database::getInstance()->executeQueryAffectRows(
+        return Database::getInstance()->executeQueryAffectRows(
             "UPDATE `users` SET password = ? WHERE mail = ?",
             'ss',
-            $this->encryptPassword($newPassword), $mail
+            $this->encryptPassword('forgot'), $mail
         );
-
-        if ($result) {
-            return true;
-        }
-
-        return false;
     }
 }

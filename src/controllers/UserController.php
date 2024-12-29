@@ -48,7 +48,7 @@ class UserController extends Controller {
     public function getUser(Request $request, Response $response) {
         $body = $request->getBody();
         $data = $this->user_model->getUser($body['id_user'] ?? null);
-        if (empty($data) || !is_array($data) || !$data) { 
+        if (empty($data)) { 
             $response->Error('User not found or not allowed to see this user ' , $body);
         } else {
             $response->Success($data);
@@ -83,7 +83,7 @@ class UserController extends Controller {
         $body = $request->getBody();
 
         $data = $this->user_model->getAddress($body['id_user'] ?? null, $body['id_address'] ?? null);
-        if (empty($data) || !is_array($data) || !$data) { 
+        if (empty($data)) { 
             $response->Error('Address not found or not allowed to see this address', $body);
         } else {
             $response->Success($data);
@@ -108,7 +108,7 @@ class UserController extends Controller {
     public function getCard(Request $request, Response $response) {
         $body = $request->getBody();
         $data = $this->user_model->getCard($body['id_user'] ?? null, $body['id_card'] ?? null);
-        if (empty($data) || !is_array($data) || !$data) { 
+        if (empty($data)) { 
             $response->Error('Card not found or not allowed to see this card', $body);
         } else {
             $response->Success($data);

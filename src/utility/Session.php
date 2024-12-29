@@ -42,7 +42,7 @@ class Session {
     /**
      * This function checks overall if the user isLogged, then
      * if the id_user is the same as the logged user.
-     * @param int $id_user
+     * @param int|null $id_user if null, it will check if the user is logged.
      * @return bool
      */
     public static function isHim($id_user = null) {
@@ -54,7 +54,7 @@ class Session {
      * A super user can update any user, and himself.
      * A user can update only himself.
      *
-     * @param [int] $id_user if null, it will check if the user is logged.
+     * @param int|null $id_user if null, it will check if the user is logged.
      * @return bool 
      */
     public static function haveAdminUserRights($id_user = null) {
@@ -79,15 +79,14 @@ class Session {
      * - if the vinyl is already present.
      * - if the quantity of a present vinyl go to 0, it will be removed.
      * 
-     * @param [array] $vinyl the vinyl to add to the cart.
-     * @param [int | null] $quantity, if null, it will be set to 1.
+     * @param array $vinyl the vinyl to add to the cart.
+     * @param int|null $quantity, if null, it will be set to 1.
      * @return array it return getCart
      */
-    public static function setToCart($vinyl, $quantity = null) { 
+    public static function setToCart($vinyl, $quantity = 1) { 
         if (empty($vinyl) || !isset($vinyl['id_vinyl']) ) {
             return self::getCart();
         }
-        $quantity = $quantity ?? 1;
 
         // take the vinyls from the cart, and do the operation.
         // after all, re-set the cart.
@@ -120,6 +119,12 @@ class Session {
         }
     }
 
+    /**
+     * Remove the vinyl from the cart.
+     *
+     * @param int $id_vinyl
+     * @return void
+     */
     public static function removeVinylFromCart($id_vinyl) {
         $cart = self::getCart();
         $cart = array_filter($cart, function($item) use ($id_vinyl) {
@@ -129,15 +134,15 @@ class Session {
     }
 
     /**
-     * add a vinyl to the cart.
+     * Add a vinyl to the cart.
      *
-     * @param [type] $vinyl
-     * @param [type] $quantity
-     * @return void
+     * @param array $vinyl
+     * @param int|null $quantity, if null, it will be set to 1.
+     * @return array the cart.
      */
-    public static function addToCart($vinyl, $quantity = null) {
-
-        return self::setToCart($vinyl, $quantity);  
+    public static function addToCart($vinyl, $quantity = 1) {
+        $old_quantity = self::getVinylFromCart($vinyl['id_vinyl']);
+        return self::setToCart($vinyl, isset($old_quantity['quantity']) ? $old_quantity + $quantity : $quantity);
     }
 
     public static function resetCart() {
