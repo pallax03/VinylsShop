@@ -1,7 +1,6 @@
 <?php
 final class OrderModel
 {
-
     /**
      * Get all orders of a user
      * An admin can get any user orders

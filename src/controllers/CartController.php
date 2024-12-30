@@ -39,8 +39,16 @@ class CartController extends Controller {
         }
     }
 
+    public function get(Request $request, Response $response) {
+        $response->Success(['cart' => $this->cart_model->getCart(), 'total' => $this->cart_model->getTotal()]);
+    }
+
     public function sync(Request $request, Response $response) {
-        $response->Success('Cart synced', $this->cart_model->syncCart());
+        if($this->cart_model->syncCart()) {
+            $response->Success('Cart synced');
+        } else {
+            $response->Error('Cart not synced');
+        }
     }
 
     public function checkout(Request $request, Response $response) {

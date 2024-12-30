@@ -114,7 +114,7 @@ final class CartModel {
      */
     public function getCart() {
         $this->syncCart();
-        return Session::getCart();;
+        return Session::getCart();
     }
 
     /**
@@ -130,9 +130,24 @@ final class CartModel {
         if (!($id_vinyl && $quantity)) {
             return false;
         }
-        Session::addToCart($this->vinyls_model->getVinyl($id_vinyl), $quantity);
-        var_dump(Session::getCart());
-        //need to sync after the set? (90% yes)
+        
+        // Check if the vinyl is still available.
+        $old_quantity = Session::getVinylFromCart($id_vinyl)['quantity'];
+        if(isset($old_quantity)) {
+            $quantity = $old_quantity + $quantity;
+            Session::setToCart($this->vinyls_model->getVinyl($id_vinyl), $this->checkVinyl($id_vinyl, $quantity));
+        } else {
+            Session::addToCart($this->vinyls_model->getVinyl($id_vinyl), $quantity);    
+        }
+        
+        // if the vinyl was removed sync in DB, because now Session has prio than DB.
+        foreach ($this->getUserCart() as $vinyl) { // if is not logged it iterate over [].
+            if (empty(Session::getVinylFromCart($vinyl['id_vinyl']))) {
+                $this->setUserCart($id_vinyl, 0);
+            }
+        }
+
+        // sync the cart in the DB.
         $this->syncCart();
         return true;
     } 
@@ -170,24 +185,6 @@ final class CartModel {
     }
 
     /**
-     * sync the session cart with the database.
-     * Checking:
-     * - if the vinyl is still available.
-     * - if the vinyl is still in the cart.
-     *
-     * @return bool true if the cart is synced, false otherwise.
-     */
-    private function syncAndCheckCart() {
-        //TODO: when i want to delete a vinyl i can't because in Session does not exist but in DB yes.
-        foreach (Session::getCart() as $item) {
-            $this->setUserCart($item['vinyl']['id_vinyl'], $this->checkVinyl($item['vinyl']['id_vinyl'], $item['quantity']));
-        }
-        $this->loadCart();
-        return true;
-    }
-    
-
-    /**
      * Sync the session cart with the database.
      * Checking:
      * - if the user is logged.
@@ -201,8 +198,12 @@ final class CartModel {
             return false;
         }
         
-        $this->syncAndCheckCart();
-        return Session::getCart();
+        // it will sync the cart in the DB, checking if the vinyl is still available.
+        foreach (Session::getCart() as $item) {
+            $this->setUserCart($item['vinyl']['id_vinyl'], $this->checkVinyl($item['vinyl']['id_vinyl'], $item['quantity']));
+        }
+        $this->loadCart();
+        return true;
     }
 
     /**

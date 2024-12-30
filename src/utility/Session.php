@@ -111,12 +111,19 @@ class Session {
         return self::getCart();
     }
 
+    /**
+     * get the vinyl from the session cart.
+     *
+     * @param int $id_vinyl
+     * @return array (vinyl => [], quantity => '').
+     */
     public static function getVinylFromCart($id_vinyl) {
         foreach (self::getCart() as $item) {
             if ($item['vinyl']['id_vinyl'] === $id_vinyl) {
                 return $item;
             }
         }
+        return [];
     }
 
     /**

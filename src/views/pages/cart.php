@@ -3,7 +3,7 @@
     <h1>Cart</h1>
 </section>
 <?php if (isset($cart) && count($cart) > 0): ?>
-    <section class="cards">
+    <section id="sec-cart" class="cards">
         <?php
             foreach ($cart as $item) {
                 include COMPONENTS . 'cards/cart.php';
@@ -12,7 +12,7 @@
     </section>
     <div class="large button">
         <i class="bi bi-credit-card-fill"></i>
-        <input type="button" id="btn-card_submit" value="Checkout - <?php echo $total ?> €" />
+        <input type="button" id="btn-cart_submit" value="Checkout - <?php echo $total ?> €" />
     </div>
 <? else: ?>
     <div class="div"></div>
@@ -21,3 +21,4 @@
         <a href="/">Go to Shop!</a>
     </div>
 <? endif; ?>
+<script src="/resources/js/cart.js"></script>
