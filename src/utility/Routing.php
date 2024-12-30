@@ -43,8 +43,6 @@
     $router->post('/cart', [CartController::class, 'manage']); 
     // # 🍽️ [SyncCart] -> Cart - User
     $router->get('/cart/sync', [CartController::class, 'sync']); 
-    # 🍽️ [Price] ~ preview cost -> Cart - Vinyl
-    $router->get('/cart/cost', [CartController::class, 'getTotal']); 
     // # 🏠 [Checkout] ~ go onto the checkout page -> Auth - User (Address - Card) - Cart - Vinyl (Artist) - Shipping - Order - Discount.
     // $router->get('/checkout', [CartController::class, 'checkout']);
     // # 🍽️ [Checkout] ~ request the checkout can handle errors if valid make the order and shipping -> Auth - User (Address - Card)
@@ -54,7 +52,7 @@
 // 👤: --- UserController.php --- (models: Auth - User (Address - Card))
     // # 🏠 [User] ~ if not logged: *login form* else: user infos n' list of orders + shipping -> Auth - User - Order - Shipping
     $router->get('/user', [UserController::class, 'index']);
-    // # 🍽️ [GetUser] ~ get user infos an admin can get all -> Auth - User
+    // # 🍽️ [GetUser] ~ get user infos an admin can get any one -> Auth - User
     $router->get('/user/get', [UserController::class, 'getUser']);
     // # 🍽️ [UpdateUser] ~ update user infos -> Auth - User
     $router->post('/user', [UserController::class, 'updateUser']); // like newsletter i can update the user in defaults.
