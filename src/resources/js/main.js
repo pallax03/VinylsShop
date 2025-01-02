@@ -61,7 +61,7 @@ function updateDarkmodeButton() {
 
 
 function redirect(url) {
-    window.location.href = 'url';
+    window.location.href = url;
 }
 
 
@@ -90,7 +90,11 @@ function addToCart(id, quantity) {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            try {
+                getCart();
+            } catch (error) {
+                
+            }
         }
     );
 }

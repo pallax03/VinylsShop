@@ -7,6 +7,7 @@ final class CartModel {
         require_once MODELS . 'VinylsModel.php';
         $this->vinyls_model = new VinylsModel();
 
+        $this->loadCart();
         $this->syncCart();
     }
 
@@ -15,8 +16,8 @@ final class CartModel {
      * Get the cart of a specific user or the logged user.
      * a super user can get any user's cart
      * 
-     * @param [int|null] $id_user if null, the logged user
-     * @return [array|bool] the cart of the user, false if query failed.
+     * @param int|null $id_user if null, the logged user
+     * @return array the cart of the user, false if query failed.
      */
     public function getUserCart($id_user = null) {
         if (!Session::haveAdminUserRights($id_user)) {
@@ -34,12 +35,35 @@ final class CartModel {
     }
 
     /**
+     * Delete the cart of a specific user or the logged user.
+     *
+     * @param int|null $id_user if null, the logged user
+     * @return bool true if the cart is purged, false otherwise.
+     */
+    public function purgeUserCart($id_user = null) {
+        if (!Session::haveAdminUserRights($id_user)) {
+            return false;
+        }
+
+        return Database::getInstance()->executeQueryAffectRows(
+            "DELETE FROM carts
+                WHERE id_user = ?",
+            'i',
+            $id_user ?? Session::getUser()
+        );
+    }
+
+
+    /**
      * Update the cart of a specific user or the logged user.
      * a super user can update any user's cart
      * if the quantity is <= 0, the vinyl will be removed from the cart.
      *
-     * @param [int|null] $id_user, if null, the logged user
-     * @return [bool] true if the cart is updated, false otherwise.
+     * @param int $id_vinyl
+     * @param int $quantity
+     * @param int|null $id_user, if null, the logged user
+     * 
+     * @return bool true if the cart is updated, false otherwise.
      */
     public function setUserCart($id_vinyl, $quantity, $id_user = null) {
         if (!Session::haveAdminUserRights($id_user)) {
@@ -83,8 +107,10 @@ final class CartModel {
      * Remove a vinyl from the cart of a specific user or the logged user.
      * a super user can remove any user's vinyl from the cart.
      *
-     * @param [int|null] $id_user, if null, the logged user
-     * @return [bool] true if the vinyl is removed, false otherwise.
+     * @param int $id_vinyl
+     * @param int|null $id_user, if null, the logged user
+     * 
+     * @return bool true if the vinyl is removed, false otherwise.
      */
     public function removeUserCart($id_vinyl, $id_user = null) {
         if (!Session::haveAdminUserRights($id_user)) {
@@ -101,18 +127,14 @@ final class CartModel {
     }
 
     /**
-     * Get the cart of the user.
+     * Get the cart of the logged user.
      * sync the session cart with the database.
-     * of the logged user.
      *
-     * @param int $id_user
      * @return array the cart of the user.
      */
     public function getCart() {
-        if (Session::isLogged()) {
-            $this->syncCart();
-        }
-        return Session::getCart();;
+        $this->syncCart();
+        return Session::getCart();
     }
 
     /**
@@ -128,10 +150,25 @@ final class CartModel {
         if (!($id_vinyl && $quantity)) {
             return false;
         }
-        Session::setToCart($this->vinyls_model->getVinyl($id_vinyl), $quantity);
         
-        //need to sync after the set? (90% yes)
-        // $this->syncCart();
+        // Check if the vinyl is still available.
+        $old_quantity = Session::getVinylFromCart($id_vinyl)['quantity'];
+        if(isset($old_quantity)) {
+            $quantity = $old_quantity + $quantity;
+            Session::setToCart($this->vinyls_model->getVinyl($id_vinyl), $this->checkVinyl($id_vinyl, $quantity));
+        } else {
+            Session::addToCart($this->vinyls_model->getVinyl($id_vinyl), $quantity);    
+        }
+        
+        // if the vinyl was removed sync in DB, because now Session has prio than DB.
+        foreach ($this->getUserCart() as $vinyl) { // if is not logged it iterate over [].
+            if (empty(Session::getVinylFromCart($vinyl['id_vinyl']))) {
+                $this->setUserCart($id_vinyl, 0);
+            }
+        }
+
+        // sync the cart in the DB.
+        $this->syncCart();
         return true;
     } 
 
@@ -155,33 +192,17 @@ final class CartModel {
     }
 
     /**
-     * Check if the vinyls are still available.
+     * Check if the wanted quantity is available for the vinyl.
      * 
      * @param int $id_vinyl the id of the vinyl.
+     * @param int $wanted_quantity the quantity wanted.
      *
-     * @return bool true if the vinyl is still available, false otherwise.
+     * @return int the minimum quantity of the vinyl available.
      */
     private function checkVinyl($id_vinyl, $wanted_quantity) {
         $quantity = $this->vinyls_model->getVinyl($id_vinyl)['quantity'];
         return  $quantity - $wanted_quantity > 0 ? $wanted_quantity : $quantity;
     }
-
-    /**
-     * sync the session cart with the database.
-     * Checking:
-     * - if the vinyl is still available.
-     * - if the vinyl is still in the cart.
-     *
-     * @return bool true if the cart is synced, false otherwise.
-     */
-    private function syncAndCheckCart() {
-        foreach (Session::getCart() as $item) {
-            $this->setUserCart($item['vinyl']['id_vinyl'], $this->checkVinyl($item['vinyl']['id_vinyl'], $item['quantity']));
-        }
-        $this->loadCart();
-        return true;
-    }
-    
 
     /**
      * Sync the session cart with the database.
@@ -196,24 +217,12 @@ final class CartModel {
         if (!Session::isLogged()) {
             return false;
         }
-        $this->loadCart();
-        $this->syncAndCheckCart();
-        return Session::getCart();
-    }
-
-    /**
-     * Get the total of the session cart.
-     *
-     * @return int the total of the cart.
-     */
-    public function getTotal() {
-        // return array_reduce(Session::get('Cart'), fn($total, $vinyl) => $total + $vinyl['price'] * $vinyl['quantity'], 0);
-        $cart = Session::getCart();
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['vinyl']['cost'] * $item['quantity'];
+        
+        // it will sync the cart in the DB, checking if the vinyl is still available.
+        foreach (Session::getCart() as $item) {
+            $this->setUserCart($item['vinyl']['id_vinyl'], $this->checkVinyl($item['vinyl']['id_vinyl'], $item['quantity']));
         }
-        return $total;
+        $this->loadCart();
+        return true;
     }
-
 }

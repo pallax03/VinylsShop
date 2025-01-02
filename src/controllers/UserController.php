@@ -17,6 +17,7 @@ class UserController extends Controller {
     }
 
     public function index() {
+        $this->redirectSuperUser();
         $head = array('title' => 'Login / Signup', 'style'=> array(''),
          'header' => '');
         
@@ -26,6 +27,7 @@ class UserController extends Controller {
     }
 
     public function addresses() {
+        $this->redirectSuperUser();
         $this->auth_model->checkAuth();
         $head = array('title' => 'Addresses', 'style'=> array(''),
          'header' => '');
@@ -36,6 +38,7 @@ class UserController extends Controller {
     }
 
     public function cards() {
+        $this->redirectSuperUser();
         $this->auth_model->checkAuth();
         $head = array('title' => 'Cards', 'style'=> array(''),
          'header' => '');
@@ -45,10 +48,19 @@ class UserController extends Controller {
         $this->render('cards', $head, $data);
     }
 
+    public function getUsers(Request $request, Response $response) {
+        $data = $this->user_model->getUsers();
+        if (empty($data)) { 
+            $response->Error('not allowed to see all users', $data);
+        } else {
+            $response->Success($data);
+        }
+    }
+
     public function getUser(Request $request, Response $response) {
         $body = $request->getBody();
         $data = $this->user_model->getUser($body['id_user'] ?? null);
-        if (empty($data) || !is_array($data) || !$data) { 
+        if (empty($data)) { 
             $response->Error('User not found or not allowed to see this user ' , $body);
         } else {
             $response->Success($data);
@@ -83,7 +95,7 @@ class UserController extends Controller {
         $body = $request->getBody();
 
         $data = $this->user_model->getAddress($body['id_user'] ?? null, $body['id_address'] ?? null);
-        if (empty($data) || !is_array($data) || !$data) { 
+        if (empty($data)) { 
             $response->Error('Address not found or not allowed to see this address', $body);
         } else {
             $response->Success($data);
@@ -108,7 +120,7 @@ class UserController extends Controller {
     public function getCard(Request $request, Response $response) {
         $body = $request->getBody();
         $data = $this->user_model->getCard($body['id_user'] ?? null, $body['id_card'] ?? null);
-        if (empty($data) || !is_array($data) || !$data) { 
+        if (empty($data)) { 
             $response->Error('Card not found or not allowed to see this card', $body);
         } else {
             $response->Success($data);

@@ -1,19 +1,17 @@
 <section>
-    <?php
-    if (isset($cards) && $cards !== false) {
-        echo "<h1>Cards</h1>";
-        foreach ($cards as $card) {
-            include COMPONENTS . '/cards/card.php';
-        }
-    } else {
-        echo "<h1>No cards found!</h1>";
-    }
-    ?>
-    </ul>
+    <?php if (isset($cards) && $cards !== []): ?>
+        <h1>Cards</h1>
+        <?php
+            foreach ($cards as $card) {
+                include COMPONENTS . '/cards/card.php';
+            }
+        ?>
+    <? else: ?>
+        <h1>No cards found!</h1>
+    <? endif; ?>
 </section>
 <div class="div"></div>
 <form action="/user/card" id="form-card" method="post">
-    <h2>Card</h2>
     <ul>
         <li>
             <label for="input-card_number">Number:</label>

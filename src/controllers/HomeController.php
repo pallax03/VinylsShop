@@ -20,9 +20,16 @@ class HomeController extends Controller {
         $head = array('title' => $title, 'style'=> array(''),
          'header' => Database::getInstance()->getConnection() ? 'Database connected' : 'Database not connected');
 
-
         
         $this->render('home', $head);
+    }
+
+    public function notFound(Request $request, Response $response) {
+        $this->redirectSuperUser();
+        $title = 'Not Found';
+        $head = array('title' => $title);
+
+        $this->render('', $head);
     }
 
     // All in One

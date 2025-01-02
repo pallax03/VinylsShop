@@ -32,36 +32,44 @@ Si può usare [docker](https://www.docker.com/) eseguendo un: ``` docker compose
 - injectando il [`db`](/db/init.sql).
 - spostando il contenuto di [`src`](/src/) dentro la cartella `htdocs`.
 
-## Pages (aka Views) (🏠)
+## [Routing](/src/utility/Routing.php)
+### Pages (aka Views) (🏠)
 - no auth 🌎:
+    - /     -> home
     - /user -> login / signup page
     - /cart -> also if u r not logged have a cart but its stored in $SESSION
     - /devs -> this README.md!
 
 - user auth 🔐:
-    - /user -> user infos (+ default card - address) + orders - shipping list
+    - /user -> user's infos, and orders.
+    - /user/addresses -> user's addresses management.
+    - /user/cards -> user's cards management. 
     - /checkout -> checkout page with defaults info and cart items.
-    - /order + '?id_order=' -> if nothing as id show the last one made, check if the order id is made by the right user.
+    - /order + '?id_order=' -> if nothing as id show the last one.
+
 
 - admin auth ⭐️:
     - /dashboard -> automatically redirected here from *every page* if logged as admin.
 
-## APIs (🍽️) -> return json
+### APIs (🍽️) -> return json
 - no auth 🌎:
     - Home 🏠:
         - /login [POST] -> mail and password, can be passed from json or form.
         - /logout [GET] -> remove cookies and refresh session (redirect to /).
+        - /cache [GET]-> destroy all the session. (without logout).
         - /search [GET] + '?id_vinyl=' -> vinyl with this id.
             -  '&album=' -> vinyls of this album (title).
             -  '&genre=' -> vinyls of this album (genre).
             -  '&track=' -> vinyls that contain this track (title).
             -  '&artist=' -> vinyls created by artist (name).
     - Cart 🛒:
-        - /cart/manage  [POST]  -> add / delete / modify ([vinyl](#vinyl-cart-json)) to cart into the session.
+        - /cart/get [GET] -> get ([cart](#Cart)) of the logged user.
+        - /cart/manage  [POST]  -> add / delete / modify ([vinyl](#Vinyl-Cart)) to cart into the session.
 
 - user auth 🔐:
     - User 👤:
-        - /user/default [GET]   -> get user default address and payment:
+        - /user/get [GET] '?id_user=' -> get all user info, an admin can get any of them, if not specified, the logged.
+        - /user/defaults [POST]   -> set user default address and payment:
             - if '?id_card=' || '&id_address=' -> set as default.
         - /user/address [GET] + '?id_address='  -> get all or a specific user's address.
         - /user/address [DELETE] '?id_address=' -> delete a specific address.
@@ -75,22 +83,112 @@ Si può usare [docker](https://www.docker.com/) eseguendo un: ``` docker compose
             - make the order.
             - make the shipping.
             - pop cart vinyls to Checkouts table.
+            - redirect to /user.
     - Order 📦:
-        - /orders       [GET]   -> list of all the orders (🚩)
+        - /orders       [GET] '?id_user='   -> list of all the orders, of the specified user, if not the logged. (an admin can get of any).
 
 - admin auth ⭐️:
     - Dashboard 📊:
-        - /vinyl        [POST]  -> manage (add / update / delete) a vinyl. (completed json: (Album, Artist, Track))
-        - /artist       [POST] -> manage an artist (🚩).
+        - /vinyl        [POST]  -> manage (add / update / delete) a vinyl (and other). (completed json: (Album, Artist, Track))
         - /users        [GET] -> list users (🚩).
         - /user         [POST] -> manage user (🚩).
     
 
 ### Jsons
-
-##### Vinyl Cart Json
+##### User 
 ```json
 {
+   "id_user":int,
+   "mail":string,
+   "balance":float,
+   "newsletter":bool,
+   "default_card":int,
+   "card_number":string,
+   "default_address":int,
+   "name":string,
+   "street_number":string,
+   "city":string,
+   "postal_code":string
+}
+```
 
+##### User Addresses (/user/address)
+```json
+[
+   {
+      "id_address":int,
+      "name":string,
+      "street_number":string,
+      "city":string,
+      "postal_code":string
+   }
+   ...
+]
+```
+
+##### User Cards (/user/card)
+```json
+[
+   {
+      "id_card":int,
+      "card_number":string
+   },
+   ...
+]
+```
+
+
+##### Vinyl 
+```json
+[
+   {
+        "id_vinyl":int,
+        "quantity":int,
+        "cost":float,
+        "rpm":int,
+        "inch":int,
+        "type":string,
+        "title":string,
+        "genre":string,
+        "cover":string,
+        "artist_name":string
+   },
+   ...
+]
+```
+
+##### Completed Vinyl 
+
+
+##### Cart 
+```json
+{
+   "cart":[
+      {
+         "vinyl":{
+            "id_vinyl":int,
+            "quantity":int,
+            "cost":float,
+            "rpm":int,
+            "inch":int,
+            "type":string,
+            "title":string,
+            "genre":string,
+            "cover":string,
+            "artist_name":string
+         },
+         "quantity":int
+      },
+      ...
+   ],
+   "total":float
+}
+```
+
+##### Vinyl Cart
+```json
+{
+    "id_vinyl":int,
+    "quantity":int
 }
 ```

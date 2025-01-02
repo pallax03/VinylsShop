@@ -1,19 +1,18 @@
 <section>
-    <?php
-    if (isset($addresses) && $addresses !== false) {
-        echo "<h1>Addresses</h1>";
-        foreach ($addresses as $address) {
-            include COMPONENTS . '/cards/address.php';
-        }
-    } else {
-        echo "<h1>No addresses found!</h1>";
-    }
-    ?>
-    </ul>
+    
+    <?php if (isset($addresses) && $addresses !== []): ?>
+        <h1>Addresses</h1>
+        <?php
+            foreach ($addresses as $address) {
+                include COMPONENTS . '/cards/address.php';
+            }
+        ?>
+    <? else: ?>
+        <h1>No addresses found!</h1>
+    <? endif; ?>
 </section>
 <div class="div"></div>
 <form action="/user/address" id="form-address" method="post" novalidate>
-    <h2>Address</h2>
     <ul>
         <li>
             <label for="address_name">Name:</label>

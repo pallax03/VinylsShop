@@ -42,6 +42,5 @@ class OrderController extends Controller {
             $response->Success($data);
         }
     }
-
 }
 ?>

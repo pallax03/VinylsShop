@@ -16,6 +16,6 @@
         </div>
     </div>
     <footer>
-        <p><?php echo $vinyl['price'];?>€</p>
+        <p><?php echo $vinyl['cost'];?>€</p>
     </footer>
 </div>
