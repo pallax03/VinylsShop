@@ -38,7 +38,7 @@
     <?php
         foreach ($data["suggested"] as $vinyl):
             echo(
-                '<a class="recommended-preview" href="vinyls?id=' . $vinyl["id_vinyl"] . '">
+                '<a class="recommended-preview" href="vinyl?id=' . $vinyl["id_vinyl"] . '">
                     <div>
                         <img class="cover" src="resources/img/albums/' . $vinyl["cover"] . '"/>
                         <p class="title">' . $vinyl["title"] . '</p>
