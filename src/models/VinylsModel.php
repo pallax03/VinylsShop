@@ -79,6 +79,7 @@ final class VinylsModel {
             a.title,
             a.release_date,
             a.cover,
+            a.genre,
             ar.name AS artist
             FROM 
             vinyls v

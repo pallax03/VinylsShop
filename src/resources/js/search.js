@@ -8,6 +8,7 @@ document.querySelector('.search').addEventListener('click', function (e) {
             li.classList.toggle('hide-item');
         }
     });
+    window.scrollTo(0, 0);
 });
 
 document.querySelector('.close-search').addEventListener('click', function (e) {
