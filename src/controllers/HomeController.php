@@ -11,6 +11,8 @@ class HomeController extends Controller {
 
         require_once MODELS . 'VinylsModel.php';
         $this->vinyls_model = new VinylsModel();
+
+        require_once MODELS . 'OrderModel.php';
     }
 
     
@@ -18,7 +20,7 @@ class HomeController extends Controller {
         $this->redirectSuperUser();
         $title = 'Home';
         $head = array('title' => $title, 'style'=> array(''),
-         'header' => Database::getInstance()->getConnection() ? 'Database connected' : 'Database not connected');
+         'header' => "Oltre i " . OrderModel::$ShippingGoal . "€ spedizione gratuita!");
 
         
         $this->render('home', $head);

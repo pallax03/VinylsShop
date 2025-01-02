@@ -74,7 +74,7 @@ document.getElementById('btn-search_close').addEventListener('click', function()
     document.getElementById('sec-search_content').style = 'display: none';
 });
 
-document.getElementById('input-search').addEventListener('input', function() {
+function search() {
     const filter = document.getElementById('select-search_filter');
     if (document.getElementById('input-search').value !== '') {
         fetch(`/search?${filter.value}=${encodeURIComponent(document.getElementById('input-search').value)}`)
@@ -95,4 +95,7 @@ document.getElementById('input-search').addEventListener('input', function() {
     } else {
         clear();
     }
-});
+}
+
+document.getElementById('select-search_filter').addEventListener('change', search);
+document.getElementById('input-search').addEventListener('input', search);

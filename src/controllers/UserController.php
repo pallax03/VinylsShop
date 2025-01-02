@@ -19,7 +19,7 @@ class UserController extends Controller {
     public function index() {
         $this->redirectSuperUser();
         $head = array('title' => 'Login / Signup', 'style'=> array(''),
-         'header' => '');
+         'header' => "Oltre i " . OrderModel::$ShippingGoal . "€ spedizione gratuita!");
         
         $data['user'] = $this->user_model->getUser();
         $data['orders'] = $this->order_model->getOrders();
@@ -29,8 +29,7 @@ class UserController extends Controller {
     public function addresses() {
         $this->redirectSuperUser();
         $this->auth_model->checkAuth();
-        $head = array('title' => 'Addresses', 'style'=> array(''),
-         'header' => '');
+        $head = array('title' => 'Addresses');
         
         $data['user'] = $this->user_model->getUser();
         $data['addresses'] = $this->user_model->getAddress();
@@ -40,8 +39,7 @@ class UserController extends Controller {
     public function cards() {
         $this->redirectSuperUser();
         $this->auth_model->checkAuth();
-        $head = array('title' => 'Cards', 'style'=> array(''),
-         'header' => '');
+        $head = array('title' => 'Cards');
         
         $data['user'] = $this->user_model->getUser();
         $data['cards'] = $this->user_model->getCard();

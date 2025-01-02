@@ -24,7 +24,7 @@ class CartController extends Controller {
         $this->redirectSuperUser();
 
         $head = array('title' => 'Cart', 'style'=> array(''),
-         'header' => Database::getInstance()->getConnection() ? 'Database connected' : 'Database not connected');
+         'header' => "Oltre i " . OrderModel::$ShippingGoal . "€ spedizione gratuita!");
         
         $data['user'] = $this->user_model->getUser(Session::getUser());
         $data['cart'] = $this->cart_model->getCart();

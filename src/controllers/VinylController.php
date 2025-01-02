@@ -6,13 +6,15 @@ final class VinylController extends Controller {
     function __construct() {
         require_once MODELS . '/VinylsModel.php';
         $this->model = new VinylsModel();
+
+        require_once MODELS . '/OrderModel.php';
     }
     function index(Request $request, Response $response) {
         $body = $request->getBody();
         $data['vinyl'] = $this->model->getVinylDetails($body['id']);
         $data['suggested'] = $this->model->getSuggested($body['id']);
         $head = array('title' => $data["vinyl"]["details"]["title"], 'style'=> array(''),
-         'header' => "Oltre i €100 spedizione gratuita!");
+         'header' => "Oltre i " . OrderModel::$ShippingGoal . "€ spedizione gratuita!");
         $this->render('vinyls', $head, $data);
     }
 }

@@ -23,8 +23,7 @@ class OrderController extends Controller {
 
         $body = $request->getBody();
         $title = $data['title'] ?? 'Order Info';
-        $head = array('title' => $title, 'style'=> array(''),
-         'header' => '');
+        $head = array('title' => $title);
 
         $data['order'] = $this->order_model->getOrder($body['id_order'] ?? null);
 
