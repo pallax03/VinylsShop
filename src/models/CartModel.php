@@ -152,9 +152,9 @@ final class CartModel {
         }
         
         // Check if the vinyl is still available.
-        $old_quantity = Session::getVinylFromCart($id_vinyl)['quantity'];
-        if(isset($old_quantity)) {
-            $quantity = $old_quantity + $quantity;
+        $old_quantity = Session::getVinylFromCart($id_vinyl);
+        if(isset($old_quantity['quantity'])) {
+            $quantity = $old_quantity['quantity'] + $quantity;
             Session::setToCart($this->vinyls_model->getVinyl($id_vinyl), $this->checkVinyl($id_vinyl, $quantity));
         } else {
             Session::addToCart($this->vinyls_model->getVinyl($id_vinyl), $quantity);    

@@ -9,6 +9,7 @@ document.querySelector('.search').addEventListener('click', function (e) {
         }
     });
     window.scrollTo(0, 0);
+    setTimeout(function() {document.getElementById('input-search').focus();}, 500);
 });
 
 document.querySelector('.close-search').addEventListener('click', function (e) {
@@ -43,7 +44,6 @@ function updateResults(results) {
         // Se non ci sono risultati
         if (results.message.length !== 0) {
             clear();
-            console.log(results);
             Array.prototype.forEach.call(results.message, result => {
                 const clone = template.content.cloneNode(true);
                 clone.querySelector(".vinyl-cover").src = "/resources/img/albums/" + result.cover;
@@ -54,7 +54,7 @@ function updateResults(results) {
                 clone.querySelector(".vinyl-genre").textContent = "#" + result.genre;
                 clone.querySelector(".add-cart").textContent = "Add to cart - €" + result.cost;
                 clone.querySelector(".add-cart").onclick = function() {
-                    addToCart(result.id, 1);
+                    addToCart(result.id_vinyl, 1);
                 };
                 resultsList.appendChild(clone);
             });

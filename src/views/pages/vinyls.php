@@ -8,7 +8,9 @@
                 . " - " . $details["type"];
         ?>
     </p>
-    <a class="add-cart">Add to cart - cost €<?php echo $data["vinyl"]["details"]["cost"] ?></a>
+    <button onclick="addToCart(<?php echo $data['vinyl']['details']['id_vinyl'] ?>, 1)">
+        <p class="add-cart" >Add to cart - cost €<?php echo $data["vinyl"]["details"]["cost"] ?></p>
+    </button>
 </section>
 <section class="tracklist">
     <h1 class="album-title"><?php echo $data["vinyl"]["details"]["title"] ?></h1>
