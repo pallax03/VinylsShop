@@ -155,4 +155,13 @@ class Session {
     public static function resetCart() {
         self::set('Cart', []);
     }
+
+    /**
+     * Get the total of the session cart.
+     *
+     * @return int the total of the cart.
+     */
+    public static function getTotal() {
+        return array_reduce(Session::get('Cart'), fn($total, $item) => $total + $item['vinyl']['cost'] * $item['quantity'], 0);
+    }
 }

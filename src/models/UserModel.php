@@ -12,7 +12,7 @@ final class UserModel {
         }
 
         return Database::getInstance()->executeResults(
-            "SELECT id_user, mail FROM `vinylsshop`.`users`"
+            "SELECT id_user, mail, balance, newsletter  FROM `vinylsshop`.`users`"
         );
     }
 
@@ -54,25 +54,27 @@ final class UserModel {
 
     /**
      * Update the user in the database.
-     * A super user can update any user.
-     * A user can update only himself.
+     * A super user can update any user, and his balance.
+     * A user can update only himself, but not is balance.
      *
      * @param int|null $id_user the user to update, if null, the logged user
      * @param string|null $newsletter the newsletter value
      * @return bool true if the user is updated, false otherwise
      */
-    public function updateUser($id_user = null, $newsletter = null) {
-        if (!Session::haveAdminUserRights($id_user)) {
+    public function updateUser($id_user = null, $newsletter = null, $balance = null) {
+        if (!Session::haveAdminUserRights($id_user) || ($balance && Session::isSuperUser())) {
             return false;
         }
 
         return Database::getInstance()->executeQueryAffectRows(
             "UPDATE `vinylsshop`.`users` SET"
                 . ($newsletter ? "newsletter = ?, " : "")
+                . ($balance ? "balance = ?, " : "")
                 . " WHERE id_user = ?;",
             'ii',
             $id_user ?? Session::getUser(),
-            $newsletter
+            $newsletter,
+            $balance
         );
     }
 
@@ -270,7 +272,6 @@ final class UserModel {
         }
         return $result;
     }
-
 
     /**
      * Create the default preferences for a user if do not exists.

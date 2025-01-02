@@ -4,6 +4,7 @@ class CartController extends Controller {
     private $auth_model = null;
     private $user_model = null;
     private $cart_model = null;
+    private $order_model = null;
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
@@ -14,6 +15,9 @@ class CartController extends Controller {
 
         require_once MODELS . 'CartModel.php';
         $this->cart_model = new CartModel();
+
+        require_once MODELS . 'OrderModel.php';
+        $this->order_model = new OrderModel();
     }
 
     public function index(Request $request, Response $response) {
@@ -24,7 +28,7 @@ class CartController extends Controller {
         
         $data['user'] = $this->user_model->getUser(Session::getUser());
         $data['cart'] = $this->cart_model->getCart();
-        $data['total'] = $this->cart_model->getTotal();
+        $data['total'] = Session::getTotal();
 
         $this->render('cart', $head, $data);
     }
@@ -40,7 +44,7 @@ class CartController extends Controller {
     }
 
     public function get(Request $request, Response $response) {
-        $response->Success(['cart' => $this->cart_model->getCart(), 'total' => $this->cart_model->getTotal()]);
+        $response->Success(['cart' => $this->cart_model->getCart(), 'total' => Session::getTotal()]);
     }
 
     public function sync(Request $request, Response $response) {
@@ -53,9 +57,26 @@ class CartController extends Controller {
 
     public function checkout(Request $request, Response $response) {
         $this->redirectUser();
+        $this->redirectIf(empty($this->cart_model->getCart()), '/cart');
 
         $head = array('title' => 'Checkout', 'style'=> array(''));
         $this->render('checkout', $head);
+    }
+
+    public function pay(Request $request, Response $response) {
+        $this->redirectUser();
+        $this->redirectIf(empty(Session::getCart()), '/cart');
+        
+        $body = $request->getBody();
+
+        if($this->order_model->setOrder($body['discount_code'] ?? null)) {
+            $this->cart_model->purgeUserCart();
+            $this->cart_model->syncCart();
+            $response->Success('Order placed');
+        } else {
+            $response->Error('Order cannot be placed');
+        }
+
     }
 
 }

@@ -113,6 +113,7 @@ final class VinylsModel {
             WHERE a.id_album = ?";
         // prepare statement
         $result = $this->db->executeResults($vinyl, 'i', $id);
+
         if (!empty($result)):
             // store id_album for the next query
             $album =  $result["id_album"];

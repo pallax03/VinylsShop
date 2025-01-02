@@ -24,6 +24,14 @@ class HomeController extends Controller {
         $this->render('home', $head);
     }
 
+    public function notFound(Request $request, Response $response) {
+        $this->redirectSuperUser();
+        $title = 'Not Found';
+        $head = array('title' => $title);
+
+        $this->render('', $head);
+    }
+
     // All in One
     public function login(Request $request, Response $response) {
         $body = $request->getBody();

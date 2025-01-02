@@ -17,6 +17,7 @@ class UserController extends Controller {
     }
 
     public function index() {
+        $this->redirectSuperUser();
         $head = array('title' => 'Login / Signup', 'style'=> array(''),
          'header' => '');
         
@@ -26,6 +27,7 @@ class UserController extends Controller {
     }
 
     public function addresses() {
+        $this->redirectSuperUser();
         $this->auth_model->checkAuth();
         $head = array('title' => 'Addresses', 'style'=> array(''),
          'header' => '');
@@ -36,6 +38,7 @@ class UserController extends Controller {
     }
 
     public function cards() {
+        $this->redirectSuperUser();
         $this->auth_model->checkAuth();
         $head = array('title' => 'Cards', 'style'=> array(''),
          'header' => '');
@@ -43,6 +46,15 @@ class UserController extends Controller {
         $data['user'] = $this->user_model->getUser();
         $data['cards'] = $this->user_model->getCard();
         $this->render('cards', $head, $data);
+    }
+
+    public function getUsers(Request $request, Response $response) {
+        $data = $this->user_model->getUsers();
+        if (empty($data)) { 
+            $response->Error('not allowed to see all users', $data);
+        } else {
+            $response->Success($data);
+        }
     }
 
     public function getUser(Request $request, Response $response) {

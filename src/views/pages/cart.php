@@ -12,7 +12,7 @@
     </section>
     <div class="large button">
         <i class="bi bi-credit-card-fill"></i>
-        <input type="button" id="btn-cart_submit" value="Checkout - <?php echo $total ?> €" />
+        <button id="btn-cart_submit" onclick="redirect('/checkout')" >Checkout - <?php echo $total ?> €</button>
     </div>
 <? else: ?>
     <div class="div"></div>

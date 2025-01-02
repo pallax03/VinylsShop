@@ -39,7 +39,7 @@ class Router {
         $callback = $this->routes[$method][$url] ?? false;
         
         if ($callback === false) {
-            die("No route found for URI: $url");
+            $callback = [HomeController::class, 'notFound'];
         }
         
         $callback[0] = new $callback[0];

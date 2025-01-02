@@ -44,14 +44,16 @@
     // # 🍽️ [SyncCart] -> Cart - User
     $router->get('/cart/sync', [CartController::class, 'sync']); 
     // # 🏠 [Checkout] ~ go onto the checkout page -> Auth - User (Address - Card) - Cart - Vinyl (Artist) - Shipping - Order - Discount.
-    // $router->get('/checkout', [CartController::class, 'checkout']);
+    $router->get('/checkout', [CartController::class, 'checkout']);
     // # 🍽️ [Checkout] ~ request the checkout can handle errors if valid make the order and shipping -> Auth - User (Address - Card)
-    // $router->post('/checkout', [CartController::class, 'pay']); 
+    $router->post('/checkout', [CartController::class, 'pay']); 
 
 
 // 👤: --- UserController.php --- (models: Auth - User (Address - Card))
     // # 🏠 [User] ~ if not logged: *login form* else: user infos n' list of orders + shipping -> Auth - User - Order - Shipping
     $router->get('/user', [UserController::class, 'index']);
+    // # 🍽️ [GetUsers] ~ get all users.
+    $router->get('/users', [UserController::class, 'getUsers']);
     // # 🍽️ [GetUser] ~ get user infos an admin can get any one -> Auth - User
     $router->get('/user/get', [UserController::class, 'getUser']);
     // # 🍽️ [UpdateUser] ~ update user infos -> Auth - User
@@ -78,7 +80,7 @@
     // # 🏠 [Order] ~ page of the specific order '?id_order='  -> Auth - User - Order - Shipping - Vinyl
     $router->get('/order', [OrderController::class, 'index']);
     // # 🍽️ [Orders] ~ list of all the orders -> Auth - User - Order - Shipping - Vinyl
-    $router->get('/orders', [OrderController::class, 'orders']);
+    $router->get('/orders', [OrderController::class, 'getOrders']);
 
 
 // 📊: --- DashboardController.php --- (models: *EVERY MODEL*)

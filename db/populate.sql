@@ -194,7 +194,8 @@ INSERT IGNORE INTO `vinylsshop`.`orders` (`order_date`, `total_cost`, `id_card`,
 VALUES
 ('2024-10-29', 72.00, 1, 'Completed', 'HALLOWEEN10', 2),
 ('2024-11-21', 9.00, NULL, 'Completed', 'BLACKFRIDAY70', 2),
-('2024-12-06', 36.00, 2, 'Paid', 'CHRISTMAS20', 2);
+('2024-12-06', 36.00, 2, 'On going', 'CHRISTMAS20', 2),
+('2024-12-31', 29.00, 2, 'Paid', NULL, 2);
 
 -- Insert checkouts
 INSERT IGNORE INTO `vinylsshop`.`checkouts` (`id_order`, `id_vinyl`, `quantity`)
@@ -204,11 +205,13 @@ VALUES
 (1, 2, 2),
 (2, 3, 4),
 (3, 4, 2),
-(3, 1, 3);
+(3, 1, 3),
+(4, 8, 1);
 
 -- Insert shipments
 INSERT IGNORE INTO `vinylsshop`.`shipments` (`tracking_number`, `shipment_date`, `delivery_date`, `shipment_status`, `courier`, `notes`, `cost`, `id_order`, `id_address`)
 VALUES
-('1234567890', '2024-10-29', '2024-11-02', 'Delivered', 'UPS', 'attenti al lupo', 20.00, 1, 1),
-('0987654321', '2024-11-21', '2024-11-24', 'Delivered', 'DHL', 'da consegnare sul pianerottolo', 10.00, 2, 1),
-('1357924680', '2024-12-06', NULL, 'In transit', 'FedEx', NULL, 5.00, 3, 1);
+('1234567890', '2024-10-29', '2024-11-02', 'Delivered', 'Poste Italiane', 'attenti al lupo', 5.00, 1, 1),
+('0987654321', '2024-11-21', '2024-11-24', 'Delivered', 'Poste Italiane', 'da consegnare sul pianerottolo', 5.00, 2, 1),
+('1357924680', '2024-12-06', NULL, 'In transit', 'Poste Italiane', NULL, 5.00, 3, 1),
+('2468135790', '2024-12-31', NULL, 'In preparation', 'Poste Italiane', NULL, 5.00, 4, 2);

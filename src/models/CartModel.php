@@ -35,6 +35,26 @@ final class CartModel {
     }
 
     /**
+     * Delete the cart of a specific user or the logged user.
+     *
+     * @param int|null $id_user if null, the logged user
+     * @return bool true if the cart is purged, false otherwise.
+     */
+    public function purgeUserCart($id_user = null) {
+        if (!Session::haveAdminUserRights($id_user)) {
+            return false;
+        }
+
+        return Database::getInstance()->executeQueryAffectRows(
+            "DELETE FROM carts
+                WHERE id_user = ?",
+            'i',
+            $id_user ?? Session::getUser()
+        );
+    }
+
+
+    /**
      * Update the cart of a specific user or the logged user.
      * a super user can update any user's cart
      * if the quantity is <= 0, the vinyl will be removed from the cart.
@@ -205,20 +225,4 @@ final class CartModel {
         $this->loadCart();
         return true;
     }
-
-    /**
-     * Get the total of the session cart.
-     *
-     * @return int the total of the cart.
-     */
-    public function getTotal() {
-        // return array_reduce(Session::get('Cart'), fn($total, $vinyl) => $total + $vinyl['price'] * $vinyl['quantity'], 0);
-        $cart = Session::getCart();
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['vinyl']['cost'] * $item['quantity'];
-        }
-        return $total;
-    }
-
 }

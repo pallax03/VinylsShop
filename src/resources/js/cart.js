@@ -47,5 +47,5 @@ function loadCartView(data) {
         cart.appendChild(itemElement.firstElementChild);
         cart.appendChild(itemElement);
     });
-    document.getElementById('btn-cart_submit').value = `Checkout - ${data.total} €`;
+    document.getElementById('btn-cart_submit').innerHTML = `Checkout - ${data.total} €`;
 }

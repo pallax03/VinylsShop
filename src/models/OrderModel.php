@@ -1,6 +1,27 @@
 <?php
 final class OrderModel
 {
+
+    private $vinyls_model = null;
+    private $auth_model = null;
+    private $user_model = null;
+
+
+    public static $ShippingCourier = 'Poste Italiane';
+    public static $ShippingCost = 5.0;
+    public static $ShippingGoal = 100.0;
+
+    public function __construct() {
+        require_once MODELS . 'VinylsModel.php';
+        $this->vinyls_model = new VinylsModel();
+
+        require_once MODELS . 'AuthModel.php';
+        $this->auth_model = new AuthModel();
+
+        require_once MODELS . 'UserModel.php';
+        $this->user_model = new UserModel();
+    }
+
     /**
      * Get all orders of a user
      * An admin can get any user orders
@@ -131,5 +152,136 @@ final class OrderModel
         );
 
         return $order;
+    }
+
+    /**
+     * Set a shipping for an order.
+     *
+     * @return bool
+     */
+    public function setShipping($id_order, $tracking_number = null, $shipment_date = null, $delivery_date = null, $shipment_status = null, $courier = null, $notes = null, $cost = null) {
+        if (!Session::haveAdminUserRights() || $id_order === null || !isset(Session::getUser()['default_address'])) {
+            return false;
+        }
+
+        return Database::getInstance()->executeQueryAffectRows(
+            "INSERT INTO `vinylsshop`.`shipments` (id_order, tracking_number, shipment_date, delivery_date, shipment_status, courier, notes, cost, id_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
+            'issssssdi',
+            $id_order,
+            $tracking_number ?? bin2hex(random_bytes(6)),
+            $shipment_date ?? date('Y-m-d'),
+            $delivery_date ?? date('Y-m-d', strtotime('+7 days')),
+            $shipment_status ?? 'In preparation',
+            $courier ?? self::$ShippingCourier,
+            $notes ?? '',
+            $cost ?? self::$ShippingCost,
+            Session::getUser()['default_address']
+        );
+    }
+
+    private function loadOrderCart($id_order, $cart) {
+        foreach ($cart as $vinyl) {
+            if (!Database::getInstance()->executeQueryAffectRows(
+                "INSERT INTO `vinylsshop`.`checkouts` (id_order, id_vinyl, quantity) VALUES (?, ?, ?);",
+                'iii',
+                $id_order,
+                $vinyl['vinyl']['id_vinyl'],
+                $vinyl['quantity']
+            )) {
+                return false;
+            }
+        }
+    }
+
+    private function deleteOrderCart($id_order) {
+        return Database::getInstance()->executeQueryAffectRows(
+            "DELETE FROM `vinylsshop`.`orders` WHERE id_order = ?;",
+            'i',
+            $id_order
+        );
+    }
+
+    private function checkDiscount($discount_code) {
+        $discount = Database::getInstance()->executeResults(
+            "SELECT `percentage`
+                FROM `coupons`
+                WHERE `discount_code` = ?
+                AND CURDATE() BETWEEN `valid_from` AND `valid_until`;",
+            's',
+            $discount_code
+        )[0];
+
+        if (empty($discount)) {
+            return false;
+        }
+
+        return $discount['percentage'];
+    }
+
+    private function tryPayment($total) {
+        if (Session::getUser()['default_card'] === null) {
+            return Session::getUser()['balance'] >= $total;
+        } 
+        return true;
+    }
+
+    /**
+     * Get the total of the order.
+     *
+     * @return float
+     */
+    public function getOrderTotal($discount_code = null) {
+        $total = Session::getTotal();
+        if ($discount_code !== null) {
+            $discount = $this->checkDiscount($discount_code);
+            $total = $total - ($total * $discount / 100);
+        }
+
+        return $total <= self::$ShippingGoal ? $total + self::$ShippingCost : $total;
+    }
+
+    /**
+     * Set an order from the cart.
+     *
+     * @return bool
+     */
+    public function setOrder($discount_code = null, $notes = null) {
+        $cart = Session::getCart();
+
+        if (empty($cart)) {
+            return false;
+        }
+
+        $total = $this->getOrderTotal($discount_code);
+        if($this->tryPayment($total)) {
+            return false;
+        }
+        
+
+        if (!Database::getInstance()->executeQueryAffectRows(
+            "INSERT INTO `vinylsshop`.`orders` (order_date, total_cost, order_status, id_user, id_card, discount_code) 
+                VALUES (?, ?, ?, ?, ?, ?); ",
+            'sdsiss',
+            date('Y-m-d'),
+            $total,
+            'In preparation',
+            Session::getUser(),
+            Session::getUser()['default_card'] ?? '',
+            $discount_code ?? '',
+        )) {
+            return false;
+        }
+
+        $id_order = Database::getInstance()->executeResults("SELECT LAST_INSERT_ID() AS id_order;")[0]['id_order'];
+        if(!$this->loadOrderCart($id_order, $cart)) {
+            $this->deleteOrderCart($id_order);
+            return false;
+        }
+        
+        if(!$this->setShipping($id_order, notes: $notes)) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -32,7 +32,8 @@ Si può usare [docker](https://www.docker.com/) eseguendo un: ``` docker compose
 - injectando il [`db`](/db/init.sql).
 - spostando il contenuto di [`src`](/src/) dentro la cartella `htdocs`.
 
-## Pages (aka Views) (🏠)
+## [Routing](/src/utility/Routing.php)
+### Pages (aka Views) (🏠)
 - no auth 🌎:
     - /     -> home
     - /user -> login / signup page
@@ -50,7 +51,7 @@ Si può usare [docker](https://www.docker.com/) eseguendo un: ``` docker compose
 - admin auth ⭐️:
     - /dashboard -> automatically redirected here from *every page* if logged as admin.
 
-## APIs (🍽️) -> return json
+### APIs (🍽️) -> return json
 - no auth 🌎:
     - Home 🏠:
         - /login [POST] -> mail and password, can be passed from json or form.
@@ -62,8 +63,8 @@ Si può usare [docker](https://www.docker.com/) eseguendo un: ``` docker compose
             -  '&track=' -> vinyls that contain this track (title).
             -  '&artist=' -> vinyls created by artist (name).
     - Cart 🛒:
-        - /cart/get [GET] -> get cart of the logged user.
-        - /cart/manage  [POST]  -> add / delete / modify ([vinyl](#vinyl-cart-json)) to cart into the session.
+        - /cart/get [GET] -> get ([cart](#Cart)) of the logged user.
+        - /cart/manage  [POST]  -> add / delete / modify ([vinyl](#Vinyl-Cart)) to cart into the session.
 
 - user auth 🔐:
     - User 👤:
@@ -181,5 +182,13 @@ Si può usare [docker](https://www.docker.com/) eseguendo un: ``` docker compose
       ...
    ],
    "total":float
+}
+```
+
+##### Vinyl Cart
+```json
+{
+    "id_vinyl":int,
+    "quantity":int
 }
 ```
