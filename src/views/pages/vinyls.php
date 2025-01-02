@@ -20,17 +20,32 @@
     <ol class="album">
         <?php
             foreach ($data["vinyl"]["tracks"] as $track):
-                echo('<li class="track">
+                echo(
+                    '<li class="track">
                         <span class="track-info">
                             <p>' . $track["title"] . '</p>
                             <p>' . $track["duration"] . '</p>
                         </span>
-                    </li>');
+                    </li>'
+                );
             endforeach;
         ?>
     </ol>
     <div class="div"></div>
 </section>
 <section class="recommended">
+    <h1 class="header">Recommended<h1>
+    <?php
+        foreach ($data["suggested"] as $vinyl):
+            echo(
+                '<a class="recommended-preview" href="vinyls?id=' . $vinyl["id_vinyl"] . '">
+                    <div>
+                        <img class="cover" src="resources/img/albums/' . $vinyl["cover"] . '"/>
+                        <p class="title">' . $vinyl["title"] . '</p>
+                    </div>
+                </a>'
+            );
+        endforeach;
+    ?>
         
 </section>

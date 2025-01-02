@@ -1408,7 +1408,7 @@ main section p, main form p {
   width: 330px;
   display: inline-flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -1452,4 +1452,50 @@ main section p, main form p {
 }
 .tracklist .album .track::before {
   content: counter(item) " -";
+}
+
+.recommended {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  width: 350px;
+}
+@media (min-width: 768px) {
+  .recommended {
+    width: 70%;
+  }
+}
+.recommended .header {
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.recommended .recommended-preview {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  display: inline-block;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .recommended .recommended-preview {
+    margin: 20px;
+  }
+}
+.recommended .recommended-preview .cover {
+  width: 170px;
+}
+.recommended .recommended-preview .title {
+  border: none;
+  font-size: 1rem;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0.8rem;
 }
