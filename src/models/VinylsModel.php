@@ -1,5 +1,4 @@
 <?php
-
 final class VinylsModel {
 
     private $db = null;
@@ -115,7 +114,7 @@ final class VinylsModel {
         return Database::getInstance()->executeResults(
             "SELECT 
                 v.id_vinyl,
-                v.quantity,
+                v.stock,
                 v.cost,
                 v.rpm,
                 v.inch,
@@ -226,5 +225,109 @@ final class VinylsModel {
         $result = $this->db->executeResults($vinyls, "ssi", $info["genre"], $info["artist"], $id);
         return $result;
     }
+
+
+    /**
+     * Check if the artist exists in the database.
+     * @param int $artist_id of the artist to check
+     * 
+     * @return bool true if the artist exists, false otherwise
+     */
+    private function checkArtist($artist_id) {
+        return !empty($this->db->executeResults(
+            "SELECT * FROM artists WHERE id_artist = ?",
+            'i',
+            $artist_id
+        ));
+    }
+
+
+    /**
+     * Create an artist in the database.
+     * @param string $name of the artist
+     * 
+     * @return bool true if the artist was created, false otherwise
+     */ 
+    public function createArtist($name) {
+        return $this->db->executeQueryAffectRows(
+            "INSERT INTO artists (name) VALUES (?)",
+            's',
+            $name
+        );
+    }
+
+
+    /**
+     * Check if the album exists in the database.
+     * @param int $album_id of the album to check
+     * 
+     * @return bool true if the album exists, false otherwise
+     */
+    private function checkAlbum($album_id) {
+        return !empty($this->db->executeResults(
+            "SELECT * FROM albums WHERE id_album = ?",
+            'i',
+            $album_id
+        ));
+    }
+
+
+    /**
+     * Create an album in the database.
+     * @param string $title of the album
+     * @param string $release_date of the album
+     * @param string $genre of the album
+     * @param string $cover of the album
+     * @param array $artist of the album
+     * 
+     * @return bool true if the album was created, false otherwise
+     */
+    public function createAlbum($title, $release_date, $genre, $cover, $artist) {
+        if(is_array($artist) && !$this->checkArtist($artist["id_artist"])) {
+            $artist = $this->createArtist($artist["name"]);
+            if(!$artist) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        $artist = $artist["id_artist"];
+
+        return $this->db->executeQueryAffectRows(
+            "INSERT INTO albums (title, release_date, genre, cover, id_artist)
+                VALUES (?, ?, ?, ?, ?)",
+            'ssssi',
+            $title, $release_date, $genre, $cover, $artist
+        );
+    }
+
+    /**
+     * Add a vinyl to the database.
+     * @param array $album of the vinyl
+     * @param array $artist of the vinyl's album
+     * @param float $cost of the vinyl
+     * @param int $stock of the vinyl
+     * 
+     * @return bool true if the vinyl was added, false otherwise
+     */
+    public function addVinyl($cost, $rpm, $inch, $type, $stock, $album, $artist) {
+        // check if the album already exists if not add it to the database
+        if(is_array($album) && !$this->checkAlbum($album["id_album"])) {
+            $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["cover"], $artist);
+            if(!$album) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        $album = $album["id_album"];
+        
+        return $this->db->executeQueryAffectRows(
+            "INSERT INTO vinyls (`cost`, `rpm`, `inch`, `type`, `stock`, `id_album`)
+                VALUES (?, ?, ?, ?, ?, ?)",
+            'diisii',
+            $cost, $rpm, $inch, $type, $stock, $album
+        );
+    }
 }
-?>

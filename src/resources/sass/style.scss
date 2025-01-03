@@ -5,6 +5,7 @@
 @import "vinyl";
 @import "form";
 @import "cards";
+@import "tables";
 
 @font-face {
     font-family: 'parkinsons';
@@ -567,6 +568,10 @@ main {
 }
 
 .delete {
+    color: var(--error-color) !important;
+    i, p {
+        color: var(--error-color) !important;
+    }
     &:hover {
         color: var(--error-color);
     }

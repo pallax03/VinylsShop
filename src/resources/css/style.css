@@ -1125,6 +1125,20 @@ section.cards {
   z-index: 1;
 }
 
+table {
+  width: 100%;
+}
+table tbody tr:nth-child(1) {
+  background-color: #f2f2f2;
+}
+table tbody tr:nth-child(1):hover, table tbody tr:nth-child(1):focus {
+  background-color: var(--selected-color);
+  font-size: 1.2rem;
+}
+table tbody tr:nth-child(even) {
+  background-color: var(--secondary-color);
+}
+
 @font-face {
   font-family: "parkinsons";
   src: url("../fonts/Parkinsans-Regular.ttf");
@@ -1786,6 +1800,12 @@ main section p, main form p {
   border: 2px solid var(--error-color);
 }
 
+.delete {
+  color: var(--error-color) !important;
+}
+.delete i, .delete p {
+  color: var(--error-color) !important;
+}
 .delete:hover {
   color: var(--error-color);
 }

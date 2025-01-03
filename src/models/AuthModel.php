@@ -134,16 +134,14 @@ final class AuthModel {
             "SELECT * FROM `users` WHERE `mail` = ? AND `password` = ?",
             'ss',
             $mail, $this->encryptPassword($password)
-        );
-        $result = !empty($result) && count($result) > 0 ? $result[0] : false;
-        if ($result) {
+        )[0];
+        if (!empty($result)) {
             if (filter_var($remember, FILTER_VALIDATE_BOOLEAN)) {
                 $this->setCookie($this->generateToken($result['id_user'], $result['su']));
             }
             $this->refreshSession(['id_user' => $result['id_user'], 'isSuperUser' => $result['su']]);
             return true;
         }
-
         return false;
     }
 

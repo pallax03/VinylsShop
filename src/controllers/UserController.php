@@ -55,6 +55,12 @@ class UserController extends Controller {
         }
     }
 
+    public function getUsersComponent(Request $request, Response $response) {
+        if (Session::isSuperUser()) { 
+            $response->Component('tables/users');
+        }
+    }
+
     public function getUser(Request $request, Response $response) {
         $body = $request->getBody();
         $data = $this->user_model->getUser($body['id_user'] ?? null);
@@ -76,7 +82,7 @@ class UserController extends Controller {
 
     public function updateUser(Request $request, Response $response) {
         $body = $request->getBody();
-        $this->user_model->updateUser($body['id_user'] ?? null, $body['user_name'] ?? null, $body['newsletter'] ?? null);
+        $this->user_model->updateUser($body['id_user'] ?? null, $body['user_name'] ?? null, $body['newsletter'] ?? null, $body['balance'] ?? null);
         $response->redirect('/user');
     }
 

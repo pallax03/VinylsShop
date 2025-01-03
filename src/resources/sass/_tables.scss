@@ -1,0 +1,22 @@
+
+
+
+table {
+    width: 100%;
+
+    thead {
+
+    }
+    tbody {
+        tr:nth-child(1) {
+            background-color: #f2f2f2;
+            &:hover, &:focus {
+                background-color: var(--selected-color);
+                font-size: 1.2rem;
+            }
+        }
+        tr:nth-child(even) {
+            background-color: var(--secondary-color);
+        }
+    }   
+}

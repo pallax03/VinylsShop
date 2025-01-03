@@ -5,7 +5,6 @@
     require_once CONTROLLERS . '/CartController.php';       // 🛒: Vinyl (Artist - Track) - Cart - User (Address - Card).
     require_once CONTROLLERS . '/UserController.php';       // 👤: User (Address - Card) - Cart - Order ( + Shipping) - (Auth).
     require_once CONTROLLERS . '/OrderController.php';      // 📦: Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth.
-    //require_once CONTROLLERS . '/DashboardController.php';  // 📊: (if Auth ⭐️) *EVERY MODEL*.
     
     $router = new Router(new Request(), new Response());
 
@@ -28,10 +27,19 @@
     // # ❌ DESTROY ALL (SESSION)
     $router->get('/cache', [HomeController::class, 'reset']);
 
+    // ⭐️ ADMIN HOME
+    // # 🏠 [Dashboard] ~ -> Auth.
+    $router->get('/dashboard', [HomeController::class, 'dashboard']);
+
 
 // 📀: --- VinylController.php --- (models: Vinyl (Artist - Track) - Cart)
     // # 🏠 [Vinyl] ~ page of the specific vinyl '?id_vinyl=' -> Vinyl (Artist - Track)
     $router->get('/vinyl', [VinylController::class, 'index']);
+    $router->get('/vinyls/table', [VinylController::class, 'getVinylsComponent']);
+    // # 🍽️ [AddVinyl] ~ add or update a vinyl -> Auth - Vinyl - Artist - Track.
+    $router->post('/vinyl', [VinylController::class, 'addVinyl']);
+    // # 🍽️ [DeleteVinyl] ~ -> Auth - Vinyl - Artist - Track.
+    $router->delete('/vinyl', [VinylController::class, 'deleteVinyl']);
 
 
 // 🛒: --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 
@@ -54,6 +62,7 @@
     $router->get('/user', [UserController::class, 'index']);
     // # 🍽️ [GetUsers] ~ get all users.
     $router->get('/users', [UserController::class, 'getUsers']);
+    $router->get('/users/table', [UserController::class, 'getUsersComponent']);
     // # 🍽️ [GetUser] ~ get user infos an admin can get any one -> Auth - User
     $router->get('/user/get', [UserController::class, 'getUser']);
     // # 🍽️ [UpdateUser] ~ update user infos -> Auth - User
@@ -81,15 +90,6 @@
     $router->get('/order', [OrderController::class, 'index']);
     // # 🍽️ [Orders] ~ list of all the orders -> Auth - User - Order - Shipping - Vinyl
     $router->get('/orders', [OrderController::class, 'getOrders']);
-
-
-// 📊: --- DashboardController.php --- (models: *EVERY MODEL*)
-    // # 🏠 [Dashboard] ~ -> Auth.
-    $router->get('/dashboard', [HomeController::class, 'dashboard']);
-    // # 🍽️ [AddVinyl] ~ add or update a vinyl -> Auth - Vinyl - Artist - Track.
-    // $router->post('/vinyl', [DashboardController::class, 'addVinyl']);
-    // # 🍽️ [DeleteVinyl] ~ -> Auth - Vinyl - Artist - Track.
-    // $router->delete('/vinyl', [DashboardController::class, 'deleteVinyl']);
 
     
     $router->dispatch();

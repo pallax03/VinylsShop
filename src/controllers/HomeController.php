@@ -81,7 +81,7 @@ class HomeController extends Controller {
     }
 
     public function dashboard(Request $request, Response $response) {
-        $this->renderDashboard();
+        $this->render('dashboard', ['title' => 'Dashboard']);
     }
 
     public function reset() {

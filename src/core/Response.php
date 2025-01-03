@@ -1,10 +1,12 @@
 <?php
 class Response
 {
-    
+    public function Component($component, $data) {
+        extract($data);
+        include COMPONENTS . '/' . $component . '.php';
+    }
 
-    public function Success($message, $body=null)
-    {
+    public function Success($message, $body=null) {
         $this->statusCode(200);
         $this->json([
             'message' => $message,
@@ -13,8 +15,7 @@ class Response
         ]);
     }
 
-    public function Error($message, $body=null)
-    {
+    public function Error($message, $body=null) {
         $this->statusCode(400);
         $this->json([
             'error' => $message, 
@@ -23,26 +24,22 @@ class Response
         ]);
     }
 
-    public function Debug($message)
-    {
+    public function Debug($message) {
         $this->statusCode(500);
         $this->json(['error' => $message]);
         exit();
     }
 
-    public function statusCode(int $code)
-    {
+    public function statusCode(int $code) {
         http_response_code($code);
     }
 
-    public function json(array $data)
-    {
+    public function json(array $data) {
         // header('Content-Type: application/json');
         echo json_encode($data);
     }
 
-    public function redirect($url)
-    {
+    public function redirect($url) {
         header("Location: $url");
     }
 }

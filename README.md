@@ -8,20 +8,31 @@
 > - mockup
 > - relazione
 
+## COSA DOBBIAMO FARE: ⚠️
+1. dashboard (lo sta facendo: alex)
+2. checkout (lo sta facendo: alex)
+3. sisemare le pagine di login (suddividere login i registrazione)
+    sistemando anche i messaggi di errore...
+4. SISTEMARE ASSOLUTAMENTE IL TRACKING DEGLI ORDINI. (pensare ad una roba realistica)
+5. NEWSLETTER: notifiche!!!!!!!!!!
+    le implementiamo come delle variabili interne (non sessione):
+    come mappe [orario => HH:mm , azione => stringa o array boh]
+    fare nel main.js un fetch ogni 1 minuto al backend '/newsletter'
+    se l'orario Now(), corrisponde ad un orario della mappa stampa attraverso il fetch la notifica.
+    LA MAPPA AGGIUNGERA LE NOTIFICHE QUANDO:
+    - viene modificata la quantità di un vinile (se qualcuno la ha nel carrello (o magari solo se l'utente la ha nel carrello (PER QUESTO SI PUÒ USARE UN ARRAY COME 'AZIONE'))) (termine di un acquisto o modifica da parte di un admin).
+    - VIENE AGGIUNTO UN NUOVO VINILE (PER TUTTI)
+    - 🚩 VIENE MODIFICATO L'UTENTE
+    - UN ORDINE ARRIVA?????
+6. SISTEMARE LINK DEL FOOTER.
 
-## Warning ⚠️
-- mobile first
-- browser compability
-- accessibility
 
-### Features possibili
-- Suggerimenti in base a:
-    - mostra nazione (in base alla posizione)
-    - nazione genere artisti preferiti
-- Newsletter 
+### Se proprio abbiamo altro tempo da perdere
+1. aiuto inserimento degli indirizzi con nominatim API.
+2. Suggerimenti in base a:
+    - API browser -> mostra nazione (in base alla posizione),  nazione genere artisti preferiti
 
-### API che possiamo usare:
-- nominatim (open street map) -> autocompletamento degli indirizzi.
+
 
 ### Database Schema:
 ![Database Schema](/db/RELAZIONALE.png)

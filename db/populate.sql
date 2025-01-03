@@ -143,7 +143,7 @@ VALUES
 (9, 40); -- Your Dog
 
 -- Insert vinyls
-INSERT IGNORE INTO `vinylsshop`.`vinyls` (`id_vinyl`, `cost`, `rpm`, `inch`, `quantity`, `type`, `id_album`)
+INSERT IGNORE INTO `vinylsshop`.`vinyls` (`id_vinyl`, `cost`, `rpm`, `inch`, `stock`, `type`, `id_album`)
 VALUES
 (1, 21.00, 33, 12, 10, 'EP', 1),
 (2, 30.00, 33, 12, 10, 'LP', 2),

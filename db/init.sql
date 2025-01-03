@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `vinylsshop`.`vinyls` (
     `cost` DECIMAL(10, 2) NOT NULL,
     `rpm` INT NOT NULL,
     `inch` INT NOT NULL,
-    `quantity` INT NOT NULL,
+    `stock` INT NOT NULL,
     `type` ENUM('LP', 'EP') NOT NULL,
     `id_album` INT NOT NULL,
     PRIMARY KEY (`id_vinyl`),

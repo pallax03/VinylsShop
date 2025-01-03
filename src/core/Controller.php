@@ -43,10 +43,6 @@ class Controller {
         include UTILITY . 'Render.php';
     }
 
-    protected function renderDashboard() {
-        include PAGES . 'dashboard.php';
-    }
-
     protected function renderApi($data) {
         header('Content-Type: application/json');
         echo json_encode($data);

@@ -1,13 +1,10 @@
 section = document.getElementById("sec-dynamic_content");
 
 function loadUsers() {
-    fetch('/users').then(response => {
-        return response.json();
+    fetch('/users/table').then(response => {
+        return response;
     }
-    ).then(json => {
-        section.innerHTML = "";
-        json.forEach(user => {
-            
-        });
+    ).then(html => {
+        section.innerHTML = html;
     });
 }

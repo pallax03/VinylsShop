@@ -41,7 +41,9 @@
     <?php include COMPONENTS . '/footer.php' ?>
 
     <script src="/resources/js/main.js"></script>
-    <script src="/resources/js/search.js"></script>
-    <script src="/resources/js/cards.js"></script>
+    <? if(!Session::isSuperUser()):?>
+        <script src="/resources/js/search.js"></script>
+        <script src="/resources/js/cards.js"></script>
+    <? endif;?>
 </body>
 </html>
