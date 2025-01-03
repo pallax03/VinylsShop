@@ -283,6 +283,9 @@ final class VinylsModel {
      * @return bool true if the album was created, false otherwise
      */
     public function createAlbum($title, $release_date, $genre, $cover, $artist) {
+
+
+        // check if the artist already exists if not add it to the database
         if(is_array($artist) && !$this->checkArtist($artist["id_artist"])) {
             $artist = $this->createArtist($artist["name"]);
             if(!$artist) {
@@ -303,7 +306,9 @@ final class VinylsModel {
     }
 
     /**
-     * Add a vinyl to the database.
+     * Add or update a vinyl to the database.
+     * 
+     * @param int $id_vinyl of the vinyl to update (null if adding)
      * @param array $album of the vinyl
      * @param array $artist of the vinyl's album
      * @param float $cost of the vinyl
@@ -311,7 +316,8 @@ final class VinylsModel {
      * 
      * @return bool true if the vinyl was added, false otherwise
      */
-    public function addVinyl($cost, $rpm, $inch, $type, $stock, $album, $artist) {
+    public function addVinyl($cost, $rpm, $inch, $type, $stock, $album, $artist, $id_vinyl = null) {
+
         // check if the album already exists if not add it to the database
         if(is_array($album) && !$this->checkAlbum($album["id_album"])) {
             $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["cover"], $artist);
@@ -322,12 +328,51 @@ final class VinylsModel {
             return false;
         }
         $album = $album["id_album"];
+
+        if ($id_vinyl) {
+            return $this->updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $album);
+        }
         
         return $this->db->executeQueryAffectRows(
             "INSERT INTO vinyls (`cost`, `rpm`, `inch`, `type`, `stock`, `id_album`)
                 VALUES (?, ?, ?, ?, ?, ?)",
             'diisii',
             $cost, $rpm, $inch, $type, $stock, $album
+        );
+    }
+
+    /**
+     * Delete a vinyl from the database.
+     * @param int $id_vinyl of the vinyl to delete
+     * 
+     * @return bool true if the vinyl was deleted, false otherwise
+     */
+    public function deleteVinyl($id_vinyl) {
+        return $this->db->executeQueryAffectRows(
+            "DELETE FROM vinyls WHERE id_vinyl = ?",
+            'i',
+            $id_vinyl
+        );
+    }
+
+    /**
+     * Update a vinyl in the database.
+     * @param int $id_vinyl of the vinyl to update
+     * @param float $cost of the vinyl
+     * @param int $rpm of the vinyl
+     * @param int $inch of the vinyl
+     * @param string $type of the vinyl
+     * @param int $stock of the vinyl
+     * 
+     * @return bool true if the vinyl was updated, false otherwise
+     */
+    public function updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $id_album) {
+        return $this->db->executeQueryAffectRows(
+            "UPDATE vinyls
+                SET cost = ?, rpm = ?, inch = ?, type = ?, stock = ?, id_album = ?
+                WHERE id_vinyl = ?",
+            'diisii',
+            $cost, $rpm, $inch, $type, $stock, $id_album, $id_vinyl
         );
     }
 }

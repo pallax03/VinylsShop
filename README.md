@@ -9,7 +9,7 @@
 > - relazione
 
 ## COSA DOBBIAMO FARE: ⚠️
-1. dashboard (lo sta facendo: alex)
+1. dashboard 
 2. checkout (lo sta facendo: alex)
 3. sisemare le pagine di login (suddividere login i registrazione)
     sistemando anche i messaggi di errore...
