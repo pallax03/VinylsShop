@@ -35,11 +35,11 @@ class OrderController extends Controller {
         $body = $request->getBody();
         
         $data = $this->order_model->getOrders($body['id_user'] ?? null);
-        if (empty($data) || !is_array($data) || !$data) { 
-            $response->Error('User not found or not allowed to see those orders ' , $body);
-        } else {
+        if (!empty($data)) { 
             $response->Success($data);
+            return;
         }
+        $response->Error('User not found or not allowed to see those orders ' , $body);
     }
 }
 ?>

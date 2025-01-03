@@ -48,36 +48,36 @@ class UserController extends Controller {
 
     public function getUsers(Request $request, Response $response) {
         $data = $this->user_model->getUsers();
-        if (empty($data)) { 
-            $response->Error('not allowed to see all users', $data);
-        } else {
+        if (!empty($data)) { 
             $response->Success($data);
+            return;
         }
+        $response->Error('not allowed to see all users');
     }
 
+    // TOREDO
     public function getUsersComponent(Request $request, Response $response) {
-        if (Session::isSuperUser()) { 
-            $response->Component('tables/users');
-        }
+        $this->redirectIf(!Session::isSuperUser(), '/');
+        $response->Component('tables/users', []);
     }
 
     public function getUser(Request $request, Response $response) {
         $body = $request->getBody();
         $data = $this->user_model->getUser($body['id_user'] ?? null);
-        if (empty($data)) { 
-            $response->Error('User not found or not allowed to see this user ' , $body);
-        } else {
+        if (!empty($data)) { 
             $response->Success($data);
+            return;
         }
+        $response->Error('User not found or not allowed to see this user ', $body);
     }
 
     public function setUserDefaults(Request $request, Response $response) {
         $body = $request->getBody();
         if ($this->user_model->setDefaults($body['id_card'] ?? null, $body['id_address'] ?? null)) {
             $response->Success('Defaults set', $body);
-        } else {
-            $response->Error('Not allowed to set defaults or card/address not found', $body);
-        }
+            return;
+        } 
+        $response->Error('Not allowed to set defaults or card/address not found', $body);
     }
 
     public function updateUser(Request $request, Response $response) {
@@ -90,20 +90,20 @@ class UserController extends Controller {
         $body = $request->getBody();
         if ($this->user_model->deleteUser($body['id_user'] ?? null)) {
             $response->Success('User deleted', $body);
-        } else {
-            $response->Error('Not allowed to delete this user or user not found', $body);
+            return;
         }
+        $response->Error('Not allowed to delete this user or user not found', $body);
     }
 
     public function getAddress(Request $request, Response $response) {
         $body = $request->getBody();
 
         $data = $this->user_model->getAddress($body['id_user'] ?? null, $body['id_address'] ?? null);
-        if (empty($data)) { 
-            $response->Error('Address not found or not allowed to see this address', $body);
-        } else {
+        if (!empty($data)) { 
             $response->Success($data);
+            return;
         }
+        $response->Error('Address not found or not allowed to see this address', $body);
     }
 
     public function setAddress(Request $request, Response $response) {
@@ -116,19 +116,19 @@ class UserController extends Controller {
         $body = $request->getBody();
         if ($this->user_model->deleteAddress($body['id_address'] ?? null, $body['id_user'] ?? null)) {
             $response->Success('Address deleted', $body);
-        } else {
-            $response->Error('Not allowed to delete this address or address not found', $body);
+            return;
         }
+        $response->Error('Not allowed to delete this address or address not found', $body);
     }
     
     public function getCard(Request $request, Response $response) {
         $body = $request->getBody();
         $data = $this->user_model->getCard($body['id_user'] ?? null, $body['id_card'] ?? null);
-        if (empty($data)) { 
-            $response->Error('Card not found or not allowed to see this card', $body);
-        } else {
+        if (!empty($data)) { 
             $response->Success($data);
+            return;
         }
+        $response->Error('Card not found or not allowed to see this card', $body);
     }
 
     public function setCard(Request $request, Response $response) {
@@ -141,10 +141,9 @@ class UserController extends Controller {
         $body = $request->getBody();
         if ($this->user_model->deleteCard($body['id_card'] ?? null, $body['id_user'] ?? null)) {
             $response->Success('Card deleted', $body);
-        } else {
-            $response->Error('Not allowed to delete this card or card not found', $body);
+            return;
         }
+        $response->Error('Not allowed to delete this card or card not found', $body);
     }
-
 }
 ?>

@@ -38,9 +38,9 @@ class CartController extends Controller {
         
         if ($this->cart_model->setCart($body['id_vinyl'], $body['quantity'])) {
             $response->Success('Cart updated', $body);
-        } else {
-            $response->Error('Cart not updated', $body);
+            return;
         }
+        $response->Error('Cart not updated', $body);
     }
 
     public function get(Request $request, Response $response) {
@@ -50,9 +50,9 @@ class CartController extends Controller {
     public function sync(Request $request, Response $response) {
         if($this->cart_model->syncCart()) {
             $response->Success('Cart synced');
-        } else {
-            $response->Error('Cart not synced');
+            return;
         }
+        $response->Error('Cart not synced');
     }
 
     public function checkout(Request $request, Response $response) {
@@ -73,10 +73,9 @@ class CartController extends Controller {
             $this->cart_model->purgeUserCart();
             $this->cart_model->syncCart();
             $response->Success('Order placed');
-        } else {
-            $response->Error('Order cannot be placed');
+            return;
         }
-
+        $response->Error('Order cannot be placed');
     }
 
 }

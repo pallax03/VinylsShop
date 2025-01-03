@@ -34,8 +34,26 @@ class HomeController extends Controller {
         $this->render('', $head);
     }
 
-    // All in One
     public function login(Request $request, Response $response) {
+        $body = $request->getBody();
+        if ($this->auth_model->login($body['mail'], $body['password'], $body['remember'])) {
+            $response->Success('Logged in, redirecting...');
+            return;
+        }
+        $response->Error('Wrong mail or password...', $body);
+    }
+
+    public function register(Request $request, Response $response) {
+        $body = $request->getBody();
+        if ($this->auth_model->register($body['mail'], $body['password'], $body['newsletter'])) {
+            $this->auth_model->login($body['mail'], $body['password'], 0);
+            $response->Success('Registered, logging...');
+            return;
+        }
+        $response->Error('Register Error, please try again...');
+    }
+
+    public function loginRegister(Request $request, Response $response) {
         $body = $request->getBody();
 
         if ($this->auth_model->checkUserMail($body['mail'])) {

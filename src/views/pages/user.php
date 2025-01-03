@@ -44,5 +44,7 @@
     <script src="/resources/js/user.js"></script>
 <?php else: ?>
     <?php include COMPONENTS . 'login.php' ?>
+    <div class="div"></div>
+    <?php include COMPONENTS . 'register.php' ?>
     <script src="/resources/js/auth.js"></script>
 <?php endif; ?>

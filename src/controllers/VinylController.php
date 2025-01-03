@@ -20,6 +20,7 @@ final class VinylController extends Controller {
     }
 
     function getVinylsComponent(Request $request, Response $response) {
+        $this->redirectIf(!Session::isSuperUser(), '/');
         $response->Component('/table/vinyls', ['vinyls' => $this->vinyl_model->getVinyls(0, [])]);
     }
 
@@ -27,31 +28,45 @@ final class VinylController extends Controller {
         $body = $request->getBody();
         if ($this->vinyl_model->addVinyl($body['cost'], $body['rpm'], $body['inch'], $body['type'], $body['stock'], $body['album'], $body['artist'], $body['id_vinyl'] ?? null)) {
             $response->Success('Vinyl added', $body);
-        } else {
-            $response->Error('Error adding vinyl', $body);
+            return;
         }
+        $response->Error('Error adding vinyl', $body);
     }
 
     function deleteVinyl(Request $request, Response $response) {
         $body = $request->getBody();
         if ($this->vinyl_model->deleteVinyl($body['id_vinyl'])) {
             $response->Success('Vinyl deleted', $body);
-        } else {
-            $response->Error('Error deleting vinyl', $body);
+            return;
         }
+        $response->Error('Error deleting vinyl', $body);
     }
 
     function updateVinyl(Request $request, Response $response) {
         $body = $request->getBody();
         if ($this->vinyl_model->updateVinyl($body['id_vinyl'], $body['cost'], $body['rpm'], $body['inch'], $body['type'], $body['stock'], $body['album'], $body['artist'])) {
             $response->Success('Vinyl updated', $body);
-        } else {
-            $response->Error('Error updating vinyl', $body);
+            return;
         }
+        $response->Error('Error updating vinyl', $body);
+    }
+
+    function getAlbums(Request $request, Response $response) {
+        $response->Success('Albums fetched', $this->vinyl_model->getAlbums($body['id_artist'] ?? null));
+    }
+
+    function updateAlbum(Request $request, Response $response) {
+        // $body = $request->getBody();
+        // if ($this->vinyl_model->updateAlbum($body['id_album'], $body['album'], $body['tracks'])) {
+        //     $response->Success('Album updated', $body);
+        // } else {
+        //     $response->Error('Error updating album', $body);
+        // }
+        $response->Error('Not implemented');
     }
     
 }
-// TODO
+// TODO / TOREMOVE
     /*
     public function login(Request $request, Response $response) {
         // JWT token for admin users

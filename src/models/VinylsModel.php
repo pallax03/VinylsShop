@@ -226,6 +226,67 @@ final class VinylsModel {
         return $result;
     }
 
+    /**
+     * Get the albums of an artist.
+     * @param array $filter the qury filter of the artist params to get the albums
+     * filters can be:
+     * - id_album
+     * - title
+     * - genre
+     * - id_artist
+     * - artist_name
+     * - id_track
+     * - track_title
+     * 
+     * @return array containing the albums 
+     */
+    public function getAlbums($filters) {
+        $query = "SELECT
+            a.id_album,
+            a.title,
+            a.release_date,
+            a.genre,
+            a.cover,
+            ar.id_artist,
+            ar.name AS artist_name
+            ta.id_track,
+            ta.title AS track_title
+            FROM
+            albums a
+            JOIN artists ar ON a.id_artist = ar.id_artist
+            JOIN albumstracks ta ON a.id_album = ta.id_album";
+        
+        $keys = array_keys($filters);
+        switch (reset($keys)) {
+            case "id_album":
+                $query = $query . " WHERE a.id_album = " . $filters["id_album"];
+                break;
+            case "title":
+                $query = $query . " WHERE a.title LIKE '%" . $filters["title"] . "%'";
+                break;
+            case "genre":
+                $query = $query . " WHERE a.genre LIKE '%" . $filters["genre"] . "%'";
+                break;
+            case "id_artist":
+                $query = $query . " WHERE ar.id_artist LIKE '%" . $filters["id_artist"] . "%'";
+                break;
+            case "artist_name":
+                $query = $query . " WHERE artist_name LIKE '%" . $filters["artist_name"] . "%'";
+                break;
+            case "id_track":
+                $query = $query . " WHERE ta.id_track LIKE '%" . $filters["id_track"] . "%'";
+                break;
+            case "track_title":
+                $query = $query . " WHERE track_title LIKE '%" . $filters["track_title"] . "%'";
+                break;
+        }
+
+        return $this->db->executeResults($query);
+    }
+
+
+    // TODO NEED TO UPDATE ALBUMS TRACKS
+
 
     /**
      * Check if the artist exists in the database.
@@ -283,8 +344,6 @@ final class VinylsModel {
      * @return bool true if the album was created, false otherwise
      */
     public function createAlbum($title, $release_date, $genre, $cover, $artist) {
-
-
         // check if the artist already exists if not add it to the database
         if(is_array($artist) && !$this->checkArtist($artist["id_artist"])) {
             $artist = $this->createArtist($artist["name"]);

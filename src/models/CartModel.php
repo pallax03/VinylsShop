@@ -200,7 +200,7 @@ final class CartModel {
      * @return int the minimum quantity of the vinyl available.
      */
     private function checkVinyl($id_vinyl, $wanted_quantity) {
-        $quantity = $this->vinyls_model->getVinyl($id_vinyl)['quantity'];
+        $quantity = $this->vinyls_model->getVinyl($id_vinyl)['stock'];
         return  $quantity - $wanted_quantity > 0 ? $wanted_quantity : $quantity;
     }
 

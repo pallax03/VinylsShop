@@ -18,8 +18,10 @@
     $router->post('/', [HomeController::class, 'index']); // // # [TODELETE] -> per sam allenati con le post request e vedi come funzionano
     // # 🍽️ [Search] -> Vinyl
     $router->get('/search', [HomeController::class, 'search']);
-    // # 🍽️  [Login] ~ if mail not exists: register -> Auth
-    $router->post('/login', [HomeController::class, 'login']); 
+    // # 🍽️  [Login] -> Auth
+    $router->post('/login', [HomeController::class, 'login']);
+    // # 🍽️  [Register] -> Auth
+    $router->post('/register', [HomeController::class, 'register']);
     // # 🍽️  [Logout] -> Auth
     $router->get('/logout', [HomeController::class, 'logout']);
     // # 🏠 [Devs] ~ README.md

@@ -1,5 +1,5 @@
 <form id="form-login">
-    <h1> Login / Signup </h1>
+    <h1> Login </h1>
     <ul>
         <li>
             <label for="mail">Mail</label>
@@ -17,8 +17,8 @@
         </li>
         <li>
             <div class="large button">
-                <i class="bi bi-person-fill"></i>
-                <button class="animate" id="btn-login_submit">logga daæi</button>
+                <i class="bi bi-arrow-bar-down"></i>
+                <button class="animate" id="btn-login_submit">Login</button>
             </div>
         </li>
         <li>
