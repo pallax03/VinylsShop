@@ -22,7 +22,9 @@ CREATE TABLE IF NOT EXISTS `vinylsshop`.`users` (
 
 -- DEFAULT USERS
 INSERT IGNORE INTO `vinylsshop`.`users` (`mail`, `password`, `su`) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 1);
-INSERT IGNORE INTO `vinylsshop`.`users` (`mail`, `password`, `su`) VALUES ('alexmaz03@hotmail.it', 'd41d8cd98f00b204e9800998ecf8427e', 0);
+-- it's the md5 hash of the password 'admin'.
+INSERT IGNORE INTO `vinylsshop`.`users` (`mail`, `password`, `su`) VALUES ('alexmaz03@hotmail.it', '0cc175b9c0f1b6a831c399e269772661', 0);
+-- it's the md5 hash of the password 'a'.
 
 
 CREATE TABLE IF NOT EXISTS `vinylsshop`.`cards` (

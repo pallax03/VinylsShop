@@ -158,10 +158,10 @@ VALUES
 -- Insert coupons
 INSERT IGNORE INTO `vinylsshop`.`coupons` (`discount_code`, `percentage`, `valid_from`, `valid_until`)
 VALUES
-('HALLOWEEN10', 0.1, '2024-10-01', '2024-10-31'),
-('BLACKFRIDAY70', 0.7, '2024-11-20', '2024-11-30'),
+('HALLOWEEN10', 0.1, '2024-10-01', '2025-10-31'),
+('BLACKFRIDAY70', 0.7, '2024-11-20', '2025-11-30'),
 ('CHRISTMAS20', 0.2, '2024-12-01', '2025-01-31'),
-('LOVE100', 1, '2025-02-01', '2025-02-14');
+('LOVE100', 1, '2024-02-01', '2025-02-14');
 
 -- USER 2 
 -- Insert addresses

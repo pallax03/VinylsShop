@@ -81,6 +81,7 @@ body {
                     &:hover {
                         color: var(--selected-color);
                         border-color: var(--selected-color);
+                        cursor: pointer;
                     }
                 }
                 a {
@@ -586,6 +587,9 @@ main {
     }
 }
 
+.no-padding {
+    padding: 0;
+}
 .padding-1 {
     padding: 1rem;
 }

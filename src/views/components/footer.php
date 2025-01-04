@@ -56,7 +56,7 @@
         </li>
         <li>
             <a class="copyrights" href="">
-                <p>Copyright © 2024 VinylsShop - All rights reserved</p>
+                <p>Copyright © <?php echo date("Y"); ?> VinylsShop - All rights reserved</p>
                 <span>
                     <p>IT</p>
                     <p> - </p>

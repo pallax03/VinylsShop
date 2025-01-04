@@ -15,14 +15,14 @@
         <ul>
             <li>
                 <label for="default_address"><i class="bi bi-geo-alt-fill"></i>
-                Address:</label>
-                <input type="text" id="input-default_address" value="<?php echo (isset($user['default_address']) && !empty($user['default_address'])) ? ( $user['name'] . ' - '. $user['city'] . ' (' . $user['postal_code'] .')' ) : 'no default address.' ?>" name="default_address" disabled />
+                    Address:</label>
+                <input type="text" id="input-default_address" value="<?php echo (isset($user['default_address']) && !empty($user['default_address'])) ? ($user['name'] . ' - ' . $user['city'] . ' (' . $user['postal_code'] . ')') : 'no default address.' ?>" name="default_address" disabled />
                 <a href="user/addresses"><i class="bi bi-caret-right-fill"></i></a>
             </li>
             <li>
                 <label for="default_card"><i class="bi bi-credit-card-fill"></i>
-                Card:</label>
-                <input type="text" id="input-default_card" value="<?php echo (isset($user['default_card']) && !empty($user['default_card'])) ? ('**** **** **** ' . substr($user['card_number'], -4)) : ('Balance: '. $user['balance'] . ' €') ?>" name="default_card" disabled />
+                    Card:</label>
+                <input type="text" id="input-default_card" value="<?php echo (isset($user['default_card']) && !empty($user['default_card'])) ? ('**** **** **** ' . substr($user['card_number'], -4)) : ('Balance: ' . $user['balance'] . ' €') ?>" name="default_card" disabled />
                 <a href="/user/cards"><i class="bi bi-caret-right-fill"></i></a>
             </li>
         </ul>
@@ -30,15 +30,15 @@
     <div class="div"></div>
     <section class="cards">
         <?php
-            if (isset($orders) && count($orders) > 0) {
-                $n = 0;
-                foreach ($orders as $order) {
-                    $n++;
-                    include COMPONENTS . 'cards/order.php';
-                }
-            } else {
-                echo "<h3>No orders found!</h3>";
+        if (isset($orders) && count($orders) > 0) {
+            $n = 0;
+            foreach ($orders as $order) {
+                $n++;
+                include COMPONENTS . 'cards/order.php';
             }
+        } else {
+            echo "<h3>No orders found!</h3>";
+        }
         ?>
     </section>
     <script src="/resources/js/user.js"></script>

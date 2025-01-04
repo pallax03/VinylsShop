@@ -60,7 +60,24 @@ class CartController extends Controller {
         $this->redirectIf(empty($this->cart_model->getCart()), '/cart');
 
         $head = array('title' => 'Checkout', 'style'=> array(''));
-        $this->render('checkout', $head);
+        $data['user'] = $this->user_model->getUser(Session::getUser());
+        $data['cart'] = $this->cart_model->getCart();
+        $data['shipping'] = ['cost' => OrderModel::$ShippingCost, 'courier' => OrderModel::$ShippingCourier];
+        $data['total'] = Session::getTotal() - OrderModel::$ShippingCost;
+
+        $this->render('checkout', $head, $data);
+    }
+
+    public function getTotal(Request $request, Response $response) {
+        $this->redirectUser();
+        $this->redirectIf(empty($this->cart_model->getCart()), '/cart');
+        
+        $body = $request->getBody();
+        
+        $total = $this->order_model->getOrderTotal($body['discount_code'] ?? null);
+        $percentage = $this->order_model->checkDiscount($body['discount_code'] ?? null);
+        $difference = $total * $percentage;
+        $response->Success(['total' => $total, 'difference' => $difference, 'percentage' => $percentage*100]);
     }
 
     public function pay(Request $request, Response $response) {

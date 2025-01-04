@@ -11,10 +11,8 @@
 ## COSA DOBBIAMO FARE: ⚠️
 1. dashboard 
 2. checkout (lo sta facendo: alex)
-3. sisemare le pagine di login (suddividere login i registrazione)
-    sistemando anche i messaggi di errore...
-4. SISTEMARE ASSOLUTAMENTE IL TRACKING DEGLI ORDINI. (pensare ad una roba realistica)
-5. NEWSLETTER: notifiche!!!!!!!!!!
+3. SISTEMARE ASSOLUTAMENTE IL TRACKING DEGLI ORDINI. (pensare ad una roba realistica)
+4. NEWSLETTER: notifiche!!!!!!!!!!
     le implementiamo come delle variabili interne (non sessione):
     come mappe [orario => HH:mm , azione => stringa o array boh]
     fare nel main.js un fetch ogni 1 minuto al backend '/newsletter'
@@ -24,7 +22,7 @@
     - VIENE AGGIUNTO UN NUOVO VINILE (PER TUTTI)
     - 🚩 VIENE MODIFICATO L'UTENTE
     - UN ORDINE ARRIVA?????
-6. SISTEMARE LINK DEL FOOTER.
+5. SISTEMARE LINK DEL FOOTER.
 
 
 ### Se proprio abbiamo altro tempo da perdere

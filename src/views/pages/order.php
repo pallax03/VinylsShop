@@ -22,11 +22,11 @@
         <p class="th">Vinyls Total:</p>
         <p>
             <?php
-                $total = 0;
+                $vinyl_total = 0;
                 foreach ($order['vinyls'] as $vinyl) {
-                    $total += $vinyl['cost'];
+                    $vinyl_total += ($vinyl['cost'] * $vinyl['quantity']);
                 }
-                echo round($total, 2);
+                echo round($vinyl_total, 2);
             ?>
             €
         </p>

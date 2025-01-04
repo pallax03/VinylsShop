@@ -55,7 +55,9 @@
     $router->get('/cart/sync', [CartController::class, 'sync']); 
     // # 🏠 [Checkout] ~ go onto the checkout page -> Auth - User (Address - Card) - Cart - Vinyl (Artist) - Shipping - Order - Discount.
     $router->get('/checkout', [CartController::class, 'checkout']);
-    // # 🍽️ [Checkout] ~ request the checkout can handle errors if valid make the order and shipping -> Auth - User (Address - Card)
+    // # 🍽️ [Total] ~ request the checkout Total (for discount code) -> Auth - Cart - Order 
+    $router->get('/checkout/total', [CartController::class, 'getTotal']); 
+    // # 🍽️ [Pay] ~ request the checkout payment can handle errors -> Auth - Cart - Order - Vinyl
     $router->post('/checkout', [CartController::class, 'pay']); 
 
 

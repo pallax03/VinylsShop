@@ -53,7 +53,13 @@ div.button {
         position: relative;
         color: white;
         transition: all 0.6s ease-in-out;
-        
+
+        p {
+            
+            margin: .4rem;
+            font-size: clamp(1rem, 1.2vw, 1.2rem);
+        }
+
         i {
             font-size: 1.2em;
         }

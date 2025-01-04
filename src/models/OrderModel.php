@@ -201,7 +201,14 @@ final class OrderModel
         );
     }
 
-    private function checkDiscount($discount_code) {
+    /**
+     * Check if a discount code is valid.
+     *
+     * @param string $discount_code the discount code
+     * 
+     * @return float percentage of discount or 0 (so u need to multiply the total by this)
+     */
+    public function checkDiscount($discount_code) {
         $discount = Database::getInstance()->executeResults(
             "SELECT `percentage`
                 FROM `coupons`
@@ -209,13 +216,13 @@ final class OrderModel
                 AND CURDATE() BETWEEN `valid_from` AND `valid_until`;",
             's',
             $discount_code
-        )[0];
+        );
 
-        if (empty($discount)) {
-            return false;
+        if (!empty($discount)) {
+            return $discount[0]['percentage'];
         }
 
-        return $discount['percentage'];
+        return 0;
     }
 
     private function tryPayment($total) {
@@ -232,10 +239,8 @@ final class OrderModel
      */
     public function getOrderTotal($discount_code = null) {
         $total = Session::getTotal();
-        if ($discount_code !== null) {
-            $discount = $this->checkDiscount($discount_code);
-            $total = $total - ($total * $discount / 100);
-        }
+        $discount = $this->checkDiscount($discount_code ?? '');
+        $total -= $total * $discount;
 
         return $total <= self::$ShippingGoal ? $total + self::$ShippingCost : $total;
     }

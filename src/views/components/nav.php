@@ -51,6 +51,12 @@
     <nav aria-label="Admin navigation">
         <ul>
             <li>
+                <a href="/dashboard">
+                    <i class="bi bi-house-fill"></i>
+                    <p>Home</p>
+                </a>
+            </li>
+            <li>
                 <a href="/dashboard/vinyls">
                     <div class="vinyl"></div>
                     <p>Vinyls</p>
