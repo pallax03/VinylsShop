@@ -25,6 +25,10 @@
     
     <?php include COMPONENTS . '/nav.php' ?>
 
+    <div class="modal" style="position: absolute;">
+
+    </div>
+
     <main id="main-content" aria-hidden="false">
         <?php 
             if (isset($page) && file_exists($page)) {

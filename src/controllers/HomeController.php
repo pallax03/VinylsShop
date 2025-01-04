@@ -21,7 +21,6 @@ class HomeController extends Controller {
         $title = 'Home';
         $head = array('title' => $title, 'style'=> array(''),
          'header' => "Oltre i " . OrderModel::$ShippingGoal . "€ spedizione gratuita!");
-
         
         $this->render('home', $head);
     }
@@ -98,8 +97,15 @@ class HomeController extends Controller {
         $this->render('devs', $head, $data);
     }
 
-    public function dashboard(Request $request, Response $response) {
+    public function dashboard() {
+        $this->redirectIf(!Session::isSuperUser(), '/');
+
         $this->render('dashboard', ['title' => 'Dashboard']);
+    }
+
+    public function dashboardVinyls() {
+        $this->redirectIf(!Session::isSuperUser(), '/');
+        $this->render('dashboard_vinyls', ['title' => 'Dashboard Vinyls']);
     }
 
     public function reset() {

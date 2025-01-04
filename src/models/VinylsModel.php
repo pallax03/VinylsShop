@@ -383,8 +383,6 @@ final class VinylsModel {
             if(!$album) {
                 return false;
             }
-        } else {
-            return false;
         }
         $album = $album["id_album"];
 

@@ -9,7 +9,7 @@
 > - relazione
 
 ## COSA DOBBIAMO FARE: ⚠️
-1. dashboard 
+1. dashboard (SAM: VINYLS / ALEX: USERS)
 2. checkout (lo sta facendo: alex)
 3. SISTEMARE ASSOLUTAMENTE IL TRACKING DEGLI ORDINI. (pensare ad una roba realistica)
 4. NEWSLETTER: notifiche!!!!!!!!!!

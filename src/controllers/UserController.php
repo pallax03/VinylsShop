@@ -18,7 +18,8 @@ class UserController extends Controller {
 
     public function index() {
         $this->redirectSuperUser();
-        $head = array('title' => 'Login / Signup', 'style'=> array(''),
+        $head = array('title' => Session::isLogged() ? 'User' : 'Login / Signup',
+         'style'=> array(''),
          'header' => "Oltre i " . OrderModel::$ShippingGoal . "€ spedizione gratuita!");
         
         $data['user'] = $this->user_model->getUser();

@@ -269,7 +269,7 @@ final class OrderModel
             'sdsiss',
             date('Y-m-d'),
             $total,
-            'In preparation',
+            'Paid',
             Session::getUser(),
             Session::getUser()['default_card'] ?? '',
             $discount_code ?? '',
