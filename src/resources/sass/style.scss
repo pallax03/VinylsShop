@@ -668,6 +668,10 @@ main {
         font-size: 1rem;
         margin-bottom: 15px;
     }
+    button {
+        border: none;
+        cursor: pointer;
+    }
     .add-cart {
         text-align: center;
         font-size: 1.4rem;
@@ -678,6 +682,9 @@ main {
         display: block;
         padding: clamp(10px, 1%, 50px);
         font-weight: bold;
+    }
+    .add-cart:hover {
+        color: var(--selected-color);
     }
 }
 
@@ -774,5 +781,39 @@ main {
             text-overflow: ellipsis;
             margin: .8rem;
         }
+    }
+}
+
+.modal {
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    top: 85%;
+    right: 0;
+    @media (min-width: $breakpoint) {
+        top: 19%;
+        right: 0;
+        width: 50%;
+    }
+    z-index: 99;
+
+}
+
+.notification {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    padding: 10px;
+    text-align: center;
+    .message {
+        vertical-align: middle;
+        display: inline;
+        color: var(--text-color);
+    }
+    .icon {
+        vertical-align: middle;
+        display: inline;
+        width: 30px;
     }
 }

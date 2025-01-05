@@ -14,11 +14,11 @@
         <i class="bi bi-credit-card-fill"></i>
         <button id="btn-cart_submit" onclick="redirect('/checkout')" >Checkout - <?php echo $total ?> €</button>
     </div>
-<? else: ?>
+<?php else: ?>
     <div class="div"></div>
     <div class="container center vertical">
         <h2>No vinyls in the cart!</h2>
         <a href="/">Go to Shop!</a>
     </div>
-<? endif; ?>
+<?php endif; ?>
 <script src="/resources/js/cart.js"></script>

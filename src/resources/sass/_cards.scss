@@ -504,4 +504,7 @@ $preview-cover-size: 80%;
         width: 100%;
         z-index: 1;
     }
+    .add-cart:hover {
+        color: var(--selected-color);
+    }
 }

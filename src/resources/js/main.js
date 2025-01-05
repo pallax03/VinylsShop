@@ -93,7 +93,6 @@ function addToCart(id, quantity) {
             try {
                 getCart();
             } catch (error) {
-                
             }
         }
     );

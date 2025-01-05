@@ -25,8 +25,7 @@
     
     <?php include COMPONENTS . '/nav.php' ?>
 
-    <div class="modal" style="position: absolute;">
-
+    <div class="modal">
     </div>
 
     <main id="main-content" aria-hidden="false">
