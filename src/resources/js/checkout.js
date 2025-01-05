@@ -24,3 +24,6 @@ function getTotal() {
 
 // when the discount code is entered, fetch the new total
 document.getElementById('input-discount_code').addEventListener('blur', getTotal);
+window.addEventListener('pageshow', function (event) {
+    getTotal(); // Always call it on pageshow, regardless of whether it's cached or not
+});

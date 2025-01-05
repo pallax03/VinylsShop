@@ -20,6 +20,10 @@ class Controller {
         $this->redirectIf(Session::isSuperUser(), '/dashboard');
     }
 
+    protected function redirectNotSuperUser() {
+        $this->redirectIf(!Session::isSuperUser(), '/');
+    }
+
     /**
      * Redirect the user to the login page if not logged 
     */

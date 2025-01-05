@@ -63,11 +63,13 @@
         </p>
         <p>22% (incl. IVAs)</p>
     </div>
-    <div class="container table">
-        <p class="th">Shipping fee:</p>
-        <p><?php echo round($shipping['cost'], 2) ?> €</p>
-        <p><?php echo $shipping['courier'] ?></p>
-    </div>
+    <? if($shipping['cost'] > 0):?>
+        <div class="container table">
+            <p class="th">Shipping fee:</p>
+            <p><?php echo round($shipping['cost'], 2) ?> €</p>
+            <p><?php echo $shipping['courier'] ?></p>
+        </div>
+    <? endif; ?>
     <div class="container table">
         <p class="th">Discount Code:</p>
         <p id="p-discount_difference">-- €</p>

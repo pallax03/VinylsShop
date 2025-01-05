@@ -24,13 +24,13 @@ class CartController extends Controller {
         $this->redirectSuperUser();
 
         $head = array('title' => 'Cart', 'style'=> array(''),
-         'header' => "Oltre i " . OrderModel::$ShippingGoal . "€ spedizione gratuita!");
+         'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
         
         $data['user'] = $this->user_model->getUser(Session::getUser());
         $data['cart'] = $this->cart_model->getCart();
         $data['total'] = Session::getTotal();
 
-        $this->render('cart', $head, $data);
+        $this->render('ecommerce/cart', $head, $data);
     }
 
     public function manage(Request $request, Response $response) {
@@ -62,10 +62,10 @@ class CartController extends Controller {
         $head = array('title' => 'Checkout', 'style'=> array(''));
         $data['user'] = $this->user_model->getUser(Session::getUser());
         $data['cart'] = $this->cart_model->getCart();
-        $data['shipping'] = ['cost' => OrderModel::$ShippingCost, 'courier' => OrderModel::$ShippingCourier];
-        $data['total'] = Session::getTotal() - OrderModel::$ShippingCost;
+        $data['shipping'] = ['cost' => Session::getTotal() < $_ENV['SHIPPING_GOAL'] ? $_ENV['SHIPPING_COST'] : 0, 'courier' => $_ENV['SHIPPING_COURIER']];
+        $data['total'] = $this->order_model->getOrderTotal();
 
-        $this->render('checkout', $head, $data);
+        $this->render('ecommerce/checkout', $head, $data);
     }
 
     public function getTotal(Request $request, Response $response) {
@@ -76,7 +76,7 @@ class CartController extends Controller {
         
         $total = $this->order_model->getOrderTotal($body['discount_code'] ?? null);
         $percentage = $this->order_model->checkDiscount($body['discount_code'] ?? null);
-        $difference = $total * $percentage;
+        $difference = Session::getTotal() * $percentage;
         $response->Success(['total' => $total, 'difference' => $difference, 'percentage' => $percentage*100]);
     }
 

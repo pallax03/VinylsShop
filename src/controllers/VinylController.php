@@ -15,13 +15,9 @@ final class VinylController extends Controller {
         $data['vinyl'] = $this->vinyl_model->getVinylDetails($body['id']);
         $data['suggested'] = $this->vinyl_model->getSuggested($body['id']);
         $head = array('title' => $data["vinyl"]["details"]["title"], 'style'=> array(''),
-         'header' => "Oltre i " . OrderModel::$ShippingGoal . "€ spedizione gratuita!");
-        $this->render('vinyls', $head, $data);
-    }
-
-    function getVinylsComponent(Request $request, Response $response) {
-        $this->redirectIf(!Session::isSuperUser(), '/');
-        $response->Component('/table/vinyls', ['vinyls' => $this->vinyl_model->getVinyls(0, [])]);
+         'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
+        
+        $this->render('ecommerce/vinyl', $head, $data);
     }
 
     function addVinyl(Request $request, Response $response) {

@@ -32,6 +32,10 @@
     // ⭐️ ADMIN HOME
     // # 🏠 [Dashboard] ~ -> Auth.
     $router->get('/dashboard', [HomeController::class, 'dashboard']);
+    $router->get('/dashboard/vinyls', [HomeController::class, 'dashboardVinyls']);
+    $router->get('/dashboard/albums', [HomeController::class, 'dashboardAlbums']);
+    $router->get('/dashboard/users', [HomeController::class, 'dashboardUsers']);
+    $router->get('/dashboard/coupons', [HomeController::class, 'dashboardCoupons']);
 
 
 // 📀: --- VinylController.php --- (models: Vinyl (Artist - Track) - Cart)

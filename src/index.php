@@ -11,7 +11,7 @@ define ('COMPONENTS', ROOT . '/views/components/');
 
 # load environment variables
 require_once CONFIG . 'LoadEnvs.php';          // Load environment variables
-LoadEnv::load(['.env']);   // Load environment variables from those files
+LoadEnv::load(['.env', '.admin.env']);   // Load environment variables from those files
 
 # load core files (mvc)
 require_once CORE . 'Request.php';       // Router->Request

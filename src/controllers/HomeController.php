@@ -20,7 +20,7 @@ class HomeController extends Controller {
         $this->redirectSuperUser();
         $title = 'Home';
         $head = array('title' => $title, 'style'=> array(''),
-         'header' => "Oltre i " . OrderModel::$ShippingGoal . "€ spedizione gratuita!");
+         'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
         
         $this->render('home', $head);
     }
@@ -98,14 +98,28 @@ class HomeController extends Controller {
     }
 
     public function dashboard() {
-        $this->redirectIf(!Session::isSuperUser(), '/');
-
-        $this->render('dashboard', ['title' => 'Dashboard']);
+        $this->redirectNotSuperUser();
+        $this->render('admin/dashboard', ['title' => 'Dashboard']);
     }
 
     public function dashboardVinyls() {
-        $this->redirectIf(!Session::isSuperUser(), '/');
-        $this->render('dashboard_vinyls', ['title' => 'Dashboard Vinyls']);
+        $this->redirectNotSuperUser();
+        $this->render('admin/vinyls', ['title' => 'Manage Vinyls']);
+    }
+
+    public function dashboardAlbums() {
+        $this->redirectNotSuperUser();
+        $this->render('admin/albums', ['title' => 'Manage Albums']);
+    }
+
+    public function dashboardUsers() {
+        $this->redirectNotSuperUser();
+        $this->render('admin/users', ['title' => 'Manage Users']);
+    }
+    
+    public function dashboardCoupons() {
+        $this->redirectNotSuperUser();
+        $this->render('admin/coupons', ['title' => 'Manage Coupons']);
     }
 
     public function reset() {

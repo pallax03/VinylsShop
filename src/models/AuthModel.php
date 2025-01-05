@@ -134,8 +134,9 @@ final class AuthModel {
             "SELECT * FROM `users` WHERE `mail` = ? AND `password` = ?",
             'ss',
             $mail, $this->encryptPassword($password)
-        )[0];
+        );
         if (!empty($result)) {
+            $result = $result[0];
             if (filter_var($remember, FILTER_VALIDATE_BOOLEAN)) {
                 $this->setCookie($this->generateToken($result['id_user'], $result['su']));
             }

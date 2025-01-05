@@ -27,7 +27,7 @@ class OrderController extends Controller {
 
         $data['order'] = $this->order_model->getOrder($body['id_order'] ?? null);
 
-        $this->render('order', $head, $data);
+        $this->render('ecommerce/order', $head, $data);
     }
 
     public function getOrders(Request $request, Response $response) {

@@ -6,11 +6,6 @@ final class OrderModel
     private $auth_model = null;
     private $user_model = null;
 
-
-    public static $ShippingCourier = 'Poste Italiane';
-    public static $ShippingCost = 5.0;
-    public static $ShippingGoal = 100.0;
-
     public function __construct() {
         require_once MODELS . 'VinylsModel.php';
         $this->vinyls_model = new VinylsModel();
@@ -172,9 +167,9 @@ final class OrderModel
             $shipment_date ?? date('Y-m-d'),
             $delivery_date ?? date('Y-m-d', strtotime('+7 days')),
             $shipment_status ?? 'In preparation',
-            $courier ?? self::$ShippingCourier,
+            $courier ?? $_ENV['SHIPPING_COURIER'],
             $notes ?? '',
-            $cost ?? self::$ShippingCost,
+            $cost ?? $_ENV['SHIPPING_COST'],
             Session::getUser()['default_address']
         );
     }
@@ -242,7 +237,7 @@ final class OrderModel
         $discount = $this->checkDiscount($discount_code ?? '');
         $total -= $total * $discount;
 
-        return $total <= self::$ShippingGoal ? $total + self::$ShippingCost : $total;
+        return Session::getTotal() <= $_ENV['SHIPPING_GOAL'] ? $total + $_ENV['SHIPPING_COST'] : $total;
     }
 
     /**

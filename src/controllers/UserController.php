@@ -20,11 +20,11 @@ class UserController extends Controller {
         $this->redirectSuperUser();
         $head = array('title' => Session::isLogged() ? 'User' : 'Login / Signup',
          'style'=> array(''),
-         'header' => "Oltre i " . OrderModel::$ShippingGoal . "€ spedizione gratuita!");
+         'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
         
         $data['user'] = $this->user_model->getUser();
         $data['orders'] = $this->order_model->getOrders();
-        $this->render('user', $head, $data);
+        $this->render('user/user', $head, $data);
     }
 
     public function addresses() {
@@ -34,7 +34,7 @@ class UserController extends Controller {
         
         $data['user'] = $this->user_model->getUser();
         $data['addresses'] = $this->user_model->getAddress();
-        $this->render('addresses', $head, $data);
+        $this->render('user/addresses', $head, $data);
     }
 
     public function cards() {
@@ -44,7 +44,7 @@ class UserController extends Controller {
         
         $data['user'] = $this->user_model->getUser();
         $data['cards'] = $this->user_model->getCard();
-        $this->render('cards', $head, $data);
+        $this->render('user/cards', $head, $data);
     }
 
     public function getUsers(Request $request, Response $response) {
@@ -54,12 +54,6 @@ class UserController extends Controller {
             return;
         }
         $response->Error('not allowed to see all users');
-    }
-
-    // TOREDO
-    public function getUsersComponent(Request $request, Response $response) {
-        $this->redirectIf(!Session::isSuperUser(), '/');
-        $response->Component('tables/users', []);
     }
 
     public function getUser(Request $request, Response $response) {
