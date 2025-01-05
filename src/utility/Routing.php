@@ -15,7 +15,6 @@
 // 🏡: --- HomeController.php --- (models: Auth Vinyl)
     // # 🏠 [Home] ~ (no need to be logged) -> Vinyl
     $router->get('/', [HomeController::class, 'index']);
-    $router->post('/', [HomeController::class, 'index']); // // # [TODELETE] -> per sam allenati con le post request e vedi come funzionano
     // # 🍽️ [Search] -> Vinyl
     $router->get('/search', [HomeController::class, 'search']);
     // # 🍽️  [Login] -> Auth
@@ -29,11 +28,11 @@
     // # ❌ DESTROY ALL (SESSION)
     $router->get('/cache', [HomeController::class, 'reset']);
 
-    // ⭐️ ADMIN HOME
-    // # 🏠 [Dashboard] ~ -> Auth.
+    // ⭐️ ADMIN HOME ~ a not admin can't access to the dashboard. (will be redirected to the home page)
+    // # 🏠 [Dashboard] -> Auth.
     $router->get('/dashboard', [HomeController::class, 'dashboard']);
-    $router->get('/dashboard/vinyls', [HomeController::class, 'dashboardVinyls']);
     $router->get('/dashboard/albums', [HomeController::class, 'dashboardAlbums']);
+    $router->get('/dashboard/shipping', [HomeController::class, 'dashboardShipping']);
     $router->get('/dashboard/users', [HomeController::class, 'dashboardUsers']);
     $router->get('/dashboard/coupons', [HomeController::class, 'dashboardCoupons']);
 
@@ -68,9 +67,6 @@
 // 👤: --- UserController.php --- (models: Auth - User (Address - Card))
     // # 🏠 [User] ~ if not logged: *login form* else: user infos n' list of orders + shipping -> Auth - User - Order - Shipping
     $router->get('/user', [UserController::class, 'index']);
-    // # 🍽️ [GetUsers] ~ get all users.
-    $router->get('/users', [UserController::class, 'getUsers']);
-    $router->get('/users/table', [UserController::class, 'getUsersComponent']);
     // # 🍽️ [GetUser] ~ get user infos an admin can get any one -> Auth - User
     $router->get('/user/get', [UserController::class, 'getUser']);
     // # 🍽️ [UpdateUser] ~ update user infos -> Auth - User
@@ -92,12 +88,24 @@
     $router->delete('/user/card', [UserController::class, 'deleteCard']); // -> delete the card.
     $router->post('/user/card', [UserController::class, 'setCard']); // -> add a new card.
     
+    // ⭐️ ADMIN 
+    // # 🏠 [Users] ~ get all users.
+    $router->get('/users', [UserController::class, 'users']);
+
 
 // 📦: --- OrderController.php --- (models:  Vinyl (Artist - Track) - Cart - Order ( + Shipping) - User (Address - Card) - Auth)
     // # 🏠 [Order] ~ page of the specific order '?id_order='  -> Auth - User - Order - Shipping - Vinyl
     $router->get('/order', [OrderController::class, 'index']);
     // # 🍽️ [Orders] ~ list of all the orders -> Auth - User - Order - Shipping - Vinyl
     $router->get('/orders', [OrderController::class, 'getOrders']);
+    // # 🍽️ [Shippings] ~ update shipping info -> Auth - Shipping
+    $router->post('/shipping', [OrderController::class, 'updateShipping']);
+    // # 🍽️ [Coupons] ~ list of all the coupons -> Coupons
+    $router->get('/coupons', [OrderController::class, 'getCoupons']);
+
+    // ⭐️ ADMIN -> need to be an admin to access to the following routes.
+    $router->post('/coupon', [OrderController::class, 'setCoupon']); // ->  add / update a coupon.
+    $router->delete('/coupon', [OrderController::class, 'deleteCoupon']); // -> delete the coupon.
 
     
     $router->dispatch();

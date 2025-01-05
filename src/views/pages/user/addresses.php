@@ -1,5 +1,4 @@
 <section>
-    
     <?php if (isset($addresses) && $addresses !== []): ?>
         <h1>Addresses</h1>
         <?php

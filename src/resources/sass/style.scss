@@ -197,7 +197,9 @@ nav {
         list-style: none;
         padding: 1.2rem;
         
-        width: clamp(360px, 100%, 760px);
+        // width: clamp(360px, 100%, $breakpoint);
+        min-width: 360px;
+        width: 100%;
         height: 90px;
         display: inline-flex;
         justify-content: space-between;
@@ -607,6 +609,7 @@ main {
         top: 1rem;
         ul {
             border-radius: 50px;
+            width: 1080px;
             li {
                 a, button {
                     &:hover {

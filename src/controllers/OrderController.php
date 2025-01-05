@@ -41,5 +41,22 @@ class OrderController extends Controller {
         }
         $response->Error('User not found or not allowed to see those orders ' , $body);
     }
+
+    public function updateShipping(Request $request, Response $response) {
+        $body = $request->getBody(); 
+        if(Session::isSuperUser() && $body['shipping_courier'] && $body['shipping_cost'] && $body['shipping_goal']) {
+            LoadEnv::set('SHIPPING_COURIER', $body['shipping_courier']);
+            LoadEnv::set('SHIPPING_COST', $body['shipping_cost']);
+            LoadEnv::set('SHIPPING_GOAL', $body['shipping_goal']);
+            $response->Success('Shipping info updated');
+            return;
+        }
+        $response->Error('You are not allowed to set the shipping info, or the data is not correct', $body);
+    }
+
+    public function getCoupons(Request $request, Response $response) {
+        $body = $request->getBody();
+        $response->Success($this->order_model->getCoupons($body['id_coupon'] ?? null), $body);
+    }
 }
 ?>

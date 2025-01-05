@@ -284,4 +284,22 @@ final class OrderModel
 
         return true;
     }
+
+    /**
+     * Get all coupons.
+     *
+     * @return array of coupons
+     */
+    public function getCoupons($id_coupon = null) {
+        if($id_coupon) {
+            return Database::getInstance()->executeResults(
+                "SELECT `id_coupon`, `discount_code`, `percentage`, `valid_from`, `valid_until`
+                    FROM `vinylsshop`.`coupons`
+                    WHERE `id_coupon` = ?;",
+                'i',
+                $id_coupon
+            )[0];
+        }
+        return Database::getInstance()->executeResults("SELECT `id_coupon`, `discount_code`, `percentage`, `valid_from`, `valid_until` FROM `vinylsshop`.`coupons`; ");
+    }
 }

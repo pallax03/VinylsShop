@@ -71,10 +71,10 @@ final class UserModel {
                 . ($newsletter ? "newsletter = ?, " : "")
                 . ($balance ? "balance = ?, " : "")
                 . " WHERE id_user = ?;",
-            'ii',
-            $id_user ?? Session::getUser(),
+            'idi',
             $newsletter,
-            $balance
+            $balance,
+            $id_user ?? Session::getUser()
         );
     }
 

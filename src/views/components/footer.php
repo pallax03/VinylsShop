@@ -35,8 +35,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/cart">
-                        <p>Cart</p>
+                    <a href="/coupons">
+                        <p>Coupons</p>
                     </a>
                 </li>
                 <li>

@@ -3,16 +3,22 @@ class HomeController extends Controller {
 
     private $auth_model = null;
     // vinylsmodel for search
+    private $user_model = null;
     private $vinyls_model = null;
+    private $order_model = null;
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
         $this->auth_model = new AuthModel();
 
+        require_once MODELS . 'UserModel.php';
+        $this->user_model = new UserModel();
+
         require_once MODELS . 'VinylsModel.php';
         $this->vinyls_model = new VinylsModel();
 
         require_once MODELS . 'OrderModel.php';
+        $this->order_model = new OrderModel();
     }
 
     
@@ -99,27 +105,32 @@ class HomeController extends Controller {
 
     public function dashboard() {
         $this->redirectNotSuperUser();
-        $this->render('admin/dashboard', ['title' => 'Dashboard']);
+        $this->render('admin/vinyls', ['title' => 'Manage Vinyls'],
+            ['vinyls' => $this->vinyls_model->getVinyls(0, [])]);
+        
     }
 
-    public function dashboardVinyls() {
+    public function dashboardAlbums(Request $request, Response $response) {
         $this->redirectNotSuperUser();
-        $this->render('admin/vinyls', ['title' => 'Manage Vinyls']);
+        $this->render('admin/albums', ['title' => 'Manage Albums'], 
+            ['albums' => $this->vinyls_model->getAlbums($request->getBody())]);
     }
 
-    public function dashboardAlbums() {
+    public function dashboardShipping() {
         $this->redirectNotSuperUser();
-        $this->render('admin/albums', ['title' => 'Manage Albums']);
+        $this->render('admin/shipping', ['title' => 'Manage Shipping']);
     }
 
     public function dashboardUsers() {
         $this->redirectNotSuperUser();
-        $this->render('admin/users', ['title' => 'Manage Users']);
+        $this->render('admin/users', ['title' => 'Manage Users'],
+            ['users' => $this->user_model->getUsers()]);
     }
     
     public function dashboardCoupons() {
         $this->redirectNotSuperUser();
-        $this->render('admin/coupons', ['title' => 'Manage Coupons']);
+        $this->render('admin/coupons', ['title' => 'Manage Coupons'],
+            ['coupons' => $this->order_model->getCoupons()]);
     }
 
     public function reset() {
