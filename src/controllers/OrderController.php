@@ -56,7 +56,13 @@ class OrderController extends Controller {
 
     public function getCoupons(Request $request, Response $response) {
         $body = $request->getBody();
-        $response->Success($this->order_model->getCoupons($body['id_coupon'] ?? null), $body);
+        $result = $this->order_model->getCoupons($body['id_coupon'] ?? null);
+        if (!empty($result)) {
+            $response->Success($result);
+            return;
+        }
+        
+        $response->Error('No coupons found');
     }
 
     public function setCoupon(Request $request, Response $response) {

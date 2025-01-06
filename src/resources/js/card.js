@@ -45,12 +45,27 @@ document.getElementById('btn-card_submit').addEventListener('click', function() 
     card_cvc = document.getElementById('input-card_cvc');
     card_cvc.parse = /^\d{3}$/;
     if(validateData(card_number, card_expiry, card_cvc)) {
-        const expiryParts = card_expiry.value.split('/');
-        const mysqlDate = `20${expiryParts[1]}-${expiryParts[0]}-01`;
-        if (new Date(mysqlDate) < new Date()) {
-            card_expiry.classList.add('error');
-        } else {
-            document.getElementById('form-card').submit();
-        }
+        fetch('/user/card', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                card_number: card_number.value,
+                card_exp: card_expiry.value,
+                card_cvc: card_cvc.value
+            })
+        }).then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+            window.location.reload();
+        }).catch((error) => {
+            // TODO NOTIFICATIONS
+            console.error('Error:', error);
+        });
     }
 });
