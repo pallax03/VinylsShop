@@ -143,11 +143,9 @@ class UserController extends Controller {
             return;
         }
 
-        if($id_user) {
-            if ($this->user_model->deleteUser($id_user)) {
-                $response->Success('User deleted');
-                return;
-            }
+        if($id_user && $this->user_model->deleteUser($id_user)) {
+            $response->Success('User deleted');
+            return;
         }
         $response->Error('User not deleted', $body);
     }
@@ -187,11 +185,9 @@ class UserController extends Controller {
             $response->Error('Not allowed to set this address', $body);
             return;
         }
-        if($body['address_name'] && $body['address_street'] && $body['address_city'] && $body['address_cap']) {
-            if($this->user_model->setAddress($body['address_name'], $body['address_street'], $body['address_city'], $body['address_cap'], $body['id_user'] ?? null)) {
-                $response->Success('Address added');
-                return;
-            }
+        if($body['address_name'] && $body['address_street'] && $body['address_city'] && $body['address_cap'] && $this->user_model->setAddress($body['address_name'], $body['address_street'], $body['address_city'], $body['address_cap'], $body['id_user'] ?? null)) {
+            $response->Success('Address added');
+            return;
         }
         $response->Error('Address not added', $body);
     }
@@ -208,11 +204,9 @@ class UserController extends Controller {
             $response->Error('Not allowed to delete this address', $body);
             return;
         }
-        if($body['id_address']) {
-            if ($this->user_model->deleteAddress($body['id_address'], $body['id_user'] ?? null)) {
-                $response->Success('Address deleted');
-                return;
-            }
+        if($body['id_address'] && $this->user_model->deleteAddress($body['id_address'], $body['id_user'] ?? null)) {
+            $response->Success('Address deleted');
+            return;
         }
         $response->Error('Address not deleted', $body);
     }
@@ -249,11 +243,9 @@ class UserController extends Controller {
             $response->Error('Not allowed to set this card', $body);
             return;
         }
-        if($body['card_number'] && $body['card_exp'] && $body['card_cvc']) {
-            if($this->user_model->setCard($body['card_number'], $body['card_exp'], $body['card_cvc'], $body['id_user'] ?? null)) {
-                $response->Success('Card added');
-                return;
-            }
+        if($body['card_number'] && $body['card_exp'] && $body['card_cvc'] && $this->user_model->setCard($body['card_number'], $body['card_exp'], $body['card_cvc'], $body['id_user'] ?? null)) {
+            $response->Success('Card added');
+            return;
         }
         $response->Error('Card not added', $body);
     }
@@ -270,11 +262,9 @@ class UserController extends Controller {
             $response->Error('Not allowed to delete this card', $body);
             return;
         }
-        if($body['id_card']) {
-            if ($this->user_model->deleteCard($body['id_card'], $body['id_user'] ?? null)) {
-                $response->Success('Card deleted');
-                return;
-            }
+        if($body['id_card'] && $this->user_model->deleteCard($body['id_card'], $body['id_user'] ?? null)) {
+            $response->Success('Card deleted');
+            return;
         }
         $response->Error('Card not deleted', $body);
     }

@@ -14,16 +14,11 @@ final class CartModel {
 
     /**
      * Get the cart of a specific user or the logged user.
-     * a super user can get any user's cart
      * 
      * @param int|null $id_user if null, the logged user
      * @return array the cart of the user, false if query failed.
      */
     public function getUserCart($id_user = null) {
-        if (!Session::haveAdminUserRights($id_user)) {
-            return [];
-        }
-
         // get the cart from the database.
         return Database::getInstance()->executeResults(
             "SELECT c.id_vinyl, c.quantity
@@ -41,10 +36,6 @@ final class CartModel {
      * @return bool true if the cart is purged, false otherwise.
      */
     public function purgeUserCart($id_user = null) {
-        if (!Session::haveAdminUserRights($id_user)) {
-            return false;
-        }
-
         return Database::getInstance()->executeQueryAffectRows(
             "DELETE FROM carts
                 WHERE id_user = ?",
@@ -56,7 +47,6 @@ final class CartModel {
 
     /**
      * Update the cart of a specific user or the logged user.
-     * a super user can update any user's cart
      * if the quantity is <= 0, the vinyl will be removed from the cart.
      *
      * @param int $id_vinyl
@@ -66,6 +56,7 @@ final class CartModel {
      * @return bool true if the cart is updated, false otherwise.
      */
     public function setUserCart($id_vinyl, $quantity, $id_user = null) {
+        // Maybe to delete, redundancy check.
         if (!Session::haveAdminUserRights($id_user)) {
             return false;
         }
@@ -105,7 +96,6 @@ final class CartModel {
 
     /**
      * Remove a vinyl from the cart of a specific user or the logged user.
-     * a super user can remove any user's vinyl from the cart.
      *
      * @param int $id_vinyl
      * @param int|null $id_user, if null, the logged user
@@ -113,10 +103,6 @@ final class CartModel {
      * @return bool true if the vinyl is removed, false otherwise.
      */
     public function removeUserCart($id_vinyl, $id_user = null) {
-        if (!Session::haveAdminUserRights($id_user)) {
-            return false;
-        }
-
         return Database::getInstance()->executeQueryAffectRows(
             "DELETE FROM carts
                 WHERE id_user = ? AND id_vinyl = ?",
@@ -145,12 +131,7 @@ final class CartModel {
      * @param int $quantity
      * @return bool true if the cart is set, false otherwise.
      */
-    public function setCart($id_vinyl, $quantity) {
-        // maybe check if the vinyl exists and can be shopped.
-        if (!($id_vinyl && $quantity)) {
-            return false;
-        }
-        
+    public function setCart($id_vinyl, $quantity) {        
         // Check if the vinyl is still available.
         $old_quantity = Session::getVinylFromCart($id_vinyl);
         if(isset($old_quantity['quantity'])) {
@@ -166,8 +147,7 @@ final class CartModel {
                 $this->setUserCart($id_vinyl, 0);
             }
         }
-
-        // sync the cart in the DB.
+        
         $this->syncCart();
         return true;
     } 

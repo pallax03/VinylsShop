@@ -26,7 +26,7 @@ class CartController extends Controller {
         $head = array('title' => 'Cart', 'style'=> array(''),
          'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
         
-        $data['user'] = $this->user_model->getUser(Session::getUser());
+        $data['user'] = $this->user_model->getUser();
         $data['cart'] = $this->cart_model->getCart();
         $data['total'] = Session::getTotal();
 
@@ -36,8 +36,8 @@ class CartController extends Controller {
     public function manage(Request $request, Response $response) {
         $body = $request->getBody();
         
-        if ($this->cart_model->setCart($body['id_vinyl'], $body['quantity'])) {
-            $response->Success('Cart updated', $body);
+        if($body['id_vinyl'] && $body['quantity'] && $this->cart_model->setCart($body['id_vinyl'], $body['quantity'])) {
+            $response->Success('Vinyl added to cart');
             return;
         }
         $response->Error('Cart not updated', $body);
@@ -69,11 +69,11 @@ class CartController extends Controller {
     }
 
     public function getTotal(Request $request, Response $response) {
-        $this->redirectUser();
-        $this->redirectIf(empty($this->cart_model->getCart()), '/cart');
-        
         $body = $request->getBody();
-        
+        if(!Session::isLogged() || empty(Session::getCart())) {
+            $response->Error('User not logged');
+            return;
+        }
         $total = $this->order_model->getOrderTotal($body['discount_code'] ?? null);
         $percentage = $this->order_model->checkDiscount($body['discount_code'] ?? null);
         $difference = Session::getTotal() * $percentage;
