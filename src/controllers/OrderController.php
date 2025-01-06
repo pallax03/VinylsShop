@@ -58,5 +58,33 @@ class OrderController extends Controller {
         $body = $request->getBody();
         $response->Success($this->order_model->getCoupons($body['id_coupon'] ?? null), $body);
     }
+
+    public function setCoupon(Request $request, Response $response) {
+        $body = $request->getBody();
+        if(Session::isSuperUser() && $body['discount_code'] && $body['percentage'] && $body['valid_from'] && $body['valid_until']) {
+            if($this->order_model->setCoupon($body['discount_code'], $body['percentage'], $body['valid_from'], $body['valid_until'], $body['id_coupon'] ?? null)) {
+                $response->Success('Coupon added / updated');
+                return;
+            }
+        } else {
+            $response->Error('You are not allowed to add a coupon, or the data is not correct');
+            return;
+        }
+        $response->Debug('Error', $body);
+    }
+
+    public function deleteCoupon(Request $request, Response $response) {
+        $body = $request->getBody();
+        if(Session::isSuperUser() && $body['id_coupon']) {
+            if($this->order_model->deleteCoupon($body['id_coupon'])) {
+                $response->Success('Coupon deleted');
+                return;
+            }
+        } else {
+            $response->Error('You are not allowed to delete a coupon, or the data is not correct');
+            return;
+        }
+        $response->Debug('Error', $body);
+    }
 }
 ?>

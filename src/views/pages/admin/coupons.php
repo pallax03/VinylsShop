@@ -19,8 +19,8 @@
             <input type="text" name="discount_code" id="input-discount_code">
         </li>
         <li>
-            <label for="coupon_discount">Percentage</label>
-            <input type="text" value="20%" name="coupon_discount" id="input-coupon_discount">
+            <label for="percentage">Percentage</label>
+            <input type="text" value="20%" name="percentage" id="input-percentage">
         </li>
         <li class="split">
             <label for="valid_from">From:</label>

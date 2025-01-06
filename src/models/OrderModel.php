@@ -302,4 +302,45 @@ final class OrderModel
         }
         return Database::getInstance()->executeResults("SELECT `id_coupon`, `discount_code`, `percentage`, `valid_from`, `valid_until` FROM `vinylsshop`.`coupons`; ");
     }
+
+    /**
+     * Set a coupon.
+     *
+     * @return bool
+     */
+    public function setCoupon($discount_code, $percentage, $valid_from, $valid_until, $id_coupon = null) {
+        if($id_coupon) {
+            return Database::getInstance()->executeQueryAffectRows(
+                "UPDATE `vinylsshop`.`coupons` SET `discount_code` = ?, `percentage` = ?, `valid_from` = ?, `valid_until` = ? WHERE `id_coupon` = ?;",
+                'ssssi',
+                $discount_code,
+                $percentage,
+                $valid_from,
+                $valid_until,
+                $id_coupon
+            );
+        }
+
+        return Database::getInstance()->executeQueryAffectRows(
+            "INSERT INTO `vinylsshop`.`coupons` (`discount_code`, `percentage`, `valid_from`, `valid_until`) VALUES (?, ?, ?, ?);",
+            'ssss',
+            $discount_code,
+            $percentage,
+            $valid_from,
+            $valid_until
+        );
+    }
+
+    /**
+     * Delete a coupon.
+     *
+     * @return bool
+     */
+    public function deleteCoupon($id_coupon) {
+        return Database::getInstance()->executeQueryAffectRows(
+            "DELETE FROM `vinylsshop`.`coupons` WHERE `id_coupon` = ?;",
+            'i',
+            $id_coupon
+        );
+    }
 }
