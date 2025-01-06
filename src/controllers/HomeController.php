@@ -109,16 +109,17 @@ class HomeController extends Controller {
             ['vinyls' => $this->vinyls_model->getVinyls(0, [])]);
         
     }
+    
+    public function dashboardShoppings() {
+        $this->redirectNotSuperUser();
+        $this->render('admin/shoppings', ['title' => 'Manage Shoppings'],
+            ['coupons' => $this->order_model->getCoupons()]);
+    }
 
     public function dashboardAlbums(Request $request, Response $response) {
         $this->redirectNotSuperUser();
         $this->render('admin/albums', ['title' => 'Manage Albums'], 
             ['albums' => $this->vinyls_model->getAlbums($request->getBody())]);
-    }
-
-    public function dashboardShipping() {
-        $this->redirectNotSuperUser();
-        $this->render('admin/shipping', ['title' => 'Manage Shipping']);
     }
 
     public function dashboardUsers() {
@@ -127,11 +128,6 @@ class HomeController extends Controller {
             ['users' => $this->user_model->getUsers()]);
     }
     
-    public function dashboardCoupons() {
-        $this->redirectNotSuperUser();
-        $this->render('admin/coupons', ['title' => 'Manage Coupons'],
-            ['coupons' => $this->order_model->getCoupons()]);
-    }
 
     public function reset() {
         Session::destroy();

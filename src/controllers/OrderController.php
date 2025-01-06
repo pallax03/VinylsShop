@@ -76,7 +76,7 @@ class OrderController extends Controller {
      *
      * @return json
      */
-    public function updateShipping(Request $request, Response $response) {
+    public function setShipping(Request $request, Response $response) {
         $body = $request->getBody(); 
         if(!Session::isSuperUser()) {
             $response->Error('You are not allowed to update shipping info');

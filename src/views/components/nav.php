@@ -57,15 +57,9 @@
                 </a>
             </li>
             <li>
-                <a href="/dashboard/shipping">
-                    <i class="bi bi-truck"></i>
-                    <p>Shipping</p>
-                </a>
-            </li>
-            <li>
-                <a href="/dashboard/coupons">
-                    <i class="bi bi-percent"></i>
-                    <p>Coupons</p>
+                <a href="/dashboard/shoppings">
+                    <i class="bi bi-sliders"></i>
+                    <p>Shoppings</p>
                 </a>
             </li>
             <li>

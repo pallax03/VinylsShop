@@ -32,17 +32,15 @@
     // # 🏠 [Dashboard] -> Auth.
     $router->get('/dashboard', [HomeController::class, 'dashboard']);
     $router->get('/dashboard/albums', [HomeController::class, 'dashboardAlbums']);
-    $router->get('/dashboard/shipping', [HomeController::class, 'dashboardShipping']);
+    $router->get('/dashboard/shoppings', [HomeController::class, 'dashboardShoppings']);
     $router->get('/dashboard/users', [HomeController::class, 'dashboardUsers']);
-    $router->get('/dashboard/coupons', [HomeController::class, 'dashboardCoupons']);
 
 
 // 📀: --- VinylController.php --- (models: Vinyl (Artist - Track) - Cart)
     // # 🏠 [Vinyl] ~ page of the specific vinyl '?id_vinyl=' -> Vinyl (Artist - Track)
     $router->get('/vinyl', [VinylController::class, 'index']);
-    $router->get('/vinyls/table', [VinylController::class, 'getVinylsComponent']);
     // # 🍽️ [AddVinyl] ~ add or update a vinyl -> Auth - Vinyl - Artist - Track.
-    $router->post('/vinyl', [VinylController::class, 'addVinyl']);
+    $router->post('/vinyl', [VinylController::class, 'setVinyl']);
     // # 🍽️ [DeleteVinyl] ~ -> Auth - Vinyl - Artist - Track.
     $router->delete('/vinyl', [VinylController::class, 'deleteVinyl']);
 
@@ -99,7 +97,7 @@
     // # 🍽️ [Orders] ~ list of all the orders -> Auth - User - Order - Shipping - Vinyl
     $router->get('/orders', [OrderController::class, 'getOrders']);
     // # 🍽️ [Shippings] ~ update shipping info -> Auth - Shipping
-    $router->post('/shipping', [OrderController::class, 'updateShipping']);
+    $router->post('/shipping', [OrderController::class, 'setShipping']);
     // # 🍽️ [Coupons] ~ list of all the coupons -> Coupons
     $router->get('/coupons', [OrderController::class, 'getCoupons']);
 

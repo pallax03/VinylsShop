@@ -1,6 +1,7 @@
-<div class="coupon card" id="card-coupon_<?php echo $coupon['id_coupon']?>">
+<div class="coupon card" id="card-coupon_<?php echo $coupon['id_coupon']?>" 
+    data-id="<?php echo $coupon['id_coupon']?>" data-discount_code="<?php echo $coupon['discount_code']?>" data-percentage="<?php echo $coupon['percentage'] * 100?>" data-valid_from="<?php echo $coupon['valid_from']?>" data-valid_until="<?php echo $coupon['valid_until']?>" > 
     <header>
-        <a onclick="updateCoupon(<?php echo $coupon['id_coupon']?>)">
+        <a onclick="loadCoupon(<?php echo $coupon['id_coupon']?>)">
             <i class="bi bi-pencil-fill"></i>
         </a>
     </header>
