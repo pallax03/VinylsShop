@@ -22,6 +22,7 @@ final class VinylController extends Controller {
 
     function addVinyl(Request $request, Response $response) {
         $body = $request->getBody();
+        
         if ($this->vinyl_model->addVinyl($body['cost'], $body['rpm'], $body['inch'], $body['type'], $body['stock'], $body['album'], $body['artist'], $body['id_vinyl'] ?? null)) {
             $response->Success('Vinyl added', $body);
             return;

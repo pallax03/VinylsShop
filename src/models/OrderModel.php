@@ -19,17 +19,11 @@ final class OrderModel
 
     /**
      * Get all orders of a user
-     * An admin can get any user orders
-     * A user can only get his own orders
      *
      * @param int $id_user, if null, return the logged user
      * @return array of orders
      */
     public function getOrders($id_user = null) {
-        if (!Session::haveAdminUserRights($id_user)) {
-            return [];
-        }
-
         $orders = Database::getInstance()->executeResults(
             "SELECT o.id_order,
                     o.order_date,
@@ -75,18 +69,12 @@ final class OrderModel
 
     /**
      * Get a specific order by id
-     * A user can only get his own orders
-     * An admin can get any order
      *
      * @param int|null $id_user, if null, return the logged user
      * @param int|null $id_order, if null, return the last order
      * @return array of order
      */
     public function getOrder($id_order=null, $id_user=null) {
-        if (!Session::haveAdminUserRights($id_user)) {
-            return [];
-        }
-
         if ($id_order === null) {
             $id_order = Database::getInstance()->executeResults(
                 "SELECT id_order FROM `vinylsshop`.`orders` WHERE id_user = ? ORDER BY order_date DESC LIMIT 1;",
