@@ -844,7 +844,7 @@ main {
     right: 0;
     @media (min-width: $breakpoint) {
         top: 19%;
-        right: 25%;
+        right: 33.33%;
         width: 33.33%;
     }
     z-index: 99;
@@ -861,6 +861,7 @@ main {
 .notification {
     background-color: var(--background-color);
     border-radius: var(--border-radius);
+    border: 3px solid var(--border-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-size: 1rem;
     padding: 10px;
@@ -872,6 +873,7 @@ main {
         color: var(--text-color);
     }
     .icon {
+        margin-right: 20px;
         vertical-align: middle;
         display: inline;
         width: 30px;

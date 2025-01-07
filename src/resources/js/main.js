@@ -93,8 +93,8 @@ function createNotification(message, status) {
     const img = document.createElement("img");
     img.classList.add("icon");
     img.src = "/resources/img/icons/" + (status ? "tick" : "error") + ".png";
-    div.appendChild(p);
     div.appendChild(img);
+    div.appendChild(p);
     modal.appendChild(div);
     modal.classList.add("modal-in");
     
