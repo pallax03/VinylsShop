@@ -43,8 +43,8 @@
             <p>
                 -
                 <?php 
-                    $total += $order['shipment_cost'];
-                    echo round($total * $order['discount_percentage'], 2);
+                    $vinyl_total += $order['shipment_cost'];
+                    echo round($vinyl_total * $order['discount_percentage'], 2);
                 ?>
                 €
             </p>

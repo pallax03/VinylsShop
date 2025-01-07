@@ -15,7 +15,7 @@ function isTextInput(node) {
     return ['INPUT', 'TEXTAREA'].indexOf(node.nodeName) !== -1;
 }
 
-document.addEventListener('touchstart', function(e) {
+document.addEventListener('touchstart', function (e) {
     if (!isTextInput(e.target) && isTextInput(document.activeElement)) {
         document.activeElement.blur();
     }
@@ -37,7 +37,7 @@ document.querySelector('#btn-darkmode').addEventListener('click', function (e) {
 });
 
 function checkDarkmode() {
-    return window.getComputedStyle(document.querySelector('body') ,null).getPropertyValue('--background-color') !== '#fff' ? 1 : 0;
+    return window.getComputedStyle(document.querySelector('body'), null).getPropertyValue('--background-color') !== '#fff' ? 1 : 0;
 }
 function setDarkmode() {
     if (!checkDarkmode()) {
@@ -65,16 +65,16 @@ function redirect(url) {
 }
 
 
-function defaultParse(value) { 
+function defaultParse(value) {
     return value == '' || value == null;
 }
 
 function validateData(...args) {
     let valid = true;
-    
+
     args.forEach(function (arg) {
         arg.classList.remove('error');
-        if (arg.parse==null || arg.parse == '' ? defaultParse(arg.value) : !arg.value.match(arg.parse)) {
+        if (arg.parse == null || arg.parse == '' ? defaultParse(arg.value) : !arg.value.match(arg.parse)) {
             valid = false;
             arg.classList.add('error');
         }
@@ -83,22 +83,23 @@ function validateData(...args) {
 }
 
 function addToCart(id, quantity) {
-    fetch('/cart', { 
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id_vinyl: id, quantity: quantity})
-        })
-        .then(response => response.json())
-        .then(data => {
-            try {
-                getCart();
-            } catch (error) {
-            }
+    fetch('/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_vinyl: id, quantity: quantity })
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    );
+        return response.json();
+    }).then((data) => {
+        getCart();
+    }).catch((error) => {
+        // TODO NOTIFICATIONS
+    });
 }
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
         const activeElement = document.activeElement;
         if (activeElement && activeElement.tagName === 'INPUT' && activeElement.type !== 'submit') {
@@ -113,7 +114,7 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-window.onload = function() {
+window.onload = function () {
     updateDarkmodeButton();
 }
 

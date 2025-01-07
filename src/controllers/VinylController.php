@@ -22,44 +22,28 @@ final class VinylController extends Controller {
 
     function addVinyl(Request $request, Response $response) {
         $body = $request->getBody();
-        if ($this->vinyl_model->addVinyl($body['cost'], $body['rpm'], $body['inch'], $body['type'], $body['stock'], $body['album'], $body['artist'], $body['id_vinyl'] ?? null)) {
-            $response->Success('Vinyl added', $body);
+        if(!Session::isSuperUser()) {
+            $response->Error('Not allowed to add vinyls', $body);
             return;
         }
-        $response->Error('Error adding vinyl', $body);
+        if ($this->vinyl_model->addVinyl($body['cost'], $body['rpm'], $body['inch'], $body['type'], $body['stock'], $body['album'], $body['artist'], $body['id_vinyl'] ?? null)) {
+            $response->Success('Vinyl added / updated', $body);
+            return;
+        }
+        $response->Error('Vinyl not added / updated', $body);
     }
 
     function deleteVinyl(Request $request, Response $response) {
         $body = $request->getBody();
-        if ($this->vinyl_model->deleteVinyl($body['id_vinyl'])) {
+        if(!Session::isSuperUser()) {
+            $response->Error('Not allowed to delete vinyls', $body);
+            return;
+        }
+        if ($body['id_vinyl'] && $this->vinyl_model->deleteVinyl($body['id_vinyl'])) {
             $response->Success('Vinyl deleted', $body);
             return;
         }
-        $response->Error('Error deleting vinyl', $body);
+        $response->Error('Vinyl not deleted', $body);
     }
-
-    function updateVinyl(Request $request, Response $response) {
-        $body = $request->getBody();
-        if ($this->vinyl_model->updateVinyl($body['id_vinyl'], $body['cost'], $body['rpm'], $body['inch'], $body['type'], $body['stock'], $body['album'], $body['artist'])) {
-            $response->Success('Vinyl updated', $body);
-            return;
-        }
-        $response->Error('Error updating vinyl', $body);
-    }
-
-    function getAlbums(Request $request, Response $response) {
-        $response->Success('Albums fetched', $this->vinyl_model->getAlbums($body['id_artist'] ?? null));
-    }
-
-    function updateAlbum(Request $request, Response $response) {
-        // $body = $request->getBody();
-        // if ($this->vinyl_model->updateAlbum($body['id_album'], $body['album'], $body['tracks'])) {
-        //     $response->Success('Album updated', $body);
-        // } else {
-        //     $response->Error('Error updating album', $body);
-        // }
-        $response->Error('Not implemented');
-    }
-    
 }
 

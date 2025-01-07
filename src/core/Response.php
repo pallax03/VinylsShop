@@ -24,10 +24,13 @@ class Response
         ]);
     }
 
-    public function Debug($message) {
+    public function Debug($message, $body=null) {
         $this->statusCode(500);
-        $this->json(['error' => $message]);
-        exit();
+        $this->json([
+            'error' => $message, 
+            'logged' => Session::isLogged() ? 'logged as '. Session::getUser() : 'not logged',
+            'params' => $body
+        ]);
     }
 
     public function statusCode(int $code) {

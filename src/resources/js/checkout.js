@@ -18,6 +18,7 @@ function getTotal() {
         data = data.message;
         updateTotal(data.total, data.difference, data.percentage);
     }).catch((error) => {
+        // TODO 
         console.error('Error:', error);
     });
 }

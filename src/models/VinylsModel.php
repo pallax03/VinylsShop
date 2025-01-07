@@ -376,7 +376,6 @@ final class VinylsModel {
      * @return bool true if the vinyl was added, false otherwise
      */
     public function addVinyl($cost, $rpm, $inch, $type, $stock, $album, $artist, $id_vinyl = null) {
-
         // check if the album already exists if not add it to the database
         if(is_array($album) && !$this->checkAlbum($album["id_album"])) {
             $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["cover"], $artist);

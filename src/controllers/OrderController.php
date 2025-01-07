@@ -24,39 +24,113 @@ class OrderController extends Controller {
         $body = $request->getBody();
         $title = $data['title'] ?? 'Order Info';
         $head = array('title' => $title);
-
         $data['order'] = $this->order_model->getOrder($body['id_order'] ?? null);
 
         $this->render('ecommerce/order', $head, $data);
     }
 
+    /**
+     * Get all orders, an admin can get any user orders
+     * A user can only get his own orders
+     *
+     * @return json
+     */
     public function getOrders(Request $request, Response $response) {
-        $this->auth_model->checkAuth();
         $body = $request->getBody();
         
+        if (!Session::haveAdminUserRights($body['id_user'] ?? null)) {
+            $response->Error('You are not allowed to see those orders', $body);
+            return;
+        }
         $data = $this->order_model->getOrders($body['id_user'] ?? null);
         if (!empty($data)) { 
             $response->Success($data);
             return;
         }
-        $response->Error('User not found or not allowed to see those orders ' , $body);
+        $response->Error('User not found' , $body);
     }
 
-    public function updateShipping(Request $request, Response $response) {
+    /**
+     * Get a single order, a user can only get his own orders
+     * An admin can get any order
+     *
+     * @return json
+     */
+    public function getOrder(Request $request, Response $response) {
+        $body = $request->getBody();
+        if (!Session::haveAdminUserRights($body['id_user'] ?? null)) {
+            $response->Error('You are not allowed to see this order', $body);
+            return;
+        }
+        $data = $this->order_model->getOrder($body['id_order'] ?? null, $body['id_user'] ?? null);
+        if (!empty($data)) { 
+            $response->Success($data);
+            return;
+        }
+        $response->Error('Order not found' , $body);
+
+    }
+
+    /**
+     * Add an order, only a user can add an order
+     *
+     * @return json
+     */
+    public function setShipping(Request $request, Response $response) {
         $body = $request->getBody(); 
-        if(Session::isSuperUser() && $body['shipping_courier'] && $body['shipping_cost'] && $body['shipping_goal']) {
+        if(!Session::isSuperUser()) {
+            $response->Error('You are not allowed to update shipping info');
+            return;
+        }
+        if($body['shipping_courier'] && $body['shipping_cost'] && $body['shipping_goal']) {
             LoadEnv::set('SHIPPING_COURIER', $body['shipping_courier']);
             LoadEnv::set('SHIPPING_COST', $body['shipping_cost']);
             LoadEnv::set('SHIPPING_GOAL', $body['shipping_goal']);
             $response->Success('Shipping info updated');
             return;
         }
-        $response->Error('You are not allowed to set the shipping info, or the data is not correct', $body);
+        $response->Error('Shipping info not correct', $body);
     }
 
     public function getCoupons(Request $request, Response $response) {
         $body = $request->getBody();
-        $response->Success($this->order_model->getCoupons($body['id_coupon'] ?? null), $body);
+        $result = $this->order_model->getCoupons($body['id_coupon'] ?? null);
+        if (!empty($result)) {
+            $response->Success($result);
+            return;
+        }
+        
+        $response->Error('No coupons found');
+    }
+
+    public function setCoupon(Request $request, Response $response) {
+        $body = $request->getBody();
+        if(!Session::isSuperUser()) {
+            $response->Error('You are not allowed to add a coupon');
+            return;
+        }
+        if($body['discount_code'] && $body['percentage'] && $body['valid_from'] && $body['valid_until']) {
+            if($this->order_model->setCoupon($body['discount_code'], $body['percentage'], $body['valid_from'], $body['valid_until'], $body['id_coupon'] ?? null)) {
+                $response->Success('Coupon added / updated');
+                return;
+            }
+        }
+        $response->Error('Coupon not added', $body);
+    }
+
+    public function deleteCoupon(Request $request, Response $response) {
+        $body = $request->getBody();
+        if(Session::isSuperUser()) {
+            $response->Error('You are not allowed to delete a coupon');
+            return;
+        }
+        if($body['id_coupon']) {
+            if($this->order_model->deleteCoupon($body['id_coupon'])) {
+                $response->Success('Coupon deleted');
+                return;
+            }
+        }
+        $response->Error('Coupon not deleted', $body);
     }
 }
 ?>
