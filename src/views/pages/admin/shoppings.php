@@ -46,9 +46,9 @@
                 include COMPONENTS . '/cards/coupon.php';
             }
         ?>
-    <? else: ?>
+    <?php else: ?>
         <h1>No coupons found!</h1>
-    <? endif; ?>
+    <?php endif; ?>
 </section>
 <div class="div"></div>
 <form action="/coupon" id="form-coupon" method="post">

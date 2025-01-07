@@ -106,8 +106,7 @@ class HomeController extends Controller {
     public function dashboard() {
         $this->redirectNotSuperUser();
         $this->render('admin/vinyls', ['title' => 'Manage Vinyls'],
-            ['vinyls' => $this->vinyls_model->getVinyls(-1 , [])]);
-        
+            ['vinyls' => $this->vinyls_model->getAllVinyls()]);
     }
     
     public function dashboardShoppings() {

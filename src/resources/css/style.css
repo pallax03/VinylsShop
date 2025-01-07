@@ -1665,3 +1665,25 @@ main section p, main form p {
 .fade-out {
   animation: fadeOut 0.3s ease-in-out forwards;
 }
+
+.admin-vinyls-header {
+  font-size: 3rem;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+tbody td {
+  text-align: center;
+  background-color: var(--background-color);
+}
+tbody .add {
+  align-self: center;
+  display: block;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  width: 90%;
+}

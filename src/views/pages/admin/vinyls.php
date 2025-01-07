@@ -8,31 +8,36 @@
             <th scope="col">Inch</th>
             <th scope="col">Rpm</th>
             <th scope="col">Cost</th>
+            <th scope="col">Edit</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td colspan="6">
-                <a id="add" href="/dashboard/add/user" aria-label="Add a new vinyl">
+            <td colspan="7">
+                <a id="add" class="add" href="/dashboard/add/user" aria-label="Add a new vinyl">
                     <span aria-hidden="true">+</span>
                 </a>
             </td>
         </tr>
-        <tr>
-            <td>
-                <button class="delete" onclick="deleteUser()" aria-label="Delete vinyl">
-                    <span aria-hidden="true">x</span>
-                </button>
-            </td>
-            <td>mail@example.com</td>
-            <td>$100.00</td>
-            <td>Card ending in 1234</td>
-            <td>123 Main St</td>
-            <td>
-                <a class="edit" aria-label="Edit vinyl details">
-                    <span aria-hidden="true"><i class="bi bi-pencil"></i></span>
-                </a>
-            </td>
-        </tr>
+        <?php foreach($data["vinyls"] as $vinyl):
+            echo ('<tr class="vinyl-record">
+                <td>
+                    <button class="delete" onclick="deleteUser()" aria-label="Delete vinyl">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </td>
+                <td>' . $vinyl["title"] . '</td>
+                <td>' . $vinyl["type"] . '</td>
+                <td>' . $vinyl["inch"] . '</td>
+                <td>' . $vinyl["rpm"] . '</td>
+                <td>€' . $vinyl["cost"] . '</td>
+                <td>
+                    <a class="edit" aria-label="Edit vinyl details">
+                        <span aria-hidden="true"><i class="bi bi-pencil"></i></span>
+                    </a>
+                </td>
+            </td>');
+        endforeach;
+        ?>
     </tbody>
 </table>

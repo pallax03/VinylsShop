@@ -61,6 +61,19 @@ final class VinylsModel {
         return $result;
     }
 
+    public function getAllVinyls() {
+        $vinyls = "SELECT
+            v.id_vinyl,
+            a.title,
+            v.type,
+            v.inch,
+            v.rpm,
+            v.cost
+            FROM vinyls v , albums a
+            WHERE v.id_album=a.id_album";
+        return $this->db->executeResults($vinyls);
+    }
+
     /**
      * Gets the full of a single vinyl (vinyl page)
      * from a given id.
