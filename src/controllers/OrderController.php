@@ -120,7 +120,7 @@ class OrderController extends Controller {
 
     public function deleteCoupon(Request $request, Response $response) {
         $body = $request->getBody();
-        if(Session::isSuperUser()) {
+        if(!Session::isSuperUser()) {
             $response->Error('You are not allowed to delete a coupon');
             return;
         }

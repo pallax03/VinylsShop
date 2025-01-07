@@ -35,8 +35,12 @@ class CartController extends Controller {
 
     public function manage(Request $request, Response $response) {
         $body = $request->getBody();
-        
+        $old_quantity = Session::getVinylFromCart($body['id_vinyl']);
         if($body['id_vinyl'] && $body['quantity'] && $this->cart_model->setCart($body['id_vinyl'], $body['quantity'])) {
+            if($old_quantity === Session::getVinylFromCart($body['id_vinyl'])) {
+                $response->Error('Vinyl cannot be added');
+                return;
+            }
             $response->Success('Vinyl added to cart');
             return;
         }

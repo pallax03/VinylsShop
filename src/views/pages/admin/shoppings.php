@@ -70,12 +70,21 @@
                 <label for="input-valid_until">Until:</label>
                 <input type="date" name="valid_until" id="input-valid_until" value="<?php echo date('Y-m-d', strtotime('+1 month')); ?>" aria-required="true" />
             </li>
-            <li>
-                <div class="large button">
+            <li id="li-form_reset" class="split">
+                <div class="button">
+                    <i class="bi bi-x"></i>
+                    <button class="close" type="button" id="btn-coupon_reset" aria-label="Reset Form">Reset</button>
+                </div>
+            </li>
+            <li class="split">
+                <div class="button">
                     <i class="bi bi-percent"></i>
-                    <button type="submit" id="btn-coupon_submit" aria-label="Add Coupon">Add Coupon</button>
+                    <button type="button" id="btn-coupon_submit" aria-label="Add Coupon">Add</button>
                 </div>
             </li>
         </ul>
+        <div class="callout">
+            <p>If edit pressed , and want to add press reset!</p>
+        </div>
     </form>
 <script src="/resources/js/coupon.js"></script>
