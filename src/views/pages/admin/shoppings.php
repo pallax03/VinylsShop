@@ -84,7 +84,7 @@
             </li>
         </ul>
         <div class="callout">
-            <p>If edit pressed , and want to add press reset!</p>
+            <p>If edit pressed, and want to add press reset!</p>
         </div>
     </form>
 <script src="/resources/js/coupon.js"></script>
