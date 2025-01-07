@@ -1545,19 +1545,58 @@ main section p, main form p {
   margin: 0.8rem;
 }
 
+@keyframes in {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+@keyframes out {
+  from {
+    top: 90%; /* Parte fuori dalla finestra */
+  }
+  to {
+    top: 200%; /* Si ferma a 100px dall'alto */
+  }
+}
+@keyframes desktop-out {
+  from {
+    top: 19%; /* Parte fuori dalla finestra */
+  }
+  to {
+    top: -200%; /* Si ferma a 100px dall'alto */
+  }
+}
+.modal-in {
+  animation: in 0.5s ease forwards;
+}
+
 .modal {
+  opacity: 0%;
+  top: 90%;
   width: 100%;
   height: 50px;
   position: fixed;
-  top: 85%;
   right: 0;
   z-index: 99;
 }
 @media (min-width: 1080px) {
   .modal {
     top: 19%;
-    right: 0;
+    right: 25%;
     width: 50%;
+  }
+}
+
+.modal-out {
+  opacity: 100%;
+  animation: out 1s ease forwards;
+}
+@media (min-width: 1080px) {
+  .modal-out {
+    animation: desktop-out 1s ease forwards;
   }
 }
 
@@ -1568,6 +1607,7 @@ main section p, main form p {
   font-size: 1rem;
   padding: 10px;
   text-align: center;
+  margin-bottom: 10px;
 }
 .notification .message {
   vertical-align: middle;
@@ -1578,4 +1618,16 @@ main section p, main form p {
   vertical-align: middle;
   display: inline;
   width: 30px;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.fade-out {
+  animation: fadeOut 0.3s ease-in-out forwards;
 }

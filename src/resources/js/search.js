@@ -24,6 +24,8 @@ document.querySelector('.close-search').addEventListener('click', function (e) {
     });
 });
 
+// variable to handle notification timeout overlapping
+let timeout;
 // Funzione per aggiornare i risultati nel DOM
 function updateResults(results) {
     const resultsList = document.getElementById('sec-search_content');
@@ -69,6 +71,7 @@ function updateResults(results) {
                             // Recuperare il template appena aggiunto
                             const notify_template = document.getElementById("notification-card");
                             const notify_clone = notify_template.content.cloneNode(true);
+                            const div = notify_clone.querySelector(".notification");
                             if (addToCart(result.id_vinyl, 1)) {
                                 notify_clone.querySelector(".message").textContent = "Succesfully added to cart!";
                                 notify_clone.querySelector(".icon").src = "/resources/img/icons/tick.png";
@@ -77,9 +80,19 @@ function updateResults(results) {
                                 notify_clone.querySelector(".icon").src = "/resources/img/icons/error.png";
                             }
                             modal.appendChild(notify_clone);
-                            setTimeout(() => {
-                                modal.innerHTML = "";
-                              }, 2000);
+                            modal.classList.add("modal-in");
+                            if (!timeout) {
+                                timeout = true;
+                                setTimeout(() => {
+                                    modal.classList.add("modal-out");
+                                    modal.classList.remove("modal-in");
+                                    setTimeout(() => {
+                                        modal.innerHTML = "";
+                                        modal.classList.remove("modal-out");
+                                        timeout = false;
+                                    }, 1000);
+                                }, 2000);
+                            }
                         });
                 };
                 resultsList.appendChild(clone);
