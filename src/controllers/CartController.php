@@ -41,7 +41,7 @@ class CartController extends Controller {
                 $response->Error('Vinyl cannot be added');
                 return;
             }
-            $response->Success('Vinyl added to cart');
+            $response->Success('Cart updated');
             return;
         }
         $response->Error('Cart not updated', $body);

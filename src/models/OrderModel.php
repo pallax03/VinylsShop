@@ -283,12 +283,13 @@ final class OrderModel
             return Database::getInstance()->executeResults(
                 "SELECT `id_coupon`, `discount_code`, `percentage`, `valid_from`, `valid_until`
                     FROM `vinylsshop`.`coupons`
-                    WHERE `id_coupon` = ?;",
+                    WHERE CURDATE() BETWEEN `valid_from` AND `valid_until`
+                    AND `id_coupon` = ?;",
                 'i',
                 $id_coupon
             )[0];
         }
-        return Database::getInstance()->executeResults("SELECT `id_coupon`, `discount_code`, `percentage`, `valid_from`, `valid_until` FROM `vinylsshop`.`coupons`; ");
+        return Database::getInstance()->executeResults("SELECT `id_coupon`, `discount_code`, `percentage`, `valid_from`, `valid_until` FROM `vinylsshop`.`coupons` WHERE CURDATE() BETWEEN `valid_from` AND `valid_until`;");
     }
 
     /**
@@ -297,6 +298,12 @@ final class OrderModel
      * @return bool
      */
     public function setCoupon($discount_code, $percentage, $valid_from, $valid_until, $id_coupon = null) {
+        if ($percentage > 0 && $percentage <= 100) {
+            $percentage = $percentage / 100;
+        } else {
+            return false;
+        }
+
         if($id_coupon) {
             return Database::getInstance()->executeQueryAffectRows(
                 "UPDATE `vinylsshop`.`coupons` SET `discount_code` = ?, `percentage` = ?, `valid_from` = ?, `valid_until` = ? WHERE `id_coupon` = ?;",
@@ -320,15 +327,25 @@ final class OrderModel
     }
 
     /**
-     * Delete a coupon.
+     * Delete a coupon, if cannot be deleted, it will be expired.
      *
      * @return bool
      */
     public function deleteCoupon($id_coupon) {
-        return Database::getInstance()->executeQueryAffectRows(
+        Database::getInstance()->setHandler(null); // reset the handler to avoid the error
+        $result = Database::getInstance()->executeQueryAffectRows(
             "DELETE FROM `vinylsshop`.`coupons` WHERE `id_coupon` = ?;",
             'i',
             $id_coupon
         );
+    
+        if(!$result) {
+            $result = Database::getInstance()->executeQueryAffectRows(
+                "UPDATE `vinylsshop`.`coupons` SET `valid_until` = CURDATE() - 1 WHERE `id_coupon` = ?;",
+                'i',
+                $id_coupon
+            );
+        }
+        return $result;
     }
 }

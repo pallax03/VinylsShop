@@ -111,7 +111,7 @@ class OrderController extends Controller {
         }
         if($body['discount_code'] && $body['percentage'] && $body['valid_from'] && $body['valid_until']) {
             if($this->order_model->setCoupon($body['discount_code'], $body['percentage'], $body['valid_from'], $body['valid_until'], $body['id_coupon'] ?? null)) {
-                $response->Success('Coupon added / updated');
+                $response->Success('Coupon' . ($body['id_coupon'] ? ' updated' : ' added'));
                 return;
             }
         }

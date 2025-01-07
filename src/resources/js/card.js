@@ -16,20 +16,13 @@ function setDefaultCard(id= '') {
 }
 
 function deleteCard(id) {
-    fetch('/user/card?id_card=' + id, {
+    makeRequest(fetch('/user/card?id_card=' + id, {
         method: 'DELETE',
         headers: {}
-    }).then((response) => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    }).then((data) => {
+    })).then((data) => {
         window.location.reload();
     }).catch((error) => {
-        // TODO NOTIFICATIONS
-        console.error('Error fetching address details:', error);
-        alert('Error fetching address details.');
+        createNotification(error, false);
     });
 }
 
@@ -50,7 +43,7 @@ document.getElementById('btn-card_submit').addEventListener('click', function() 
     card_cvc = document.getElementById('input-card_cvc');
     card_cvc.parse = /^\d{3}$/;
     if(validateData(card_number, card_expiry, card_cvc)) {
-        fetch('/user/card', {
+        makeRequest(fetch('/user/card', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,17 +53,10 @@ document.getElementById('btn-card_submit').addEventListener('click', function() 
                 card_exp: card_expiry.value,
                 card_cvc: card_cvc.value
             })
-        }).then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        }).then((data) => {
-            console.log(data);
+        })).then((data) => {
             window.location.reload();
         }).catch((error) => {
-            // TODO NOTIFICATIONS
-            console.error('Error:', error);
+            createNotification(error, false);
         });
     }
 });

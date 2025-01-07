@@ -7,19 +7,12 @@ function updateTotal(total, difference, percentage) {
 
 function getTotal() {
     discount_code = document.getElementById('input-discount_code').value;
-    fetch('/checkout/total?discount_code=' + discount_code, {
+    makeRequest(fetch('/checkout/total?discount_code=' + discount_code, {
       method: 'GET',
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    }).then(data => {
-        data = data.message;
+    })).then(data => {
         updateTotal(data.total, data.difference, data.percentage);
     }).catch((error) => {
-        // TODO 
-        console.error('Error:', error);
+        window.location.reload();
     });
 }
 

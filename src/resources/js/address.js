@@ -1,6 +1,5 @@
-
 function setDefaultAddress(id = '') {
-    fetch('/user/defaults', {
+    makeRequest(fetch('/user/defaults', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -8,37 +7,21 @@ function setDefaultAddress(id = '') {
         body: JSON.stringify({
             id_address: id
         })
-    }).then((response) => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    }).then((data) => {
-        console.log(data);
+    })).then((data) => {
         window.location.reload();
     }).catch((error) => {
-        // TODO NOTIFICATIONS
-        console.error('Error fetching address details:', error);
-        alert('Error fetching address details.');
+        createNotification(error, false);
     });
 }
 
 function deleteAddress(id) {
-    fetch('/user/address?id_address=' + id, {
+    makeRequest(fetch('/user/address?id_address=' + id, {
         method: 'DELETE',
         headers: {}
-    }).then((response) => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    }).then((data) => {
-        console.log(data);
+    })).then((data) => {
         window.location.reload();
     }).catch((error) => {
-        // TODO NOTIFICATIONS
-        console.error('Error fetching address details:', error);
-        alert('Error fetching address details.');
+        createNotification(error, false);
     });
 }
 
@@ -76,14 +59,14 @@ function deleteAddress(id) {
 //         });
 // }
 
-document.getElementById('btn-address_submit').addEventListener('click', function() {
+document.getElementById('btn-address_submit').addEventListener('click', function () {
     address_name = document.getElementById('input-address_name');
     street_and_number = document.getElementById('input-address_street');
     city = document.getElementById('input-address_city');
     cap = document.getElementById('input-address_cap');
     cap.parse = /^\d{5}$/;
-    if(validateData(address_name, street_and_number, city, cap)) {
-        fetch('/user/address', {
+    if (validateData(address_name, street_and_number, city, cap)) {
+        makeRequest(fetch('/user/address', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -94,18 +77,10 @@ document.getElementById('btn-address_submit').addEventListener('click', function
                 address_city: city.value,
                 address_cap: cap.value
             })
-        }).then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        }).then((data) => {
-            console.log(data);
+        })).then((data) => {
             window.location.reload();
         }).catch((error) => {
-            // TODO NOTIFICATIONS
-            console.error('Error fetching address details:', error);
-            alert('Error fetching address details.');
+            createNotification(error, false);
         });
     }
 });

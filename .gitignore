@@ -4,6 +4,5 @@
 
 # Project files
 /**/*.map
-/**/*.css
-# /**/.*.env
+/src/resources/css//style.css
 /**/.env
