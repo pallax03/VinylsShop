@@ -37,9 +37,11 @@
             }
         ?>
     </main>
-
     <section id="sec-search_content" class="search-content" aria-hidden="true">
     </section>
+    <aside id="aside-user_notifications">
+        <!-- Notifications will be dynamically inserted here -->
+    </aside>
     
     <?php include COMPONENTS . '/footer.php' ?>
 

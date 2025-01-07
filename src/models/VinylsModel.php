@@ -3,8 +3,32 @@ final class VinylsModel {
 
     private $db = null;
 
+    private $notifications_model = null;
+
     public function __construct() {
         $this->db = Database::getInstance();
+        require_once MODELS . 'NotificationModel.php';
+        $this->notifications_model = new NotificationModel();
+    }
+
+    private function broadcastCartVinyl($id_vinyl) {
+        $this->notifications_model->broadcastFor(
+            Database::getInstance()->executeResults(
+                "SELECT id_user FROM carts WHERE id_vinyl = ?",
+                'i',
+                $id_vinyl
+            ),
+            "A vinyl in your cart has been updated.",
+            "/vinyl?id=" . $id_vinyl
+        );
+    }
+
+    private function broadcastVinyl($id_vinyl) {
+        $this->notifications_model->broadcast(
+            "A new Vinyl landed here!",
+            "/vinyl?id=$id_vinyl"
+        );
+
     }
 
     /**
@@ -270,29 +294,19 @@ final class VinylsModel {
             JOIN artists ar ON a.id_artist = ar.id_artist
             JOIN albumstracks ta ON a.id_album = ta.id_album";
         
-        $keys = array_keys($filters);
-        switch (reset($keys)) {
-            case "id_album":
-                $query = $query . " WHERE a.id_album = " . $filters["id_album"];
-                break;
-            case "title":
-                $query = $query . " WHERE a.title LIKE '%" . $filters["title"] . "%'";
-                break;
-            case "genre":
-                $query = $query . " WHERE a.genre LIKE '%" . $filters["genre"] . "%'";
-                break;
-            case "id_artist":
-                $query = $query . " WHERE ar.id_artist LIKE '%" . $filters["id_artist"] . "%'";
-                break;
-            case "artist_name":
-                $query = $query . " WHERE artist_name LIKE '%" . $filters["artist_name"] . "%'";
-                break;
-            case "id_track":
-                $query = $query . " WHERE ta.id_track LIKE '%" . $filters["id_track"] . "%'";
-                break;
-            case "track_title":
-                $query = $query . " WHERE track_title LIKE '%" . $filters["track_title"] . "%'";
-                break;
+        $filtersMap = [
+            "id_album" => fn($value) => " WHERE a.id_album = " . $value,
+            "title" => fn($value) => " WHERE a.title LIKE '%" . $value . "%'",
+            "genre" => fn($value) => " WHERE a.genre LIKE '%" . $value . "%'",
+            "id_artist" => fn($value) => " WHERE ar.id_artist LIKE '%" . $value . "%'",
+            "artist_name" => fn($value) => " WHERE artist_name LIKE '%" . $value . "%'",
+            "id_track" => fn($value) => " WHERE ta.id_track LIKE '%" . $value . "%'",
+            "track_title" => fn($value) => " WHERE track_title LIKE '%" . $value . "%'"
+        ];
+
+        $key = reset(array_keys($filters));
+        if (isset($filtersMap[$key])) {
+            $query .= $filtersMap[$key]($filters[$key]);
         }
 
         return $this->db->executeResults($query);
@@ -403,12 +417,19 @@ final class VinylsModel {
             return $this->updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $album);
         }
         
-        return $this->db->executeQueryAffectRows(
+        $result = $this->db->executeQueryAffectRows(
             "INSERT INTO vinyls (`cost`, `rpm`, `inch`, `type`, `stock`, `id_album`)
                 VALUES (?, ?, ?, ?, ?, ?)",
             'diisii',
             $cost, $rpm, $inch, $type, $stock, $album
         );
+
+        if ($result) {
+            // broadcast the new vinyl for all users
+            $last_id = Database::getInstance()->executeResults("SELECT id_vinyl FROM vinyls ORDER BY id_vinyl DESC LIMIT 1")[0]['id_vinyl'];
+            $this->broadcastVinyl($last_id);
+        }
+        return $result;
     }
 
     /**
@@ -437,12 +458,17 @@ final class VinylsModel {
      * @return bool true if the vinyl was updated, false otherwise
      */
     public function updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $id_album) {
-        return $this->db->executeQueryAffectRows(
+        $result = $this->db->executeQueryAffectRows(
             "UPDATE vinyls
                 SET cost = ?, rpm = ?, inch = ?, type = ?, stock = ?, id_album = ?
                 WHERE id_vinyl = ?",
             'diisii',
             $cost, $rpm, $inch, $type, $stock, $id_album, $id_vinyl
         );
+
+        if ($result) {
+            $this->broadcastCartVinyl($id_vinyl);
+        }
+        return $result;
     }
 }

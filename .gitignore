@@ -3,6 +3,4 @@
 /**/.DS_Store
 
 # Project files
-/**/*.map
-/src/resources/css//style.css
-/**/.env
+/**/*.css

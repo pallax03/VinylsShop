@@ -15,6 +15,8 @@
 // 🏡: --- HomeController.php --- (models: Auth Vinyl)
     // # 🏠 [Home] ~ (no need to be logged) -> Vinyl
     $router->get('/', [HomeController::class, 'index']);
+    // # 🍽️ [Notifications] ~ '?id_user='  -> Notifications
+    $router->get('/notifications', [HomeController::class, 'notifications']);
     // # 🍽️ [Search] -> Vinyl
     $router->get('/search', [HomeController::class, 'search']);
     // # 🍽️  [Login] -> Auth
