@@ -6,9 +6,9 @@
                 include COMPONENTS . '/cards/card.php';
             }
         ?>
-    <? else: ?>
+    <?php else: ?>
         <h1>No cards found!</h1>
-    <? endif; ?>
+    <?php endif; ?>
 </section>
 <div class="div"></div>
 <form action="/user/card" id="form-card" method="post" novalidate>

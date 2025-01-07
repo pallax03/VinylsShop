@@ -1,6 +1,6 @@
 
 function setDefaultCard(id= '') {
-    fetch('/user/defaults', {
+    makeRequest(fetch('/user/defaults', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -8,18 +8,10 @@ function setDefaultCard(id= '') {
         body: JSON.stringify({
             id_card: id
         })
-    }).then((response) => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    }).then((data) => {
-        console.log(data);
+    })).then((data) => {
         window.location.reload();
     }).catch((error) => {
-        // TODO NOTIFICATIONS
-        console.error('Error fetching address details:', error);
-        alert('Error fetching address details.');
+        createNotification(error, false);
     });
 }
 
@@ -33,7 +25,6 @@ function deleteCard(id) {
         }
         return response.json();
     }).then((data) => {
-        console.log(data);
         window.location.reload();
     }).catch((error) => {
         // TODO NOTIFICATIONS

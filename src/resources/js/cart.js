@@ -1,17 +1,11 @@
 function getCart() {
-    fetch('/cart/get')
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        }).then((data) => {
-            loadCartView(data.message);
-        }).catch((error) => {
-            // TODO NOTIFICATIONS
-            console.error('There has been a problem with your fetch operation:', error);
-            redirect('/cart');
-        });
+    makeRequest(fetch('/cart/get', {
+        method: 'GET',
+    })).then((data) => {
+        loadCartView(data);
+    }).catch((error) => {
+        redirect('/cart');
+    });
 }
 
 function loadCartView(data) {
