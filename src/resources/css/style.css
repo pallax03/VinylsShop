@@ -1576,7 +1576,7 @@ main section p, main form p {
 .modal {
   opacity: 0%;
   top: 90%;
-  width: 100%;
+  width: 80%;
   height: 50px;
   position: fixed;
   right: 0;
@@ -1586,7 +1586,7 @@ main section p, main form p {
   .modal {
     top: 19%;
     right: 25%;
-    width: 50%;
+    width: 33.33%;
   }
 }
 

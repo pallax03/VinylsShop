@@ -49,6 +49,7 @@ final class VinylsModel {
             case "artist":
                 $query = $query . " WHERE ar.name LIKE '%" . $params["artist"] . "%'";
                 break;
+            default;
         }
         // in case it needs a limitation
         if ($n > 0) {

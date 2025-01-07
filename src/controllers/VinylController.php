@@ -45,5 +45,16 @@ final class VinylController extends Controller {
         }
         $response->Error('Vinyl not deleted', $body);
     }
+
+    // per il momento non è utile
+    // function getAllVinyls(Request $request, Response $response) {
+    //     if(!Session::isSuperUser()) {
+    //         $response->Error('not allowed to see all vinyls');
+    //         return;
+    //     }
+        
+    //     $data = $this->vinyl_model->getVinyls(-1, null);
+    //     $response->Success($data);
+    // }
 }
 
