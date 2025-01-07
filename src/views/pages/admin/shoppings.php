@@ -3,15 +3,15 @@
     <ul>
         <li>
             <label for="shipping_courier">Courier</label>
-            <input type="text" name="shipping_courier" value="<? echo $_ENV['SHIPPING_COURIER']?>" id="input-shipping_courier">
+            <input type="text" name="shipping_courier" value="<?php echo $_ENV['SHIPPING_COURIER']?>" id="input-shipping_courier">
         </li>
         <li class="split">
             <label for="shipping_cost">Cost</label>
-            <input type="text" name="shipping_cost" value="<? echo $_ENV['SHIPPING_COST']?>" id="input-shipping_cost">
+            <input type="text" name="shipping_cost" value="<?php echo $_ENV['SHIPPING_COST']?>" id="input-shipping_cost">
         </li>
         <li class="split">
             <label for="shipping_goal">Goal</label>
-            <input type="text" name="shipping_goal" value="<? echo $_ENV['SHIPPING_GOAL']?>" id="input-shipping_goal">
+            <input type="text" name="shipping_goal" value="<?php echo $_ENV['SHIPPING_GOAL']?>" id="input-shipping_goal">
         </li>
         <li>
             <div class="large button">
