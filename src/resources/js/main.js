@@ -128,7 +128,9 @@ function addToCart(id, quantity) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id_vinyl: id, quantity: quantity })
     })).then((data) => {
-        getCart();
+        try {
+            getCart();
+        } catch (error) {}
         createNotification(data, true);
     }
     ).catch((error) => {
