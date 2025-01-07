@@ -24,8 +24,6 @@ document.querySelector('.close-search').addEventListener('click', function (e) {
     });
 });
 
-// variable to handle notification timeout overlapping
-let timeout;
 // Funzione per aggiornare i risultati nel DOM
 function updateResults(results) {
     const resultsList = document.getElementById('sec-search_content');
@@ -56,44 +54,7 @@ function updateResults(results) {
                 clone.querySelector(".vinyl-genre").textContent = "#" + result.genre;
                 clone.querySelector(".add-cart").textContent = "Add to cart - €" + result.cost;
                 clone.querySelector(".add-cart").onclick = function() {
-                    const modal = document.querySelector(".modal");
-                        fetch('views/components/cards/notification.php')
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`Errore nel caricamento del template: ${response.status}`);
-                            }
-                            return response.text();
-                        })
-                        .then(templateHTML => {
-                            // Inserire il contenuto del template direttamente nel DOM nascosto
-                            document.body.insertAdjacentHTML("beforeend", templateHTML);
-                    
-                            // Recuperare il template appena aggiunto
-                            const notify_template = document.getElementById("notification-card");
-                            const notify_clone = notify_template.content.cloneNode(true);
-                            const div = notify_clone.querySelector(".notification");
-                            if (addToCart(result.id_vinyl, 1)) {
-                                notify_clone.querySelector(".message").textContent = "Succesfully added to cart!";
-                                notify_clone.querySelector(".icon").src = "/resources/img/icons/tick.png";
-                            } else {
-                                notify_clone.querySelector(".message").textContent = "Cannot add to cart";
-                                notify_clone.querySelector(".icon").src = "/resources/img/icons/error.png";
-                            }
-                            modal.appendChild(notify_clone);
-                            modal.classList.add("modal-in");
-                            if (!timeout) {
-                                timeout = true;
-                                setTimeout(() => {
-                                    modal.classList.add("modal-out");
-                                    modal.classList.remove("modal-in");
-                                    setTimeout(() => {
-                                        modal.innerHTML = "";
-                                        modal.classList.remove("modal-out");
-                                        timeout = false;
-                                    }, 1000);
-                                }, 2000);
-                            }
-                        });
+                    addToCart(result.id_vinyl, 1);
                 };
                 resultsList.appendChild(clone);
             });

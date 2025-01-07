@@ -82,20 +82,57 @@ function validateData(...args) {
     return valid;
 }
 
+let timeout = false;
+function createNotification(message, status) {
+    const modal = document.querySelector(".modal");
+    const div = document.createElement("div");
+    div.classList.add("notification");
+    const p = document.createElement("p");
+    p.classList.add("message");
+    p.textContent = message;
+    const img = document.createElement("img");
+    img.classList.add("icon");
+    img.src = "/resources/img/icons/" + (status ? "tick" : "error") + ".png";
+    div.appendChild(p);
+    div.appendChild(img);
+    modal.appendChild(div);
+    modal.classList.add("modal-in");
+    
+    if (!timeout) {
+        timeout = true;
+        setTimeout(() => {
+            modal.classList.add("modal-out");
+            modal.classList.remove("modal-in");
+            setTimeout(() => {
+                modal.innerHTML = "";
+                modal.classList.remove("modal-out");
+                timeout = false;
+            }, 1000);
+        }, 2000);
+    }
+}
+
+async function makeRequest(fetch) {
+    const response = await fetch;
+    const data = await response.json();
+    if (!response.ok) {
+        throw data.error;
+    }
+    return data.message;
+}
+    
+
 function addToCart(id, quantity) {
-    fetch('/cart', {
+    makeRequest(fetch('/cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id_vinyl: id, quantity: quantity })
-    }).then((response) => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    }).then((data) => {
+    })).then((data) => {
         getCart();
-    }).catch((error) => {
-        // TODO NOTIFICATIONS
+        createNotification(data, true);
+    }
+    ).catch((error) => {
+        createNotification(error, false);
     });
 }
 
