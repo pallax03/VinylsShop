@@ -89,9 +89,9 @@ class HomeController extends Controller {
             ['vinyls' => $this->vinyls_model->getAllVinyls()]);
     }
     
-    public function dashboardShoppings() {
+    public function dashboardEcommerce() {
         $this->redirectNotSuperUser();
-        $this->render('admin/shoppings', ['title' => 'Manage Shoppings'],
+        $this->render('admin/ecommerce', ['title' => 'Manage Ecommerce'],
             ['coupons' => $this->order_model->getCoupons()]);
     }
 

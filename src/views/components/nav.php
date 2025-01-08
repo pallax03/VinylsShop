@@ -57,9 +57,9 @@
                 </a>
             </li>
             <li>
-                <a href="/dashboard/shoppings">
+                <a href="/dashboard/ecommerce">
                     <i class="bi bi-sliders"></i>
-                    <p>Shoppings</p>
+                    <p>Ecommerce</p>
                 </a>
             </li>
             <li>

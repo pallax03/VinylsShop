@@ -34,7 +34,7 @@
     // # 🏠 [Dashboard] -> Auth.
     $router->get('/dashboard', [HomeController::class, 'dashboard']);
     $router->get('/dashboard/albums', [HomeController::class, 'dashboardAlbums']);
-    $router->get('/dashboard/shoppings', [HomeController::class, 'dashboardShoppings']);
+    $router->get('/dashboard/ecommerce', [HomeController::class, 'dashboardEcommerce']);
     $router->get('/dashboard/users', [HomeController::class, 'dashboardUsers']);
 
 
