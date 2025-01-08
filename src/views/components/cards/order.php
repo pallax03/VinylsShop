@@ -4,14 +4,14 @@
             <span><?php echo $n ?></span>
             <a href="/order?id_order=<?php echo $order['id_order'] ?>">
                 <i class="bi bi-box-seam-fill"></i>
-                <h2><? echo $order['order_status']?></h2>
+                <h2><? echo $order['tracking_number']?></h2>
             </a>
         </header>
         <div class="order-details">
             <ul>
                 <?php foreach (array_slice($order['vinyls'], 0, 3) as $vinyl): ?>
                     <li>
-                        <a href="/vinyl?id_vinyl=<?php echo $vinyl['id_vinyl'] ?>"">
+                        <a href="/vinyl?id=<?php echo $vinyl['id_vinyl'] ?>"">
                             <img src="/resources/img/albums/<? echo $vinyl['cover']?>" alt="album cover">
                             <h6><? echo $vinyl['title']?></h6>
                             <p><? echo $vinyl['cost']?> €</p>
@@ -48,7 +48,7 @@
             <p><?php echo $order['shipment_date'] ?></p>
             <div class="progress-bar">
                 <div class="bar">
-                    <div class="progress">
+                    <div class="progress" style="width: <?php echo $order['shipment_progress'] + 1 ?>%">
                         <div class="dot"></div>
                         <p><?php echo $order['shipment_status'] ?></p>
                     </div>

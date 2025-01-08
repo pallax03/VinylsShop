@@ -108,7 +108,6 @@ CREATE TABLE IF NOT EXISTS `vinylsshop`.`orders` (
     `order_date` DATE NOT NULL,
     `total_cost` DECIMAL(10, 2) NOT NULL DEFAULT 0,
     `id_card` INT,
-    `order_status` VARCHAR(50) NOT NULL,
     `discount_code` VARCHAR(50),
     `id_user` INT NOT NULL,
     PRIMARY KEY (`id_order`),
@@ -121,16 +120,19 @@ CREATE TABLE IF NOT EXISTS `vinylsshop`.`shipments` (
     `id_shipment` INT NOT NULL AUTO_INCREMENT,
     `tracking_number` VARCHAR(100) NOT NULL,
     `shipment_date` DATE NOT NULL,
-    `delivery_date` DATE,
+    `delivery_date` DATE NOT NULL,
     `shipment_status` VARCHAR(50) NOT NULL,
+    `shipment_progress` INT DEFAULT 0,
     `courier` VARCHAR(50) NOT NULL,
     `notes` TEXT,
     `cost` DECIMAL(10, 2) NOT NULL,
     `id_order` INT NOT NULL,
     `id_address` INT NOT NULL,
+    `id_user` INT NOT NULL,
     PRIMARY KEY (`id_shipment`),
     FOREIGN KEY (`id_order`) REFERENCES `vinylsshop`.`orders` (`id_order`),
-    FOREIGN KEY (`id_address`) REFERENCES `vinylsshop`.`addresses` (`id_address`)
+    FOREIGN KEY (`id_address`) REFERENCES `vinylsshop`.`addresses` (`id_address`),
+    FOREIGN KEY (`id_user`) REFERENCES `vinylsshop`.`users` (`id_user`)
 );
 
 CREATE TABLE IF NOT EXISTS `vinylsshop`.`vinyls` (

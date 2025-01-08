@@ -49,8 +49,7 @@ final class NotificationModel {
      * @param string $message
      * @return bool true if the notification is created, false otherwise.
      */
-    private function createNotification($id_user, $message, $link = null) {
-        // Check if the result is not empty and the 'newsletter' key exists
+    public function createNotification($id_user, $message, $link = null) {
         $result = Database::getInstance()->executeResults("SELECT newsletter FROM users WHERE id_user = ?", 'i', $id_user);
         if (empty($result) || !isset($result[0]['newsletter']) || !$result[0]['newsletter']) {
             return false;
@@ -58,7 +57,7 @@ final class NotificationModel {
 
         return Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO notifications (`id_user`, `message`, `link`) VALUES (?, ?, ?)",
-            'ss',
+            'iss',
             $id_user,
             $message,
             $link ?? ''

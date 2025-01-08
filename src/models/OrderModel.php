@@ -5,6 +5,7 @@ final class OrderModel
     private $vinyls_model = null;
     private $auth_model = null;
     private $user_model = null;
+    private $notification_model = null;
 
     public function __construct() {
         require_once MODELS . 'VinylsModel.php';
@@ -15,10 +16,61 @@ final class OrderModel
 
         require_once MODELS . 'UserModel.php';
         $this->user_model = new UserModel();
+
+        require_once MODELS . 'NotificationModel.php';
+        $this->notification_model = new NotificationModel();
+
+        $this->updateShippings();
     }
 
+    /**
+     * Simulate the shipping of the orders.
+     * updating the status of the shipping.
+     * By default, the status will be updated to:
+     * - "Delivered" when is $delivery_date.
+     * - "On delivery" the day before $delivery_date.
+     * - "In transit" after 1 day.
+     *
+     * Sending Notifications to the user.
+     * 
+     * @return void
+     */
     private function updateShippings() {
+        $shippings = Database::getInstance()->executeResults(
+            "SELECT `id_shipment`, `shipment_date`, `delivery_date`, `shipment_status`, `id_order`, `id_address`, `id_user`
+                FROM `shipments` WHERE `shipment_status` != 'Delivered';"
+        );
         
+        foreach ($shippings as $shipping) {
+            $shipment_date = new DateTime($shipping['shipment_date']);
+            $delivery_date = new DateTime($shipping['delivery_date']);
+            $today = new DateTime(date('Y-m-d'));
+
+            if($today > $delivery_date) {
+                $status = 'Delivered';
+                $progress = 100;
+            } else if ($today->diff($delivery_date)->days == 1) {
+                $status = 'On delivery';
+                $progress = 90;
+            } else if ($today->diff($shipment_date)->days > 1) {
+                $status = 'In transit';
+                $progress = intval(($today->diff($shipment_date)->days / $delivery_date->diff($shipment_date)->days) * 100);
+            } else {
+                $status = 'In preparation';
+                $progress = intval(($today->diff($shipment_date)->days / $delivery_date->diff($shipment_date)->days) * 100);
+            }
+
+            if ($status != $shipping['shipment_status']) {
+                Database::getInstance()->executeQueryAffectRows(
+                    "UPDATE `vinylsshop`.`shipments` SET `shipment_status` = ?, `shipment_progress` = ? WHERE `id_shipment` = ?;",
+                    'ssi',
+                    $status,
+                    $progress,
+                    $shipping['id_shipment']
+                );
+                $this->notification_model->createNotification($shipping['id_user'], 'Shipping status updated', '/order?id_order=' . $shipping['id_order']);
+            }
+        }
     }
 
     /**
@@ -32,11 +84,11 @@ final class OrderModel
             "SELECT o.id_order,
                     o.order_date,
                     o.total_cost,
-                    o.order_status,
                     s.tracking_number,
                     s.shipment_date,
                     s.delivery_date,
                     s.shipment_status,
+                    s.shipment_progress,
                     s.courier,
                     s.notes,
                     s.cost AS shipment_cost,
@@ -91,7 +143,6 @@ final class OrderModel
             "SELECT o.id_order,
                     o.order_date,
                     o.total_cost,
-                    o.order_status,
                     o.id_card,
                     c.card_number,
                     o.discount_code,
@@ -100,6 +151,7 @@ final class OrderModel
                     s.shipment_date,
                     s.delivery_date,
                     s.shipment_status,
+                    s.shipment_progress,
                     s.courier,
                     s.notes,
                     s.cost AS shipment_cost,
@@ -141,52 +193,31 @@ final class OrderModel
         return $order;
     }
 
-    public function updateShipping($id_order, $tracking_number = null, $shipment_date = null, $delivery_date = null, $shipment_status = null, $notes = null, $id_address=null, $id_shipping=null) {
-        if ($id_order === null) {
-            return false;
-        }
-        Database::getInstance()->setHandler(null); // reset the handler to avoid the error
-        return Database::getInstance()->executeQueryAffectRows(
-            "UPDATE `vinylsshop`.`shipments` SET " . ($tracking_number ? " tracking_number = ?" : "") . ", ".($shipment_date ? " shipment_date = ? " : "").", ".( $delivery_date ? "delivery_date = ?" : "").", ".($shipment_status ? "shipment_status = ?" : "").", ".($notes ? "notes = ?" : "").", ".($id_address ? "id_address = ?" : "")." WHERE id_order = ? AND id_shipping = ?;",
-            'ssssssii',
-            $tracking_number,
-            $shipment_date,
-            $delivery_date,
-            $shipment_status,
-            $notes,
-            $id_address,
-            $id_order,
-            $id_shipping
-        );
-    }
-
     /**
      * Set a shipping for an order.
      *
      * @return bool
      */
-    public function setShipping($id_order, $tracking_number = null, $shipment_date = null, $delivery_date = null, $shipment_status = null, $notes = null, $id_address=null, $id_shipping=null) {
+    public function setShipping($id_order, $notes = null, $id_address=null) {
         if ($id_order === null) {
             return false;
         }
 
-        if($id_shipping) {
-            return $this->updateShipping($id_order, $tracking_number, $shipment_date, $delivery_date, $shipment_status, $notes, $id_address, $id_shipping);
-        }
         $id_address = $id_address ?? $this->user_model->getUser()['default_address'];
         Database::getInstance()->setHandler(null);
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `vinylsshop`.`shipments` (id_order, tracking_number, shipment_date, delivery_date, shipment_status, courier, notes, cost, id_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            'issssssdi',
+            "INSERT INTO `vinylsshop`.`shipments` (id_order, tracking_number, shipment_date, delivery_date, shipment_status, courier, notes, cost, id_address, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+            'issssssdii',
             $id_order,
-            $tracking_number ?? bin2hex(random_bytes(6)),
-            $shipment_date ?? date('Y-m-d'),
-            $delivery_date ?? date('Y-m-d', strtotime('+7 days')),
-            $shipment_status ?? 'In preparation',
+            bin2hex(random_bytes(6)),
+            date('Y-m-d'),
+            date('Y-m-d', strtotime('+7 days')),
+            'In preparation',
             $_ENV['SHIPPING_COURIER'],
             $notes ?? '',
             $_ENV['SHIPPING_COST'],
-            $id_address
+            $id_address,
+            Session::getUser()
         );
     }
 
@@ -285,12 +316,11 @@ final class OrderModel
         
 
         if (!Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `vinylsshop`.`orders` (order_date, total_cost, order_status, id_user, id_card, discount_code) 
-                VALUES (?, ?, ?, ?, ?, ?); ",
-            'sdsiss',
+            "INSERT INTO `vinylsshop`.`orders` (order_date, total_cost, id_user, id_card, discount_code) 
+                VALUES (?, ?, ?, ?, ?); ",
+            'sdiis',
             date('Y-m-d'),
             $total,
-            'Paid',
             Session::getUser(),
             $this->user_model->getUser()['default_card'] ?? '',
             $discount_code ?? '',

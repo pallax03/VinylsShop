@@ -3,7 +3,7 @@
     <h1>#<?php echo $order['tracking_number'] ?></h1>
     <span>
         <p><?php echo $order['order_date'] ?></p>
-        <p><?php echo $order['order_status'] ?></p>
+        <p><?php echo $order['shipment_status'] ?></p>
     </span>
 </section>
 <section class="cards">

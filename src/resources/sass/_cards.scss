@@ -300,7 +300,6 @@ $preview-cover-size: 80%;
                     height: 100%;
                     border-radius: 5px;
                     position: relative;
-                    animation: forwards progress 120s ease-out;
                     // circle
                     .dot {
                         position: absolute;
@@ -320,17 +319,6 @@ $preview-cover-size: 80%;
                         min-width: 60px;
                         right: -30px;
                     }
-                }
-            }
-            @keyframes progress {
-                0% {
-                    width: 2%;
-                }
-                20% {
-                    width: 20%;
-                }
-                100% {
-                    width: 100%;
                 }
             }
         }
