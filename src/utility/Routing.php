@@ -45,6 +45,7 @@
     $router->post('/vinyl', [VinylController::class, 'setVinyl']);
     // # 🍽️ [DeleteVinyl] ~ -> Auth - Vinyl - Artist - Track.
     $router->delete('/vinyl', [VinylController::class, 'deleteVinyl']);
+    $router->get('/albums', [VinylController::class, 'getAlbums']);
 
 
 // 🛒: --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 

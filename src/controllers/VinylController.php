@@ -46,6 +46,16 @@ final class VinylController extends Controller {
         $response->Error('Vinyl not deleted', $body);
     }
 
+    function getAlbums(Request $request, Response $response) {
+        $body = $request->getBody();
+        $data = $this->vinyl_model->getAlbums($body);
+        if(!empty($data)) {
+            $response->Success($data, $body);
+            return;
+        }
+        $response->Error('No albums found', $body);
+    }
+
     // per il momento non è utile
     // function getAllVinyls(Request $request, Response $response) {
     //     if(!Session::isSuperUser()) {

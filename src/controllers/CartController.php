@@ -85,18 +85,19 @@ class CartController extends Controller {
     }
 
     public function pay(Request $request, Response $response) {
-        $this->redirectUser();
-        $this->redirectIf(empty(Session::getCart()), '/cart');
-        
-        $body = $request->getBody();
-
-        if($this->order_model->setOrder($body['discount_code'] ?? null)) {
-            $this->cart_model->purgeUserCart();
-            $this->cart_model->syncCart();
-            $response->Success('Order placed');
+        if(!Session::getUser()) {
+            $response->Error('User not logged');
             return;
         }
-        $response->Error('Order cannot be placed');
+        $body = $request->getBody();
+        if($this->order_model->setOrder($body['discount_code'] ?? null)) {
+            if($this->cart_model->purgeUserCart()) {
+                Session::resetCart();
+            }
+            $response->Success('Order placed', $body);
+            return;
+        }
+        $response->Error('Order cannot be placed', $body);
     }
 
 }

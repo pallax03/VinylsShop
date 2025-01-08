@@ -17,6 +17,10 @@ final class OrderModel
         $this->user_model = new UserModel();
     }
 
+    private function updateShippings() {
+        
+    }
+
     /**
      * Get all orders of a user
      *
@@ -137,16 +141,40 @@ final class OrderModel
         return $order;
     }
 
+    public function updateShipping($id_order, $tracking_number = null, $shipment_date = null, $delivery_date = null, $shipment_status = null, $notes = null, $id_address=null, $id_shipping=null) {
+        if ($id_order === null) {
+            return false;
+        }
+        Database::getInstance()->setHandler(null); // reset the handler to avoid the error
+        return Database::getInstance()->executeQueryAffectRows(
+            "UPDATE `vinylsshop`.`shipments` SET " . ($tracking_number ? " tracking_number = ?" : "") . ", ".($shipment_date ? " shipment_date = ? " : "").", ".( $delivery_date ? "delivery_date = ?" : "").", ".($shipment_status ? "shipment_status = ?" : "").", ".($notes ? "notes = ?" : "").", ".($id_address ? "id_address = ?" : "")." WHERE id_order = ? AND id_shipping = ?;",
+            'ssssssii',
+            $tracking_number,
+            $shipment_date,
+            $delivery_date,
+            $shipment_status,
+            $notes,
+            $id_address,
+            $id_order,
+            $id_shipping
+        );
+    }
+
     /**
      * Set a shipping for an order.
      *
      * @return bool
      */
-    public function setShipping($id_order, $tracking_number = null, $shipment_date = null, $delivery_date = null, $shipment_status = null, $courier = null, $notes = null, $cost = null) {
-        if (!Session::haveAdminUserRights() || $id_order === null || !isset(Session::getUser()['default_address'])) {
+    public function setShipping($id_order, $tracking_number = null, $shipment_date = null, $delivery_date = null, $shipment_status = null, $notes = null, $id_address=null, $id_shipping=null) {
+        if ($id_order === null) {
             return false;
         }
 
+        if($id_shipping) {
+            return $this->updateShipping($id_order, $tracking_number, $shipment_date, $delivery_date, $shipment_status, $notes, $id_address, $id_shipping);
+        }
+        $id_address = $id_address ?? $this->user_model->getUser()['default_address'];
+        Database::getInstance()->setHandler(null);
         return Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO `vinylsshop`.`shipments` (id_order, tracking_number, shipment_date, delivery_date, shipment_status, courier, notes, cost, id_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
             'issssssdi',
@@ -155,10 +183,10 @@ final class OrderModel
             $shipment_date ?? date('Y-m-d'),
             $delivery_date ?? date('Y-m-d', strtotime('+7 days')),
             $shipment_status ?? 'In preparation',
-            $courier ?? $_ENV['SHIPPING_COURIER'],
+            $_ENV['SHIPPING_COURIER'],
             $notes ?? '',
-            $cost ?? $_ENV['SHIPPING_COST'],
-            Session::getUser()['default_address']
+            $_ENV['SHIPPING_COST'],
+            $id_address
         );
     }
 
@@ -174,11 +202,12 @@ final class OrderModel
                 return false;
             }
         }
+        return true;
     }
 
     private function deleteOrderCart($id_order) {
         return Database::getInstance()->executeQueryAffectRows(
-            "DELETE FROM `vinylsshop`.`orders` WHERE id_order = ?;",
+            "DELETE FROM `vinylsshop`.`checkouts` WHERE id_order = ?;",
             'i',
             $id_order
         );
@@ -209,8 +238,9 @@ final class OrderModel
     }
 
     private function tryPayment($total) {
-        if (Session::getUser()['default_card'] === null) {
-            return Session::getUser()['balance'] >= $total;
+        $user = $this->user_model->getUser();
+        if ($user['default_card'] == null || $user['default_card'] == '') {
+            return $user['balance'] >= $total;
         } 
         return true;
     }
@@ -228,6 +258,14 @@ final class OrderModel
         return Session::getTotal() <= $_ENV['SHIPPING_GOAL'] ? $total + $_ENV['SHIPPING_COST'] : $total;
     }
 
+    private function deleteOrder($id_order) {
+        return Database::getInstance()->executeQueryAffectRows(
+            "DELETE FROM `vinylsshop`.`orders` WHERE `id_order` = ?;",
+            'i',
+            $id_order
+        );
+    }
+
     /**
      * Set an order from the cart.
      *
@@ -241,7 +279,7 @@ final class OrderModel
         }
 
         $total = $this->getOrderTotal($discount_code);
-        if($this->tryPayment($total)) {
+        if(!$this->tryPayment($total)) {
             return false;
         }
         
@@ -254,19 +292,20 @@ final class OrderModel
             $total,
             'Paid',
             Session::getUser(),
-            Session::getUser()['default_card'] ?? '',
+            $this->user_model->getUser()['default_card'] ?? '',
             $discount_code ?? '',
         )) {
             return false;
         }
 
         $id_order = Database::getInstance()->executeResults("SELECT LAST_INSERT_ID() AS id_order;")[0]['id_order'];
-        if(!$this->loadOrderCart($id_order, $cart)) {
-            $this->deleteOrderCart($id_order);
+        if(!$this->setShipping($id_order, notes: $notes)) {
+            $this->deleteOrder($id_order);
             return false;
         }
-        
-        if(!$this->setShipping($id_order, notes: $notes)) {
+        if(!$this->loadOrderCart($id_order, $cart)) {
+            $this->deleteOrderCart($id_order);
+            $this->deleteOrder($id_order);
             return false;
         }
 

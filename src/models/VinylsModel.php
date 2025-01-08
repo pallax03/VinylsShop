@@ -28,7 +28,28 @@ final class VinylsModel {
             "A new Vinyl landed here!",
             "/vinyl?id=$id_vinyl"
         );
+    }
 
+    private function applyFilters($query, $filters = []) {
+        $filtersMap = [
+            "id_vinyl" => ["query" => fn($value) => " AND v.id_vinyl = ? ", "type" => 'i'],
+            "id_album" => ["query" => fn($value) => " AND a.id_album = ? ", "type" => 'i'],
+            "title" => ["query" => fn($value) => " AND a.title LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"],
+            "genre" => ["query" => fn($value) => " AND a.genre LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"],
+            "id_artist" => ["query" => fn($value) => " AND ar.id_artist = ? ", "type" => 'i'],
+            "artist_name" => ["query" => fn($value) => " AND ar.name LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"],
+            "id_track" => ["query" => fn($value) => " AND ta.id_track = ? ", "type" => 'i'],
+            "track_title" => ["query" => fn($value) => " AND t.title LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"]
+        ];
+
+        $types = '';
+        $values = [1];
+        foreach ($filters as $key => $value) {
+            $query .= $filtersMap[$key]["query"]($value);
+            $types .= $filtersMap[$key]["type"];
+            $values[] = isset($filtersMap[$key]["value"]) ? $filtersMap[$key]["value"]($value) : $value;
+        }
+        return $this->db->executeResults($query. ' GROUP BY a.id_album;', 'i'.$types, ...$values);
     }
 
     /**
@@ -264,6 +285,44 @@ final class VinylsModel {
         return $result;
     }
 
+    
+    /**
+     * Get the vinyls.
+     *
+     * @param array $filter the qury filter of the artist params to get the albums
+     * filters can be:
+     * - id_album
+     * - title
+     * - genre
+     * - id_artist
+     * - artist_name
+     * - id_track
+     * - track_title
+     * 
+     * @return array containing the albums 
+     */
+    public function getVinylsOptimized($filters) {
+        return $this->applyFilters(
+            "SELECT v.id_vinyl,
+                    v.cost,
+                    a.id_album,
+                    a.title,
+                    a.release_date,
+                    a.genre,
+                    a.cover,
+                    ar.id_artist,
+                    ar.name AS artist_name,
+                    GROUP_CONCAT(DISTINCT ta.id_track ORDER BY ta.id_track ASC SEPARATOR ', ') AS track_ids,
+                    GROUP_CONCAT(DISTINCT t.title ORDER BY t.title ASC SEPARATOR ', ') AS track_titles
+                FROM albums a 
+                JOIN artists ar ON a.id_artist = ar.id_artist
+                JOIN albumstracks ta ON a.id_album = ta.id_album
+                JOIN tracks t ON t.id_track = ta.id_track
+                WHERE 1 = ?", 
+            $filters
+        );
+    }
+
     /**
      * Get the albums of an artist.
      * @param array $filter the qury filter of the artist params to get the albums
@@ -279,39 +338,25 @@ final class VinylsModel {
      * @return array containing the albums 
      */
     public function getAlbums($filters) {
-        $query = "SELECT
-            a.id_album,
-            a.title,
-            a.release_date,
-            a.genre,
-            a.cover,
-            ar.id_artist,
-            ar.name AS artist_name
-            ta.id_track,
-            ta.title AS track_title
-            FROM
-            albums a
-            JOIN artists ar ON a.id_artist = ar.id_artist
-            JOIN albumstracks ta ON a.id_album = ta.id_album";
-        
-        $filtersMap = [
-            "id_album" => fn($value) => " WHERE a.id_album = " . $value,
-            "title" => fn($value) => " WHERE a.title LIKE '%" . $value . "%'",
-            "genre" => fn($value) => " WHERE a.genre LIKE '%" . $value . "%'",
-            "id_artist" => fn($value) => " WHERE ar.id_artist LIKE '%" . $value . "%'",
-            "artist_name" => fn($value) => " WHERE artist_name LIKE '%" . $value . "%'",
-            "id_track" => fn($value) => " WHERE ta.id_track LIKE '%" . $value . "%'",
-            "track_title" => fn($value) => " WHERE track_title LIKE '%" . $value . "%'"
-        ];
-
-        $key = reset(array_keys($filters));
-        if (isset($filtersMap[$key])) {
-            $query .= $filtersMap[$key]($filters[$key]);
-        }
-
-        return $this->db->executeResults($query);
+        return $this->applyFilters(
+            "SELECT 
+                    a.id_album,
+                    a.title,
+                    a.release_date,
+                    a.genre,
+                    a.cover,
+                    ar.id_artist,
+                    ar.name AS artist_name,
+                    GROUP_CONCAT(DISTINCT ta.id_track ORDER BY ta.id_track ASC SEPARATOR ', ') AS track_ids,
+                    GROUP_CONCAT(DISTINCT t.title ORDER BY t.title ASC SEPARATOR ', ') AS track_titles
+                FROM albums a 
+                JOIN artists ar ON a.id_artist = ar.id_artist
+                JOIN albumstracks ta ON a.id_album = ta.id_album
+                JOIN tracks t ON t.id_track = ta.id_track
+                WHERE 1 = ?", 
+            $filters
+        );
     }
-
 
     // TODO NEED TO UPDATE ALBUMS TRACKS
 
