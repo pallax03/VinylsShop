@@ -174,15 +174,15 @@ final class AuthModel {
      * 
      * @return bool true if the user is registered, false otherwise
      */
-    public function register($mail, $password, $su = 0, $newsletter = 0) {
+    public function register($mail, $password, $newsletter = 1) {
         if (!$this->isValidMail($mail)) {
             return false;
         }
 
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `users` (mail, password, su, newsletter) VALUES (?, ?, ?, ?)",
+            "INSERT INTO `users` (mail, password, newsletter) VALUES (?, ?, ?)",
             'ssii',
-            $mail, $this->encryptPassword($password), $su ?? 0, $newsletter ?? 0
+            $mail, $this->encryptPassword($password), filter_var($newsletter, FILTER_VALIDATE_BOOLEAN)
         );
     }
 
