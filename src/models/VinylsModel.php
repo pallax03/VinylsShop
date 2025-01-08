@@ -154,11 +154,14 @@ final class VinylsModel {
             JOIN tracks t ON t.id_track = ta.id_track
             WHERE a.id_album = ?";
         // prepare statement
-        $result["details"] = $this->db->executeResults($vinyl, "i", $id)[0];
-        // store id_album for the next query
-        $album =  $result["details"]["id_album"];
-        // prepare second statement
-        $result["tracks"] = $this->db->executeResults($tracks, "i", $album);
+        $result = $this->db->executeResults($vinyl, "i", $id);
+        if(!empty($result)) {
+            $result["details"] = $result[0];
+            // store id_album for the next query
+            $album =  $result["details"]["id_album"];
+            // prepare second statement
+            $result["tracks"] = $this->db->executeResults($tracks, "i", $album);
+        }
         return $result;
     }
 

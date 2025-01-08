@@ -12,18 +12,16 @@ final class VinylController extends Controller {
     
     function index(Request $request, Response $response) {
         $body = $request->getBody();
-        if (isset($body['id'])) {
-            $data['vinyl'] = $this->vinyl_model->getVinylDetails($body['id']);
+        $data['vinyl'] = $this->vinyl_model->getVinylDetails($body['id'] ?? null);
+        if (isset($body['id']) && !empty($data['vinyl'])) {
             $data['suggested'] = $this->vinyl_model->getSuggested($body['id']);
             $head = array('title' => $data["vinyl"]["details"]["title"], 'style'=> array(''),
              'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
             $this->render('ecommerce/vinyl', $head, $data);
-            $response->Success($body);
             return;
         }
         $head['title'] = "No vinyl is specified";
-        $this->render('error', $head, []);
-        $response->Error('No vinyl specified', $body);
+        $this->render('', $head, []);
     }
 
     function addVinyl(Request $request, Response $response) {
