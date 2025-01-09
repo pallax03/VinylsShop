@@ -1,6 +1,7 @@
+# Project files
+/**/*.css
+
 # IDE
 .DS_Store
 /**/.DS_Store
 
-# Project files
-/**/*.css
