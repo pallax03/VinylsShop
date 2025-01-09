@@ -27,39 +27,12 @@ document.querySelector('.close-search').addEventListener('click', function (e) {
 // Funzione per aggiornare i risultati nel DOM
 function updateResults(results) {
     const resultsList = document.getElementById('sec-search_content');
-    fetch('views/components/cards/vinyl.php')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Errore nel caricamento del template: ${response.status}`);
-        }
-        return response.text();
-    })
-    .then(templateHTML => {
-        // Inserire il contenuto del template direttamente nel DOM nascosto
-        document.body.insertAdjacentHTML("beforeend", templateHTML);
-
-        // Recuperare il template appena aggiunto
-        const template = document.getElementById("search-vinyl");
-
-        // Se non ci sono risultati
-        if (results.message.length !== 0) {
-            clear();
-            Array.prototype.forEach.call(results.message, result => {
-                const clone = template.content.cloneNode(true);
-                clone.querySelector(".vinyl-cover").src = "/resources/img/albums/" + result.cover;
-                clone.querySelector(".vinyl-preview").href = "/vinyl?id=" + result.id_vinyl;
-                clone.querySelector(".vinyl-title").textContent = result.title;
-                clone.querySelector(".vinyl-title").title = result.title;
-                clone.querySelector(".vinyl-artist").textContent = result.artist;
-                clone.querySelector(".vinyl-genre").textContent = "#" + result.genre;
-                clone.querySelector(".add-cart").textContent = "Add to cart - €" + result.cost;
-                clone.querySelector(".add-cart").onclick = function() {
-                    addToCart(result.id_vinyl, 1);
-                };
-                resultsList.appendChild(clone);
-            });
-        }
-    })
+    if (results.message.length !== 0) {
+        clear();
+        Object.values(results.message).forEach(result =>{
+            resultsList.appendChild(createCard(result));
+        })
+    }
 }
 
 function clear() {
@@ -95,6 +68,25 @@ function search() {
     } else {
         clear();
     }
+}
+
+function createCard(result) {
+        const itemElement = document.createElement('div');
+        itemElement.innerHTML = `<div class="search-card">
+            <a class="vinyl-preview" href="/vinyl?id=${result.id_vinyl}">
+                <p class="vinyl-title" title="${result.title}">${result.title}</p>
+                <div class="cover-container">
+                    <img class="vinyl-cover" src="/resources/img/albums/${result.cover}"/>
+                </div>
+                <div class="vinyl-info">
+                    <p class="vinyl-artist">${result.artist}</p>
+                    <p class="vinyl-genre">#${result.genre}</p>
+                </div>
+                <a class="add-cart" onclick="addToCart(${result.vinyl_id}, 1)">Add to cart - €${result.cost}</a>
+            </a>
+        </div>
+        `;
+        return itemElement.firstElementChild;
 }
 
 document.getElementById('select-search_filter').addEventListener('change', search);
