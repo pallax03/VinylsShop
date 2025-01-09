@@ -1,7 +1,6 @@
 # Project files
-/**/*.css
+src/resources/css/style.css
 
 # IDE
 .DS_Store
 /**/.DS_Store
-
