@@ -44,9 +44,11 @@ final class VinylController extends Controller {
             $response->Error('Not allowed to add vinyls', $body);
             return;
         }
-        if ($this->vinyl_model->addVinyl($body['cost'], $body['rpm'], $body['inch'], $body['type'], $body['stock'], $body['album'], $body['artist'], $body['id_vinyl'] ?? null)) {
-            $response->Success('Vinyl added / updated', $body);
-            return;
+        if(isset($body['cost']) && isset($body['rpm']) && isset($body['inch']) && isset($body['type']) && isset($body['stock']) && isset($body['album']) && isset($body['artist'])) {
+            if ($this->vinyl_model->addVinyl($body['cost'], $body['rpm'], $body['inch'], $body['type'], $body['stock'], $body['album'], $body['artist'], $body['id_vinyl'] ?? null)) {
+                $response->Success('Vinyl added / updated', $body);
+                return;
+            }
         }
         $response->Error('Vinyl not added / updated', $body);
     }
@@ -57,7 +59,7 @@ final class VinylController extends Controller {
             $response->Error('Not allowed to delete vinyls', $body);
             return;
         }
-        if ($body['id_vinyl'] && $this->vinyl_model->deleteVinyl($body['id_vinyl'])) {
+        if (isset($body['id_vinyl']) && $this->vinyl_model->deleteVinyl($body['id_vinyl'])) {
             $response->Success('Vinyl deleted', $body);
             return;
         }
