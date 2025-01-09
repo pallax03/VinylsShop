@@ -83,9 +83,17 @@ function validateData(...args) {
 }
 
 let timeout = false;
-function createNotification(message, status) {
+// ADD LINKS TO THE NOTIFICATION
+function createNotification(message, status, link = false) {
     const modal = document.querySelector(".modal");
     const div = document.createElement("div");
+    // TO TRY
+    if (link) {
+        div.style.cursor = "pointer";
+        div.onclick = function () {
+            redirect(link);
+        };
+    }
     div.classList.add("notification");
     const p = document.createElement("p");
     p.classList.add("message");
