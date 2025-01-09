@@ -3,10 +3,8 @@
     <thead>
         <tr>
             <th scope="col">Delete</th>
-            <th scope="col">Album Title</th>
-            <th scope="col">Type</th>
-            <th scope="col">Inch</th>
-            <th scope="col">Rpm</th>
+            <th scope="col">Title</th>
+            <th scope="col">Info</th>
             <th scope="col">Cost</th>
             <th scope="col">Edit</th>
         </tr>
@@ -20,23 +18,21 @@
             </td>
         </tr>
         <?php foreach($data["vinyls"] as $vinyl):
-            echo ('<tr class="vinyl-record">
-                <td>
+            echo ('<tr">
+                <td colspan="0.5">
                     <button class="delete" onclick="deleteUser()" aria-label="Delete vinyl">
                         <span aria-hidden="true">x</span>
                     </button>
                 </td>
-                <td>' . $vinyl["title"] . '</td>
-                <td>' . $vinyl["type"] . '</td>
-                <td>' . $vinyl["inch"] . '</td>
-                <td>' . $vinyl["rpm"] . '</td>
-                <td>€' . $vinyl["cost"] . '</td>
-                <td>
+                <td colspan="2">' . $vinyl["title"] . '</td>
+                <td colspan="3"> ' . $vinyl["type"] . ' - ' . $vinyl["inch"] . ' - ' . $vinyl["rpm"] . '</td>
+                <td colspan="1">€' . $vinyl["cost"] . '</td>
+                <td colspan="0.5">
                     <a class="edit" aria-label="Edit vinyl details">
                         <span aria-hidden="true"><i class="bi bi-pencil"></i></span>
                     </a>
                 </td>
-            </td>');
+            </tr>');
         endforeach;
         ?>
     </tbody>

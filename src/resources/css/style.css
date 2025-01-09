@@ -1667,17 +1667,46 @@ main section p, main form p {
 }
 
 .admin-vinyls-header {
+  margin-top: 10px;
   font-size: 3rem;
   margin-bottom: 30px;
   font-weight: bold;
 }
 
-tbody td {
-  text-align: center;
-  background-color: var(--background-color);
+table {
+  border-collapse: collapse;
 }
-tbody .add {
-  align-self: center;
+
+td:has(.add) {
+  background-color: var(--background-color);
+  padding: 15px 10px;
+}
+
+td {
+  border-bottom: 1px solid black; /* Bordo interno */
+  padding: 8px; /* Spaziatura interna */
+  text-align: center; /* Allinea il testo al centro */
+}
+td .delete {
+  padding: 0 3px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+td:has(.delete) {
+  padding: 2px 0px 0px 8px;
+  vertical-align: top;
+  text-align: start;
+}
+
+td:has(.edit) {
+  padding: 0px 8px 4px 0px;
+  vertical-align: bottom;
+  text-align: end;
+}
+
+.add {
   display: block;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
@@ -1685,5 +1714,8 @@ tbody .add {
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
-  width: 90%;
+}
+
+.add:hover {
+  background-color: var(--selected-color);
 }
