@@ -108,7 +108,6 @@ CREATE TABLE IF NOT EXISTS `vinylsshop`.`orders` (
     `order_date` DATE NOT NULL,
     `total_cost` DECIMAL(10, 2) NOT NULL DEFAULT 0,
     `id_card` INT,
-    `order_status` VARCHAR(50) NOT NULL,
     `discount_code` VARCHAR(50),
     `id_user` INT NOT NULL,
     PRIMARY KEY (`id_order`),
@@ -121,16 +120,19 @@ CREATE TABLE IF NOT EXISTS `vinylsshop`.`shipments` (
     `id_shipment` INT NOT NULL AUTO_INCREMENT,
     `tracking_number` VARCHAR(100) NOT NULL,
     `shipment_date` DATE NOT NULL,
-    `delivery_date` DATE,
+    `delivery_date` DATE NOT NULL,
     `shipment_status` VARCHAR(50) NOT NULL,
+    `shipment_progress` INT DEFAULT 0,
     `courier` VARCHAR(50) NOT NULL,
     `notes` TEXT,
     `cost` DECIMAL(10, 2) NOT NULL,
     `id_order` INT NOT NULL,
     `id_address` INT NOT NULL,
+    `id_user` INT NOT NULL,
     PRIMARY KEY (`id_shipment`),
     FOREIGN KEY (`id_order`) REFERENCES `vinylsshop`.`orders` (`id_order`),
-    FOREIGN KEY (`id_address`) REFERENCES `vinylsshop`.`addresses` (`id_address`)
+    FOREIGN KEY (`id_address`) REFERENCES `vinylsshop`.`addresses` (`id_address`),
+    FOREIGN KEY (`id_user`) REFERENCES `vinylsshop`.`users` (`id_user`)
 );
 
 CREATE TABLE IF NOT EXISTS `vinylsshop`.`vinyls` (
@@ -163,6 +165,17 @@ CREATE TABLE IF NOT EXISTS `vinylsshop`.`checkouts` (
     FOREIGN KEY (`id_vinyl`) REFERENCES `vinylsshop`.`vinyls` (`id_vinyl`)
 );
 
+CREATE TABLE IF NOT EXISTS `vinylsshop`.`notifications` (
+    `id_notification` INT NOT NULL AUTO_INCREMENT,
+    `id_user` INT NOT NULL,
+    `message` TEXT NOT NULL,
+    `link` VARCHAR(255),
+    `is_read` BOOLEAN DEFAULT 0,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id_notification`),
+    FOREIGN KEY (`id_user`) REFERENCES `vinylsshop`.`users` (`id_user`)
+);
+
 -- Redundancy check for cost: ORDER->costo_totale = SHIPMENT(costo) + costo(VINYL)
 CREATE OR REPLACE VIEW `vinylsshop`.`order_total_cost` AS
 SELECT o.id_order, (s.cost + SUM(v.cost * c.quantity)) AS total_cost
@@ -171,3 +184,4 @@ JOIN `vinylsshop`.`shipments` s ON o.id_order = s.id_order
 JOIN `vinylsshop`.`carts` c ON c.id_user = o.id_user
 JOIN `vinylsshop`.`vinyls` v ON c.id_vinyl = v.id_vinyl
 GROUP BY o.id_order;
+

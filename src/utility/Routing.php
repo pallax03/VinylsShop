@@ -15,6 +15,8 @@
 // 🏡: --- HomeController.php --- (models: Auth Vinyl)
     // # 🏠 [Home] ~ (no need to be logged) -> Vinyl
     $router->get('/', [HomeController::class, 'index']);
+    // # 🍽️ [Notifications] ~ '?id_user='  -> Notifications
+    $router->get('/notifications', [HomeController::class, 'notifications']);
     // # 🍽️ [Search] -> Vinyl
     $router->get('/search', [HomeController::class, 'search']);
     // # 🍽️  [Login] -> Auth
@@ -32,7 +34,7 @@
     // # 🏠 [Dashboard] -> Auth.
     $router->get('/dashboard', [HomeController::class, 'dashboard']);
     $router->get('/dashboard/albums', [HomeController::class, 'dashboardAlbums']);
-    $router->get('/dashboard/shoppings', [HomeController::class, 'dashboardShoppings']);
+    $router->get('/dashboard/ecommerce', [HomeController::class, 'dashboardEcommerce']);
     $router->get('/dashboard/users', [HomeController::class, 'dashboardUsers']);
 
 
@@ -43,6 +45,7 @@
     $router->post('/vinyl', [VinylController::class, 'setVinyl']);
     // # 🍽️ [DeleteVinyl] ~ -> Auth - Vinyl - Artist - Track.
     $router->delete('/vinyl', [VinylController::class, 'deleteVinyl']);
+    $router->get('/albums', [VinylController::class, 'getAlbums']);
 
 
 // 🛒: --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 

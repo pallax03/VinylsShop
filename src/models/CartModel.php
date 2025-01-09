@@ -161,6 +161,7 @@ final class CartModel {
         if (!Session::isLogged()) {
             return false;
         }
+
         foreach ($this->getUserCart() as $key => $vinyl) {
             // DB is prior in sync so if a duplicate in session session will be removed.
             if (Session::getVinylFromCart($vinyl['id_vinyl'])) {

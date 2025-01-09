@@ -5,6 +5,7 @@ final class OrderModel
     private $vinyls_model = null;
     private $auth_model = null;
     private $user_model = null;
+    private $notification_model = null;
 
     public function __construct() {
         require_once MODELS . 'VinylsModel.php';
@@ -15,6 +16,61 @@ final class OrderModel
 
         require_once MODELS . 'UserModel.php';
         $this->user_model = new UserModel();
+
+        require_once MODELS . 'NotificationModel.php';
+        $this->notification_model = new NotificationModel();
+
+        $this->updateShippings();
+    }
+
+    /**
+     * Simulate the shipping of the orders.
+     * updating the status of the shipping.
+     * By default, the status will be updated to:
+     * - "Delivered" when is $delivery_date.
+     * - "On delivery" the day before $delivery_date.
+     * - "In transit" after 1 day.
+     *
+     * Sending Notifications to the user.
+     * 
+     * @return void
+     */
+    private function updateShippings() {
+        $shippings = Database::getInstance()->executeResults(
+            "SELECT `id_shipment`, `shipment_date`, `delivery_date`, `shipment_status`, `id_order`, `id_address`, `id_user`
+                FROM `shipments` WHERE `shipment_status` != 'Delivered';"
+        );
+        
+        foreach ($shippings as $shipping) {
+            $shipment_date = new DateTime($shipping['shipment_date']);
+            $delivery_date = new DateTime($shipping['delivery_date']);
+            $today = new DateTime(date('Y-m-d'));
+
+            if($today > $delivery_date) {
+                $status = 'Delivered';
+                $progress = 100;
+            } else if ($today->diff($delivery_date)->days == 1) {
+                $status = 'On delivery';
+                $progress = 90;
+            } else if ($today->diff($shipment_date)->days > 1) {
+                $status = 'In transit';
+                $progress = intval(($today->diff($shipment_date)->days / $delivery_date->diff($shipment_date)->days) * 100);
+            } else {
+                $status = 'In preparation';
+                $progress = intval(($today->diff($shipment_date)->days / $delivery_date->diff($shipment_date)->days) * 100);
+            }
+
+            if ($status != $shipping['shipment_status']) {
+                Database::getInstance()->executeQueryAffectRows(
+                    "UPDATE `vinylsshop`.`shipments` SET `shipment_status` = ?, `shipment_progress` = ? WHERE `id_shipment` = ?;",
+                    'ssi',
+                    $status,
+                    $progress,
+                    $shipping['id_shipment']
+                );
+                $this->notification_model->createNotification($shipping['id_user'], 'Shipping status updated', '/order?id_order=' . $shipping['id_order']);
+            }
+        }
     }
 
     /**
@@ -28,11 +84,11 @@ final class OrderModel
             "SELECT o.id_order,
                     o.order_date,
                     o.total_cost,
-                    o.order_status,
                     s.tracking_number,
                     s.shipment_date,
                     s.delivery_date,
                     s.shipment_status,
+                    s.shipment_progress,
                     s.courier,
                     s.notes,
                     s.cost AS shipment_cost,
@@ -87,7 +143,6 @@ final class OrderModel
             "SELECT o.id_order,
                     o.order_date,
                     o.total_cost,
-                    o.order_status,
                     o.id_card,
                     c.card_number,
                     o.discount_code,
@@ -96,6 +151,7 @@ final class OrderModel
                     s.shipment_date,
                     s.delivery_date,
                     s.shipment_status,
+                    s.shipment_progress,
                     s.courier,
                     s.notes,
                     s.cost AS shipment_cost,
@@ -142,23 +198,26 @@ final class OrderModel
      *
      * @return bool
      */
-    public function setShipping($id_order, $tracking_number = null, $shipment_date = null, $delivery_date = null, $shipment_status = null, $courier = null, $notes = null, $cost = null) {
-        if (!Session::haveAdminUserRights() || $id_order === null || !isset(Session::getUser()['default_address'])) {
+    public function setShipping($id_order, $notes = null, $id_address=null) {
+        if ($id_order === null) {
             return false;
         }
 
+        $id_address = $id_address ?? $this->user_model->getUser()['default_address'];
+        Database::getInstance()->setHandler(null);
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `vinylsshop`.`shipments` (id_order, tracking_number, shipment_date, delivery_date, shipment_status, courier, notes, cost, id_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            'issssssdi',
+            "INSERT INTO `vinylsshop`.`shipments` (id_order, tracking_number, shipment_date, delivery_date, shipment_status, courier, notes, cost, id_address, id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+            'issssssdii',
             $id_order,
-            $tracking_number ?? bin2hex(random_bytes(6)),
-            $shipment_date ?? date('Y-m-d'),
-            $delivery_date ?? date('Y-m-d', strtotime('+7 days')),
-            $shipment_status ?? 'In preparation',
-            $courier ?? $_ENV['SHIPPING_COURIER'],
+            bin2hex(random_bytes(6)),
+            date('Y-m-d'),
+            date('Y-m-d', strtotime('+7 days')),
+            'In preparation',
+            $_ENV['SHIPPING_COURIER'],
             $notes ?? '',
-            $cost ?? $_ENV['SHIPPING_COST'],
-            Session::getUser()['default_address']
+            $_ENV['SHIPPING_COST'],
+            $id_address,
+            Session::getUser()
         );
     }
 
@@ -174,11 +233,12 @@ final class OrderModel
                 return false;
             }
         }
+        return true;
     }
 
     private function deleteOrderCart($id_order) {
         return Database::getInstance()->executeQueryAffectRows(
-            "DELETE FROM `vinylsshop`.`orders` WHERE id_order = ?;",
+            "DELETE FROM `vinylsshop`.`checkouts` WHERE id_order = ?;",
             'i',
             $id_order
         );
@@ -209,8 +269,9 @@ final class OrderModel
     }
 
     private function tryPayment($total) {
-        if (Session::getUser()['default_card'] === null) {
-            return Session::getUser()['balance'] >= $total;
+        $user = $this->user_model->getUser();
+        if ($user['default_card'] == null || $user['default_card'] == '') {
+            return $user['balance'] >= $total;
         } 
         return true;
     }
@@ -228,6 +289,14 @@ final class OrderModel
         return Session::getTotal() <= $_ENV['SHIPPING_GOAL'] ? $total + $_ENV['SHIPPING_COST'] : $total;
     }
 
+    private function deleteOrder($id_order) {
+        return Database::getInstance()->executeQueryAffectRows(
+            "DELETE FROM `vinylsshop`.`orders` WHERE `id_order` = ?;",
+            'i',
+            $id_order
+        );
+    }
+
     /**
      * Set an order from the cart.
      *
@@ -241,32 +310,32 @@ final class OrderModel
         }
 
         $total = $this->getOrderTotal($discount_code);
-        if($this->tryPayment($total)) {
+        if(!$this->tryPayment($total)) {
             return false;
         }
         
 
         if (!Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `vinylsshop`.`orders` (order_date, total_cost, order_status, id_user, id_card, discount_code) 
-                VALUES (?, ?, ?, ?, ?, ?); ",
-            'sdsiss',
+            "INSERT INTO `vinylsshop`.`orders` (order_date, total_cost, id_user, id_card, discount_code) 
+                VALUES (?, ?, ?, ?, ?); ",
+            'sdiis',
             date('Y-m-d'),
             $total,
-            'Paid',
             Session::getUser(),
-            Session::getUser()['default_card'] ?? '',
+            $this->user_model->getUser()['default_card'] ?? '',
             $discount_code ?? '',
         )) {
             return false;
         }
 
         $id_order = Database::getInstance()->executeResults("SELECT LAST_INSERT_ID() AS id_order;")[0]['id_order'];
-        if(!$this->loadOrderCart($id_order, $cart)) {
-            $this->deleteOrderCart($id_order);
+        if(!$this->setShipping($id_order, notes: $notes)) {
+            $this->deleteOrder($id_order);
             return false;
         }
-        
-        if(!$this->setShipping($id_order, notes: $notes)) {
+        if(!$this->loadOrderCart($id_order, $cart)) {
+            $this->deleteOrderCart($id_order);
+            $this->deleteOrder($id_order);
             return false;
         }
 
@@ -283,12 +352,13 @@ final class OrderModel
             return Database::getInstance()->executeResults(
                 "SELECT `id_coupon`, `discount_code`, `percentage`, `valid_from`, `valid_until`
                     FROM `vinylsshop`.`coupons`
-                    WHERE `id_coupon` = ?;",
+                    WHERE CURDATE() BETWEEN `valid_from` AND `valid_until`
+                    AND `id_coupon` = ?;",
                 'i',
                 $id_coupon
             )[0];
         }
-        return Database::getInstance()->executeResults("SELECT `id_coupon`, `discount_code`, `percentage`, `valid_from`, `valid_until` FROM `vinylsshop`.`coupons`; ");
+        return Database::getInstance()->executeResults("SELECT `id_coupon`, `discount_code`, `percentage`, `valid_from`, `valid_until` FROM `vinylsshop`.`coupons` WHERE CURDATE() BETWEEN `valid_from` AND `valid_until`;");
     }
 
     /**
@@ -297,6 +367,12 @@ final class OrderModel
      * @return bool
      */
     public function setCoupon($discount_code, $percentage, $valid_from, $valid_until, $id_coupon = null) {
+        if ($percentage > 0 && $percentage <= 100) {
+            $percentage = $percentage / 100;
+        } else {
+            return false;
+        }
+
         if($id_coupon) {
             return Database::getInstance()->executeQueryAffectRows(
                 "UPDATE `vinylsshop`.`coupons` SET `discount_code` = ?, `percentage` = ?, `valid_from` = ?, `valid_until` = ? WHERE `id_coupon` = ?;",
@@ -320,15 +396,25 @@ final class OrderModel
     }
 
     /**
-     * Delete a coupon.
+     * Delete a coupon, if cannot be deleted, it will be expired.
      *
      * @return bool
      */
     public function deleteCoupon($id_coupon) {
-        return Database::getInstance()->executeQueryAffectRows(
+        Database::getInstance()->setHandler(null); // reset the handler to avoid the error
+        $result = Database::getInstance()->executeQueryAffectRows(
             "DELETE FROM `vinylsshop`.`coupons` WHERE `id_coupon` = ?;",
             'i',
             $id_coupon
         );
+    
+        if(!$result) {
+            $result = Database::getInstance()->executeQueryAffectRows(
+                "UPDATE `vinylsshop`.`coupons` SET `valid_until` = CURDATE() - 1 WHERE `id_coupon` = ?;",
+                'i',
+                $id_coupon
+            );
+        }
+        return $result;
     }
 }

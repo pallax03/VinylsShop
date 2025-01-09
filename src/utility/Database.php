@@ -21,7 +21,7 @@ class Database {
     
     private function __construct() {
         $this->setConfigEnv();
-        $this->handler = $this->defaultHandler();
+        $this->handler = $this->setHandler(null);
         $this->got_exception = false;
         $this->connection = new mysqli(self::$host, self::$username, self::$password, self::$database);
         if ($this->connection->connect_error) {
@@ -74,7 +74,7 @@ class Database {
         }
     }
 
-    private function defaultHandler() {
+    public static function defaultHandler() {
         return function($query, $types=null, ...$params) {
             echo 'Query: '.$query . "</br>";
             if ($types !== null) {
@@ -172,7 +172,7 @@ class Database {
             return false;
         }
 
-        $this->setHandler($this->defaultHandler());
+        $this->setHandler(null);
         return $stmt;
     }
 

@@ -3,8 +3,53 @@ final class VinylsModel {
 
     private $db = null;
 
+    private $notifications_model = null;
+
     public function __construct() {
         $this->db = Database::getInstance();
+        require_once MODELS . 'NotificationModel.php';
+        $this->notifications_model = new NotificationModel();
+    }
+
+    private function broadcastCartVinyl($id_vinyl) {
+        $this->notifications_model->broadcastFor(
+            Database::getInstance()->executeResults(
+                "SELECT id_user FROM carts WHERE id_vinyl = ?",
+                'i',
+                $id_vinyl
+            ),
+            "A vinyl in your cart has been updated.",
+            "/vinyl?id=" . $id_vinyl
+        );
+    }
+
+    private function broadcastVinyl($id_vinyl) {
+        $this->notifications_model->broadcast(
+            "A new Vinyl landed here!",
+            "/vinyl?id=$id_vinyl"
+        );
+    }
+
+    private function applyFilters($query, $filters = []) {
+        $filtersMap = [
+            "id_vinyl" => ["query" => fn($value) => " AND v.id_vinyl = ? ", "type" => 'i'],
+            "id_album" => ["query" => fn($value) => " AND a.id_album = ? ", "type" => 'i'],
+            "title" => ["query" => fn($value) => " AND a.title LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"],
+            "genre" => ["query" => fn($value) => " AND a.genre LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"],
+            "id_artist" => ["query" => fn($value) => " AND ar.id_artist = ? ", "type" => 'i'],
+            "artist_name" => ["query" => fn($value) => " AND ar.name LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"],
+            "id_track" => ["query" => fn($value) => " AND ta.id_track = ? ", "type" => 'i'],
+            "track_title" => ["query" => fn($value) => " AND t.title LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"]
+        ];
+
+        $types = '';
+        $values = [1];
+        foreach ($filters as $key => $value) {
+            $query .= $filtersMap[$key]["query"]($value);
+            $types .= $filtersMap[$key]["type"];
+            $values[] = isset($filtersMap[$key]["value"]) ? $filtersMap[$key]["value"]($value) : $value;
+        }
+        return $this->db->executeResults($query. ' GROUP BY a.id_album;', 'i'.$types, ...$values);
     }
 
     /**
@@ -109,11 +154,14 @@ final class VinylsModel {
             JOIN tracks t ON t.id_track = ta.id_track
             WHERE a.id_album = ?";
         // prepare statement
-        $result["details"] = $this->db->executeResults($vinyl, "i", $id)[0];
-        // store id_album for the next query
-        $album =  $result["details"]["id_album"];
-        // prepare second statement
-        $result["tracks"] = $this->db->executeResults($tracks, "i", $album);
+        $result = $this->db->executeResults($vinyl, "i", $id);
+        if(!empty($result)) {
+            $result["details"] = $result[0];
+            // store id_album for the next query
+            $album =  $result["details"]["id_album"];
+            // prepare second statement
+            $result["tracks"] = $this->db->executeResults($tracks, "i", $album);
+        }
         return $result;
     }
 
@@ -240,6 +288,44 @@ final class VinylsModel {
         return $result;
     }
 
+    
+    /**
+     * Get the vinyls.
+     *
+     * @param array $filter the qury filter of the artist params to get the albums
+     * filters can be:
+     * - id_album
+     * - title
+     * - genre
+     * - id_artist
+     * - artist_name
+     * - id_track
+     * - track_title
+     * 
+     * @return array containing the albums 
+     */
+    public function getVinylsOptimized($filters) {
+        return $this->applyFilters(
+            "SELECT v.id_vinyl,
+                    v.cost,
+                    a.id_album,
+                    a.title,
+                    a.release_date,
+                    a.genre,
+                    a.cover,
+                    ar.id_artist,
+                    ar.name AS artist_name,
+                    GROUP_CONCAT(DISTINCT ta.id_track ORDER BY ta.id_track ASC SEPARATOR ', ') AS track_ids,
+                    GROUP_CONCAT(DISTINCT t.title ORDER BY t.title ASC SEPARATOR ', ') AS track_titles
+                FROM albums a 
+                JOIN artists ar ON a.id_artist = ar.id_artist
+                JOIN albumstracks ta ON a.id_album = ta.id_album
+                JOIN tracks t ON t.id_track = ta.id_track
+                WHERE 1 = ?", 
+            $filters
+        );
+    }
+
     /**
      * Get the albums of an artist.
      * @param array $filter the qury filter of the artist params to get the albums
@@ -255,49 +341,25 @@ final class VinylsModel {
      * @return array containing the albums 
      */
     public function getAlbums($filters) {
-        $query = "SELECT
-            a.id_album,
-            a.title,
-            a.release_date,
-            a.genre,
-            a.cover,
-            ar.id_artist,
-            ar.name AS artist_name
-            ta.id_track,
-            ta.title AS track_title
-            FROM
-            albums a
-            JOIN artists ar ON a.id_artist = ar.id_artist
-            JOIN albumstracks ta ON a.id_album = ta.id_album";
-        
-        $keys = array_keys($filters);
-        switch (reset($keys)) {
-            case "id_album":
-                $query = $query . " WHERE a.id_album = " . $filters["id_album"];
-                break;
-            case "title":
-                $query = $query . " WHERE a.title LIKE '%" . $filters["title"] . "%'";
-                break;
-            case "genre":
-                $query = $query . " WHERE a.genre LIKE '%" . $filters["genre"] . "%'";
-                break;
-            case "id_artist":
-                $query = $query . " WHERE ar.id_artist LIKE '%" . $filters["id_artist"] . "%'";
-                break;
-            case "artist_name":
-                $query = $query . " WHERE artist_name LIKE '%" . $filters["artist_name"] . "%'";
-                break;
-            case "id_track":
-                $query = $query . " WHERE ta.id_track LIKE '%" . $filters["id_track"] . "%'";
-                break;
-            case "track_title":
-                $query = $query . " WHERE track_title LIKE '%" . $filters["track_title"] . "%'";
-                break;
-        }
-
-        return $this->db->executeResults($query);
+        return $this->applyFilters(
+            "SELECT 
+                    a.id_album,
+                    a.title,
+                    a.release_date,
+                    a.genre,
+                    a.cover,
+                    ar.id_artist,
+                    ar.name AS artist_name,
+                    GROUP_CONCAT(DISTINCT ta.id_track ORDER BY ta.id_track ASC SEPARATOR ', ') AS track_ids,
+                    GROUP_CONCAT(DISTINCT t.title ORDER BY t.title ASC SEPARATOR ', ') AS track_titles
+                FROM albums a 
+                JOIN artists ar ON a.id_artist = ar.id_artist
+                JOIN albumstracks ta ON a.id_album = ta.id_album
+                JOIN tracks t ON t.id_track = ta.id_track
+                WHERE 1 = ?", 
+            $filters
+        );
     }
-
 
     // TODO NEED TO UPDATE ALBUMS TRACKS
 
@@ -403,12 +465,19 @@ final class VinylsModel {
             return $this->updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $album);
         }
         
-        return $this->db->executeQueryAffectRows(
+        $result = $this->db->executeQueryAffectRows(
             "INSERT INTO vinyls (`cost`, `rpm`, `inch`, `type`, `stock`, `id_album`)
                 VALUES (?, ?, ?, ?, ?, ?)",
             'diisii',
             $cost, $rpm, $inch, $type, $stock, $album
         );
+
+        if ($result) {
+            // broadcast the new vinyl for all users
+            $last_id = Database::getInstance()->executeResults("SELECT id_vinyl FROM vinyls ORDER BY id_vinyl DESC LIMIT 1")[0]['id_vinyl'];
+            $this->broadcastVinyl($last_id);
+        }
+        return $result;
     }
 
     /**
@@ -437,12 +506,17 @@ final class VinylsModel {
      * @return bool true if the vinyl was updated, false otherwise
      */
     public function updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $id_album) {
-        return $this->db->executeQueryAffectRows(
+        $result = $this->db->executeQueryAffectRows(
             "UPDATE vinyls
                 SET cost = ?, rpm = ?, inch = ?, type = ?, stock = ?, id_album = ?
                 WHERE id_vinyl = ?",
             'diisii',
             $cost, $rpm, $inch, $type, $stock, $id_album, $id_vinyl
         );
+
+        if ($result) {
+            $this->broadcastCartVinyl($id_vinyl);
+        }
+        return $result;
     }
 }

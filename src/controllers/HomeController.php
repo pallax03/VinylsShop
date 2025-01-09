@@ -58,26 +58,6 @@ class HomeController extends Controller {
         $response->Error('Register Error, please try again...');
     }
 
-    public function loginRegister(Request $request, Response $response) {
-        $body = $request->getBody();
-
-        if ($this->auth_model->checkUserMail($body['mail'])) {
-            if ($this->auth_model->login($body['mail'], $body['password'], $body['remember'])) {
-                $response->Success('Logged in, redirecting...');
-                return;
-            }
-            $response->Error('User found, but password is wrong...', $body);
-        } else {
-            $message = $this->auth_model->register($body['mail'], $body['password']);
-            if ($message === true) {
-                $this->auth_model->login($body['mail'], $body['password'], $body['remember']);
-                $response->Success('Registered, redirecting...');
-                return;
-            }
-            $response->Error($message ?? 'Register Error, please try again...');
-        }
-    }
-
     public function logout(Request $request, Response $response) {
         $this->auth_model->logout();
         $response->redirect('/');
@@ -109,9 +89,9 @@ class HomeController extends Controller {
             ['vinyls' => $this->vinyls_model->getAllVinyls()]);
     }
     
-    public function dashboardShoppings() {
+    public function dashboardEcommerce() {
         $this->redirectNotSuperUser();
-        $this->render('admin/shoppings', ['title' => 'Manage Shoppings'],
+        $this->render('admin/ecommerce', ['title' => 'Manage Ecommerce'],
             ['coupons' => $this->order_model->getCoupons()]);
     }
 

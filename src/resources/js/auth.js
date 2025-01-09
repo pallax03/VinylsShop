@@ -20,28 +20,20 @@ document.getElementById("btn-login_submit").addEventListener("click", function (
         document.getElementById("input-login_remember").checked
     );
 
-    fetch("/login", {
+    makeRequest(fetch("/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
         body: params.toString(),
-    })
-    .then((response) => {
-        return response.json().then((data) => {
-            if (!response.ok) {
-                throw new Error(data.error || "Unknown error");
-            }
-            return data;
-        });
-    })
+    }))
     .then((data) => {
         document.getElementById("btn-login_submit").disabled = true;
-        document.getElementById("div-login_response").innerHTML = "<p>" + data.message + "</p>";
-        setTimeout(() => {window.location.href = "/";}, 2000);
+        document.getElementById("div-login_response").innerHTML = "<p>" + data + "</p>";
+        setTimeout(() => { window.location.href = "/"; }, 2000);
     })
     .catch((error) => {
-        document.getElementById("div-login_response").innerHTML = '<p class="error">' + error.message + "</p>";
+        document.getElementById("div-login_response").innerHTML = '<p class="error">' + error + "</p>";
     });
 });
 
@@ -51,33 +43,22 @@ function register(mail, password, newsletter) {
     params.append("password", password.value);
     params.append("newsletter", newsletter.checked);
 
-    fetch("/register", {
+    makeRequest(fetch("/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
         body: params.toString(),
-    })
-        .then((response) => {
-            return response.json().then((data) => {
-                if (!response.ok) {
-                    throw new Error(data.error || "Unknown error");
-                }
-                return data;
-            });
-        })
-        .then((data) => {
-            document.getElementById("btn-register_submit").disabled = true;
-            document.getElementById("div-register_response").innerHTML =
-                "<p>" + data.message + "</p>";
+    })).then((data) => {
+        document.getElementById("btn-register_submit").disabled = true;
+        document.getElementById("div-register_response").innerHTML = "<p>" + data + "</p>";
 
-            setTimeout(() => {
-                window.location.href = "/";
-            }, 2000);
-        })
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 2000);
+    })
         .catch((error) => {
-            document.getElementById("div-register_response").innerHTML =
-                '<p class="error">' + error.message + "</p>";
+            document.getElementById("div-register_response").innerHTML = '<p class="error">' + error + "</p>";
         });
 }
 

@@ -190,12 +190,12 @@ VALUES
 (9, 2, 1);
 
 -- Insert orders
-INSERT IGNORE INTO `vinylsshop`.`orders` (`order_date`, `total_cost`, `id_card`, `order_status`, `discount_code`, `id_user`)
+INSERT IGNORE INTO `vinylsshop`.`orders` (`order_date`, `total_cost`, `id_card`, `discount_code`, `id_user`)
 VALUES
-('2024-10-29', 72.00, 1, 'Completed', 'HALLOWEEN10', 2),
-('2024-11-21', 9.00, NULL, 'Completed', 'BLACKFRIDAY70', 2),
-('2024-12-06', 36.00, 2, 'On going', 'CHRISTMAS20', 2),
-('2024-12-31', 29.00, 2, 'Paid', NULL, 2);
+('2024-10-29', 72.00, 1, 'HALLOWEEN10', 2),
+('2024-11-21', 9.00, NULL, 'BLACKFRIDAY70', 2),
+('2024-12-06', 36.00, 2, 'CHRISTMAS20', 2),
+('2024-12-31', 29.00, 2, NULL, 2);
 
 -- Insert checkouts
 INSERT IGNORE INTO `vinylsshop`.`checkouts` (`id_order`, `id_vinyl`, `quantity`)
@@ -209,9 +209,9 @@ VALUES
 (4, 8, 1);
 
 -- Insert shipments
-INSERT IGNORE INTO `vinylsshop`.`shipments` (`tracking_number`, `shipment_date`, `delivery_date`, `shipment_status`, `courier`, `notes`, `cost`, `id_order`, `id_address`)
+INSERT IGNORE INTO `vinylsshop`.`shipments` (`tracking_number`, `shipment_date`, `delivery_date`, `shipment_status`, `courier`, `notes`, `cost`, `id_order`, `id_address`, `id_user`)
 VALUES
-('1234567890', '2024-10-29', '2024-11-02', 'Delivered', 'Poste Italiane', 'attenti al lupo', 5.00, 1, 1),
-('0987654321', '2024-11-21', '2024-11-24', 'Delivered', 'Poste Italiane', 'da consegnare sul pianerottolo', 5.00, 2, 1),
-('1357924680', '2024-12-06', NULL, 'In transit', 'Poste Italiane', NULL, 5.00, 3, 1),
-('2468135790', '2024-12-31', NULL, 'In preparation', 'Poste Italiane', NULL, 5.00, 4, 2);
+('1234567890', '2024-12-30', '2024-12-05', '', 'Poste Italiane', 'attenti al lupo', 5.00, 1, 1, 2),
+('0987654321', '2025-01-02', '2025-01-09', '', 'Poste Italiane', 'da consegnare sul pianerottolo', 5.00, 2, 1, 2),
+('1357924680', '2025-01-04', '2025-01-11', '', 'Poste Italiane', NULL, 5.00, 3, 1, 2),
+('2468135790', '2025-01-08', '2025-01-15', '', 'Poste Italiane', 'Rosa rosso ciliegia', 5.00, 4, 2, 2);
