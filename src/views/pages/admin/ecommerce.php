@@ -25,11 +25,16 @@
     document.getElementById('btn-shipping_submit').addEventListener('click', function() {
         let form = document.querySelector('form');
         let formData = new FormData(form);
-        makeRequest(fetch(form.action, {
+        fetch(form.action, {
             method: form.method,
             body: formData
-        })).then(data => createNotification(data, true))
-        .catch(error => createNotification(error, false));
+        })
+        .then(response => response.json())
+        .then(data => {
+            // NOTIFICATION
+            redirect(window.location.href);
+        })
+        .catch(error => console.error(error));
     });
 </script>
 <div class="div"></div>
@@ -68,13 +73,13 @@
             <li id="li-form_reset" class="split">
                 <div class="button">
                     <i class="bi bi-x"></i>
-                    <input class="close" type="reset" id="btn-coupon_reset" aria-label="Reset Form" value="Reset" />
+                    <button class="close" type="button" id="btn-coupon_reset" aria-label="Reset Form">Reset</button>
                 </div>
             </li>
             <li class="split">
                 <div class="button">
                     <i class="bi bi-percent"></i>
-                    <input type="button" id="btn-coupon_submit" aria-label="Add Coupon" value="Add"/>
+                    <button type="button" id="btn-coupon_submit" aria-label="Add Coupon">Add</button>
                 </div>
             </li>
         </ul>

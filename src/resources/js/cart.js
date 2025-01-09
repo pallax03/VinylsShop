@@ -45,6 +45,7 @@ function loadCartView(data) {
                 <footer>
                     <p>${item.vinyl.cost} €</p>
                 </footer>
+            </div>
         `;
         cart.appendChild(itemElement.firstElementChild);
         cart.appendChild(itemElement);
