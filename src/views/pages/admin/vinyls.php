@@ -11,23 +11,23 @@
     </thead>
     <tbody>
         <tr>
-            <td colspan="7">
-                <a id="add" class="add" href="/dashboard/add/user" aria-label="Add a new vinyl">
-                    <span aria-hidden="true">+</span>
-                </a>
+            <td colspan="5">
+                <button id="btn-vinyls_add" class="add" aria-label="Add a new vinyl">
+                    <span aria-hidden="true"><i class="bi bi-plus"></i></span>
+                </button>
             </td>
         </tr>
         <?php foreach($data["vinyls"] as $vinyl):
             echo ('<tr">
-                <td colspan="0.5">
+                <td>
                     <button class="delete" onclick="deleteUser()" aria-label="Delete vinyl">
-                        <span aria-hidden="true">x</span>
+                        <span aria-hidden="true"><i class="bi bi-x"></i></span>
                     </button>
                 </td>
-                <td colspan="2">' . $vinyl["title"] . '</td>
-                <td colspan="3"> ' . $vinyl["type"] . ' - ' . $vinyl["inch"] . ' - ' . $vinyl["rpm"] . '</td>
-                <td colspan="1">€' . $vinyl["cost"] . '</td>
-                <td colspan="0.5">
+                <td>' . $vinyl["title"] . '</td>
+                <td> ' . $vinyl["type"] . ' - ' . $vinyl["inch"] . ' - ' . $vinyl["rpm"] . '</td>
+                <td>€' . $vinyl["cost"] . '</td>
+                <td>
                     <a class="edit" aria-label="Edit vinyl details">
                         <span aria-hidden="true"><i class="bi bi-pencil"></i></span>
                     </a>

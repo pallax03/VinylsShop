@@ -2,6 +2,8 @@
 final class AuthModel {
 
     private static $cookieAuthName = 'user_auth';
+    private static $cookieAuthTime = 3600;
+    
 
     private function encryptPassword($password) {
         return md5($password);
@@ -10,7 +12,7 @@ final class AuthModel {
     private function generateToken($userId, $isSuperUser) {
         $key = $_ENV['JWT_SECRET_KEY'];
         $header = base64_encode(json_encode(['alg' => 'HS256', 'typ' => 'JWT']));
-        $payload = base64_encode(json_encode(['id_user' => $userId, 'isSuperUser' => $isSuperUser, 'exp' => time() + 3600]));
+        $payload = base64_encode(json_encode(['id_user' => $userId, 'isSuperUser' => $isSuperUser, 'exp' => time() + self::$cookieAuthTime]));
         $signature = hash_hmac('sha256', "$header.$payload", $key, true);
         $signature = base64_encode($signature);
         return "$header.$payload.$signature";
@@ -48,7 +50,7 @@ final class AuthModel {
 
     private function setCookie($token) {
         setcookie(self::$cookieAuthName, $token, [
-            'expires' => time() + 3600,  // Scadenza di 1 ora (modificabile)
+            'expires' => time() + self::$cookieAuthTime,  // Scadenza di 1 ora (modificabile)
             'path' => '/',               // Disponibile su tutto il sito
             'secure' => true,            // Solo tramite HTTPS
             'httponly' => true,          // Non accessibile via JavaScript
@@ -154,7 +156,7 @@ final class AuthModel {
     public function logout() {
         // delete cookie also if not exists
         setcookie(self::$cookieAuthName, '', [
-            'expires' => time() - 3600,
+            'expires' => time() - self::$cookieAuthTime,
             'path' => '/',
             'secure' => true,
             'httponly' => true,

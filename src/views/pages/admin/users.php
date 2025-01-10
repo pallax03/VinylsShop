@@ -12,18 +12,16 @@
         <tbody>
             <tr>
                 <td colspan="4">
-                    <a id="add" href="/dashboard/add/user" aria-label="Add a new user">
-                        <span aria-hidden="true">+</span>
-                    </a>
+                    <button class="add" id="add" aria-label="Add a new user">
+                        <span aria-hidden="true"><i class="bi bi-plus"></i></span>
+                    </button>
                 </td>
             </tr>
             <?php foreach($data["users"] as $user): ?>
             <tr>
                 <td>
                     <button class="delete" onclick="deleteUser(<?php echo $user['id_user']; ?>)" aria-label="Delete user">
-                        <span aria-hidden="true">
-                            <i class="bi bi-close"></i>
-                        </span>
+                        <span aria-hidden="true"><i class="bi bi-x"></i></span>
                     </button>
                 </td>
                 <td><?php echo $user['mail']; ?></td>
@@ -41,7 +39,7 @@
     </table>
 </section>
 <div class="div"></div>
-<form action="">
+<form action="/user/edit">
     <h2>Update User Balance</h2>
     <ul>
         <li>
