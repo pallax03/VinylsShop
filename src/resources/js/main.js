@@ -152,10 +152,10 @@ function addToCart(id, quantity) {
         try {
             getCart();
         } catch (error) {}
-        createNotification(data, true, "/cart", "bi bi-bag-fill");
+        createNotification(data, true, "/cart", "bi bi-bag-fill", '/cart');
     }
     ).catch((error) => {
-        createNotification(error, false);
+        createNotification(error, false, '/cart');
     });
 }
 
@@ -180,15 +180,26 @@ window.onload = function () {
 
 new MutationObserver(function() {
     const modal = document.querySelector(".modal");
-    const firstItem = modal.querySelector("div");
-    if (firstItem && firstItem === modal.querySelector("div")) {
+    const items = modal.querySelectorAll("div");
+    const firstItem = items[0];
+
+    if (firstItem) {
+        // Calculate timeout based on the number of items
+        const itemCount = items.length;
+        const baseTimeout = 2800; // Base timeout in milliseconds
+        const minTimeout = 200; // Minimum timeout in milliseconds
+        const decayFactor = 0.9; // Decay factor for exponential decay
+
+        // Formula: timeout = max(minTimeout, baseTimeout * (decayFactor ^ itemCount))
+        let timeout = Math.max(minTimeout, baseTimeout * Math.pow(decayFactor, itemCount));
+
         setTimeout(() => {
             firstItem.classList.add("fade-out");
             firstItem.classList.remove("fade-in");
             setTimeout(() => {
                 firstItem.remove();
-            }, 500)
-        }, 3000);
+            }, 500);
+        }, timeout);
     }
 }).observe(document.querySelector('.modal'), { childList: true });
 
