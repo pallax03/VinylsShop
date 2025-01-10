@@ -85,8 +85,6 @@ function validateData(...args) {
 let timeout = false;
 // ADD LINKS TO THE NOTIFICATION
 function createNotification(message, status, link = false) {
-// ADD LINKS TO THE NOTIFICATION
-function createNotification(message, status, link = false) {
     const modal = document.querySelector(".modal");
     const mainDiv = document.createElement("div");
 
@@ -104,19 +102,19 @@ function createNotification(message, status, link = false) {
     // Creazione del messaggio
     const msg = document.createElement("p");
     msg.textContent = message;
+    const redlink = document.createElement("a");
+    if (link) {
+        const chevronIcon = document.createElement("i");
+        chevronIcon.className = "bi bi-chevron-double-right";
+        redlink.href = link;
+        redlink.appendChild(chevronIcon);
+    }
 
     // Assemblaggio del contenuto nel div principale
     mainDiv.appendChild(closeButtonDiv);
     mainDiv.appendChild(statusIcon);
     mainDiv.appendChild(msg);
-    if (link) {
-        const redlink = document.createElement("a");
-        const chevronIcon = document.createElement("i");
-        chevronIcon.className = "bi bi-chevron-double-right";
-        redlink.href = link;
-        redlink.appendChild(chevronIcon);
-        mainDiv.appendChild(link);
-    }
+    mainDiv.appendChild(redlink);
 
     modal.appendChild(mainDiv);
 
@@ -175,4 +173,19 @@ document.addEventListener('keydown', function (event) {
 window.onload = function () {
     updateDarkmodeButton();
 }
+
+new MutationObserver(function() {
+    const modal = document.querySelector(".modal");
+    const firstItem = modal.querySelector("div");
+    if (firstItem && firstItem === modal.querySelector("div")) {
+        setTimeout(() => {
+            firstItem.classList.add("fade-out");
+            firstItem.classList.remove("fade-in");
+            firstItem.ariaHidden = true;
+            setTimeout(() => {
+                firstItem.remove();
+            }, 500)
+        }, 5000);
+    }
+}).observe(document.querySelector('.modal'), { childList: true });
 
