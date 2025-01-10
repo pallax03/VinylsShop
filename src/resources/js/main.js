@@ -88,13 +88,6 @@ function createNotification(message, status, link = false) {
     const modal = document.querySelector(".modal");
     const mainDiv = document.createElement("div");
 
-    // TO TRY
-    if (link) {
-        div.style.cursor = "pointer";
-        div.onclick = function () {
-            redirect(link);
-        };
-    }
     const closeButtonDiv = document.createElement("div");
     const closeButton = document.createElement("button");
     const closeIcon = document.createElement("i");
@@ -110,20 +103,18 @@ function createNotification(message, status, link = false) {
     const msg = document.createElement("p");
     msg.textContent = message;
 
-    // Creazione del link con icone
-    const link = document.createElement("a");
-    const bagIcon = document.createElement("i");
-    bagIcon.className = "bi bi-bag-fill";
-    const chevronIcon = document.createElement("i");
-    chevronIcon.className = "bi bi-chevron-double-right";
-    link.appendChild(bagIcon);
-    link.appendChild(chevronIcon);
-
     // Assemblaggio del contenuto nel div principale
     mainDiv.appendChild(closeButtonDiv);
     mainDiv.appendChild(statusIcon);
     mainDiv.appendChild(msg);
-    mainDiv.appendChild(link);
+    if (link) {
+        const redlink = document.createElement("a");
+        const chevronIcon = document.createElement("i");
+        chevronIcon.className = "bi bi-chevron-double-right";
+        redlink.href = link;
+        redlink.appendChild(chevronIcon);
+        mainDiv.appendChild(link);
+    }
 
     modal.appendChild(mainDiv);
 
