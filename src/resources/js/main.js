@@ -84,7 +84,7 @@ function validateData(...args) {
 
 let timeout = false;
 // ADD LINKS TO THE NOTIFICATION
-function createNotification(message, status, link = false) {
+function createNotification(message, status, link = false, icon = false) {
     const modal = document.querySelector(".modal");
     const mainDiv = document.createElement("div");
 
@@ -104,12 +104,17 @@ function createNotification(message, status, link = false) {
     msg.textContent = message;
     const redlink = document.createElement("a");
     if (link) {
+        if (icon) {
+            const optIcon = document.createElement("i");
+            optIcon.className = icon;
+            redlink.appendChild(optIcon);
+        }
         const chevronIcon = document.createElement("i");
         chevronIcon.className = "bi bi-chevron-double-right";
         redlink.href = link;
         redlink.appendChild(chevronIcon);
     }
-
+    redlink.ariaHidden = link ? true : false;
     // Assemblaggio del contenuto nel div principale
     mainDiv.appendChild(closeButtonDiv);
     mainDiv.appendChild(statusIcon);
@@ -122,7 +127,6 @@ function createNotification(message, status, link = false) {
     closeButton.onclick = function () {
         mainDiv.classList.add("fade-out");
         mainDiv.classList.remove("fade-in");
-        mainDiv.ariaHidden = true;
         setTimeout(() => {
             modal.removeChild(mainDiv);
         }, 500);
@@ -148,7 +152,7 @@ function addToCart(id, quantity) {
         try {
             getCart();
         } catch (error) {}
-        createNotification(data, true);
+        createNotification(data, true, "/cart", "bi bi-bag-fill");
     }
     ).catch((error) => {
         createNotification(error, false);
@@ -181,11 +185,10 @@ new MutationObserver(function() {
         setTimeout(() => {
             firstItem.classList.add("fade-out");
             firstItem.classList.remove("fade-in");
-            firstItem.ariaHidden = true;
             setTimeout(() => {
                 firstItem.remove();
             }, 500)
-        }, 5000);
+        }, 3000);
     }
 }).observe(document.querySelector('.modal'), { childList: true });
 
