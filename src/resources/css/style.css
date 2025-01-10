@@ -1596,6 +1596,7 @@ main section p, main form p {
 }
 
 .modal {
+  pointer-events: none;
   top: 91%;
   width: 90%;
   height: 50px;
@@ -1612,6 +1613,7 @@ main section p, main form p {
   }
 }
 .modal div {
+  pointer-events: auto;
   opacity: 0;
   background-color: var(--background-color);
   display: flex;
@@ -1729,6 +1731,10 @@ td:has(.edit) {
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: var(--text-color);
 }
 
 .add:hover {

@@ -837,6 +837,7 @@ main {
 }
 
 .modal {
+    pointer-events: none;
     top: 91%;
     width: 90%;
     height: 50px;
@@ -850,6 +851,7 @@ main {
     transition: height 0.7s ease;
     z-index: 99;
     div {
+        pointer-events: auto;
         opacity: 0;
         background-color: var(--background-color);
         display: flex;
