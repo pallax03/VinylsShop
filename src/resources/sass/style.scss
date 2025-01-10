@@ -966,6 +966,10 @@ td:has(.edit) {
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: var(--text-color);
 }
 
 .add:hover {
