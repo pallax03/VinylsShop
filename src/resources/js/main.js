@@ -83,10 +83,18 @@ function validateData(...args) {
 }
 
 let timeout = false;
-function createNotification(message, status) {
+// ADD LINKS TO THE NOTIFICATION
+function createNotification(message, status, link = false) {
     const modal = document.querySelector(".modal");
     const mainDiv = document.createElement("div");
 
+    // TO TRY
+    if (link) {
+        div.style.cursor = "pointer";
+        div.onclick = function () {
+            redirect(link);
+        };
+    }
     const closeButtonDiv = document.createElement("div");
     const closeButton = document.createElement("button");
     const closeIcon = document.createElement("i");
