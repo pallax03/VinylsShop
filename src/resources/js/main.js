@@ -85,6 +85,8 @@ function validateData(...args) {
 let timeout = false;
 // ADD LINKS TO THE NOTIFICATION
 function createNotification(message, status, link = false) {
+// ADD LINKS TO THE NOTIFICATION
+function createNotification(message, status, link = false) {
     const modal = document.querySelector(".modal");
     const mainDiv = document.createElement("div");
 
