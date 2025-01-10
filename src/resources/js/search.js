@@ -82,7 +82,7 @@ function createCard(result) {
                     <p class="vinyl-artist">${result.artist}</p>
                     <p class="vinyl-genre">#${result.genre}</p>
                 </div>
-                <a class="add-cart" onclick="addToCart(${result.vinyl_id}, 1)">Add to cart - €${result.cost}</a>
+                <a class="add-cart" onclick="addToCart(${result.id_vinyl}, 1)">Add to cart - €${result.cost}</a>
             </a>
         </div>
         `;

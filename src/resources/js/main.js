@@ -85,30 +85,48 @@ function validateData(...args) {
 let timeout = false;
 function createNotification(message, status) {
     const modal = document.querySelector(".modal");
-    const div = document.createElement("div");
-    div.classList.add("notification");
-    const p = document.createElement("p");
-    p.classList.add("message");
-    p.textContent = message;
-    const img = document.createElement("img");
-    img.classList.add("icon");
-    img.src = "/resources/img/icons/" + (status ? "tick" : "error") + ".png";
-    div.appendChild(img);
-    div.appendChild(p);
-    modal.appendChild(div);
-    modal.classList.add("modal-in");
-    
-    if (!timeout) {
-        timeout = true;
+    const mainDiv = document.createElement("div");
+
+    const closeButtonDiv = document.createElement("div");
+    const closeButton = document.createElement("button");
+    const closeIcon = document.createElement("i");
+    closeIcon.className = "bi bi-x-circle-fill";
+    closeButton.appendChild(closeIcon);
+    closeButtonDiv.appendChild(closeButton);
+
+    // Creazione dell'icona di stato
+    const statusIcon = document.createElement("i");
+    statusIcon.className = status ? "bi bi-check-circle" : "bi bi-x-circle";
+
+    // Creazione del messaggio
+    const msg = document.createElement("p");
+    msg.textContent = message;
+
+    // Creazione del link con icone
+    const link = document.createElement("a");
+    const bagIcon = document.createElement("i");
+    bagIcon.className = "bi bi-bag-fill";
+    const chevronIcon = document.createElement("i");
+    chevronIcon.className = "bi bi-chevron-double-right";
+    link.appendChild(bagIcon);
+    link.appendChild(chevronIcon);
+
+    // Assemblaggio del contenuto nel div principale
+    mainDiv.appendChild(closeButtonDiv);
+    mainDiv.appendChild(statusIcon);
+    mainDiv.appendChild(msg);
+    mainDiv.appendChild(link);
+
+    modal.appendChild(mainDiv);
+
+    mainDiv.classList.add("fade-in");
+    closeButton.onclick = function () {
+        mainDiv.classList.add("fade-out");
+        mainDiv.classList.remove("fade-in");
+        mainDiv.ariaHidden = true;
         setTimeout(() => {
-            modal.classList.add("modal-out");
-            modal.classList.remove("modal-in");
-            setTimeout(() => {
-                modal.innerHTML = "";
-                modal.classList.remove("modal-out");
-                timeout = false;
-            }, 1000);
-        }, 2000);
+            modal.removeChild(mainDiv);
+        }, 500);
     }
 }
 

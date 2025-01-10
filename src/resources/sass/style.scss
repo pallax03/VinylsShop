@@ -804,93 +804,118 @@ main {
     }
 }
 
-@keyframes in {
+@keyframes fadeIn {
     from {
-        opacity: 0%;
+        opacity: 0;
     }
     to {
-        opacity: 100%;
+        opacity: 1;
     }
 }
 
-@keyframes out {
-    from {
-        top: 90%; /* Parte fuori dalla finestra */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
     }
-    to {
-        top: 200%; /* Si ferma a 100px dall'alto */
-    }
-}
-
-@keyframes desktop-out {
-    from {
-        top: 19%; /* Parte fuori dalla finestra */
-    }
-    to {
-        top: -200%; /* Si ferma a 100px dall'alto */
+    100% {
+        opacity: 0;
+        transform: translateX(100%);
     }
 }
 
-.modal-in {
-    animation: in 0.5s ease forwards;
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease forwards;
 }
 
 .modal {
-    opacity: 0%;
-    top: 90%;
-    width: 80%;
+    top: 91%;
+    width: 90%;
     height: 50px;
     position: fixed;
-    right: 0;
+    right: 5%;
     @media (min-width: $breakpoint) {
         top: 19%;
         right: 33.33%;
         width: 33.33%;
     }
     z-index: 99;
-}
+    div {
+        opacity: 0;
+        background-color: var(--background-color);
+        display: flex;
+        justify-content: center;
+        position: relative;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        border: 3px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding-right: 15px;
+        margin-bottom: 20px;
+        @media (min-width: $breakpoint) {
+            margin-bottom: 10px;
+        }
+    
+        > div {
+            margin: 0;
+            padding: 0;
+            border: none;
+            width: 20px;
 
-.modal-out {
-    opacity: 100%;
-    animation: out 1s ease forwards;
-    @media (min-width: $breakpoint) {
-        animation: desktop-out 1s ease forwards;
-    }
-}
+            button {
+                border: none;
+                cursor: pointer;
+    
+                i {
+                    padding: 0;
+                    border-radius: 100%;
+                    position: absolute;
+                    background-color: var(--background-color);
+                    left: -7px;
+                    top: -8px;
+                    @media (min-width: $breakpoint) {
+                        left: -15px;
+                    }
+                    color: var(--text-color);
+    
+                    &:hover {
+                        color: red;
+                    }
+                }
+            }
+        }
 
-.notification {
-    background-color: var(--background-color);
-    border-radius: var(--border-radius);
-    border: 3px solid var(--border-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-size: 1rem;
-    padding: 10px;
-    text-align: center;
-    margin-bottom: 10px;
-    .message {
-        vertical-align: middle;
-        display: inline;
-        color: var(--text-color);
-    }
-    .icon {
-        margin-right: 20px;
-        vertical-align: middle;
-        display: inline;
-        width: 30px;
-    }
-}
+        i {
+            display: flex;
+            justify-content: center;
+        }
+    
+        p {
+            padding-left: 10px;
+            text-align: left;
+            font-size: 1rem;
+            width: 80%;
+            display: inline;
+        }
 
-@keyframes fadeOut {
-    from {
-      opacity: 1;
+        a {
+            width: 10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            > i {
+                display: inline-block;
+            }
+        }
+        a:hover {
+            color: var(--selected-color);
+        }
     }
-    to {
-      opacity: 0;
-    }
-}
-
-.fade-out {
-    animation: fadeOut 0.3s ease-in-out forwards;
 }
 
 .admin-vinyls-header {
