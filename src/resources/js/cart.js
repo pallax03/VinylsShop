@@ -21,6 +21,11 @@ function loadCartView(data) {
         const itemElement = document.createElement('div');
         itemElement.innerHTML = `
             <div class="card cart">
+                <div class="close">
+                    <button onclick="addToCart(${item.vinyl.id_vinyl}, -${item.quantity})">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </button>
+                </div>
                 <header>
                     <div class="controls" id="controls-vinyl_${item.vinyl.id_vinyl}">
                         <button onclick="addToCart(${item.vinyl.id_vinyl}, 1)">

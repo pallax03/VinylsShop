@@ -15,8 +15,6 @@
 // 🏡: --- HomeController.php --- (models: Auth Vinyl)
     // # 🏠 [Home] ~ (no need to be logged) -> Vinyl
     $router->get('/', [HomeController::class, 'index']);
-    // # 🍽️ [Notifications] ~ '?id_user='  -> Notifications
-    $router->get('/notifications', [HomeController::class, 'notifications']);
     // # 🍽️ [Search] -> Vinyl
     $router->get('/search', [HomeController::class, 'search']);
     // # 🍽️  [Login] -> Auth
@@ -71,7 +69,7 @@
     // # 🍽️ [GetUser] ~ get user infos an admin can get any one -> Auth - User
     $router->get('/user/get', [UserController::class, 'getUser']);
     // # 🍽️ [UpdateUser] ~ update user infos -> Auth - User
-    $router->post('/user', [UserController::class, 'updateUser']); // like newsletter i can update the user in defaults.
+    $router->post('/user', [UserController::class, 'updateUser']); // like notifications i can update the user in defaults.
     // 🚩 # 🍽️ [DeleteUser] ~ delete the user -> Auth - User
     $router->delete('/user', [UserController::class, 'deleteUser']);
     // # 🍽️ [Default] ~ set an address or a card as default -> User - Address - Card
@@ -88,7 +86,12 @@
     $router->get('/user/card', [UserController::class, 'getCard']); // ->get all or a card.
     $router->delete('/user/card', [UserController::class, 'deleteCard']); // -> delete the card.
     $router->post('/user/card', [UserController::class, 'setCard']); // -> add a new card.
-    
+    // # 🍽️ [Notifications] ~ '?id_user='  -> Notifications
+    $router->get('/notifications', [UserController::class, 'notifications']);
+    $router->get('/notifications/get', [UserController::class, 'getNotifications']);
+    $router->post('/notification', [UserController::class, 'readNotification']);
+    $router->delete('/notification', [UserController::class, 'deleteNotification']);
+
     // ⭐️ ADMIN 
     // # 🏠 [Users] ~ get all users.
     $router->get('/users', [UserController::class, 'users']);

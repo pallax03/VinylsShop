@@ -152,10 +152,10 @@ function addToCart(id, quantity) {
         try {
             getCart();
         } catch (error) {}
-        createNotification(data, true, "/cart", "bi bi-bag-fill", '/cart');
+        createNotification(data, true, "/cart", "bi bi-bag-fill");
     }
     ).catch((error) => {
-        createNotification(error, false, '/cart');
+        createNotification(error, false);
     });
 }
 
@@ -174,8 +174,24 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
+function getNotificationsRealTime() {
+    makeRequest(fetch('/notifications/get')).then((data) => {
+        data.forEach(notification => {
+            const createdAt = new Date(notification.created_at);
+            const now = new Date();
+            interval = Math.abs(now - createdAt) / 1000;
+            if (interval < 5400) { // 1.5 hours = 5400 seconds
+                createNotification(notification.message, true, '/notifications', 'bi bi-bell-fill');
+            }
+        });
+    }
+    ).catch((error) => {
+    });
+}
+
 window.onload = function () {
     updateDarkmodeButton();
+    setInterval(getNotificationsRealTime, 30000);
 }
 
 new MutationObserver(function() {

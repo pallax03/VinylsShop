@@ -10,8 +10,8 @@
             <input type="password" id="input-register_password" name="password" required />
         </li>
         <li>
-            <label class="checkbox" for="newsletter">Newsletter:
-                <input type="checkbox" id="input-register_newsletter" name="newsletter" checked />
+            <label class="checkbox" for="notifications">Notifications:
+                <input type="checkbox" id="input-register_notifications" name="notifications" checked />
                 <span class="checkmark"><i class="bi bi-check"></i></span>
             </label>
         </li>

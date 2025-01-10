@@ -11,6 +11,10 @@
   --border-radius: 10px;
   --transition-duration: 0.3s;
   --transition: all 0.3s ease-in-out;
+  --d: 2500ms;
+  --angle: 90deg;
+  --gradX: 100%;
+  --gradY: 50%;
 }
 
 section > div {
@@ -501,6 +505,10 @@ section > i {
   --border-radius: 10px;
   --transition-duration: 0.3s;
   --transition: all 0.3s ease-in-out;
+  --d: 2500ms;
+  --angle: 90deg;
+  --gradX: 100%;
+  --gradY: 50%;
 }
 
 :root {
@@ -515,6 +523,10 @@ section > i {
   --border-radius: 10px;
   --transition-duration: 0.3s;
   --transition: all 0.3s ease-in-out;
+  --d: 2500ms;
+  --angle: 90deg;
+  --gradX: 100%;
+  --gradY: 50%;
 }
 
 section.cards {
@@ -555,29 +567,6 @@ section.cards {
   opacity: 0;
 }
 
-@-webkit-keyframes highlight {
-  0% {
-    color: var(--text-color);
-  }
-  50% {
-    color: var(--selected-color);
-  }
-  100% {
-    color: var(--text-color);
-  }
-}
-
-@keyframes highlight {
-  0% {
-    color: var(--text-color);
-  }
-  50% {
-    color: var(--selected-color);
-  }
-  100% {
-    color: var(--text-color);
-  }
-}
 .card {
   position: relative;
   height: clamp(200px, 50%, 300px);
@@ -587,8 +576,27 @@ section.cards {
   border-radius: var(--border-radius);
   -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin: 0.5rem;
+  margin: 1rem;
   padding: 0.5rem;
+}
+.card .close {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+}
+.card .close button {
+  border: 0;
+  border-radius: 50px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.card .close button i {
+  font-size: 2rem;
+}
+.card .close button:hover {
+  color: var(--error-color);
 }
 .card .btn-specular {
   display: -webkit-inline-box;
@@ -1056,6 +1064,151 @@ section.cards {
   width: 70px;
   height: 70px;
   margin-right: 0.5rem;
+}
+
+@-webkit-keyframes highlight-border {
+  0% {
+    border-color: var(--selected-color);
+  }
+  50% {
+    border-color: var(--text-color);
+  }
+  100% {
+    border-color: var(--selected-color);
+  }
+}
+
+@keyframes highlight-border {
+  0% {
+    border-color: var(--selected-color);
+  }
+  50% {
+    border-color: var(--text-color);
+  }
+  100% {
+    border-color: var(--selected-color);
+  }
+}
+.notification {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  margin: 1rem;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0.5rem;
+  margin: 1rem;
+}
+.notification.unread {
+  border: 4px solid var(--border-color);
+  -webkit-animation: highlight-border 2s infinite;
+          animation: highlight-border 2s infinite;
+}
+.notification header {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 10%;
+}
+.notification header h4 {
+  font-size: 1rem;
+  margin: 0;
+}
+.notification div.content {
+  width: 70%;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+.notification div.content span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.notification div.content span i {
+  font-size: 1.8rem;
+  margin-right: 1rem;
+}
+.notification div.content span p {
+  font-size: 0.6rem;
+}
+.notification div.content span.details i {
+  font-size: 1.8rem;
+}
+.notification div.content span.details p {
+  font-size: 0.8rem;
+}
+.notification div.content span.time {
+  float: right;
+  margin-left: 2rem;
+}
+.notification footer {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 10%;
+  float: right;
+}
+.notification footer a {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-decoration: none;
+  color: var(--text-color);
+  border-radius: 5px;
+  background-color: var(--background-color);
+}
+.notification footer a i {
+  font-size: 1.2rem;
+}
+.notification footer a:hover {
+  color: var(--selected-color);
 }
 
 .search-card {

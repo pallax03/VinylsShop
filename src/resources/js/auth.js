@@ -37,11 +37,11 @@ document.getElementById("btn-login_submit").addEventListener("click", function (
     });
 });
 
-function register(mail, password, newsletter) {
+function register(mail, password, notifications) {
     const params = new URLSearchParams();
     params.append("mail", mail.value);
     params.append("password", password.value);
-    params.append("newsletter", newsletter.checked);
+    params.append("notifications", notifications.checked);
 
     makeRequest(fetch("/register", {
         method: "POST",
@@ -66,10 +66,10 @@ document.getElementById("btn-register_submit").addEventListener("click", functio
     event.preventDefault();
     const mail = document.getElementById("input-register_mail");
     const password = document.getElementById("input-register_password");
-    const newsletter = document.getElementById("input-register_newsletter");
+    const notifications = document.getElementById("input-register_notifications");
     mail.parse = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (validateData(mail)) {
-        register(mail, password, newsletter);
+        register(mail, password, notifications);
     }
 });

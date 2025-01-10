@@ -172,19 +172,19 @@ final class AuthModel {
      * @param string $mail
      * @param string $password
      * @param int|null $su, if the user is a super user (default no).
-     * @param int|null $newsletter, if the user wants to receive the newsletter (default no).
+     * @param int|null $notifications, if the user wants to receive the notification (default no).
      * 
      * @return bool true if the user is registered, false otherwise
      */
-    public function register($mail, $password, $newsletter = 1) {
+    public function register($mail, $password, $notifications = 1) {
         if (!$this->isValidMail($mail)) {
             return false;
         }
 
         return Database::getInstance()->executeQueryAffectRows(
-            "INSERT INTO `users` (mail, password, newsletter) VALUES (?, ?, ?)",
+            "INSERT INTO `users` (mail, password, notifications) VALUES (?, ?, ?)",
             'ssii',
-            $mail, $this->encryptPassword($password), filter_var($newsletter, FILTER_VALIDATE_BOOLEAN)
+            $mail, $this->encryptPassword($password), filter_var($notifications, FILTER_VALIDATE_BOOLEAN)
         );
     }
 

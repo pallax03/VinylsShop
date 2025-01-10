@@ -6,7 +6,7 @@ class HomeController extends Controller {
     private $user_model = null;
     private $vinyls_model = null;
     private $order_model = null;
-    private $notification_model = null;
+
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
@@ -20,9 +20,6 @@ class HomeController extends Controller {
 
         require_once MODELS . 'OrderModel.php';
         $this->order_model = new OrderModel();
-
-        require_once MODELS . 'NotificationModel.php';
-        $this->notification_model = new NotificationModel();
     }
 
     
@@ -54,7 +51,7 @@ class HomeController extends Controller {
 
     public function register(Request $request, Response $response) {
         $body = $request->getBody();
-        if ($this->auth_model->register($body['mail'], $body['password'], $body['newsletter'])) {
+        if ($this->auth_model->register($body['mail'], $body['password'], $body['notifications'])) {
             $this->auth_model->login($body['mail'], $body['password'], 0);
             $response->Success('Registered, logging...');
             return;
@@ -70,10 +67,6 @@ class HomeController extends Controller {
     public function forgotPassword() {
         // $this->auth_model->forgotPassword();
         echo json_encode(['error' => 'Not implemented']);
-    }
-
-    public function getNotifications(Request $request, Response $response) {
-        $response->Success($this->notification_model->getNotifications());
     }
 
     public function search(Request $request, Response $response) {

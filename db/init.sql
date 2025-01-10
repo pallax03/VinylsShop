@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `vinylsshop`.`users` (
     `password` VARCHAR(255) NOT NULL,
     `balance` DECIMAL(10,2) NOT NULL DEFAULT 0,
     `su` TINYINT(1) NOT NULL DEFAULT 0,
-    `newsletter` TINYINT(1) NOT NULL DEFAULT 1,
+    `notifications` TINYINT(1) NOT NULL DEFAULT 1,
     PRIMARY KEY (`id_user`), UNIQUE INDEX `mail_UNIQUE` (`mail` ASC)
 );
 

@@ -2,8 +2,18 @@
     <section aria-labelledby="user-info">
         <i class="bi bi-person-fill"></i>
         <div class="container center vertical">
-            <h1 id="user-mail"><?php echo $user['mail'] ?></h1>
-            <p id="user-newsletter">Newsletter: <?php echo $user['newsletter'] ? 'Subscribed' : 'Not subscribed' ?></p>
+            <h4 id="user-mail"><?php echo $user['mail'] ?></h4>
+            <?php if($user['notifications']):?>
+                <a href="/notifications">
+                    <p>See Notifications</p>
+                    <i class="bi bi-bell-fill"></i>
+                </a>
+            <?php else: ?>
+                <span>
+                    <p>Notifications disabled</p>
+                    <i class="bi bi-bell-slash-fill"></i>
+                </span>
+            <?php endif; ?>
         </div>
         <div class="container center margin-top">
             <a class="error" href="/logout">Logout</a>
@@ -11,7 +21,7 @@
     </section>
     <div class="div"></div>
     <form aria-label="Defaults" id="form-user_defaults">
-        <h1>Defaults</h1>
+        <h2>Defaults</h2>
         <ul>
             <li>
                 <label for="default_address"><i class="bi bi-geo-alt-fill"></i>

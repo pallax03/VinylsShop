@@ -48,17 +48,7 @@ $preview-cover-size: 80%;
     }
 }
 
-@keyframes highlight {
-    0% {
-        color: var(--text-color);
-    }
-    50% {
-        color: var(--selected-color);
-    }
-    100% {
-        color: var(--text-color);
-    }
-}
+
 
 .card {
     position: relative;
@@ -68,8 +58,28 @@ $preview-cover-size: 80%;
     background-color: var(--background-color);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin: .5rem;
+    margin: 1rem;
     padding: 0.5rem;
+
+    .close {
+        position: absolute;
+        top: -15px;
+        left: -15px;
+        button {
+            border: 0;
+            border-radius: 50px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            i {
+                font-size: 2rem;
+            }
+            &:hover {
+                color: var(--error-color);
+            }
+        }
+    }
 
     .btn-specular {
         display: inline-flex;
@@ -428,6 +438,102 @@ $preview-cover-size: 80%;
             }
         }
 
+    }
+}
+
+@keyframes highlight-border {
+    0% {
+        border-color: var(--selected-color);
+    }
+    50% {
+        border-color: var(--text-color);
+    }
+    100% {
+        border-color: var(--selected-color);
+    }
+}
+
+.notification {
+    display: inline-flex;
+    margin: 1rem;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    padding: 0.5rem;
+
+    margin: 1rem;
+    &.unread {
+        border: 4px solid var(--border-color);
+        animation: highlight-border 2s infinite;
+    }
+
+    header {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
+        h4 {
+            font-size: 1rem;
+            margin: 0;
+        }
+    }
+    div.content {
+        width: 70%;
+        display: inline-flex;
+        justify-content: space-between;
+        flex-direction: row;
+
+        span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            i {
+                font-size: 1.8rem;
+                margin-right: 1rem;
+            }
+            p {
+                font-size: 0.6rem;
+            }
+        }
+        span.details {
+            i {
+                font-size: 1.8rem;
+            }
+            p {
+                font-size: 0.8rem;
+            }
+        }
+        span.time {
+            float: right;
+            margin-left: 2rem;
+        }
+    }
+
+    footer {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        width: 10%;
+        float: right;
+        a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            
+            border-radius: 5px;
+            background-color: var(--background-color);
+            i {
+                font-size: 1.2rem;
+            }
+            &:hover {
+                color: var(--selected-color);
+            }
+        }
     }
 }
 

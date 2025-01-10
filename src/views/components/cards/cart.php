@@ -1,4 +1,9 @@
 <div class="card cart">
+    <div class="close">
+        <button onclick="addToCart(<?php echo $item['vinyl']['id_vinyl'];?>, -<?php echo $item['quantity']?>)">
+            <i class="bi bi-x-circle-fill"></i>
+        </button>
+    </div>
     <header>
         <div class="controls" id="controls-vinyl_<?php echo $item['vinyl']['id_vinyl']; ?>">
             <button onclick="addToCart(<?php echo $item['vinyl']['id_vinyl'];?>, 1)">

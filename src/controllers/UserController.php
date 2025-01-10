@@ -4,6 +4,7 @@ class UserController extends Controller {
     private $auth_model = null;
     private $user_model = null;
     private $order_model = null;
+    private $notification_model = null;
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
@@ -14,6 +15,9 @@ class UserController extends Controller {
 
         require_once MODELS . 'OrderModel.php';
         $this->order_model = new OrderModel();
+
+        require_once MODELS . 'NotificationModel.php';
+        $this->notification_model = new NotificationModel();
     }
 
     public function index() {
@@ -50,6 +54,36 @@ class UserController extends Controller {
         $data['user'] = $this->user_model->getUser();
         $data['cards'] = $this->user_model->getCard();
         $this->render('user/cards', $head, $data);
+    }
+
+
+
+    public function notifications(Request $request, Response $response) {
+        $this->redirectSuperUser();
+        $this->auth_model->checkAuth();
+        $this->render('user/notifications', ['title' => 'Notifications'], ['notifications' => $this->notification_model->getNotifications()]);
+    }
+
+    public function getNotifications(Request $request, Response $response) {
+        $response->Success($this->notification_model->getNotifications());
+    }
+
+    public function readNotification(Request $request, Response $response) {
+        $body = $request->getBody();
+        if(isset($body['id']) && $this->notification_model->readNotification($body['id'])) {
+            $response->Success('Notification read');
+            return;
+        }
+        $response->Error('Error reading notification');
+    }
+
+    public function deleteNotification(Request $request, Response $response) {
+        $body = $request->getBody();
+        if(isset($body['id']) && $this->notification_model->deleteNotification($body['id'])) {
+            $response->Success('Notification deleted');
+            return;
+        }
+        $response->Error('Error deleting notification', $body);
     }
 
     /**
@@ -122,7 +156,7 @@ class UserController extends Controller {
             return;
         }
 
-        if($this->user_model->updateUser($body['id_user'] ?? null, $body['user_name'] ?? null, $body['newsletter'] ?? null, $body['balance'] ?? null)) {
+        if($this->user_model->updateUser($body['id_user'] ?? null, $body['user_name'] ?? null, $body['notifications'] ?? null, $body['balance'] ?? null)) {
             $response->Success('User updated');
             return;
         }

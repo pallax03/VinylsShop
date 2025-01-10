@@ -8,13 +8,13 @@ final class UserModel {
      */
     public function getUsers() {
         return Database::getInstance()->executeResults(
-            "SELECT id_user, mail, balance, newsletter  FROM `vinylsshop`.`users`"
+            "SELECT id_user, mail, balance, notifications  FROM `vinylsshop`.`users`"
         );
     }
 
     /**
      * This function returns the user info from the database.
-     * infos: id_user, mail, balance, newsletter, default_card, card_number, default_address, street_number, city, postal_code
+     * infos: id_user, mail, balance, notifications, default_card, card_number, default_address, street_number, city, postal_code
      * 
      * @param int|null $id_user if null, the logged user
      * 
@@ -25,7 +25,7 @@ final class UserModel {
             "SELECT u.id_user, 
                     u.mail, 
                     u.balance,
-                    u.newsletter,
+                    u.notifications,
                     up.default_card, 
                     c.card_number, 
                     up.default_address, 
@@ -46,17 +46,17 @@ final class UserModel {
      * Update the user in the database.
      *
      * @param int|null $id_user the user to update, if null, the logged user
-     * @param string|null $newsletter the newsletter value
+     * @param string|null $notifications the notifications value
      * @return bool true if the user is updated, false otherwise
      */
-    public function updateUser($id_user = null, $newsletter = null, $balance = null) {
+    public function updateUser($id_user = null, $notifications = null, $balance = null) {
         return Database::getInstance()->executeQueryAffectRows(
             "UPDATE `vinylsshop`.`users` SET"
-                . ($newsletter ? "newsletter = ?, " : "")
+                . ($notifications ? "notifications = ?, " : "")
                 . ($balance ? "balance = ?, " : "")
                 . " WHERE id_user = ?;",
             'idi',
-            $newsletter,
+            $notifications,
             $balance,
             $id_user ?? Session::getUser()
         );
