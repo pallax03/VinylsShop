@@ -65,14 +65,14 @@ final class VinylsModel {
             "track_title" => ["query" => fn($value) => " AND t.title LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"]
         ];
 
-        $types = '';
+        $types = 'i';
         $values = [1];
         foreach ($filters as $key => $value) {
             $query .= $filtersMap[$key]["query"]($value);
             $types .= $filtersMap[$key]["type"];
             $values[] = isset($filtersMap[$key]["value"]) ? $filtersMap[$key]["value"]($value) : $value;
         }
-        return $this->db->executeResults($query. ' GROUP BY a.id_album;', 'i'.$types, ...$values);
+        return $this->db->executeResults($query. ' GROUP BY a.id_album;', $types, ...$values);
     }
 
     /**
@@ -481,25 +481,24 @@ final class VinylsModel {
      * 
      * @return bool true if the vinyl was added, false otherwise
      */
-    public function addVinyl($cost, $rpm, $inch, $type, $stock, $album, $artist, $id_vinyl = null) {
+    public function addVinyl($cost, $rpm, $inch, $type, $stock, $album, $id_vinyl = null) {
         // check if the album already exists if not add it to the database
         if(is_array($album) && !$this->checkAlbum($album["id_album"])) {
-            $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["cover"], $artist);
+            $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["cover"], $album["artist"]);
             if(!$album) {
                 return false;
             }
         }
-        $album = $album["id_album"];
 
         if ($id_vinyl) {
-            return $this->updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $album);
+            return $this->updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $album["id_album"]);
         }
         
         $result = $this->db->executeQueryAffectRows(
             "INSERT INTO vinyls (`cost`, `rpm`, `inch`, `type`, `stock`, `id_album`)
                 VALUES (?, ?, ?, ?, ?, ?)",
             'diisii',
-            $cost, $rpm, $inch, $type, $stock, $album
+            $cost, $rpm, $inch, $type, $stock, $album["id_album"]
         );
 
         if ($result) {

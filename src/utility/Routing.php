@@ -43,9 +43,7 @@
     // # 🏠 [Vinyl] ~ page of the specific vinyl '?id_vinyl=' -> Vinyl (Artist - Track)
     $router->get('/vinyl', [VinylController::class, 'index']);
     // # 🍽️ [AddVinyl] ~ add or update a vinyl -> Auth - Vinyl - Artist - Track.
-    $router->post('/vinyl', [VinylController::class, 'setVinyl']);
-    // # 🍽️ [DeleteVinyl] ~ -> Auth - Vinyl - Artist - Track.
-    $router->delete('/vinyl', [VinylController::class, 'deleteVinyl']);
+    $router->post('/vinyl', [VinylController::class, 'addVinyl']);
     $router->get('/albums', [VinylController::class, 'getAlbums']);
 
 

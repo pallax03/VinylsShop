@@ -6,7 +6,7 @@
     <meta name="format-detection" content="telephone=no">
     <title><?php echo $title ?></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" type="text/css" href="/resources/css/style.css? <?php echo date('l jS \of F Y h:i:s A'); ?>">
+    <link rel="stylesheet" type="text/css" href="/resources/css/style.css">
     <?php 
         if(isset($style) && !empty($style)) {
             foreach ($style as $s) {

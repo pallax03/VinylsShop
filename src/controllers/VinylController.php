@@ -33,13 +33,11 @@ final class VinylController extends Controller {
             return;
         }
 
-        if(isset($body['id_vinyl']))
-
-        if ($this->vinyl_model->addVinyl($body['cost'], $body['rpm'], $body['inch'], $body['type'], $body['stock'], $body['album'], $body['artist'], $body['id_vinyl'] ?? null)) {
-            $response->Success('Vinyl added / updated', $body);
+        if ($this->vinyl_model->addVinyl($body['cost'] ?? null, $body['rpm'] ?? null, $body['inch'] ?? null, $body['type'] ?? null, $body['stock'] ?? null, $body['album'] ?? null, $body['artist'] ?? null, $body['id_vinyl'] ?? null)) {
+            $response->Success('Vinyl ' . (isset($body['id_vinyl']) ? 'updated' : 'added'), $body);
             return;
         }
-        $response->Error('Vinyl not added / updated', $body);
+        $response->Error('Vinyl not ' . (isset($body['id_vinyl']) ? 'updated' : 'added'), $body);
     }
 
     function getAlbums(Request $request, Response $response) {
