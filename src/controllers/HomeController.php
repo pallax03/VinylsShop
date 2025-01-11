@@ -110,7 +110,21 @@ class HomeController extends Controller {
                 'users' => $this->user_model->getUsers()
             ]);
     }
-    
+
+    public function dashboardRegister() {
+        $this->redirectNotSuperUser();
+        $this->render('admin/registeradmins', ['title' => 'Register Admins']);
+    }
+
+    public function registerSuperUser(Request $request, Response $response) {
+        $body = $request->getBody();
+        if (Session::isSuperUser() && $this->auth_model->registerSuperUser($body['mail'], $body['password'])) {
+            $response->Success('Super User registered!');
+            return;
+        }
+        $response->Error('Register Error, please try again...');
+    }
+
 
     public function reset() {
         Session::destroy();

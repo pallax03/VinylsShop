@@ -29,11 +29,11 @@ document.getElementById("btn-login_submit").addEventListener("click", function (
     }))
     .then((data) => {
         document.getElementById("btn-login_submit").disabled = true;
-        document.getElementById("div-login_response").innerHTML = "<p>" + data + "</p>";
+        createNotification(data, true, "/user", "bi bi-person");
         setTimeout(() => { window.location.href = "/"; }, 2000);
     })
     .catch((error) => {
-        document.getElementById("div-login_response").innerHTML = '<p class="error">' + error + "</p>";
+        createNotification(error, false);
     });
 });
 
@@ -51,14 +51,14 @@ function register(mail, password, notifications) {
         body: params.toString(),
     })).then((data) => {
         document.getElementById("btn-register_submit").disabled = true;
-        document.getElementById("div-register_response").innerHTML = "<p>" + data + "</p>";
+        createNotification(data, true, '/user', 'bi bi-person');        
 
         setTimeout(() => {
             window.location.href = "/";
         }, 2000);
     })
         .catch((error) => {
-            document.getElementById("div-register_response").innerHTML = '<p class="error">' + error + "</p>";
+            createNotification(error, false);
         });
 }
 

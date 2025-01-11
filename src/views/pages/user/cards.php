@@ -15,7 +15,7 @@
     <ul>
         <li>
             <label for="card_number">Number:</label>
-            <input placeholder="xxxx xxxx xxxx xxxx" type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}"
+            <input placeholder="1234567887654321" type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}"
                 autocomplete="cc-number" maxlength="19" id="input-card_number" name="card_number"
                 aria-describedby="card-number-description" required />
         </li>
@@ -27,7 +27,7 @@
         </li>
         <li class="split">
             <label for="card_cvc">CVC:</label>
-            <input type="text" id="input-card_cvc" name="card_cvc"
+            <input placeholder="123" type="text" id="input-card_cvc" name="card_cvc"
                 inputmode="numeric" pattern="[0-9]{3,4}" maxlength="4"
                 aria-describedby="card-cvc-description" autocomplete="cc-csc" required />
         </li>

@@ -21,8 +21,5 @@
                 <button class="animate" id="btn-register_submit">Register</button>
             </div>
         </li>
-        <li>
-            <div class="message" id="div-register_response"></div>
-        </li>
     </ul>
 </form>

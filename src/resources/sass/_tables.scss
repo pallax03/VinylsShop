@@ -39,7 +39,7 @@ table {
                     padding: 0;
                 }
 
-                button {
+                button, a {
                     margin: 0;
                     padding: 0;
                     &.add {
@@ -47,11 +47,16 @@ table {
                         border: 1px solid var(--border-color);
                         border-radius: var(--border-radius);
                         text-decoration: none;
-                        font-size: 1.5rem;
                         font-weight: bold;
                         text-align: center;
                         width: 100%;
                         background-color: var(--text-color);
+                        span {
+                            i {
+                                font-size: 2rem;
+                                color: var(--primary-color);
+                            }
+                        }
                         &:hover {
                             background-color: var(--selected-color);
                         }
@@ -82,7 +87,6 @@ table {
                         align-items: center;
 
                         i:first-child {
-                            font-size: 1rem;
                             margin: 0;
                         }
 

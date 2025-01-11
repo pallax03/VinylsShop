@@ -15,7 +15,7 @@
             </button>
         </div>
     </header>
-    <div class="product-details">
+    <a href="/vinyl?id=<?php echo $item['vinyl']['id_vinyl'] ?>" class="product-details">
         <div>
         <img src="/resources/img/albums/<? echo $item['vinyl']['cover']?>" alt="album cover">
         </div>
@@ -24,7 +24,7 @@
             <p><?php echo $item['vinyl']['artist_name'] ?> #<?php echo $item['vinyl']['genre'] ?></p>
             <p><?php echo $item['vinyl']['type'] ?> - <?php echo $item['vinyl']['rpm'] ?>rpm - <?php echo $item['vinyl']['inch'] ?>"</p>
         </div>
-    </div>
+    </a>
     <footer>
         <p><?php echo $item['vinyl']['cost']?> €</p>
     </footer>

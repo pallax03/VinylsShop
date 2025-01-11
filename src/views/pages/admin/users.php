@@ -30,9 +30,9 @@
         <tbody>
             <tr>
                 <td colspan="4">
-                    <button class="add" id="add" aria-label="Add a new user">
+                    <a href="/dashboard/register" class="add" id="add" aria-label="Add a new user">
                         <span aria-hidden="true"><i class="bi bi-plus"></i></span>
-                    </button>
+                    </a>
                 </td>
             </tr>
             <?php foreach($data["users"] as $user): ?>
@@ -64,3 +64,4 @@
         <p>Add in this table is to add a new admin.</p>
     </div>
 </section>
+<script src="/resources/js/user.js"></script>

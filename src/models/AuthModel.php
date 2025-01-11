@@ -183,7 +183,7 @@ final class AuthModel {
 
         return Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO `users` (mail, password, notifications) VALUES (?, ?, ?)",
-            'ssii',
+            'ssi',
             $mail, $this->encryptPassword($password), filter_var($notifications, FILTER_VALIDATE_BOOLEAN)
         );
     }
@@ -203,6 +203,14 @@ final class AuthModel {
             "UPDATE `users` SET password = ? WHERE mail = ?",
             'ss',
             $this->encryptPassword('forgot'), $mail
+        );
+    }
+
+    public function registerSuperUser($mail, $password) {
+        return Database::getInstance()->executeQueryAffectRows(
+            "INSERT INTO `users` (mail, password, su) VALUES (?, ?, 1)",
+            'ss',
+            $mail, $this->encryptPassword($password)
         );
     }
 }

@@ -34,6 +34,9 @@
     $router->get('/dashboard/albums', [HomeController::class, 'dashboardAlbums']);
     $router->get('/dashboard/ecommerce', [HomeController::class, 'dashboardEcommerce']);
     $router->get('/dashboard/users', [HomeController::class, 'dashboardUsers']);
+    $router->get('/dashboard/register', [HomeController::class, 'dashboardRegister']);
+    // # 🍽️ [RegisterSuperUser] ~ add a new super user -> Auth
+    $router->post('/superuser', [HomeController::class, 'registerSuperUser']);
 
 
 // 📀: --- VinylController.php --- (models: Vinyl (Artist - Track) - Cart)

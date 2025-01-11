@@ -1325,32 +1325,35 @@ table tbody tr td:last-child {
   width: 10%;
   padding: 0;
 }
-table tbody tr td button {
+table tbody tr td button, table tbody tr td a {
   margin: 0;
   padding: 0;
 }
-table tbody tr td button.add {
+table tbody tr td button.add, table tbody tr td a.add {
   display: block;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   text-decoration: none;
-  font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
   width: 100%;
   background-color: var(--text-color);
 }
-table tbody tr td button.add:hover {
+table tbody tr td button.add span i, table tbody tr td a.add span i {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+table tbody tr td button.add:hover, table tbody tr td a.add:hover {
   background-color: var(--selected-color);
 }
-table tbody tr td button.delete {
+table tbody tr td button.delete, table tbody tr td a.delete {
   padding: 0;
   margin: 0;
   background-color: transparent;
   border: none;
   cursor: pointer;
 }
-table tbody tr td button.delete i {
+table tbody tr td button.delete i, table tbody tr td a.delete i {
   font-size: 2rem;
   color: red;
 }
@@ -1369,7 +1372,6 @@ table tbody tr td a span {
           align-items: center;
 }
 table tbody tr td a span i:first-child {
-  font-size: 1rem;
   margin: 0;
 }
 table tbody tr td a span i {
