@@ -112,7 +112,7 @@
     $router->get('/coupons', [OrderController::class, 'viewCoupons']);
 
     // ⭐️ ADMIN -> need to be an admin to access to the following routes.
-    $router->post('/coupon', [OrderController::class, 'setCoupon']); // ->  add / update a coupon.
+    $router->post('/coupon', [OrderController::class, 'addCoupon']); // ->  add / update a coupon.
     $router->delete('/coupon', [OrderController::class, 'deleteCoupon']); // -> delete the coupon.
 
     

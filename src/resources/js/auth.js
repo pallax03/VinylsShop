@@ -30,7 +30,7 @@ document.getElementById("btn-login_submit").addEventListener("click", function (
     .then((data) => {
         document.getElementById("btn-login_submit").disabled = true;
         createNotification(data, true, "/user", "bi bi-person");
-        setTimeout(() => { window.location.href = "/"; }, 2000);
+        setTimeout(() => { redirect('/'); }, 2000);
     })
     .catch((error) => {
         createNotification(error, false);
@@ -52,7 +52,7 @@ function register(mail, password, notifications) {
     })).then((data) => {
         document.getElementById("btn-register_submit").disabled = true;
         createNotification(data, true, '/user', 'bi bi-person');        
-        setTimeout(() => { window.location.href = "/"; }, 2000);
+        setTimeout(() => { redirect('/'); }, 2000);
     })
         .catch((error) => {
             createNotification(error, false);

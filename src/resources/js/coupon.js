@@ -13,19 +13,19 @@ function deleteCoupon(id) {
         method: 'DELETE',
         headers: {}
     })).then((data) => {
-        window.location.reload();
+        autoRefresh();
     }
     ).catch((error) => {
         createNotification(error, false);
     });
 }
 
-document.getElementById('btn-coupon_reset').addEventListener('click', function() {
+document.getElementById('btn-coupon_reset').addEventListener('click', function () {
     document.getElementById('form-coupon').reset();
     document.getElementById('form-coupon').removeAttribute('data-id_coupon');
 });
 
-document.getElementById('btn-coupon_submit').addEventListener('click', function() {
+document.getElementById('btn-coupon_submit').addEventListener('click', function () {
     let form = document.getElementById('form-coupon');
     let formData = new FormData(form);
     let id_coupon = form.getAttribute('data-id_coupon');
@@ -36,9 +36,21 @@ document.getElementById('btn-coupon_submit').addEventListener('click', function(
         method: 'POST',
         body: formData
     })).then((data) => {
-        window.location.reload();
+        autoRefresh();
     }
     ).catch((error) => {
         createNotification(error, false);
     });
+});
+
+document.getElementById('btn-shipping_submit').addEventListener('click', function () {
+    let form = document.querySelector('form');
+    let formData = new FormData(form);
+    makeRequest(fetch(form.action, {
+        method: form.method,
+        body: formData
+    })
+    ).then(data => { createNotification(data, true); }
+    ).catch(error => { createNotification(error, false); }
+    );
 });

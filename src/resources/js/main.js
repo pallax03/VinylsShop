@@ -1,8 +1,12 @@
-// debugging front end
+
 function autoRefresh() {
     window.location = window.location.href;
 }
-// setInterval(autoRefresh, 5000);
+
+function redirect(url) {
+    window.location.href = url;
+}
+
 
 // Set client's preferences cookies (so without a expiration date)
 function setcookie(name, value) {
@@ -14,27 +18,6 @@ function setcookie(name, value) {
 function isTextInput(node) {
     return ['INPUT', 'TEXTAREA'].indexOf(node.nodeName) !== -1;
 }
-
-document.addEventListener('touchstart', function (e) {
-    if (!isTextInput(e.target) && isTextInput(document.activeElement)) {
-        document.activeElement.blur();
-    }
-}, false);
-
-// Toggles
-document.querySelectorAll('.toggle').forEach(function (toggle) {
-    toggle.addEventListener('click', function (e) {
-        e.preventDefault();
-        toggle.classList.toggle('expanded');
-    });
-});
-
-
-// Darkmode
-document.querySelector('#btn-darkmode').addEventListener('click', function (e) {
-    e.preventDefault();
-    setcookie('darkmode', setDarkmode());
-});
 
 function checkDarkmode() {
     return window.getComputedStyle(document.querySelector('body'), null).getPropertyValue('--background-color') !== '#fff' ? 1 : 0;
@@ -60,9 +43,7 @@ function updateDarkmodeButton() {
 }
 
 
-function redirect(url) {
-    window.location.href = url;
-}
+
 
 
 function defaultParse(value) {
@@ -191,31 +172,54 @@ function getNotificationsRealTime() {
 
 window.onload = function () {
     updateDarkmodeButton();
+
     getNotificationsRealTime();
-}
 
-new MutationObserver(function() {
-    const modal = document.querySelector(".modal");
-    const items = modal.querySelectorAll("div");
-    const firstItem = items[0];
+    document.addEventListener('touchstart', function (e) {
+        if (!isTextInput(e.target) && isTextInput(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    }, false);
 
-    if (firstItem) {
-        // Calculate timeout based on the number of items
-        const itemCount = items.length;
-        const baseTimeout = 2800; // Base timeout in milliseconds
-        const minTimeout = 200; // Minimum timeout in milliseconds
-        const decayFactor = 0.9; // Decay factor for exponential decay
+    // Toggles
+    document.querySelectorAll('.toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            toggle.classList.toggle('expanded');
+        });
+    });
 
-        // Formula: timeout = max(minTimeout, baseTimeout * (decayFactor ^ itemCount))
-        let timeout = Math.max(minTimeout, baseTimeout * Math.pow(decayFactor, itemCount));
 
-        setTimeout(() => {
-            firstItem.classList.add("fade-out");
-            firstItem.classList.remove("fade-in");
+    // Darkmode
+    document.querySelector('#btn-darkmode').addEventListener('click', function (e) {
+        e.preventDefault();
+        setcookie('darkmode', setDarkmode());
+    });
+
+    new MutationObserver(function() {
+        const modal = document.querySelector(".modal");
+        const items = modal.querySelectorAll("div");
+        const firstItem = items[0];
+    
+        if (firstItem) {
+            // Calculate timeout based on the number of items
+            const itemCount = items.length;
+            const baseTimeout = 2800; // Base timeout in milliseconds
+            const minTimeout = 200; // Minimum timeout in milliseconds
+            const decayFactor = 0.9; // Decay factor for exponential decay
+    
+            // Formula: timeout = max(minTimeout, baseTimeout * (decayFactor ^ itemCount))
+            let timeout = Math.max(minTimeout, baseTimeout * Math.pow(decayFactor, itemCount));
+    
             setTimeout(() => {
-                firstItem.remove();
-            }, 500);
-        }, timeout);
-    }
-}).observe(document.querySelector('.modal'), { childList: true });
+                firstItem.classList.add("fade-out");
+                firstItem.classList.remove("fade-in");
+                setTimeout(() => {
+                    firstItem.remove();
+                }, 500);
+            }, timeout);
+        }
+    }).observe(document.querySelector('.modal'), { childList: true });
+    
+}
 

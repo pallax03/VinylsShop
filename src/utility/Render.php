@@ -18,7 +18,8 @@
     <script src="/resources/js/init.js"></script>
 </head>
 <body>
-    <!-- <script src="/resources/js/main.js"></script> -->
+    <script src="/resources/js/main.js"></script>
+    
     <?php include COMPONENTS . '/header.php' ?>
     
     <?php include COMPONENTS . '/nav.php' ?>
@@ -43,7 +44,7 @@
     
     <?php include COMPONENTS . '/footer.php' ?>
 
-    <script src="/resources/js/main.js"></script>
+    
     <? if(!Session::isSuperUser()):?>
         <script src="/resources/js/search.js"></script>
     <? endif;?>
