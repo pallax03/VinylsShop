@@ -241,7 +241,7 @@ nav {
                     // transition: var{--transiiton};
                 }
 
-                p {
+                p, span {
                     display: none;
                 }
             }
@@ -656,7 +656,7 @@ main {
                             left: -30px;
                         }
                     }
-                    p {
+                    p, span {
                         display: block;
                         font-size: 1.6rem;
                         margin-left: 1rem;

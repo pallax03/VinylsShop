@@ -17,10 +17,20 @@ document.querySelectorAll(".edit").forEach(btn =>{
         document.getElementById("input-stock").value = parseInt(tr.querySelector("td").textContent.slice(0, -1), 10);
         document.getElementById("input-cost").focus();
         document.getElementById("input-cost").blur();
-
-        
     }
 });
+
+document.getElementById("li-form_reset").onclick = function () {
+    const form = document.getElementById("form-vinyl");
+    /* if form isn't already shown, show it */
+    if (form.classList.contains("hidden")) {
+        form.classList.add("hidden");
+        form.classList.remove("shown");
+    }
+    /* auto compiling the form */
+    document.getElementById("input-cost").value = "";
+    document.getElementById("input-stock").value = "";
+}
 
 document.querySelector(".add").onclick = function () {
     const form = document.getElementById("form-vinyl");

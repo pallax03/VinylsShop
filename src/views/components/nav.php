@@ -10,7 +10,7 @@
             <li class="search-container">
                 <button id="btn-search" class="search">
                     <i class="bi bi-search"></i>
-                    <p>Search</p>
+                    <span>Search</span>
                 </button>
 
                 <div class="search-bar">

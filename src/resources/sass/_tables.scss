@@ -2,6 +2,12 @@ table {
     width: 100%;
     border-collapse: collapse;
 
+    caption {
+        padding: 0 10px;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+    }
+
     thead {
         margin-top: 20px;
         display: none;
@@ -9,7 +15,7 @@ table {
 
     tbody {
         tr:nth-child(1) {
-            background-color: #f2f2f2;
+            background-color: var(--background-color);
 
             &:hover,
             &:focus {
@@ -17,7 +23,7 @@ table {
                 font-size: 1.2rem;
             }
         }
-
+        
         tr:nth-child(even) {
             background-color: var(--secondary-color);
         }
@@ -53,6 +59,7 @@ table {
                         width: 100%;
                         background-color: var(--text-color);
                         color: var(--secondary-color);
+                        margin-bottom: 10px;
                         span {
                             i {
                                 font-size: 2rem;
