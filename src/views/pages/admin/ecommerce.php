@@ -28,22 +28,6 @@
         </li>
     </ul>
 </form>
-<script>
-    document.getElementById('btn-shipping_submit').addEventListener('click', function() {
-        let form = document.querySelector('form');
-        let formData = new FormData(form);
-        fetch(form.action, {
-                method: form.method,
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                // NOTIFICATION
-                redirect(window.location.href);
-            })
-            .catch(error => console.error(error));
-    });
-</script>
 <div class="div"></div>
 <?php
 $editable = 1;

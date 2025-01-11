@@ -12,7 +12,7 @@ function getTotal() {
     })).then(data => {
         updateTotal(data.total, data.difference, data.percentage);
     }).catch((error) => {
-        window.location.reload();
+        autoRefresh();
     });
 }
 

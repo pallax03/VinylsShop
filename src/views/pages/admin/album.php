@@ -19,7 +19,7 @@
             <input type="text" id="input-album_genre" name="input-album_genre" required />
         <li>
             <label for="input-album_releasedate">Release Date</label>
-            <input type="number" id="input-album_releasedate" name="album_releasedate" required />
+            <input type="date" id="input-album_releasedate" name="album_releasedate" required />
         </li>
         <li>
             <label for="input-album_cover">Cover</label>

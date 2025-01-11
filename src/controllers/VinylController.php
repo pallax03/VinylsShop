@@ -32,26 +32,12 @@ final class VinylController extends Controller {
             $response->Error('Not allowed to add vinyls', $body);
             return;
         }
-        if(isset($body['cost']) && isset($body['rpm']) && isset($body['inch']) && isset($body['type']) && isset($body['stock']) && isset($body['album']) && isset($body['artist'])) {
-            if ($this->vinyl_model->addVinyl($body['cost'], $body['rpm'], $body['inch'], $body['type'], $body['stock'], $body['album'], $body['artist'], $body['id_vinyl'] ?? null)) {
-                $response->Success('Vinyl added / updated', $body);
-                return;
-            }
-        }
-        $response->Error('Vinyl not added / updated', $body);
-    }
 
-    function deleteVinyl(Request $request, Response $response) {
-        $body = $request->getBody();
-        if(!Session::isSuperUser()) {
-            $response->Error('Not allowed to delete vinyls', $body);
+        if ($this->vinyl_model->addVinyl($body['cost'] ?? null, $body['rpm'] ?? null, $body['inch'] ?? null, $body['type'] ?? null, $body['stock'] ?? null, $body['album'] ?? null, $body['artist'] ?? null, $body['id_vinyl'] ?? null)) {
+            $response->Success('Vinyl ' . (isset($body['id_vinyl']) ? 'updated' : 'added'), $body);
             return;
         }
-        if (isset($body['id_vinyl']) && $this->vinyl_model->deleteVinyl($body['id_vinyl'])) {
-            $response->Success('Vinyl deleted', $body);
-            return;
-        }
-        $response->Error('Vinyl not deleted', $body);
+        $response->Error('Vinyl not ' . (isset($body['id_vinyl']) ? 'updated' : 'added'), $body);
     }
 
     function getAlbums(Request $request, Response $response) {

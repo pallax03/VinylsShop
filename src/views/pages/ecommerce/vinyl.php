@@ -10,7 +10,7 @@
     </p>
     <div class="large button">
         <i class="bi bi-bag-fill"></i>
-        <button onclick="addToCart(<?php echo $data['vinyl']['details']['id_vinyl'] ?>, 1)" <?php if($data['vinyl']['details']['stock'] == 0) echo 'disabled'?>>
+        <button onclick="addToCart(<?php echo $data['vinyl']['details']['id_vinyl'] ?>, 1)">
             <?php echo $data['vinyl']['details']['stock'] == 0 ? 'Out of stock' : 'Add to cart - ' . $data["vinyl"]["details"]["cost"] . ' €' ?>
         </button>
     </div>

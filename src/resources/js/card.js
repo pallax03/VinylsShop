@@ -9,7 +9,7 @@ function setDefaultCard(id= '') {
             id_card: id
         })
     })).then((data) => {
-        window.location.reload();
+        autoRefresh();
     }).catch((error) => {
         createNotification(error, false);
     });
@@ -20,7 +20,7 @@ function deleteCard(id) {
         method: 'DELETE',
         headers: {}
     })).then((data) => {
-        window.location.reload();
+        autoRefresh();
     }).catch((error) => {
         createNotification(error, false);
     });
@@ -54,7 +54,7 @@ document.getElementById('btn-card_submit').addEventListener('click', function() 
                 card_cvc: card_cvc.value
             })
         })).then((data) => {
-            window.location.reload();
+            autoRefresh();
         }).catch((error) => {
             createNotification(error, false);
         });

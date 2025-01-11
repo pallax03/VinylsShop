@@ -43,9 +43,7 @@
     // # 🏠 [Vinyl] ~ page of the specific vinyl '?id_vinyl=' -> Vinyl (Artist - Track)
     $router->get('/vinyl', [VinylController::class, 'index']);
     // # 🍽️ [AddVinyl] ~ add or update a vinyl -> Auth - Vinyl - Artist - Track.
-    $router->post('/vinyl', [VinylController::class, 'setVinyl']);
-    // # 🍽️ [DeleteVinyl] ~ -> Auth - Vinyl - Artist - Track.
-    $router->delete('/vinyl', [VinylController::class, 'deleteVinyl']);
+    $router->post('/vinyl', [VinylController::class, 'addVinyl']);
     $router->get('/albums', [VinylController::class, 'getAlbums']);
 
 
@@ -112,7 +110,7 @@
     $router->get('/coupons', [OrderController::class, 'viewCoupons']);
 
     // ⭐️ ADMIN -> need to be an admin to access to the following routes.
-    $router->post('/coupon', [OrderController::class, 'setCoupon']); // ->  add / update a coupon.
+    $router->post('/coupon', [OrderController::class, 'addCoupon']); // ->  add / update a coupon.
     $router->delete('/coupon', [OrderController::class, 'deleteCoupon']); // -> delete the coupon.
 
     

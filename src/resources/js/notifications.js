@@ -2,7 +2,7 @@ function deleteNotification(notification_id) {
     makeRequest(fetch('/notification?id='+notification_id, {
         method: 'DELETE'
     })).then((data) => {
-        window.location.reload();
+        autoRefresh();
     }).catch((error) => {
     });
 }

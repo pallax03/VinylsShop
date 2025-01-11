@@ -15,7 +15,7 @@ function loadCartView(data) {
     }
     cart.innerHTML = '';
     if (data.cart.length === 0) {
-        window.location.href = '/cart';
+        redirect('/');
     }
     Object.values(data.cart).forEach(item => {
         const itemElement = document.createElement('div');

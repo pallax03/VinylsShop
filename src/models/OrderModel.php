@@ -404,7 +404,7 @@ final class OrderModel
      *
      * @return bool
      */
-    public function setCoupon($discount_code, $percentage, $valid_from, $valid_until, $id_coupon = null) {
+    public function addCoupon($discount_code, $percentage, $valid_from, $valid_until, $id_coupon = null) {
         if ($percentage > 0 && $percentage <= 100) {
             $percentage = $percentage / 100;
         } else {

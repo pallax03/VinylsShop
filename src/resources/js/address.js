@@ -8,7 +8,7 @@ function setDefaultAddress(id = '') {
             id_address: id
         })
     })).then((data) => {
-        window.location.reload();
+        autoRefresh();
     }).catch((error) => {
         createNotification(error, false);
     });
@@ -19,7 +19,7 @@ function deleteAddress(id) {
         method: 'DELETE',
         headers: {}
     })).then((data) => {
-        window.location.reload();
+        autoRefresh();
     }).catch((error) => {
         createNotification(error, false);
     });
@@ -78,7 +78,7 @@ document.getElementById('btn-address_submit').addEventListener('click', function
                 address_cap: cap.value
             })
         })).then((data) => {
-            window.location.reload();
+            autoRefresh();
         }).catch((error) => {
             createNotification(error, false);
         });
