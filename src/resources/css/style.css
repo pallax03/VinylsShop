@@ -2352,9 +2352,9 @@ main section p, main form p {
 
 .modal {
   pointer-events: none;
-  top: 91%;
+  top: 86%;
   width: 90%;
-  height: 50px;
+  height: 80px;
   position: fixed;
   right: 5%;
   -webkit-transition: height 0.7s ease;
