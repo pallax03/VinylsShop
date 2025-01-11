@@ -588,6 +588,11 @@ main {
 .error {
     color: var(--error-color);
     border: 2px solid var(--error-color);
+    &:hover {
+        i {
+            color: var(--error-color);
+        }
+    }
 }
 
 .delete {
@@ -599,6 +604,7 @@ main {
         color: var(--error-color);
     }
 }
+
 
 .stars {
 
@@ -614,6 +620,10 @@ main {
 }
 .padding-1 {
     padding: 1rem;
+}
+
+.no-border {
+    border: none;
 }
 
 .no-margin {
@@ -838,9 +848,9 @@ main {
 
 .modal {
     pointer-events: none;
-    top: 91%;
+    top: 86%;
     width: 90%;
-    height: 50px;
+    height: 80px;
     position: fixed;
     right: 5%;
     @media (min-width: $breakpoint) {

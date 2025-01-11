@@ -1,3 +1,21 @@
+<section aria-labelledby="user-info">
+    <i class="bi bi-person-fill"></i>
+    <div class="container center vertical">
+        <h4 id="user-mail"><?php echo $user['mail'] ?></h4>
+        <?php if($user['notifications']):?>
+            <a href="/notifications">
+                <p>See Notifications</p>
+                <i class="bi bi-bell-fill"></i>
+            </a>
+        <?php else: ?>
+            <span>
+                <p>Notifications disabled</p>
+                <i class="bi bi-bell-slash-fill"></i>
+            </span>
+        <?php endif; ?>
+    </div>
+</section>
+<div class="div"></div>
 <section>
     <h2>Users</h2>
     <table summary="List of users with actions for deleting, editing, and viewing details">
@@ -6,61 +24,43 @@
                 <th scope="col">Delete</th>
                 <th scope="col">Mail</th>
                 <th scope="col">Balance</th>
-                <th scope="col">Edit</th>
+                <th scope="col">Orders</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td colspan="4">
-                    <button class="add" id="add" aria-label="Add a new user">
-                        <span aria-hidden="true"><i class="bi bi-plus"></i></span>
-                    </button>
+                    <a href="/dashboard/register" class="add" id="add" aria-label="Add a new user">
+                        <span aria-hidden="true">
+                            Add a new admin
+                        </span>
+                    </a>
                 </td>
             </tr>
             <?php foreach($data["users"] as $user): ?>
-            <tr>
+            <tr <?php echo $user['su'] == 1 ? 'class="star"' : ''; ?>>
                 <td>
                     <button class="delete" onclick="deleteUser(<?php echo $user['id_user']; ?>)" aria-label="Delete user">
                         <span aria-hidden="true"><i class="bi bi-x"></i></span>
                     </button>
                 </td>
-                <td><?php echo $user['mail']; ?></td>
-                <td><?php echo $user['balance']; ?></td>
                 <td>
-                    <button class="edit" aria-label="Edit user details">
+                    <p><?php echo $user['mail'] . ($user['su'] == 1 ? ' (⭐️)' : ''); ?></p>
+                </td>
+                <td>
+                    <p><?php echo $user['balance']; ?>€</p>
+                </td>
+                <td>
+                    <a href="/user/orders?id_user=<?php echo $user['id_user']; ?>" class="edit" aria-label="See user orders">
                         <span aria-hidden="true">
-                            <i class="bi bi-pencil"></i>
+                            <i class="bi bi-box-seam-fill"></i>
+                            <i class="bi bi-caret-right-fill"></i>
                         </span>
-                    </button>
+                    </a>
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 </section>
-<div class="div"></div>
-<form action="/user/edit">
-    <h2>Update User Balance</h2>
-    <ul>
-        <li>
-            <label for="mail">Mail</label>
-            <input type="email" id="input-user_mail" name="mail" autocomplete="email" required />
-        </li>
-        <li>
-            <label for="input-user_balance">Balance</label>
-            <input type="number" name="user_balance" id="input-user_balance" placeholder="€" aria-required="true" />
-        </li>
-        <li id="li-form_reset" class="split">
-            <div class="button">
-                <i class="bi bi-x"></i>
-                <button class="close" type="button" id="btn-user_reset" aria-label="Reset Form">Reset</button>
-            </div>
-        </li>
-        <li class="split">
-            <div class="button">
-                <i class="bi bi-cash"></i>
-                <button type="button" id="btn-user_submit" aria-label="Update Balance">Update</button>
-            </div>
-        </li>
-    </ul>
-</form>
+<script src="/resources/js/user.js"></script>

@@ -8,10 +8,9 @@
 > - relazione ???
 
 ## COSA DOBBIAMO FARE: ⚠️
-⚠️ LA HOME PAGE.
-1. dashboard (SAM: VINYLS / ALEX: USERS)
-2. add fetch notifications and backend routing.
-3. fixing generici nel frontend
+- ⚠️ LA HOME PAGE.
+- picchiare sam
+- fixing generici nel frontend
 
 ### Database Schema:
 ![Database Schema](/db/RELAZIONALE.png)

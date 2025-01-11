@@ -1,22 +1,148 @@
-
-
-
 table {
     width: 100%;
+    border-collapse: collapse;
 
     thead {
-
+        display: none;
     }
+
     tbody {
         tr:nth-child(1) {
             background-color: #f2f2f2;
-            &:hover, &:focus {
+
+            &:hover,
+            &:focus {
                 background-color: var(--selected-color);
                 font-size: 1.2rem;
             }
         }
+
         tr:nth-child(even) {
             background-color: var(--secondary-color);
         }
-    }   
+
+        tr {
+            &.star {
+                background-color: rgba(255, 255, 0, 0.535);
+            }
+
+            td {
+                margin: 0;
+                padding: .4rem;
+
+                &:first-child {
+                    width: 10%;
+                    padding: 0;
+                }
+                &:last-child {
+                    width: 10%;
+                    padding: 0;
+                }
+
+                button, a {
+                    margin: 0;
+                    padding: 0;
+                    &.add {
+                        display: block;
+                        border: 1px solid var(--border-color);
+                        border-radius: var(--border-radius);
+                        text-decoration: none;
+                        font-weight: bold;
+                        text-align: center;
+                        width: 100%;
+                        background-color: var(--text-color);
+                        color: var(--primary-color);
+                        span {
+                            i {
+                                font-size: 2rem;
+                            }
+                        }
+                        &:hover {
+                            background-color: var(--selected-color);
+                        }
+                    }
+
+                    &.delete {
+                        padding: 0;
+                        margin: 0;
+                        background-color: transparent;
+                        border: none;
+                        cursor: pointer;
+
+                        i {
+                            font-size: 2rem;
+                            color: red;
+                        }
+                    }
+                }
+
+                p {
+                    font-size: .8rem;
+                }
+
+                a {
+                    span {
+                        display: inline-flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        i:first-child {
+                            margin: 0;
+                        }
+
+                        i {
+                            margin: .2rem;
+                            font-size: .8rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
+
+
+//     td:has(.add) {
+//         background-color: var(--background-color);
+//         padding: 15px 10px;
+//     }
+//     td {
+//         border-bottom: 1px solid black; /* Bordo interno */
+//         padding: 8px; /* Spaziatura interna */
+//         text-align: center; /* Allinea il testo al centro */
+//         .delete {
+//             padding: 0 3px;
+//             background-color: transparent;
+//             border: none;
+//             cursor: pointer;
+//         }
+//     }
+//     td:has(.delete) {
+//         padding: 2px 0px 0px 8px;
+//         vertical-align: top;
+//         text-align: start;
+//     }
+
+//     td:has(.edit) {
+//         padding: 0px 8px 4px 0px;
+//         vertical-align: bottom;
+//         text-align: end;
+//     }
+//     .add {
+//         display: block;
+//         border: 1px solid var(--border-color);
+//         border-radius: var(--border-radius);
+//         text-decoration: none;
+//         font-size: 1.5rem;
+//         font-weight: bold;
+//         text-align: center;
+//         width: 100%;
+//         padding: 0;
+//         margin: 0;
+//         background-color: var(--text-color);
+//     }
+
+//     .add:hover {
+//         background-color: var(--selected-color);
+//     }
+// }

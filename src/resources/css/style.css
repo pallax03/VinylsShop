@@ -438,8 +438,8 @@ section.cards {
 
 .card {
   position: relative;
-  height: clamp(200px, 50%, 300px);
-  width: 100vw;
+  height: auto;
+  width: 340px;
   max-width: 800px;
   background-color: var(--background-color);
   border-radius: var(--border-radius);
@@ -449,8 +449,8 @@ section.cards {
 }
 .card .close {
   position: absolute;
-  top: -15px;
-  left: -15px;
+  top: -10px;
+  left: -10px;
 }
 .card .close button {
   border: 0;
@@ -461,7 +461,7 @@ section.cards {
   cursor: pointer;
 }
 .card .close button i {
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 .card .close button:hover {
   color: var(--error-color);
@@ -485,7 +485,7 @@ section.cards {
   display: inline-block;
 }
 .order header {
-  height: clamp(200px, 50%, 300px);
+  height: auto;
   float: left;
   display: flex;
   flex-direction: column;
@@ -501,7 +501,7 @@ section.cards {
   left: 10px;
 }
 .order header a {
-  height: clamp(200px, 50%, 300px);
+  height: auto;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -525,7 +525,9 @@ section.cards {
 }
 .order .order-details {
   height: 100%;
-  width: 60%;
+  width: 50%;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   margin: 0;
   padding: 0;
@@ -584,23 +586,28 @@ section.cards {
 }
 .order footer {
   width: 10%;
-  height: clamp(200px, 50%, 300px);
+  height: auto;
   float: right;
   display: flex;
-  flex-direction: column;
-  justify-content: end;
-  align-items: center;
-  padding: 0.5rem;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0;
   position: relative;
 }
 .order footer .btn-specular {
-  right: 0;
   top: 0;
 }
 .order footer span {
   position: absolute;
-  top: 40px;
-  right: 0;
+  top: 80px;
 }
 .order footer span p:first-child {
   display: block;
@@ -608,7 +615,7 @@ section.cards {
 }
 .order footer span p {
   display: block;
-  font-size: 1rem;
+  font-size: 0.7rem;
 }
 
 .shipping {
@@ -783,7 +790,9 @@ section.cards {
   background-color: var(--background-color);
 }
 .cart .product-details {
-  width: 80%;
+  width: 70%;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   flex-direction: row;
   justify-content: center;
@@ -793,7 +802,26 @@ section.cards {
 .cart .product-details div img {
   width: 70px;
   height: 70px;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
+}
+.cart .product-details h2 {
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.cart .product-details p {
+  font-size: 0.6rem;
+  margin: 0;
+  width: auto;
+  padding: 0;
+  border: 0;
+}
+.cart footer p {
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 @keyframes highlight-border {
@@ -874,7 +902,6 @@ section.cards {
   text-decoration: none;
   color: var(--text-color);
   border-radius: 5px;
-  background-color: var(--background-color);
 }
 .notification footer a i {
   font-size: 1.2rem;
@@ -886,7 +913,7 @@ section.cards {
 .search-card {
   position: relative;
   height: clamp(150px, 34%, 250px);
-  width: 350px;
+  width: 340px;
   background-color: var(--background-color);
   border-radius: var(--border-radius);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -944,6 +971,10 @@ section.cards {
 
 table {
   width: 100%;
+  border-collapse: collapse;
+}
+table thead {
+  display: none;
 }
 table tbody tr:nth-child(1) {
   background-color: #f2f2f2;
@@ -954,6 +985,74 @@ table tbody tr:nth-child(1):hover, table tbody tr:nth-child(1):focus {
 }
 table tbody tr:nth-child(even) {
   background-color: var(--secondary-color);
+}
+table tbody tr.star {
+  background-color: rgba(255, 255, 0, 0.535);
+}
+table tbody tr td {
+  margin: 0;
+  padding: 0.4rem;
+}
+table tbody tr td:first-child {
+  width: 10%;
+  padding: 0;
+}
+table tbody tr td:last-child {
+  width: 10%;
+  padding: 0;
+}
+table tbody tr td button, table tbody tr td a {
+  margin: 0;
+  padding: 0;
+}
+table tbody tr td button.add, table tbody tr td a.add {
+  display: block;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  background-color: var(--text-color);
+  color: var(--primary-color);
+}
+table tbody tr td button.add span i, table tbody tr td a.add span i {
+  font-size: 2rem;
+}
+table tbody tr td button.add:hover, table tbody tr td a.add:hover {
+  background-color: var(--selected-color);
+}
+table tbody tr td button.delete, table tbody tr td a.delete {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+table tbody tr td button.delete i, table tbody tr td a.delete i {
+  font-size: 2rem;
+  color: red;
+}
+table tbody tr td p {
+  font-size: 0.8rem;
+}
+table tbody tr td a span {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+table tbody tr td a span i:first-child {
+  margin: 0;
+}
+table tbody tr td a span i {
+  margin: 0.2rem;
+  font-size: 0.8rem;
 }
 
 @font-face {
@@ -1477,6 +1576,9 @@ main section p, main form p {
   color: var(--error-color);
   border: 2px solid var(--error-color);
 }
+.error:hover i {
+  color: var(--error-color);
+}
 
 .delete {
   color: var(--error-color) !important;
@@ -1500,6 +1602,10 @@ main section p, main form p {
 
 .padding-1 {
   padding: 1rem;
+}
+
+.no-border {
+  border: none;
 }
 
 .no-margin {
@@ -1705,9 +1811,9 @@ main section p, main form p {
 
 .modal {
   pointer-events: none;
-  top: 91%;
+  top: 86%;
   width: 90%;
-  height: 50px;
+  height: 80px;
   position: fixed;
   right: 5%;
   transition: height 0.7s ease;
@@ -1796,80 +1902,4 @@ main section p, main form p {
   font-size: 3rem;
   margin-bottom: 30px;
   font-weight: bold;
-}
-
-table {
-  border-collapse: collapse;
-}
-
-td:has(.add) {
-  background-color: var(--background-color);
-  padding: 15px 10px;
-}
-
-td {
-  border-bottom: 1px solid black; /* Bordo interno */
-  padding: 8px; /* Spaziatura interna */
-  text-align: center; /* Allinea il testo al centro */
-}
-td .delete {
-  padding: 0 3px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-td:has(.delete) {
-  padding: 2px 0px 0px 8px;
-  vertical-align: top;
-  text-align: start;
-}
-
-td:has(.edit) {
-  padding: 0px 8px 4px 0px;
-  vertical-align: bottom;
-  text-align: end;
-}
-
-.add {
-  display: block;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  text-decoration: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  background-color: var(--background-color);
-}
-
-.add:hover {
-  background-color: var(--selected-color);
-}
-
-.hidden {
-  pointer-events: none;
-  height: 0;
-  opacity: 0;
-}
-
-@keyframes show {
-  from {
-    height: 0;
-    opacity: 0;
-  }
-  50% {
-    height: auto;
-    opacity: 0;
-  }
-  to {
-    height: auto;
-    opacity: 1;
-  }
-}
-.shown {
-  pointer-events: auto;
-  animation: show 1s linear;
 }

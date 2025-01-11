@@ -34,6 +34,9 @@
     $router->get('/dashboard/albums', [HomeController::class, 'dashboardAlbums']);
     $router->get('/dashboard/ecommerce', [HomeController::class, 'dashboardEcommerce']);
     $router->get('/dashboard/users', [HomeController::class, 'dashboardUsers']);
+    $router->get('/dashboard/register', [HomeController::class, 'dashboardRegister']);
+    // # 🍽️ [RegisterSuperUser] ~ add a new super user -> Auth
+    $router->post('/superuser', [HomeController::class, 'registerSuperUser']);
 
 
 // 📀: --- VinylController.php --- (models: Vinyl (Artist - Track) - Cart)
@@ -68,6 +71,7 @@
     $router->get('/user', [UserController::class, 'index']);
     // # 🍽️ [GetUser] ~ get user infos an admin can get any one -> Auth - User
     $router->get('/user/get', [UserController::class, 'getUser']);
+    $router->get('/user/orders', [UserController::class, 'orders']);
     // # 🍽️ [UpdateUser] ~ update user infos -> Auth - User
     $router->post('/user', [UserController::class, 'updateUser']); // like notifications i can update the user in defaults.
     // 🚩 # 🍽️ [DeleteUser] ~ delete the user -> Auth - User
@@ -105,7 +109,7 @@
     // # 🍽️ [Shippings] ~ update shipping info -> Auth - Shipping
     $router->post('/shipping', [OrderController::class, 'setShipping']);
     // # 🍽️ [Coupons] ~ list of all the coupons -> Coupons
-    $router->get('/coupons', [OrderController::class, 'getCoupons']);
+    $router->get('/coupons', [OrderController::class, 'viewCoupons']);
 
     // ⭐️ ADMIN -> need to be an admin to access to the following routes.
     $router->post('/coupon', [OrderController::class, 'setCoupon']); // ->  add / update a coupon.

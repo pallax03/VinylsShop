@@ -20,6 +20,8 @@ class HomeController extends Controller {
 
         require_once MODELS . 'OrderModel.php';
         $this->order_model = new OrderModel();
+
+        $this->auth_model->checkAuth();
     }
 
     
@@ -87,7 +89,10 @@ class HomeController extends Controller {
     public function dashboard() {
         $this->redirectNotSuperUser();
         $this->render('admin/vinyls', ['title' => 'Manage Vinyls'],
-            ['vinyls' => $this->vinyls_model->getAllVinyls()]);
+            [
+                'vinyls' => $this->vinyls_model->getAllVinyls(),
+                'albums' => $this->vinyls_model->getAlbums([])
+            ]);
     }
     
     public function dashboardEcommerce() {
@@ -105,9 +110,26 @@ class HomeController extends Controller {
     public function dashboardUsers() {
         $this->redirectNotSuperUser();
         $this->render('admin/users', ['title' => 'Manage Users'],
-            ['users' => $this->user_model->getUsers()]);
+            [   
+                'user' => $this->user_model->getUser(),
+                'users' => $this->user_model->getUsers()
+            ]);
     }
-    
+
+    public function dashboardRegister() {
+        $this->redirectNotSuperUser();
+        $this->render('admin/registeradmins', ['title' => 'Register Admins']);
+    }
+
+    public function registerSuperUser(Request $request, Response $response) {
+        $body = $request->getBody();
+        if (Session::isSuperUser() && $this->auth_model->registerSuperUser($body['mail'], $body['password'])) {
+            $response->Success('Super User registered!');
+            return;
+        }
+        $response->Error('Register Error, please try again...');
+    }
+
 
     public function reset() {
         Session::destroy();

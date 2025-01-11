@@ -2,14 +2,16 @@
 final class VinylController extends Controller {
 
     private $vinyl_model = null;
+    private $notification_model = null;
 
     function __construct() {
         require_once MODELS . '/VinylsModel.php';
         $this->vinyl_model = new VinylsModel();
 
-        require_once MODELS . '/OrderModel.php';
+        require_once MODELS . '/NotificationModel.php';
+        $this->notification_model = new NotificationModel();
     }
-    
+
     function index(Request $request, Response $response) {
         $body = $request->getBody();
         $data['vinyl'] = $this->vinyl_model->getVinylDetails($body['id'] ?? null);

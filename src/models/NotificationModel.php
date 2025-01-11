@@ -76,15 +76,15 @@ final class NotificationModel {
     /**
      * Broadcast a notification to specific users
      *
-     * @param array $users NEED `newletter` and `id_user` keys
+     * @param array $users is an array of users with the id_user key
      * @param string $message
      * @param string $link
      * 
      * @return void
      */
     public function broadcastFor($users, $message, $link = null) {
-        foreach ($users as $key => $value) {
-            $this->createNotification($value, $message, $link);
+        foreach ($users as $user) {
+            $this->createNotification($user['id_user'], $message, $link);
         }
     }
 

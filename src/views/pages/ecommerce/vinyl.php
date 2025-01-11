@@ -8,12 +8,17 @@
                 . " - " . $details["type"];
         ?>
     </p>
-    <button onclick="addToCart(<?php echo $data['vinyl']['details']['id_vinyl'] ?>, 1)">
-        <p class="add-cart" >Add to cart - cost €<?php echo $data["vinyl"]["details"]["cost"] ?></p>
-    </button>
+    <div class="large button">
+        <i class="bi bi-bag-fill"></i>
+        <button onclick="addToCart(<?php echo $data['vinyl']['details']['id_vinyl'] ?>, 1)" <?php if($data['vinyl']['details']['stock'] == 0) echo 'disabled'?>>
+            <?php echo $data['vinyl']['details']['stock'] == 0 ? 'Out of stock' : 'Add to cart - ' . $data["vinyl"]["details"]["cost"] . ' €' ?>
+        </button>
+    </div>
+    
 </section>
+<div class="div"></div>
 <section class="tracklist">
-    <h1 class="album-title"><?php echo $data["vinyl"]["details"]["title"] ?></h1>
+    <h1>Album Info</h1>
     <span class="artist-info">
         <p><?php echo $data["vinyl"]["details"]["artist"] ?></p>
         <p><?php echo $data["vinyl"]["details"]["release_date"] ?></p>

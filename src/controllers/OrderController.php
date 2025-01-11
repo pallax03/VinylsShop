@@ -3,7 +3,6 @@ class OrderController extends Controller {
 
     private $auth_model = null;
     private $order_model= null;
-    private $vinyls_model = null;
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
@@ -12,22 +11,32 @@ class OrderController extends Controller {
         require_once MODELS . 'OrderModel.php';
         $this->order_model = new OrderModel();
 
-        require_once MODELS . 'VinylsModel.php';
-        $this->vinyls_model = new VinylsModel();
+        $this->auth_model->checkAuth();
     }
 
     
     public function index(Request $request, Response $response) {
-        $this->redirectSuperUser();
         $this->auth_model->checkAuth();
 
         $body = $request->getBody();
         $title = $data['title'] ?? 'Order Info';
         $head = array('title' => $title);
-        $data['order'] = $this->order_model->getOrder($body['id_order'] ?? null);
+        
+        
+        $data['order'] = $this->order_model->getOrder($body['id_order'] ?? null, $body['id_user'] ?? null);;
+        if(empty($data['order'])) {
+            $this->render('notfound', ['title' => 'Order not found']);
+            return;
+        }
 
+        if(!Session::isSuperUser() && !$this->order_model->isOrderOwner($body['id_order'] ?? null, $body['id_user'] ?? null)) {
+            $this->render('notauthorizated', ['title' => 'Order not yours']);
+            return;
+        }
+        
         $this->render('ecommerce/order', $head, $data);
     }
+
 
     /**
      * Get all orders, an admin can get any user orders
@@ -131,6 +140,10 @@ class OrderController extends Controller {
             }
         }
         $response->Error('Coupon not deleted', $body);
+    }
+
+    public function viewCoupons() {
+        $this->render('ecommerce/coupons', ['title' => 'Coupons'], ['coupons' => $this->order_model->getCoupons()]);
     }
 }
 ?>

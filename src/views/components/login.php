@@ -21,8 +21,5 @@
                 <button class="animate" id="btn-login_submit">Login</button>
             </div>
         </li>
-        <li>
-            <div class="message" id="div-login_response"></div>
-        </li>
     </ul>
 </form>

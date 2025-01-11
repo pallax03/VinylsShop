@@ -30,9 +30,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/user">
-                        <p>Login / Signup</p>
-                    </a>
+                    <?php if (Session::isSuperUser()): ?>
+                        <a href="/dashboard/users">
+                            <p>Manage Users</p>
+                        </a>
+                    <?php else: ?>
+                        <a href="/user">
+                            <p>Login / Signup</p>
+                        </a>
+                    <?php endif; ?>
                 </li>
                 <li>
                     <a href="/coupons">
@@ -40,14 +46,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/orders">
-                        <p>Order</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="/shipping">
-                        <p>Shipping</p>
-                    </a>
+                    <?php if (Session::isSuperUser()): ?>
+                        <a href="/dashboard">
+                            <p>Manage Vinyls</p>
+                        </a>
+                    <?php else: ?>
+                        <a href="/cart">
+                            <p>Cart</p>
+                        </a>
+                    <?php endif; ?>
                 </li>
             </ul>
         </li>

@@ -15,7 +15,7 @@
     <ul>
         <li>
             <label for="address_name">Name:</label>
-            <input autocomplete="name" type="text" id="input-address_name" name="address_name" placeholder="Full name" required aria-required="true" aria-label="Name" />
+            <input autocomplete="name" type="text" id="input-address_name" name="address_name" placeholder="Alex Mazzoni" required aria-required="true" aria-label="Name" />
         </li>
         <li>
             <label for="address_street">Street & Number:</label>
@@ -23,11 +23,11 @@
         </li>
         <li class="split">
             <label for="address_city">City:</label>
-            <input autocomplete="address-level2" type="text" id="input-address_city" name="address_city" placeholder="City" required aria-required="true" aria-label="City" />
+            <input autocomplete="address-level2" type="text" id="input-address_city" name="address_city" placeholder="Milan" required aria-required="true" aria-label="City" />
         </li>
         <li class="split">
         <label for="address_cap">CAP:</label>
-        <input autocomplete="postal-code" type="text" id="input-address_cap" name="address_cap" placeholder="CAP" pattern="[0-9]{5}" required aria-required="true" aria-label="CAP" />
+        <input autocomplete="postal-code" type="text" id="input-address_cap" name="address_cap" placeholder="01234" pattern="[0-9]{5}" required aria-required="true" aria-label="CAP" />
         </li>
         <li>
             <div class="large button">
