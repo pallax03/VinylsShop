@@ -941,8 +941,8 @@ main {
 
 .hidden {
     pointer-events: none;
-    height: 0;
     opacity: 0;
+    height: 0;
 }
 
 @keyframes show {

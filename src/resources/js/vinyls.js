@@ -22,11 +22,8 @@ document.querySelectorAll(".edit").forEach(btn =>{
 
 document.getElementById("li-form_reset").onclick = function () {
     const form = document.getElementById("form-vinyl");
-    /* if form isn't already shown, show it */
-    if (form.classList.contains("hidden")) {
-        form.classList.add("hidden");
-        form.classList.remove("shown");
-    }
+    form.classList.add("hidden");
+    form.classList.remove("shown");
     /* auto compiling the form */
     document.getElementById("input-cost").value = "";
     document.getElementById("input-stock").value = "";
