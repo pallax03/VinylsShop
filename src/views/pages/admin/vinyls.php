@@ -7,7 +7,8 @@
 <div class="div"></div>
 <section>
     <h2 class="admin-vinyls-header">Vinyls</h2>
-    <table summary="List of vinyls with actions for deleting, editing, and viewing details">
+    <table>
+        <caption>List of vinyls with actions for deleting, editing, and viewing details</caption>
         <thead>
             <tr>
                 <th scope="col">Stock</th>
@@ -27,12 +28,12 @@
                 </td>
             </tr>
             <?php foreach ($data["vinyls"] as $vinyl):
-                echo ('<tr">
+                echo ('<tr>
                 <td> ' . $vinyl["stock"] . 'x</td>
                 <td>' . $vinyl["title"] . '</td>
                 <td>€' . $vinyl["cost"] . '</td>
                 <td>
-                    <a class="edit" aria-label="Edit vinyl details">
+                    <a class="edit">
                         <span aria-hidden="true"><i class="bi bi-pencil"></i></span>
                     </a>
                 </td>
@@ -73,8 +74,8 @@
     </form>
 </section>
 
-<script src="/resources/js/vinyls.js"></script>
-
 <?php
     include PAGES . 'admin/album.php';
 ?>
+
+<script src="/resources/js/vinyls.js"></script>

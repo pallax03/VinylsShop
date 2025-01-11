@@ -1,17 +1,17 @@
 <section aria-labelledby="user-info">
     <i class="bi bi-person-fill"></i>
     <div class="container center vertical">
-        <h4 id="user-mail"><?php echo $user['mail'] ?></h4>
+        <h1 id="user-mail"><?php echo $user['mail'] ?></h1>
         <?php if($user['notifications']):?>
             <a href="/notifications">
                 <p>See Notifications</p>
                 <i class="bi bi-bell-fill"></i>
             </a>
         <?php else: ?>
-            <span>
+            <div>
                 <p>Notifications disabled</p>
                 <i class="bi bi-bell-slash-fill"></i>
-            </span>
+            </div>
         <?php endif; ?>
     </div>
 </section>

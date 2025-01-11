@@ -1,4 +1,4 @@
-<form id="form-album">
+<form class="hidden" id="form-album">
     <h1> Add a new Album </h1>
     <ul>
         <li>

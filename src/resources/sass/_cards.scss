@@ -112,7 +112,7 @@ $preview-cover-size: 80%;
         padding: .5rem;
         
 
-        span {
+        p {
             font-size: clamp(0.6rem, 2vw, 1.2rem); 
             position: absolute;
             top: 10px;
@@ -223,7 +223,7 @@ $preview-cover-size: 80%;
             top: 0;
         }
 
-        span {
+        div {
             position: absolute;
             top: 80px;
 
@@ -256,8 +256,8 @@ $preview-cover-size: 80%;
         .btn-specular {
             left: 0;
         }
-        span {
-            h4 {
+        div {
+            p:first-child {
                 &::before {
                     content: "#";
                 }
@@ -351,7 +351,7 @@ $preview-cover-size: 80%;
                     height: fit-content;
                 }
             }
-            span {
+            div {
                 display: inline-flex;
                 flex-direction: row;
                 justify-content: baseline;

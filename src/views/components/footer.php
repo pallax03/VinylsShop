@@ -4,14 +4,12 @@
             <a href="https://www.unibo.it/it/studiare/dottorati-master-specializzazioni-e-altra-formazione/insegnamenti/insegnamento/2024/378225">
                 <ul>
                     <li>
-                        <img width="100px" height="auto" src="https://www.unibo.it/it/++theme++unibotheme.portale/img/header/sigillo1x_xl.png?v=2" alt="" srcset="">
+                        <img src="https://www.unibo.it/it/++theme++unibotheme.portale/img/header/sigillo1x_xl.png?v=2" alt="">
                     </li>
                     <li>
-                        <span>
-                            <p>8615</p>
-                            <p> - </p>
-                            <p>Final project of the course: Tecnologie Web (41731)</p>
-                        </span>
+                        <p>8615</p>
+                        <p> - </p>
+                        <p>Final project of the course: Tecnologie Web (41731)</p>
                     </li>
                 </ul>
             </a>
@@ -64,11 +62,9 @@
         <li>
             <a class="copyrights" href="">
                 <p>Copyright © <?php echo date("Y"); ?> VinylsShop - All rights reserved</p>
-                <span>
-                    <p>IT</p>
-                    <p> - </p>
-                    <p>€</p>
-                </span>
+                <p>IT</p>
+                <p> - </p>
+                <p>€</p>
             </a>
         </li>
     </ul>

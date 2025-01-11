@@ -494,7 +494,7 @@ section.cards {
   border-right: 2px solid var(--border-color);
   padding: 0.5rem;
 }
-.order header span {
+.order header p {
   font-size: clamp(0.6rem, 2vw, 1.2rem);
   position: absolute;
   top: 10px;
@@ -596,15 +596,15 @@ section.cards {
 .order footer .btn-specular {
   top: 0;
 }
-.order footer span {
+.order footer div {
   position: absolute;
   top: 80px;
 }
-.order footer span p:first-child {
+.order footer div p:first-child {
   display: block;
   font-size: 0.6rem;
 }
-.order footer span p {
+.order footer div p {
   display: block;
   font-size: 0.7rem;
 }
@@ -625,13 +625,13 @@ section.cards {
 .shipping header .btn-specular {
   left: 0;
 }
-.shipping header span h4 {
+.shipping header div p:first-child {
   font-size: 0.8rem;
 }
-.shipping header span h4::before {
+.shipping header div p:first-child::before {
   content: "#";
 }
-.shipping header span p {
+.shipping header div p {
   font-size: 0.7rem;
 }
 .shipping header i {
@@ -714,19 +714,19 @@ section.cards {
   height: -moz-fit-content;
   height: fit-content;
 }
-.shipping footer .toggle span {
+.shipping footer .toggle div {
   display: inline-flex;
   flex-direction: row;
   justify-content: baseline;
 }
-.shipping footer .toggle span p {
+.shipping footer .toggle div p {
   visibility: visible;
   opacity: 1;
   font-size: 0.8rem;
   height: -moz-fit-content;
   height: fit-content;
 }
-.shipping footer .toggle span i {
+.shipping footer .toggle div i {
   font-size: 1.2rem;
 }
 .shipping footer .toggle p {
@@ -1390,19 +1390,20 @@ main section, main form {
   padding: 1.2rem;
 }
 main section h1, main form h1 {
-  font-size: 6vw;
+  font-size: 3rem;
   margin-bottom: 1rem;
+  font-weight: bold;
 }
 main section h2, main form h2 {
-  font-size: 5vw;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 main section h3, main form h3 {
-  font-size: 4vw;
+  font-size: 2rem;
   margin-bottom: 1rem;
 }
 main section h4, main form h4 {
-  font-size: 3vw;
+  font-size: 1.5rem;
   margin-bottom: 1rem;
 }
 main section a, main form a {
@@ -1438,7 +1439,10 @@ main section a p, main form a p {
   border-radius: 50px;
 }
 main section p, main form p {
-  font-size: 4vw;
+  font-size: 1.2rem;
+}
+main section b, main form b {
+  font-weight: 600;
 }
 
 .search-content {
@@ -1669,20 +1673,21 @@ main section p, main form p {
 }
 .tracklist .artist-info {
   width: 330px;
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 20px;
   text-align: center;
 }
 @media (min-width: 1080px) {
   .tracklist .artist-info {
     width: 50%;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-evenly;
   }
 }
-.tracklist .artist-info p {
-  display: inline;
-  font-size: 1rem;
+.tracklist .artist-info b {
+  padding: 0.5rem;
 }
 .tracklist .album {
   width: 320px;

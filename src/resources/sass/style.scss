@@ -406,19 +406,20 @@ main {
         width: 100%;
         padding: 1.2rem;
         h1 {
-            font-size: 6vw;
+            font-size: 3rem;
             margin-bottom: 1rem;
+            font-weight: bold;
         }
         h2 {
-            font-size: 5vw;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
         }
         h3 {
-            font-size: 4vw;
+            font-size: 2rem;
             margin-bottom: 1rem;
         }
         h4 {
-            font-size: 3vw;
+            font-size: 1.5rem;
             margin-bottom: 1rem;
         }
         a {
@@ -457,7 +458,10 @@ main {
 
         }
         p {
-            font-size: 4vw;
+            font-size: 1.2rem;
+        }
+        b {
+            font-weight: 600;
         }
     }
 }
@@ -722,17 +726,18 @@ main {
     margin: 10px 0;
     .artist-info {
         width: 330px;
+        display: flex;
+        flex-direction: column;
         @media (min-width: $breakpoint) {
             width: 50%;
+            display: inline-flex;
+            flex-direction: row;
+            justify-content: space-evenly;
         }
-        display: inline-flex;
-        flex-direction: row;
-        justify-content: space-evenly;
         margin-bottom: 20px;
         text-align: center;
-        p {
-            display: inline;
-            font-size: 1rem;
+        b {
+            padding: .5rem;
         }
     }
     .album {

@@ -19,11 +19,11 @@
 <div class="div"></div>
 <section class="tracklist">
     <h1>Album Info</h1>
-    <span class="artist-info">
-        <p><?php echo $data["vinyl"]["details"]["artist"] ?></p>
-        <p><?php echo $data["vinyl"]["details"]["release_date"] ?></p>
-        <p><?php echo $data["vinyl"]["details"]["genre"] ?></p>
-    </span>
+    <div class="artist-info">
+        <b><?php echo $data["vinyl"]["details"]["artist"] ?></b>
+        <b><?php echo $data["vinyl"]["details"]["release_date"] ?></b>
+        <b><?php echo $data["vinyl"]["details"]["genre"] ?></b>
+    </div>
     <ol class="album">
         <?php
             foreach ($data["vinyl"]["tracks"] as $track):

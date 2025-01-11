@@ -1,7 +1,7 @@
 <div class="flip">
     <div class="order card active">
         <header>
-            <span><?php echo $n ?></span>
+            <p><?php echo $n ?></p>
             <a href="/order?id_order=<?php echo $order['id_order'] ?>&id_user=<?php echo $user['id_user'] ?>">
                 <i class="bi bi-box-seam-fill"></i>
                 <h2><? echo $order['tracking_number']?></h2>
@@ -12,9 +12,9 @@
                 <?php foreach (array_slice($order['vinyls'], 0, 3) as $vinyl): ?>
                     <li>
                         <a href="/vinyl?id=<?php echo $vinyl['id_vinyl'] ?>"">
-                            <img src="/resources/img/albums/<? echo $vinyl['cover']?>" alt="album cover">
-                            <h6><? echo $vinyl['title']?></h6>
-                            <p><? echo $vinyl['cost']?> €</p>
+                            <img src="/resources/img/albums/<?php echo $vinyl['cover']?>" alt="album cover">
+                            <h6><?php echo $vinyl['title']?></h6>
+                            <p><?php echo $vinyl['cost']?> €</p>
                         </a>
                     </li>
                 <?php endforeach; ?>
@@ -25,10 +25,10 @@
                 <i class="bi bi-truck"></i>
                 <i class="bi bi-caret-right-fill"></i>
             </button>
-            <span>
+            <div>
                 <p>Total: </p>
                 <p><?php echo $order['total_cost'] ?>€</p>
-            </span>
+            </div>
         </footer>
     </div>
     <div class="shipping card">
@@ -37,11 +37,11 @@
                 <i class="bi bi-caret-left-fill"></i>
                 <i class="bi bi-box-seam-fill"></i>
             </button>
-            <span>
-                <h4><?php echo $order['tracking_number'] ?></h4>
+            <div>
+                <p><?php echo $order['tracking_number'] ?></p>
                 <p><?php echo $order['courier'] ?></p>
                 <p><?php echo $order['shipment_cost'] ?> €</p>
-            </span>
+            </div>
             <i class="bi bi-truck"></i>
         </header>
         <div class="tracking">
@@ -58,17 +58,17 @@
         </div>
         <footer>
             <div class="toggle">
-                <span>
+                <div>
                     <p>Note:</p>
                     <i class="bi bi-caret-down-fill"></i>
-                </span>
+                </div>
                 <p><?php echo $order['notes'] ?></p>
             </div>
             <div class="toggle">
-                <span>
+                <div>
                     <p>To: (<?php echo $order['address_name'] ?>)</p>
                     <i class="bi bi-caret-down-fill"></i>
-                </span>
+                </div>
                 <p><?php echo $order['address_street_number'] . ' - ' . $order['address_city'] . ' (' . $order['address_postal_code'] . ')' ?></p>
             </div>
         </footer>

@@ -17,7 +17,7 @@
     </header>
     <a href="/vinyl?id=<?php echo $item['vinyl']['id_vinyl'] ?>" class="product-details">
         <div>
-        <img src="/resources/img/albums/<? echo $item['vinyl']['cover']?>" alt="album cover">
+        <img src="/resources/img/albums/<?php echo $item['vinyl']['cover']?>" alt="album cover">
         </div>
         <div class="info">
             <h3><?php echo $item['vinyl']['title']; ?></h3>

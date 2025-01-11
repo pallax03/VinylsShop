@@ -18,7 +18,7 @@
                     <input id="input-search" name="input-search" type="text" placeholder="Search...">
 
                     <div class="select-wrapper">
-                        <label for="search_filter" class="sr-only">Search in</label>
+                        <label for="select-search_filter" class="sr-only">Search in</label>
                         <span class="label" aria-hidden="true">in</span>
                         <select id="select-search_filter" name="search_filter" aria-label="Search in">
                             <option value="album">album</option>
@@ -51,25 +51,25 @@
     <nav aria-label="Admin navigation">
         <ul>
             <li>
-                <a href="/dashboard">
+                <a aria-label="Vinyls Section" href="/dashboard">
                     <div class="vinyl"></div>
                     <p>Vinyls</p>
                 </a>
             </li>
             <li>
-                <a href="/dashboard/ecommerce">
+                <a aria-label="Shipment Section" href="/dashboard/ecommerce">
                     <i class="bi bi-sliders"></i>
                     <p>Ecommerce</p>
                 </a>
             </li>
             <li>
-                <a href="/dashboard/users">
+                <a aria-label="Users Section" href="/dashboard/users">
                     <i class="bi bi-person-fill"></i>
                     <p>Users</p>
                 </a>
             </li>
             <li>
-                <a class="delete" href="/logout">
+                <a aria-label="Log Out" class="delete" href="/logout">
                     <i class="bi bi-box-arrow-right"></i>
                     <p>Logout</p>
                 </a>

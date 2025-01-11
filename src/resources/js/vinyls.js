@@ -1,10 +1,15 @@
 document.querySelectorAll(".edit").forEach(btn =>{
     btn.onclick = function () {
         const form = document.getElementById("form-vinyl");
+        const addForm = document.getElementById("form-album");
         /* if form isn't already shown, show it */
         if (form.classList.contains("hidden")) {
             form.classList.add("shown");
             form.classList.remove("hidden");
+            if (addForm.classList.contains("shown")) {
+                addForm.classList.add("hidden");
+                addForm.classList.remove("shown");
+            }
         }
         const tr = this.parentElement.parentElement;
         /* auto compiling the form */
@@ -16,6 +21,20 @@ document.querySelectorAll(".edit").forEach(btn =>{
         
     }
 });
+
+document.querySelector(".add").onclick = function () {
+    const form = document.getElementById("form-vinyl");
+    const addForm = document.getElementById("form-album");
+    /* if form isn't already shown, show it */
+    if (addForm.classList.contains("hidden")) {
+        if (form.classList.contains("shown")) {
+            form.classList.remove("shown");
+            form.classList.add("hidden");
+        }
+        addForm.classList.add("shown");
+        addForm.classList.remove("hidden");
+    }
+}
 
 document.getElementById("input-cost").addEventListener("blur", function () {
     const input = document.getElementById("input-cost");
