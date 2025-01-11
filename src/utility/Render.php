@@ -46,9 +46,11 @@
     <?php include COMPONENTS . '/footer.php' ?>
 
     <script src="/resources/js/main.js"></script>
-    <? if(!Session::isSuperUser()):?>
+    <?php if(!Session::isSuperUser()):?>
         <script src="/resources/js/search.js"></script>
         <script src="/resources/js/cards.js"></script>
-    <? endif;?>
+    <?php else :?>
+        <script src="/resources/js/dashboard.js"></script>
+    <?php endif;?>
 </body>
 </html>

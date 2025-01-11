@@ -7,8 +7,8 @@ input {
     background-color: inherit;
 }
 
-
 form {
+    transition: height 0.5s ease;
     padding: 0;
     ul {
         list-style: none;

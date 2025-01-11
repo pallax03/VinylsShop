@@ -975,9 +975,35 @@ td:has(.edit) {
     width: 100%;
     padding: 0;
     margin: 0;
-    background-color: var(--text-color);
+    background-color: var(--background-color);
 }
 
 .add:hover {
     background-color: var(--selected-color);
+}
+
+.hidden {
+    pointer-events: none;
+    height: 0;
+    opacity: 0;
+}
+
+@keyframes show {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+    50% {
+        height: auto;
+        opacity: 0;
+    }
+    to {
+        height: auto;
+        opacity: 1;
+    }
+}
+
+.shown {
+    pointer-events: auto;
+    animation: show 1s linear;
 }

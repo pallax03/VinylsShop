@@ -24,7 +24,7 @@
                         <span aria-hidden="true"><i class="bi bi-x"></i></span>
                     </button>
                 </td>
-                <td>' . $vinyl["title"] . '</td>
+                <td data-id="' . $vinyl["id_vinyl"] . '" data-stock="' . $vinyl["stock"] . '">' . $vinyl["title"] . '</td>
                 <td> ' . $vinyl["type"] . ' - ' . $vinyl["inch"] . ' - ' . $vinyl["rpm"] . '</td>
                 <td>€' . $vinyl["cost"] . '</td>
                 <td>
@@ -37,3 +37,36 @@
         ?>
     </tbody>
 </table>
+<form class="hidden" action="/vinyl/edit">
+    <h2>Update vinyl info</h2>
+    <ul>
+        <li>
+            <label for="input-vinyl_stock">Stock</label>
+            <input type="number" id="input-vinyl_stock" name="stock"/>
+        </li>
+        <li>
+            <label for="input-vinyl_type">Type</label>
+            <input type="text" name="type" id="input-vinyl_type"/>
+        </li>
+        <li>
+            <label for="input-vinyl_inches">Inches</label>
+            <input type="number" id="input-vinyl_inches" name="inches"/>
+        </li>
+        <li>
+            <label for="input-vinyl_rpm">Rpm</label>
+            <input type="number" id="input-vinyl_rpm" name="rpm"/>
+        </li>
+        <li id="li-form_reset" class="split">
+            <div class="button">
+                <i class="bi bi-x"></i>
+                <button class="close" type="button" id="btn-user_reset" aria-label="Reset Form">Reset</button>
+            </div>
+        </li>
+        <li class="split">
+            <div class="button">
+                <i class="bi bi-pencil"></i>
+                <button type="button" id="btn-user_submit" aria-label="Edit Vinyl">Edit</button>
+            </div>
+        </li>
+    </ul>
+</form>

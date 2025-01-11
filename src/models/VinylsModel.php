@@ -112,6 +112,7 @@ final class VinylsModel {
             a.title,
             v.type,
             v.inch,
+            v.stock,
             v.rpm,
             v.cost
             FROM vinyls v , albums a
