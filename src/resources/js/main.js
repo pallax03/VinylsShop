@@ -110,7 +110,7 @@ function createNotification(message, status, link = false, icon = false) {
             redlink.appendChild(optIcon);
         }
         const chevronIcon = document.createElement("i");
-        chevronIcon.className = "bi bi-chevron-double-right";
+        chevronIcon.className = "bi bi-caret-right-fill";
         redlink.href = link;
         redlink.appendChild(chevronIcon);
     }
@@ -180,7 +180,7 @@ function getNotificationsRealTime() {
             const createdAt = new Date(notification.created_at);
             const now = new Date();
             interval = Math.abs(now - createdAt) / 1000;
-            if (interval < 5400) { // 1.5 hours = 5400 seconds
+            if (interval < 5400 && notification.is_read == 0) {
                 createNotification(notification.message, true, '/notifications', 'bi bi-bell-fill');
             }
         });
@@ -191,7 +191,7 @@ function getNotificationsRealTime() {
 
 window.onload = function () {
     updateDarkmodeButton();
-    setInterval(getNotificationsRealTime, 30000);
+    getNotificationsRealTime();
 }
 
 new MutationObserver(function() {

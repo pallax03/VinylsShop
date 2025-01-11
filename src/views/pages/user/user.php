@@ -16,7 +16,10 @@
             <?php endif; ?>
         </div>
         <div class="container center margin-top">
-            <a class="error" href="/logout">Logout</a>
+            <a class="error no-border" href="/logout">
+                <p class="error">Logout</p>
+                <i class="bi bi-box-arrow-right"></i>
+            </a>
         </div>
     </section>
     <div class="div"></div>
@@ -38,19 +41,7 @@
         </ul>
     </form>
     <div class="div"></div>
-    <section class="cards">
-        <?php
-        if (isset($orders) && count($orders) > 0) {
-            $n = 0;
-            foreach ($orders as $order) {
-                $n++;
-                include COMPONENTS . 'cards/order.php';
-            }
-        } else {
-            echo "<h3>No orders found!</h3>";
-        }
-        ?>
-    </section>
+    <?php include PAGES . 'user/orders.php'; ?>
     <script src="/resources/js/user.js"></script>
 <?php else: ?>
     <?php include COMPONENTS . 'login.php' ?>

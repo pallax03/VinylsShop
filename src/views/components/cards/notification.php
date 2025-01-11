@@ -24,7 +24,7 @@
     </div>
     <footer>
         <a href="<?php echo $notification['link'] ?>">
-            <i class="bi bi-chevron-double-right"></i>
+            <i class="bi bi-caret-right-fill"></i>
         </a>
     </footer>
 </div>

@@ -8,8 +8,8 @@
                 . " - " . $details["type"];
         ?>
     </p>
-    <button onclick="addToCart(<?php echo $data['vinyl']['details']['id_vinyl'] ?>, 1)">
-        <p class="add-cart" >Add to cart - cost €<?php echo $data["vinyl"]["details"]["cost"] ?></p>
+    <button onclick="addToCart(<?php echo $data['vinyl']['details']['id_vinyl'] ?>, 1)" <?php if($data['vinyl']['details']['stock'] == 0) echo 'disabled'?>>
+        <p class="add-cart" ><?php echo $data['vinyl']['details']['stock'] == 0 ? 'Out of stock' : 'Add to cart - cost €' . $data["vinyl"]["details"]["cost"] ?></p>
     </button>
 </section>
 <section class="tracklist">

@@ -56,10 +56,19 @@ class UserController extends Controller {
         $this->render('user/cards', $head, $data);
     }
 
-
+    public function orders(Request $request, Response $response) {
+        $this->redirectNotSuperUser();
+        
+        $this->render('user/orders', 
+            ['title' => 'User Orders'], 
+            [
+                'user' => $this->user_model->getUser($request->getBody()['id_user'] ?? null),
+                'orders' => $this->order_model->getOrders($request->getBody()['id_user'] ?? null)
+            ]
+        );
+    }
 
     public function notifications(Request $request, Response $response) {
-        $this->redirectSuperUser();
         $this->auth_model->checkAuth();
         $this->render('user/notifications', ['title' => 'Notifications'], ['notifications' => $this->notification_model->getNotifications()]);
     }

@@ -38,7 +38,7 @@ final class OrderModel
     private function updateShippings() {
         $shippings = Database::getInstance()->executeResults(
             "SELECT `id_shipment`, `shipment_date`, `delivery_date`, `shipment_status`, `id_order`, `id_address`, `id_user`
-                FROM `shipments` WHERE `shipment_status` != 'Delivered';"
+                FROM `shipments`;"
         );
         
         foreach ($shippings as $shipping) {
@@ -49,7 +49,7 @@ final class OrderModel
             if($today > $delivery_date) {
                 $status = 'Delivered';
                 $progress = 100;
-            } else if ($today->diff($delivery_date)->days == 1) {
+            } else if ($today->diff($delivery_date)->days <= 1) {
                 $status = 'On delivery';
                 $progress = 90;
             } else if ($today->diff($shipment_date)->days > 1) {
@@ -124,21 +124,29 @@ final class OrderModel
     }
 
     /**
+     * Check if the order belongs to the user
+     *
+     * @param int $id_order
+     * @param int $id_user
+     * @return bool 
+     */
+    public function isOrderOwner($id_order, $id_user = null) {
+        return !empty(Database::getInstance()->executeResults(
+            "SELECT id_order FROM `vinylsshop`.`orders` WHERE id_order = ? AND id_user = ?;",
+            'ii',
+            $id_order,
+            $id_user ?? Session::getUser()
+        ));
+    }
+
+    /**
      * Get a specific order by id
      *
+     * @param int|null $id_order
      * @param int|null $id_user, if null, return the logged user
-     * @param int|null $id_order, if null, return the last order
      * @return array of order
      */
-    public function getOrder($id_order=null, $id_user=null) {
-        if ($id_order === null) {
-            $id_order = Database::getInstance()->executeResults(
-                "SELECT id_order FROM `vinylsshop`.`orders` WHERE id_user = ? ORDER BY order_date DESC LIMIT 1;",
-                'i',
-                $id_user ?? Session::getUser()
-            )[0]['id_order'];
-        }
-
+    public function getOrder($id_order, $id_user=null) {
         $order = Database::getInstance()->executeResults(
             "SELECT o.id_order,
                     o.order_date,
@@ -167,28 +175,31 @@ final class OrderModel
                 WHERE o.id_user = ? AND o.id_order = ?;",
             'ii',
             $id_user ?? Session::getUser(),
-            $id_order
-        )[0];
-
-        $order['vinyls'] = Database::getInstance()->executeResults(
-            "SELECT co.quantity,
-                    v.id_vinyl,
-                    v.cost,
-                    v.type,
-                    v.rpm, 
-                    v.inch, 
-                    a.genre, 
-                    a.title, 
-                    a.cover, 
-                    t.name AS artist_name 	
-                FROM `vinylsshop`.`checkouts` co 
-	            JOIN `vinylsshop`.`vinyls` v ON co.id_vinyl = v.id_vinyl
-	            JOIN `vinylsshop`.`albums` a ON v.id_album = a.id_album 
-	            JOIN `vinylsshop`.`artists` t ON a.id_artist = t.id_artist 
-	            WHERE co.id_order = ?;",
-            'i',
-            $id_order
+            $id_order ?? ''
         );
+
+        if (!empty($order)) {
+            $order = $order[0];
+            $order['vinyls'] = Database::getInstance()->executeResults(
+                "SELECT co.quantity,
+                        v.id_vinyl,
+                        v.cost,
+                        v.type,
+                        v.rpm, 
+                        v.inch, 
+                        a.genre, 
+                        a.title, 
+                        a.cover, 
+                        t.name AS artist_name 	
+                    FROM `vinylsshop`.`checkouts` co 
+                    JOIN `vinylsshop`.`vinyls` v ON co.id_vinyl = v.id_vinyl
+                    JOIN `vinylsshop`.`albums` a ON v.id_album = a.id_album 
+                    JOIN `vinylsshop`.`artists` t ON a.id_artist = t.id_artist 
+                    WHERE co.id_order = ?;",
+                'i',
+                $id_order
+            );
+        }
 
         return $order;
     }
@@ -339,6 +350,11 @@ final class OrderModel
             return false;
         }
 
+        $this->notification_model->broadcastFor(
+            Database::getInstance()->executeResults("SELECT id_user FROM users WHERE su = 1"),
+            'New order!',
+            '/order?id_order=' . $id_order . '&id_user=' . Session::getUser()
+        );
         return true;
     }
 

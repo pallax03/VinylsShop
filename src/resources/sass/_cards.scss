@@ -9,15 +9,16 @@ section.cards {
 }
 
 // $card-width: clamp(360px, 90%, 600px);
-$card-width: 100vw;
-$card-height: clamp(200px, 50%, 300px); 
+$card-width: 340px;
+// $card-height: clamp(200px, 50%, 300px); 
+$card-height: auto; 
 $vinyls_detail-width: 50px;
 
-$preview-width: 350px;
+$preview-width: 340px;
 $preview-height: clamp(150px, 34%, 250px);
 $preview-cover-size: 80%;
 
-$preview-width: 350px;
+$preview-width: 340px;
 $preview-height: clamp(150px, 34%, 250px);
 $preview-cover-size: 80%;
 
@@ -63,8 +64,8 @@ $preview-cover-size: 80%;
 
     .close {
         position: absolute;
-        top: -15px;
-        left: -15px;
+        top: -10px;
+        left: -10px;
         button {
             border: 0;
             border-radius: 50px;
@@ -73,7 +74,7 @@ $preview-cover-size: 80%;
             font-size: 1.2rem;
             cursor: pointer;
             i {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
             &:hover {
                 color: var(--error-color);
@@ -146,7 +147,7 @@ $preview-cover-size: 80%;
 
     .order-details {
         height: 100%;
-        width: 60%;
+        width: 50%;
         display: inline-flex;
         margin: 0;
         padding: 0;
@@ -215,18 +216,16 @@ $preview-cover-size: 80%;
         flex-direction: column;
         justify-content: end;
         align-items: center;
-        padding: 0.5rem;
+        padding: 0;
         position: relative;
 
         .btn-specular {
-            right: 0;
             top: 0;
         }
 
         span {
             position: absolute;
-            top: 40px;
-            right: 0;
+            top: 80px;
 
             p:first-child {
                 display: block;
@@ -235,7 +234,7 @@ $preview-cover-size: 80%;
 
             p {
                 display: block;
-                font-size: 1rem;
+                font-size: .7rem;
             }
         }
     }
@@ -422,7 +421,7 @@ $preview-cover-size: 80%;
 
     }
     .product-details {
-        width: 80%;
+        width: 70%;
         display: inline-flex;
         flex-direction: row;
         justify-content: center;
@@ -430,14 +429,33 @@ $preview-cover-size: 80%;
         flex-wrap: nowrap;
         
         div {
-
             img {
                 width: 70px;
                 height: 70px;
-                margin-right: 0.5rem;
+                margin-right: 1rem;
             }
         }
-
+        h2 {
+            font-size: 1rem;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+        p {
+            font-size: 0.6rem;
+            margin: 0;
+            width: auto;
+            padding: 0;
+            border: 0;
+        }
+    }
+    footer {
+        p {
+            font-size: 0.8rem;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
     }
 }
 
@@ -524,9 +542,7 @@ $preview-cover-size: 80%;
             align-items: center;
             text-decoration: none;
             color: var(--text-color);
-            
             border-radius: 5px;
-            background-color: var(--background-color);
             i {
                 font-size: 1.2rem;
             }

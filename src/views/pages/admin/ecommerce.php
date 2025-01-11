@@ -1,3 +1,10 @@
+<section>
+    <h1>Ecommerce Dashboard</h1>
+    <div class="callout">
+        <p>Here you can manage the shippings settings, and coupons.</p>
+    </div>
+</section>
+<div class="div"></div>
 <form action="/shipping" method="post">
     <h2>Shipping Info</h2>
     <ul>
@@ -38,18 +45,10 @@
     });
 </script>
 <div class="div"></div>
-<section>
-    <?php if (isset($coupons) && $coupons !== []): ?>
-        <h1>Coupons</h1>
-        <?php
-            foreach ($coupons as $coupon) {
-                include COMPONENTS . '/cards/coupon.php';
-            }
-        ?>
-    <?php else: ?>
-        <h1>No coupons found!</h1>
-    <?php endif; ?>
-</section>
+<?php 
+    $editable = 1;
+    include PAGES . 'ecommerce/coupons.php'; 
+?>
 <div class="div"></div>
 <form action="/coupon" id="form-coupon" method="post">
         <h2>Coupon</h2>

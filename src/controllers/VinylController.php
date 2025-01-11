@@ -2,14 +2,29 @@
 final class VinylController extends Controller {
 
     private $vinyl_model = null;
+    private $notification_model = null;
 
     function __construct() {
         require_once MODELS . '/VinylsModel.php';
         $this->vinyl_model = new VinylsModel();
 
-        require_once MODELS . '/OrderModel.php';
+        require_once MODELS . '/NotificationModel.php';
+        $this->notification_model = new NotificationModel();
+
+        $this->notificateVinylQuantity();
     }
     
+    private function notificateVinylQuantity() {
+        $vinyls = $this->vinyl_model->getVinylsOptimized(['stock' => 0]);
+        foreach ($vinyls as $vinyl) {
+            $this->notification_model->broadcastFor(
+                Database::getInstance()->executeResults("SELECT id_user FROM users WHERE su = 1"),
+                "Vinyl " . $vinyl['title'] . " out of stock!",
+                "/vinyl?id=" . $vinyl['id_vinyl']
+            );
+        }
+    }
+
     function index(Request $request, Response $response) {
         $body = $request->getBody();
         $data['vinyl'] = $this->vinyl_model->getVinylDetails($body['id'] ?? null);

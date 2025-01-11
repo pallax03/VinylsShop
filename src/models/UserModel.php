@@ -8,7 +8,7 @@ final class UserModel {
      */
     public function getUsers() {
         return Database::getInstance()->executeResults(
-            "SELECT id_user, mail, balance, notifications  FROM `vinylsshop`.`users`"
+            "SELECT id_user, mail, balance, notifications, su  FROM `vinylsshop`.`users`"
         );
     }
 
@@ -25,6 +25,7 @@ final class UserModel {
             "SELECT u.id_user, 
                     u.mail, 
                     u.balance,
+                    u.su,
                     u.notifications,
                     up.default_card, 
                     c.card_number, 

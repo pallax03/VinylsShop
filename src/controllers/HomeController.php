@@ -105,7 +105,10 @@ class HomeController extends Controller {
     public function dashboardUsers() {
         $this->redirectNotSuperUser();
         $this->render('admin/users', ['title' => 'Manage Users'],
-            ['users' => $this->user_model->getUsers()]);
+            [   
+                'user' => $this->user_model->getUser(),
+                'users' => $this->user_model->getUsers()
+            ]);
     }
     
 

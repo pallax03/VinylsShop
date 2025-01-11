@@ -33,6 +33,7 @@ final class VinylsModel {
     private function applyFilters($query, $filters = []) {
         $filtersMap = [
             "id_vinyl" => ["query" => fn($value) => " AND v.id_vinyl = ? ", "type" => 'i'],
+            "stock" => ["query" => fn($value) => " AND v.stock = ? ", "type" => 'i'],
             "id_album" => ["query" => fn($value) => " AND a.id_album = ? ", "type" => 'i'],
             "title" => ["query" => fn($value) => " AND a.title LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"],
             "genre" => ["query" => fn($value) => " AND a.genre LIKE ?", "type" => 's', "value" => fn($value) => "%$value%"],
@@ -133,6 +134,7 @@ final class VinylsModel {
             v.rpm,
             v.inch,
             v.type,
+            v.stock,
             a.id_album,
             a.title,
             a.release_date,
@@ -305,19 +307,23 @@ final class VinylsModel {
      * @return array containing the albums 
      */
     public function getVinylsOptimized($filters) {
+        Database::getInstance()->setHandler(Database::defaultHandler());
         return $this->applyFilters(
-            "SELECT v.id_vinyl,
-                    v.cost,
-                    a.id_album,
-                    a.title,
-                    a.release_date,
-                    a.genre,
-                    a.cover,
-                    ar.id_artist,
-                    ar.name AS artist_name,
+            "SELECT
+                    GROUP_CONCAT(DISTINCT v.id_vinyl ORDER BY v.id_vinyl ASC SEPARATOR ', ') AS id_vinyl, 
+                    GROUP_CONCAT(DISTINCT v.cost ORDER BY v.cost ASC SEPARATOR ', ') AS vinyl_cost, 
+                    GROUP_CONCAT(DISTINCT v.stock ORDER BY v.stock ASC SEPARATOR ', ') AS vinyl_stock, 
+                    a.id_album, 
+                    a.title, 
+                    a.release_date, 
+                    a.genre, 
+                    a.cover, 
+                    ar.id_artist, 
+                    ar.name AS artist_name, 
                     GROUP_CONCAT(DISTINCT ta.id_track ORDER BY ta.id_track ASC SEPARATOR ', ') AS track_ids,
                     GROUP_CONCAT(DISTINCT t.title ORDER BY t.title ASC SEPARATOR ', ') AS track_titles
-                FROM albums a 
+                FROM vinyls v
+                JOIN albums a ON v.id_album = a.id_album 
                 JOIN artists ar ON a.id_artist = ar.id_artist
                 JOIN albumstracks ta ON a.id_album = ta.id_album
                 JOIN tracks t ON t.id_track = ta.id_track

@@ -588,6 +588,11 @@ main {
 .error {
     color: var(--error-color);
     border: 2px solid var(--error-color);
+    &:hover {
+        i {
+            color: var(--error-color);
+        }
+    }
 }
 
 .delete {
@@ -599,6 +604,7 @@ main {
         color: var(--error-color);
     }
 }
+
 
 .stars {
 
@@ -614,6 +620,10 @@ main {
 }
 .padding-1 {
     padding: 1rem;
+}
+
+.no-border {
+    border: none;
 }
 
 .no-margin {
@@ -929,55 +939,4 @@ main {
     font-size: 3rem;
     margin-bottom: 30px;
     font-weight: bold;
-}
-
-table {
-    border-collapse: collapse;
-}
-
-td:has(.add) {
-    background-color: var(--background-color);
-    padding: 15px 10px;
-}
-
-td {
-    border-bottom: 1px solid black; /* Bordo interno */
-    padding: 8px; /* Spaziatura interna */
-    text-align: center; /* Allinea il testo al centro */
-    .delete {
-        padding: 0 3px;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-    }
-}
-
-td:has(.delete) {
-    padding: 2px 0px 0px 8px;
-    vertical-align: top;
-    text-align: start;
-}
-
-td:has(.edit) {
-    padding: 0px 8px 4px 0px;
-    vertical-align: bottom;
-    text-align: end;
-}
-
-.add {
-    display: block;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    background-color: var(--text-color);
-}
-
-.add:hover {
-    background-color: var(--selected-color);
 }
