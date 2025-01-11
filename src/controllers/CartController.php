@@ -18,6 +18,8 @@ class CartController extends Controller {
 
         require_once MODELS . 'OrderModel.php';
         $this->order_model = new OrderModel();
+
+        $this->auth_model->checkAuth();
     }
 
     public function index(Request $request, Response $response) {

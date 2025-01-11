@@ -72,6 +72,7 @@ final class AuthModel {
         if (!isset($_COOKIE[self::$cookieAuthName])) {
             return false;
         }
+
         $this->verifyToken($_COOKIE[self::$cookieAuthName]);
         $this->checkAuth();
         return true;
@@ -85,7 +86,7 @@ final class AuthModel {
      * @return void
      */
     public function checkAuth() {
-        if (!$this->fetchUser()) {
+        if(Session::isLogged() && !$this->fetchUser()) {
             $this->logout();
             header('Location: /user');
         }

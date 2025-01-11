@@ -20,6 +20,8 @@ class HomeController extends Controller {
 
         require_once MODELS . 'OrderModel.php';
         $this->order_model = new OrderModel();
+
+        $this->auth_model->checkAuth();
     }
 
     
@@ -87,7 +89,10 @@ class HomeController extends Controller {
     public function dashboard() {
         $this->redirectNotSuperUser();
         $this->render('admin/vinyls', ['title' => 'Manage Vinyls'],
-            ['vinyls' => $this->vinyls_model->getAllVinyls()]);
+            [
+                'vinyls' => $this->vinyls_model->getAllVinyls(),
+                'albums' => $this->vinyls_model->getAlbums([])
+            ]);
     }
     
     public function dashboardEcommerce() {

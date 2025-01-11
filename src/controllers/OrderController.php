@@ -3,7 +3,6 @@ class OrderController extends Controller {
 
     private $auth_model = null;
     private $order_model= null;
-    // private $vinyls_model = null;
 
     public function __construct() {
         require_once MODELS . 'AuthModel.php';
@@ -12,8 +11,7 @@ class OrderController extends Controller {
         require_once MODELS . 'OrderModel.php';
         $this->order_model = new OrderModel();
 
-        // require_once MODELS . 'VinylsModel.php';
-        // $this->vinyls_model = new VinylsModel();
+        $this->auth_model->checkAuth();
     }
 
     

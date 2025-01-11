@@ -18,6 +18,8 @@ class UserController extends Controller {
 
         require_once MODELS . 'NotificationModel.php';
         $this->notification_model = new NotificationModel();
+
+        $this->auth_model->checkAuth();
     }
 
     public function index() {

@@ -132,6 +132,7 @@ final class VinylsModel {
     public function getAllVinyls() {
         $vinyls = "SELECT
             v.id_vinyl,
+            v.stock,
             a.title,
             v.type,
             v.inch,
