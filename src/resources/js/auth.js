@@ -52,10 +52,7 @@ function register(mail, password, notifications) {
     })).then((data) => {
         document.getElementById("btn-register_submit").disabled = true;
         createNotification(data, true, '/user', 'bi bi-person');        
-
-        setTimeout(() => {
-            window.location.href = "/";
-        }, 2000);
+        setTimeout(() => { window.location.href = "/"; }, 2000);
     })
         .catch((error) => {
             createNotification(error, false);

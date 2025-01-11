@@ -15,6 +15,7 @@ function addAdmin(mail, password) {
         body: JSON.stringify({mail: mail.value, password: password.value})
     })).then((data) => {
         createNotification(data, true, '/dashboard/users', 'bi bi-person');
+        setTimeout(() => { window.location.href = "/dashboard/users"; }, 2000);
     })
     .catch((error) => {
         createNotification(error, false);

@@ -31,7 +31,9 @@
             <tr>
                 <td colspan="4">
                     <a href="/dashboard/register" class="add" id="add" aria-label="Add a new user">
-                        <span aria-hidden="true"><i class="bi bi-plus"></i></span>
+                        <span aria-hidden="true">
+                            Add a new admin
+                        </span>
                     </a>
                 </td>
             </tr>
@@ -60,8 +62,5 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="callout">
-        <p>Add in this table is to add a new admin.</p>
-    </div>
 </section>
 <script src="/resources/js/user.js"></script>

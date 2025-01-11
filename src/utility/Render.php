@@ -10,14 +10,12 @@
     <?php 
         if(isset($style) && !empty($style)) {
             foreach ($style as $s) {
-                echo '<link rel="stylesheet" type="text/css" href="/resources/css/' . $s . '.css?'. date('l jS \of F Y h:i:s A') . '">';
+                echo '<link rel="stylesheet" type="text/css" href="/resources/css/' . $s . '.css">';
             }
         }
          
     ?>
     <script src="/resources/js/init.js"></script>
-
-    <!-- <script   src="https://code.jquery.com/jquery-3.7.1.slim.min.js"   integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="   crossorigin="anonymous"></script> -->
 </head>
 <body>
     <!-- <script src="/resources/js/main.js"></script> -->

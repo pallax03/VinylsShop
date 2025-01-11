@@ -91,9 +91,6 @@ class CartController extends Controller {
         }
         $body = $request->getBody();
         if($this->order_model->setOrder($body['discount_code'] ?? null)) {
-            if($this->cart_model->purgeUserCart()) {
-                Session::resetCart();
-            }
             $response->Success('Order placed', $body);
             return;
         }

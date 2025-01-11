@@ -1338,10 +1338,10 @@ table tbody tr td button.add, table tbody tr td a.add {
   text-align: center;
   width: 100%;
   background-color: var(--text-color);
+  color: var(--primary-color);
 }
 table tbody tr td button.add span i, table tbody tr td a.add span i {
   font-size: 2rem;
-  color: var(--primary-color);
 }
 table tbody tr td button.add:hover, table tbody tr td a.add:hover {
   background-color: var(--selected-color);

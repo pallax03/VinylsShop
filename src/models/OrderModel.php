@@ -6,6 +6,7 @@ final class OrderModel
     private $auth_model = null;
     private $user_model = null;
     private $notification_model = null;
+    private $cart_model = null;
 
     public function __construct() {
         require_once MODELS . 'VinylsModel.php';
@@ -19,6 +20,9 @@ final class OrderModel
 
         require_once MODELS . 'NotificationModel.php';
         $this->notification_model = new NotificationModel();
+
+        require_once MODELS . 'CartModel.php';
+        $this->cart_model = new CartModel();
 
         $this->updateShippings();
     }
@@ -68,7 +72,7 @@ final class OrderModel
                     $progress,
                     $shipping['id_shipment']
                 );
-                $this->notification_model->createNotification($shipping['id_user'], 'Shipping status updated', '/order?id_order=' . $shipping['id_order']);
+                $this->notification_model->createNotification($shipping['id_user'], 'Shipping status updated', '/order?id_order=' . $shipping['id_order'] . '&id_user=' . $shipping['id_user']);
             }
         }
     }
@@ -100,7 +104,7 @@ final class OrderModel
                 JOIN `vinylsshop`.`shipments` s ON o.id_order = s.id_order
                 JOIN `vinylsshop`.`addresses` ad ON s.id_address = ad.id_address
                 WHERE o.id_user = ?
-                ORDER BY o.order_date DESC;",
+                ORDER BY o.id_order DESC;",
             'i',
             $id_user ?? Session::getUser()
         );
@@ -315,8 +319,8 @@ final class OrderModel
      */
     public function setOrder($discount_code = null, $notes = null) {
         $cart = Session::getCart();
-
-        if (empty($cart)) {
+        
+        if (!$this->cart_model->purgeUserCart() || empty($cart)) {
             return false;
         }
 
@@ -342,11 +346,13 @@ final class OrderModel
         $id_order = Database::getInstance()->executeResults("SELECT LAST_INSERT_ID() AS id_order;")[0]['id_order'];
         if(!$this->setShipping($id_order, notes: $notes)) {
             $this->deleteOrder($id_order);
+            $this->cart_model->syncCart();
             return false;
         }
-        if(!$this->loadOrderCart($id_order, $cart)) {
+        if(!$this->loadOrderCart($id_order, $cart) || !$this->updateVinylsStock($cart)) {
             $this->deleteOrderCart($id_order);
             $this->deleteOrder($id_order);
+            $this->cart_model->syncCart();
             return false;
         }
 
@@ -355,6 +361,22 @@ final class OrderModel
             'New order!',
             '/order?id_order=' . $id_order . '&id_user=' . Session::getUser()
         );
+
+        Session::resetCart();
+        return true;
+    }
+
+    /**
+     * Update the vinyls stock.
+     *
+     * @return bool
+     */
+    public function updateVinylsStock($cart) {
+        foreach ($cart as $vinyl) {
+            if(!$this->vinyls_model->updateVinyl($vinyl['vinyl']['id_vinyl'], stock: $vinyl['vinyl']['stock'] - $vinyl['quantity'])) {
+                return false;
+            }
+        }
         return true;
     }
 

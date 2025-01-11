@@ -3,16 +3,38 @@ final class VinylsModel {
 
     private $db = null;
 
-    private $notifications_model = null;
+    private $notification_model = null;
 
     public function __construct() {
         $this->db = Database::getInstance();
         require_once MODELS . 'NotificationModel.php';
-        $this->notifications_model = new NotificationModel();
+        $this->notification_model = new NotificationModel();
+    }
+
+    private function notificateVinylsQuantity() {
+        $vinyls = $this->getVinylsOptimized(['stock' => 0]);
+        foreach ($vinyls as $vinyl) {
+            $this->notification_model->broadcastFor(
+                Database::getInstance()->executeResults("SELECT id_user FROM users WHERE su = 1"),
+                "Vinyl " . $vinyl['title'] . " out of stock!",
+                "/vinyl?id=" . $vinyl['id_vinyl']
+            );
+        }
+    }
+
+    private function notificateVinylQuantity($id_vinyl) {
+        $vinyl = $this->getVinyl($id_vinyl);
+        if ($vinyl['stock'] <= 0) {
+            $this->notification_model->broadcastFor(
+                Database::getInstance()->executeResults("SELECT id_user FROM users WHERE su = 1"),
+                "Vinyl " . $vinyl['title'] . " is out of stock!",
+                "/vinyl?id=" . $vinyl['id_vinyl']
+            );
+        }
     }
 
     private function broadcastCartVinyl($id_vinyl) {
-        $this->notifications_model->broadcastFor(
+        $this->notification_model->broadcastFor(
             Database::getInstance()->executeResults(
                 "SELECT id_user FROM carts WHERE id_vinyl = ?",
                 'i',
@@ -24,7 +46,7 @@ final class VinylsModel {
     }
 
     private function broadcastVinyl($id_vinyl) {
-        $this->notifications_model->broadcast(
+        $this->notification_model->broadcast(
             "A new Vinyl landed here!",
             "/vinyl?id=$id_vinyl"
         );
@@ -175,7 +197,7 @@ final class VinylsModel {
      * @return array containing the details of the vinyl
      */
     public function getVinyl($id_vinyl) {
-        return Database::getInstance()->executeResults(
+        $vinyl = Database::getInstance()->executeResults(
             "SELECT 
                 v.id_vinyl,
                 v.stock,
@@ -193,7 +215,8 @@ final class VinylsModel {
                 WHERE id_vinyl = ?",
             'i',
             $id_vinyl
-        )[0];
+        );
+        return !empty($vinyl) ? $vinyl[0] : $vinyl;
     }
 
 
@@ -511,18 +534,63 @@ final class VinylsModel {
      * 
      * @return bool true if the vinyl was updated, false otherwise
      */
-    public function updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $id_album) {
-        $result = $this->db->executeQueryAffectRows(
-            "UPDATE vinyls
-                SET cost = ?, rpm = ?, inch = ?, type = ?, stock = ?, id_album = ?
-                WHERE id_vinyl = ?",
-            'diisii',
-            $cost, $rpm, $inch, $type, $stock, $id_album, $id_vinyl
-        );
+    public function updateVinyl($id_vinyl, $cost = null, $rpm = null, $inch = null, $type = null, $stock = null, $id_album = null) {
+        $query = "UPDATE vinyls SET ";
+        $types = '';
+        $values = [];
+        $setClauses = [];
+
+        if ($cost !== null) {
+            $setClauses[] = "cost = ?";
+            $types .= 'd';
+            $values[] = $cost;
+        }
+        if ($rpm !== null) {
+            $setClauses[] = "rpm = ?";
+            $types .= 'i';
+            $values[] = $rpm;
+        }
+        if ($inch !== null) {
+            $setClauses[] = "inch = ?";
+            $types .= 'i';
+            $values[] = $inch;
+        }
+        if ($type !== null) {
+            $setClauses[] = "type = ?";
+            $types .= 's';
+            $values[] = $type;
+        }
+        if ($stock !== null) {
+            $setClauses[] = "stock = ?";
+            $types .= 'i';
+            $values[] = $stock;
+        }
+        if ($id_album !== null) {
+            $setClauses[] = "id_album = ?";
+            $types .= 'i';
+            $values[] = $id_album;
+        }
+
+        // Check if there are any columns to update
+        if (empty($setClauses)) {
+            return false; // No columns to update
+        }
+
+        // Join the set clauses with commas
+        $query .= implode(', ', $setClauses);
+        $query .= " WHERE id_vinyl = ?";
+        $types .= 'i';
+        $values[] = $id_vinyl;
+
+        
+
+        $result = Database::getInstance()->executeQueryAffectRows($query, $types, ...$values);
 
         if ($result) {
             $this->broadcastCartVinyl($id_vinyl);
+            $this->notificateVinylQuantity($id_vinyl);
         }
+
         return $result;
     }
 }

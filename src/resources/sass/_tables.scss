@@ -51,10 +51,10 @@ table {
                         text-align: center;
                         width: 100%;
                         background-color: var(--text-color);
+                        color: var(--primary-color);
                         span {
                             i {
                                 font-size: 2rem;
-                                color: var(--primary-color);
                             }
                         }
                         &:hover {

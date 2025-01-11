@@ -138,7 +138,7 @@ final class CartModel {
             $quantity = $old_quantity['quantity'] + $quantity;
             Session::setToCart($this->vinyls_model->getVinyl($id_vinyl), $this->checkVinyl($id_vinyl, $quantity));
         } else {
-            Session::addToCart($this->vinyls_model->getVinyl($id_vinyl), $quantity);    
+            Session::addToCart($this->vinyls_model->getVinyl($id_vinyl), $this->checkVinyl($id_vinyl, $quantity));    
         }
         
         // if the vinyl was removed sync in DB, because now Session has prio than DB.
