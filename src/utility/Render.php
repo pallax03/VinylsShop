@@ -47,8 +47,6 @@
     <?php if(!Session::isSuperUser()):?>
         <script src="/resources/js/search.js"></script>
         <script src="/resources/js/cards.js"></script>
-    <?php else :?>
-        <script src="/resources/js/dashboard.js"></script>
     <?php endif;?>
 </body>
 </html>

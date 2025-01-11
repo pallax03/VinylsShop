@@ -64,6 +64,15 @@ final class VinylController extends Controller {
         $response->Error('No albums found', $body);
     }
 
+    function updateVinyl(Request $request, Response $response) {
+        $body = $request->getBody();
+        if ($this->vinyl_model->updateVinyl($body['id'], $body['cost'], null, null, null, $body['stock'], null)) {
+            $response->Success('Vinyl succesfully updated');
+            return;
+        }
+        $response->Error('Update not possible');
+    }
+
     // per il momento non è utile
     // function getAllVinyls(Request $request, Response $response) {
     //     if(!Session::isSuperUser()) {

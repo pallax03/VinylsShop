@@ -526,8 +526,6 @@ section.cards {
 .order .order-details {
   height: 100%;
   width: 50%;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   margin: 0;
   padding: 0;
@@ -589,16 +587,9 @@ section.cards {
   height: auto;
   float: right;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: end;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
   padding: 0;
   position: relative;
 }
@@ -791,8 +782,6 @@ section.cards {
 }
 .cart .product-details {
   width: 70%;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   flex-direction: row;
   justify-content: center;
@@ -974,6 +963,7 @@ table {
   border-collapse: collapse;
 }
 table thead {
+  margin-top: 20px;
   display: none;
 }
 table tbody tr:nth-child(1) {
@@ -1014,7 +1004,7 @@ table tbody tr td button.add, table tbody tr td a.add {
   text-align: center;
   width: 100%;
   background-color: var(--text-color);
-  color: var(--primary-color);
+  color: var(--secondary-color);
 }
 table tbody tr td button.add span i, table tbody tr td a.add span i {
   font-size: 2rem;
@@ -1037,15 +1027,9 @@ table tbody tr td p {
   font-size: 0.8rem;
 }
 table tbody tr td a span {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 table tbody tr td a span i:first-child {
   margin: 0;
@@ -1897,9 +1881,27 @@ main section p, main form p {
   color: var(--selected-color);
 }
 
-.admin-vinyls-header {
-  margin-top: 10px;
-  font-size: 3rem;
-  margin-bottom: 30px;
-  font-weight: bold;
+.hidden {
+  pointer-events: none;
+  height: 0;
+  opacity: 0;
+}
+
+@keyframes show {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  50% {
+    height: auto;
+    opacity: 0;
+  }
+  to {
+    height: auto;
+    opacity: 1;
+  }
+}
+.shown {
+  pointer-events: auto;
+  animation: show 1s linear;
 }

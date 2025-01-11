@@ -3,6 +3,7 @@ table {
     border-collapse: collapse;
 
     thead {
+        margin-top: 20px;
         display: none;
     }
 
@@ -51,7 +52,7 @@ table {
                         text-align: center;
                         width: 100%;
                         background-color: var(--text-color);
-                        color: var(--primary-color);
+                        color: var(--secondary-color);
                         span {
                             i {
                                 font-size: 2rem;
