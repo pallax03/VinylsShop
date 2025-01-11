@@ -30,17 +30,19 @@
     <h3>Tracks</h3>
     <ul id="ul-tracks">
         <li class="split">
-            <label for="input-track_title">Track #</label>
-            <input type="text" id="input-track_title" name="track_title" required />
+            <label for="input-track_title_1">Track #1</label>
+            <input type="text" id="input-track_title_1" name="track_title" required />
         </li>
         <li class="split">
-            <label for="input-track_duration">Duration</label>
-            <input type="text" id="input-track_duration" name="track_duration" required />
+            <label for="input-track_duration_1">Duration</label>
+            <input type="text" id="input-track_duration_1" name="track_duration" required />
+        </li>
+        <li>
+            <div class="large button">
+                <i class="bi bi-plus"></i>
+                <button class="animate" id="btn-album_submit">Add</button>
+            </div>
         </li>
     </ul>
-    <div class="large button">
-        <i class="bi bi-plus"></i>
-        <button class="animate" id="btn-album_submit">Add</button>
-    </div>
 </form>
 <script src="/resources/js/album.js"></script>

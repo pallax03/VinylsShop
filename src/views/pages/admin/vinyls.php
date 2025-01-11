@@ -81,6 +81,11 @@
 </form>
 <script src="/resources/js/vinyls.js"></script>
 <div class="div"></div>
+
+<?php
+    include PAGES . 'admin/album.php';
+?>
+
 <section>
     <h2>Albums</h2>
     <table summary="List of albums with actions for deleting, editing, and viewing details">
