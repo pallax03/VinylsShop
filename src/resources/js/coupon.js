@@ -36,7 +36,8 @@ document.getElementById('btn-coupon_submit').addEventListener('click', function 
         method: 'POST',
         body: formData
     })).then((data) => {
-        autoRefresh();
+        createNotification(data, true);
+        setTimeout(() => { autoRefresh(); }, 2000);
     }
     ).catch((error) => {
         createNotification(error, false);

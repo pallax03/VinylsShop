@@ -30,19 +30,21 @@ table {
             td {
                 margin: 0;
                 padding: .4rem;
+                min-width: 80px;
 
                 &:first-child {
-                    width: 10%;
-                    padding: 0;
+                    width: 15%;
+                    min-width: 40px;
                 }
                 &:last-child {
                     width: 10%;
-                    padding: 0;
+                    min-width: 40px;
                 }
 
                 button, a {
                     margin: 0;
                     padding: 0;
+                    cursor: pointer;
                     &.add {
                         display: block;
                         border: 1px solid var(--border-color);
@@ -61,6 +63,15 @@ table {
                         &:hover {
                             background-color: var(--selected-color);
                         }
+                    }
+                    &.edit {
+                        display: block;
+                        border: 0;
+                        text-decoration: none;
+                        font-weight: bold;
+                        text-align: center;
+                        background-color: inherit;
+                        color: var(--text-color);
                     }
 
                     &.delete {

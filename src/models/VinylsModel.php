@@ -490,16 +490,17 @@ final class VinylsModel {
                 return false;
             }
         }
-
+        $album = isset($album["id_album"]) ? $album['album_id'] : $album;
+        
         if ($id_vinyl) {
-            return $this->updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $album["id_album"]);
+            return $this->updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $album);
         }
         
         $result = $this->db->executeQueryAffectRows(
             "INSERT INTO vinyls (`cost`, `rpm`, `inch`, `type`, `stock`, `id_album`)
                 VALUES (?, ?, ?, ?, ?, ?)",
             'diisii',
-            $cost, $rpm, $inch, $type, $stock, $album["id_album"]
+            $cost, $rpm, $inch, $type, $stock, $album
         );
 
         if ($result) {
