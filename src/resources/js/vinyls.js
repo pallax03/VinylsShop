@@ -17,8 +17,6 @@ document.querySelectorAll(".edit").forEach(btn =>{
         document.getElementById("input-stock").value = parseInt(tr.querySelector("td").textContent.slice(0, -1), 10);
         document.getElementById("input-cost").focus();
         document.getElementById("input-cost").blur();
-
-        
     }
 });
 
@@ -44,4 +42,18 @@ document.getElementById("input-cost").addEventListener("blur", function () {
     }
     value = parseFloat(value).toFixed(2);
     input.value = value;
+});
+
+
+document.getElementById("btn-vinyl_submit").addEventListener("click", function (event) {
+    makeRequest(fetch('/vinyl', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            cost: parseFloat(document.getElementById("input-cost").value),
+            stock: parseInt(document.getElementById("input-stock").value, 10),
+        }),
+    }).then(data => { createNotification(data, true); }).catch(error => { createNotification(error, false); }));
 });
