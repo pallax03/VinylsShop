@@ -27,19 +27,18 @@
                     </button>
                 </td>
             </tr>
-            <?php foreach ($data["vinyls"] as $vinyl):
-                echo ('<tr>
-                <td> ' . $vinyl["stock"] . 'x</td>
-                <td>' . $vinyl["title"] . '</td>
-                <td>€' . $vinyl["cost"] . '</td>
-                <td>
-                    <a class="edit">
-                        <span aria-hidden="true"><i class="bi bi-pencil"></i></span>
-                    </a>
-                </td>
-            </tr>');
-            endforeach;
-            ?>
+            <?php foreach ($data["vinyls"] as $vinyl): ?>
+                <tr id="tr-vinyl_<?php echo $vinyl['id_vinyl']?>" data-cost="<?php echo $vinyl['cost']?>" data-stock="<?php echo $vinyl['stock']?>">
+                    <td> <?php echo $vinyl["stock"] ?> x</td>
+                    <td> <?php echo $vinyl["title"] ?> </td>
+                    <td> <?php echo $vinyl["cost"] ?> €</td>
+                    <td>
+                        <button onclick="loadVinyl(<?php echo $vinyl['id_vinyl']?>)" class="edit">
+                            <span aria-hidden="true"><i class="bi bi-pencil"></i></span>
+                        </button>
+                    </td>
+                </tr>
+            <?php endforeach;?>
         </tbody>
     </table>
 </section>

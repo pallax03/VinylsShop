@@ -7,7 +7,6 @@ function redirect(url) {
     window.location.href = url;
 }
 
-
 // Set client's preferences cookies (so without a expiration date)
 function setcookie(name, value) {
     // take varibale name and value
