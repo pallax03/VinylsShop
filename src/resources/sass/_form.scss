@@ -111,6 +111,42 @@ form {
                 }
             }
 
+            fieldset {
+                width: 80%;
+                padding: 10px;
+                border: 3px solid var(--border-color);
+                position: relative;
+                label {
+                    position: unset;
+                    display: block;
+                    font-size: 0.9rem;
+                    margin: 0;
+                    transition: font-size 0.5s ease;
+
+                    input[type="radio"]:checked {
+                        color: var(--selected-color);
+                    }
+                }
+
+                label:hover {
+                    font-size: 1rem;
+                }
+                @media (min-width: $breakpoint) {
+                    width: 100%;
+                    legend {
+                        font-size: 1.8rem;
+                    }
+
+                    label {
+                        font-size: 1.5rem;
+                    }
+                    label:hover {
+                        font-size: 1.7rem;
+                    }
+                }
+
+            }
+
             a {
                 display: contents;
                 text-decoration: none;

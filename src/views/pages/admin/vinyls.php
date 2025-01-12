@@ -74,8 +74,4 @@
     </form>
 </section>
 
-<?php
-    include PAGES . 'admin/album.php';
-?>
-
 <script src="/resources/js/vinyls.js"></script>

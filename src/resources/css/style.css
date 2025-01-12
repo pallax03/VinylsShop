@@ -256,6 +256,39 @@ form ul li label.checkbox input[type=checkbox]:checked + span.checkmark {
 form ul li label.checkbox input[type=checkbox]:checked + span.checkmark i {
   visibility: visible;
 }
+form ul li fieldset {
+  width: 80%;
+  padding: 10px;
+  border: 3px solid var(--border-color);
+  position: relative;
+}
+form ul li fieldset label {
+  position: unset;
+  display: block;
+  font-size: 0.9rem;
+  margin: 0;
+  transition: font-size 0.5s ease;
+}
+form ul li fieldset label input[type=radio]:checked {
+  color: var(--selected-color);
+}
+form ul li fieldset label:hover {
+  font-size: 1rem;
+}
+@media (min-width: 1080px) {
+  form ul li fieldset {
+    width: 100%;
+  }
+  form ul li fieldset legend {
+    font-size: 1.8rem;
+  }
+  form ul li fieldset label {
+    font-size: 1.5rem;
+  }
+  form ul li fieldset label:hover {
+    font-size: 1.7rem;
+  }
+}
 form ul li a {
   display: contents;
   text-decoration: none;

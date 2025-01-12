@@ -45,6 +45,7 @@
     // # 🍽️ [AddVinyl] ~ add or update a vinyl -> Auth - Vinyl - Artist - Track.
     $router->post('/vinyl', [VinylController::class, 'addVinyl']);
     $router->get('/albums', [VinylController::class, 'getAlbums']);
+    $router->get('/dashboard/add', [VinylController::class, 'addForm']);
 
 
 // 🛒: --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 

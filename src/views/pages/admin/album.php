@@ -1,5 +1,60 @@
-<form class="hidden" id="form-album">
-    <h1> Add a new Album </h1>
+<form id="form-vinyl_add">
+    <h3>Vinyl Info</h3>
+    <ul>
+        <li>
+            <fieldset>
+                <legend>Type:</legend>
+                <label for="radio-type_LP">
+                    <input type="radio" id="radio-type_LP" name="type" value="LP"/>
+                    Long play
+                </label>
+                <label for="radio-type_EP">
+                    <input type="radio" id="radio-type_EP" name="type" value="EP"/>
+                    Extended play
+                </label>
+            </fieldset>
+        </li>
+        <li>
+            <fieldset>
+                <legend>Inches:</legend>
+                
+                <label for="radio-inches_7">
+                    <input type="radio" id="radio-inches_7" name="inch" value="7"/>
+                    7 in
+                </label>
+                <label for="radio-inches_10">
+                    <input type="radio" id="radio-inches_10" name="inch" value="10"/>
+                    10 in
+                </label>
+                <label for="radio-inches_12">
+                    <input type="radio" id="radio-inches_12" name="inch" value="12"/>
+                    12 in
+                </label>
+            </fieldset>
+        </li>
+        <li>
+            <fieldset>
+                <legend>Rpm:</legend>
+                <label for="radio-rpm_33">
+                    <input type="radio" id="radio-rpm_33" name="rpm" value="33"/>
+                    33 rpm
+                </label>
+                <label for="radio-45">
+                    <input type="radio" id="radio-rpm_45" name="rpm" value="45"/>
+                    45 rpm
+                </label>
+            </fieldset>
+        </li>
+        <li>
+            <label for="input-add_cost">Price</label>
+            <input type="number" name="price" min="0" step="0.01" id="input-add_cost" placeholder="€" aria-required="true" />
+        </li>
+        <li>
+            <label for="input-add_cost">Stock</label>
+            <input type="number" name="stock" min="0" step="1" id="input-add_stock" aria-required="true" />
+        </li>
+    </ul>
+    <h3> Add a new Album </h3>
     <ul>
         <li>
             <label for="input-album_title">Title</label>
