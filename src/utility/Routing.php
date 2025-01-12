@@ -31,6 +31,7 @@
     // ⭐️ ADMIN HOME ~ a not admin can't access to the dashboard. (will be redirected to the home page)
     // # 🏠 [Dashboard] -> Auth.
     $router->get('/dashboard', [HomeController::class, 'dashboard']);
+    $router->get('/dashboard/add', [HomeController::class, 'addForm']);
     $router->get('/dashboard/albums', [HomeController::class, 'dashboardAlbums']);
     $router->get('/dashboard/ecommerce', [HomeController::class, 'dashboardEcommerce']);
     $router->get('/dashboard/users', [HomeController::class, 'dashboardUsers']);
@@ -45,7 +46,6 @@
     // # 🍽️ [AddVinyl] ~ add or update a vinyl -> Auth - Vinyl - Artist - Track.
     $router->post('/vinyl', [VinylController::class, 'addVinyl']);
     $router->get('/albums', [VinylController::class, 'getAlbums']);
-    $router->get('/dashboard/add', [VinylController::class, 'addForm']);
 
 
 // 🛒: --- CartController.php --- (models: Vinyl (+ Artist) - Cart - User) 

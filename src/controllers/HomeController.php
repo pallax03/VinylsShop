@@ -101,6 +101,11 @@ class HomeController extends Controller {
             ['coupons' => $this->order_model->getCoupons()]);
     }
 
+    function addForm(Request $request, Response $response) {
+        $this->redirectNotSuperUser();
+        $this->render('admin/newvinyl', ['title' => 'New vinyl'], []);
+    }
+
     public function dashboardAlbums(Request $request, Response $response) {
         $this->redirectNotSuperUser();
         $this->render('admin/albums', ['title' => 'Manage Albums'], 

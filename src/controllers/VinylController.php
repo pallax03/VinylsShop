@@ -26,16 +26,6 @@ final class VinylController extends Controller {
         $this->render('', $head, []);
     }
 
-    function addForm(Request $request, Response $response) {
-        if (Session::isSuperUser()) {
-            $head = array('title' => 'New vinyl', 'style'=> array(''));
-            $this->render('admin/album', $head, []);
-            return;
-        }
-        $head = array('title' => 'Admin only', 'style'=> array(''));
-        $this->render('error', $head, []);
-    }
-
     function addVinyl(Request $request, Response $response) {
         $body = $request->getBody();
         if(!Session::isSuperUser()) {
