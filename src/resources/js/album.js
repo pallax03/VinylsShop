@@ -41,9 +41,46 @@ document.getElementById("input-add_cost").addEventListener("blur", function () {
 });
 
 document.getElementById("btn-album_submit").addEventListener("click", function (event) {
-    
+    let flag = true;
+    document.querySelectorAll("input").forEach(elem => {
+        flag = flag && validateData(elem);
+    });
+    if (!flag) {
+        return;
+    }
+    let body = [];
+    // getting info from fields
+    body['cost'] = parseFloat(document.getElementById('input-add_cost').value);
+    body['inch'] = document.querySelector('input[name="inch"]:checked').value;
+    body['type'] = document.querySelector('input[name="type"]:checked').value;
+    body['rpm'] = document.querySelector('input[name="rpm"]:checked').value;
+    body['stock'] = document.getElementById('input-add_stock').value;
+    body['album']['title'] = document.getElementById('input-album_title').value;
+    body['album']['release_date'] = document.getElementById('input-album_releasedate').value;
+    body['album']['genre'] = document.getElementById('input-album_genre').value;
+    // artist check
+    const artists = document.getElementById('datalist-album_artists').childNodes;
+    artists.forEach(artist => {
+        if (artist.value == document.getElementById('input-album_artist').value) {
+            body['album']['artist']['id_artist'] = artist.id;
+        }
+    });
+    body['album']['artist']['name'] = document.getElementById('input-album_artist').value;
+    body['album']['tracks'] = [];
+    document.getElementById("ul-tracks").childNodes.forEach(node => {
+        if (node !== document.getElementById("ul-tracks").lastChild) { 
+            body['album']['tracks'].push(node.childNodes)
+        }
+    });
+    for (let index = 1; index < document.getElementById("ul-tracks").childElementCount-1; index++) {
+        let track = [];
+        track['title'] = document.getElementById("input-track_title_" + index);
+        track['duration'] = document.getElementById("input-track_duration_" + index); 
+        body['album']['tracks'].push(track);
+    }
+    console.log(body);
     makeRequest(fetch('/vinyl', {
         method: 'POST',
-        body: formData
-    })).then(data => { createNotification(data, true); setTimeout(() => {}, 2000); }).catch(error => { createNotification(error, false); });
+        body: body
+    })).then(data => { createNotification(data, true); }).catch(error => { createNotification(error, false); });
 });
