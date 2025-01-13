@@ -15,10 +15,12 @@
         <button id="btn-cart_submit" onclick="redirect('/checkout')" >Checkout - <?php echo $total ?> €</button>
     </div>
 <?php else: ?>
+<section>    
     <div class="div"></div>
     <div class="container center vertical">
-        <h2>No vinyls in the cart!</h2>
+        <p>No vinyls in the cart!</p>
         <a href="/">Go to Shop!</a>
     </div>
+</section>
 <?php endif; ?>
 <script src="/resources/js/cart.js"></script>

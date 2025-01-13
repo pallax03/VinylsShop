@@ -9,8 +9,6 @@ document.getElementById("btn-login_submit").addEventListener("click", function (
     event.preventDefault();
     const mail = document.getElementById("input-login_mail");
     const password = document.getElementById("input-login_password");
-    mail.parse = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    validateData(mail);
 
     const params = new URLSearchParams();
     params.append("mail", mail.value);
@@ -28,7 +26,6 @@ document.getElementById("btn-login_submit").addEventListener("click", function (
         body: params.toString(),
     }))
     .then((data) => {
-        document.getElementById("btn-login_submit").disabled = true;
         createNotification(data, true, "/user", "bi bi-person");
         setTimeout(() => { redirect('/'); }, 2000);
     })
@@ -53,10 +50,9 @@ function register(mail, password, notifications) {
         document.getElementById("btn-register_submit").disabled = true;
         createNotification(data, true, '/user', 'bi bi-person');        
         setTimeout(() => { redirect('/'); }, 2000);
-    })
-        .catch((error) => {
+    }).catch((error) => {
             createNotification(error, false);
-        });
+    });
 }
 
 document.getElementById("btn-register_submit").addEventListener("click", function (event) {

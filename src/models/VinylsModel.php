@@ -376,12 +376,12 @@ final class VinylsModel {
     }
 
     public function addTrack($id_album, $title, $duration) {
-        return $this->db->executeQueryAffectRows(
-            "INSERT INTO tracks (title, duration) VALUES (?, ?)",
-            'si',
+        return Database::getInstance()->executeQueryAffectRows(
+            "INSERT INTO `tracks` (title, duration) VALUES (?, ?)",
+            'ss',
             $title, $duration
-        ) && $this->db->executeQueryAffectRows(
-            "INSERT INTO albumstracks (id_album, id_track) VALUES (?, ?)",
+        ) && Database::getInstance()->executeQueryAffectRows(
+            "INSERT INTO `albumstracks` (id_album, id_track) VALUES (?, ?)",
             'ii',
             $id_album, Database::getInstance()->getLastId()
         );
@@ -444,44 +444,55 @@ final class VinylsModel {
      */
     public function createAlbum($title, $release_date, $genre, $artist, $tracks) {
         // check if the artist already exists if not add it to the database
-        if(is_array($artist) && !$this->checkArtist($artist["id_artist"])) {
+
+        if (!isset($artist['id_artist'])) {
+            $artist['id_artist'] = '';
+        }
+
+        if (empty($artist['id_artist']) || !$this->checkArtist($artist['id_artist'])) {
             $artist = $this->createArtist($artist["name"]);
-            if(!$artist) {
+            if (!$artist) {
+                echo "Artist not created";
+                return false;
+            }
+            $artist = Database::getInstance()->getLastId();
+        } else {
+            $artist = $artist['id_artist'];
+        }
+
+        if (isset($_FILES['cover']) && $_FILES['cover']['error'] === UPLOAD_ERR_OK) {
+            $tmpPath = $_FILES['cover']['tmp_name'];
+            $name = $_FILES['cover']['name']; 
+            $destinationDir = '/var/www/html/resources/img/albums/';
+            $destination = $destinationDir . $name;
+        
+            if (!is_dir($destinationDir)) {
+                mkdir($destinationDir, 0775, true);
+            }
+
+            if (!move_uploaded_file($tmpPath, $destination)) {
                 return false;
             }
         } else {
             return false;
         }
 
-        $artist = isset($artist["id_artist"]) ? $artist['id_artist'] : $artist;
-
-        // uploaded image elaboration, if file is not loaded -> false
-        if (isset($_FILES['uploaded_file']) && $_FILES['uploaded_file']['error'] === UPLOAD_ERR_OK) {
-            $tmpPath = $_FILES['uploaded_file']['tmp_name'];
-            $name = $_FILES['uploaded_file']['name']; 
-            $destination = '/resources/img/albums/' . $name;
-            // if file is loaded but cannot be moved or not an image -> false;
-            if (!move_uploaded_file($tmpPath, $destination) &&
-                mime_content_type($tmpPath) !== 'image/webp') {
-                return false;
-            }
-        } else {
-            return false;
-        }
-
+        
         $result = $this->db->executeQueryAffectRows(
             "INSERT INTO albums (title, release_date, genre, cover, id_artist)
                 VALUES (?, ?, ?, ?, ?)",
             'ssssi',
             $title, $release_date, $genre, $name, $artist
         );
+        
         if ($result) {
-            $last_id = Database::getInstance()->executeResults("SELECT id_album FROM albums ORDER BY id_album DESC LIMIT 1")[0]['id_album'];
+            $last_id = Database::getInstance()->getLastId();    
             foreach ($tracks as $track) {
-                $this->addTrack($last_id, $track['title'], $track['duration']);
+                echo 'adding track '. $track['title'] . ' to album ' . $last_id;
+                echo $this->addTrack($last_id, $track['title'], $track['duration']) ? 'track added' : 'track not added';
             }
         }
-        return $result;
+        return $result ? $last_id : false;
     }
 
     /**
@@ -497,29 +508,35 @@ final class VinylsModel {
      */
     public function addVinyl($cost, $rpm, $inch, $type, $stock, $album, $id_vinyl = null) {
         // check if the album already exists if not add it to the database
-        if(is_array($album) && !$this->checkAlbum($album["id_album"])) {
-            $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["artist"], $album['tracks']);
-            if(!$album) {
-                return false;
+        if($album ) {
+            if(!isset($album['id_album']) && empty($album['id_album'])) {
+                $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["artist"], $album['tracks']);
+                if(!$album) {
+                    echo "Album not created";
+                    return false;
+                }
+            } else {
+                if(!$this->checkAlbum($album["id_album"])) {
+                    echo "Album not found";
+                    return false;
+                }
             }
         }
-        $album = isset($album["id_album"]) ? $album['album_id'] : $album;
         
+        $album = isset($album["id_album"]) ? $album['album_id'] : $album;
         if ($id_vinyl) {
             return $this->updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $album);
         }
         
         $result = $this->db->executeQueryAffectRows(
             "INSERT INTO vinyls (`cost`, `rpm`, `inch`, `type`, `stock`, `id_album`)
-                VALUES (?, ?, ?, ?, ?, ?, ?)",
+                VALUES (?, ?, ?, ?, ?, ?)",
             'diisii',
             $cost, $rpm, $inch, $type, $stock, $album
         );
 
         if ($result) {
-            // broadcast the new vinyl for all users
-            $last_id = Database::getInstance()->executeResults("SELECT id_vinyl FROM vinyls ORDER BY id_vinyl DESC LIMIT 1")[0]['id_vinyl'];
-            $this->broadcastVinyl($last_id);
+            $this->broadcastVinyl(Database::getInstance()->getLastId());
         }
         return $result;
     }

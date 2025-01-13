@@ -25,5 +25,9 @@ RUN a2enmod rewrite && sed -i 's/AllowOverride None/AllowOverride All/' /etc/apa
 # COPY THOSE FILES INTO THE CONTAINER
 COPY ./ /var/www/html
 
+RUN chown -R www-data:www-data /var/www/html/resources/img/albums && \
+    chmod -R 775 /var/www/html/resources/img/albums
+
 # Set the working directory to the web root
 WORKDIR /var/www/html
+

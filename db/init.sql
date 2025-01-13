@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `vinylsshop`.`albums` (
 CREATE TABLE IF NOT EXISTS `vinylsshop`.`tracks` (
     `id_track` INT NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
-    `duration` TIME NOT NULL,
+    `duration` VARCHAR(60) NOT NULL,
     PRIMARY KEY (`id_track`)
 );
 

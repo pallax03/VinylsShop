@@ -141,16 +141,13 @@ function addToCart(id, quantity) {
 
 document.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
-        const activeElement = document.activeElement;
-        if (activeElement && activeElement.tagName === 'INPUT' && activeElement.type !== 'submit') {
-            const form = activeElement.form;
-            if (form) {
-                const submitButton = form.querySelector('button, input[type="button"]');
-                if (submitButton) {
-                    submitButton.click();
-                }
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            const buttons = form.querySelectorAll('input[type="button"], button[type="button"]');
+            if (buttons.length > 0) {
+            buttons[buttons.length - 1].click();
             }
-        }
+        });
     }
 });
 
