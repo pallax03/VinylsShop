@@ -30,8 +30,9 @@ class HomeController extends Controller {
         $title = 'Home';
         $head = array('title' => $title, 'style'=> array(''),
          'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
+        $data['vinyls'] = $this->vinyls_model->getCarousel();
         
-        $this->render('home', $head);
+        $this->render('home', $head, $data);
     }
 
     public function notFound(Request $request, Response $response) {

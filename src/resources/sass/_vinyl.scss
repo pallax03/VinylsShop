@@ -35,3 +35,63 @@ $sleeve-size: 80px;
         transform: rotate(360deg);
     }
 }
+
+.home-title{
+    font-size: 1.5rem;
+    font-weight: bolder;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.carousel {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.carousel > div {
+    display: flex;
+    align-items: center;
+    transition: transform 1s ease-in-out; /* Aggiungi transizione */
+    white-space: nowrap; /* Assicura che i contenuti siano su una sola riga */
+}
+
+.carousel a {
+    text-decoration: none;
+    display: inline-block;
+    width: 200px;
+    min-width: 200px;
+    position: relative;
+    margin: 20px;
+    height: 200px;
+}
+
+.carousel img {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel span {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    padding: 10px 5px;
+    text-align: center;
+    z-index: 99;
+}
+
+.carousel p {
+    font-size: 0.9rem;
+    opacity: 1;
+    color: white;
+    text-shadow: 1px -1px black;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

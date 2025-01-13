@@ -181,4 +181,10 @@ form {
             }
         }
     }
+    .add-tracks {
+        width: 80%;
+        @media (min-width: $breakpoint) {
+            width: 60%;
+        }
+    }
 }

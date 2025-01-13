@@ -228,37 +228,19 @@ final class VinylsModel {
      * @param int $id of the vinyl to get the preview of
      * @return array containing the information on the vinyl
      */
-    public function getPreview($id) {
-        $preview = [];
+    public function getCarousel() {
         // query to get vinyls info
         $query = "SELECT
-            v.cost,
-            v.rpm,
-            v.inch,
-            v.type,
+            v.id_vinyl,
             a.title,
-            a.genre,
             a.cover,
             ar.name AS artist
             FROM 
             vinyls v
             JOIN albums a ON v.id_vinyl = a.id_album
-            JOIN artists ar ON ar.id_artist = a.id_artist
-            WHERE v.id_vinyl = ?";
+            JOIN artists ar ON ar.id_artist = a.id_artist";
         // execute query
-        $result = $this->db->executeResults($query);
-        if (!empty($result)):
-            // store results
-            $preview["cost"] = $result["cost"];
-            $preview["rpm"] = $result["rpm"];
-            $preview["inch"] = $result["inch"];
-            $preview["genre"] = $result["genre"];
-            $preview["type"] = $result["type"];
-            $preview["title"] = $result["title"];
-            $preview["cover"] = $result["cover"];
-            $preview["artist"] = $result["artist"];
-        endif;
-        return $preview;
+        return $this->db->executeResults($query);
     }
 
     /**

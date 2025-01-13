@@ -83,7 +83,7 @@
     </ul>
     <div class="div"></div>
     <h3>Tracks</h3>
-    <ul id="ul-tracks">
+    <ul id="ul-tracks" class="add-tracks">
         <li class="split">
             <label for="input-track_title_1">Track #1</label>
             <input type="text" id="input-track_title_1" name="track_title" required aria-required="true" />
