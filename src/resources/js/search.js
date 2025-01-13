@@ -42,7 +42,6 @@ function clear() {
 document.getElementById('btn-search_close').addEventListener('click', function() {
     document.getElementById('main-content').ariaHidden = 'false';
     document.getElementById('sec-search_content').ariaHidden = 'true';
-    document.getElementById('main-content').style = 'display: block';
     document.getElementById('input-search').value = "";
     document.getElementById('sec-search_content').style = 'display: none';
 });

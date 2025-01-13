@@ -1360,7 +1360,7 @@ nav ul li a, nav ul li button {
 nav ul li a:hover div.vinyl, nav ul li a:focus div.vinyl, nav ul li button:hover div.vinyl, nav ul li button:focus div.vinyl {
   border-color: var(--selected-color);
 }
-nav ul li a:hover i, nav ul li a:focus i, nav ul li button:hover i, nav ul li button:focus i {
+nav ul li a:hover i, nav ul li a:hover span, nav ul li a:focus i, nav ul li a:focus span, nav ul li button:hover i, nav ul li button:hover span, nav ul li button:focus i, nav ul li button:focus span {
   color: var(--selected-color);
 }
 nav ul li a div.vinyl, nav ul li button div.vinyl {
