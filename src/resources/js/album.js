@@ -43,7 +43,10 @@ document.getElementById("input-add_cost").addEventListener("blur", function () {
 document.getElementById("btn-album_submit").addEventListener("click", function (event) {
     let flag = true;
     document.querySelectorAll("input").forEach(elem => {
-        flag = flag && validateData(elem);
+        if (elem.id !==  "input-track_title_" + document.getElementById("ul-tracks").childElementCount ||
+            elem.id !== "input-track_duration_" + document.getElementById("ul-tracks").childElementCount) {
+            flag = flag && validateData(elem);
+        }
     });
     if (!flag) {
         return;

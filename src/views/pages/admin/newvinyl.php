@@ -95,7 +95,7 @@
         <li>
             <div class="large button">
                 <i class="bi bi-plus"></i>
-                <button class="animate" id="btn-album_submit">Add</button>
+                <input type="button" class="animate" id="btn-album_submit" value="Add"/>
             </div>
         </li>
     </ul>
