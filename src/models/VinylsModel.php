@@ -392,7 +392,17 @@ final class VinylsModel {
         );
     }
 
-    // TODO NEED TO UPDATE ALBUMS TRACKS
+    public function addTrack($id_album, $title, $duration) {
+        return $this->db->executeQueryAffectRows(
+            "INSERT INTO tracks (title, duration) VALUES (?, ?)",
+            'si',
+            $title, $duration
+        ) && $this->db->executeQueryAffectRows(
+            "INSERT INTO albumstracks (id_album, id_track) VALUES (?, ?)",
+            'ii',
+            $id_album, Database::getInstance()->getLastId()
+        );
+    }
 
 
     /**
@@ -449,7 +459,7 @@ final class VinylsModel {
      * 
      * @return bool true if the album was created, false otherwise
      */
-    public function createAlbum($title, $release_date, $genre, $artist) {
+    public function createAlbum($title, $release_date, $genre, $artist, $tracks) {
         // check if the artist already exists if not add it to the database
         if(is_array($artist) && !$this->checkArtist($artist["id_artist"])) {
             $artist = $this->createArtist($artist["name"]);
@@ -460,7 +470,7 @@ final class VinylsModel {
             return false;
         }
 
-        $artist = $artist["id_artist"];
+        $artist = isset($artist["id_artist"]) ? $artist['id_artist'] : $artist;
 
         // uploaded image elaboration, if file is not loaded -> false
         if (isset($_FILES['uploaded_file']) && $_FILES['uploaded_file']['error'] === UPLOAD_ERR_OK) {
@@ -476,12 +486,19 @@ final class VinylsModel {
             return false;
         }
 
-        return $this->db->executeQueryAffectRows(
+        $result = $this->db->executeQueryAffectRows(
             "INSERT INTO albums (title, release_date, genre, cover, id_artist)
                 VALUES (?, ?, ?, ?, ?)",
             'ssssi',
             $title, $release_date, $genre, $name, $artist
         );
+        if ($result) {
+            $last_id = Database::getInstance()->executeResults("SELECT id_album FROM albums ORDER BY id_album DESC LIMIT 1")[0]['id_album'];
+            foreach ($tracks as $track) {
+                $this->addTrack($last_id, $track['title'], $track['duration']);
+            }
+        }
+        return $result;
     }
 
     /**
@@ -498,7 +515,7 @@ final class VinylsModel {
     public function addVinyl($cost, $rpm, $inch, $type, $stock, $album, $id_vinyl = null) {
         // check if the album already exists if not add it to the database
         if(is_array($album) && !$this->checkAlbum($album["id_album"])) {
-            $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["artist"]);
+            $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["artist"], $album['tracks']);
             if(!$album) {
                 return false;
             }
