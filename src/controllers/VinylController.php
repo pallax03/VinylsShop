@@ -33,6 +33,21 @@ final class VinylController extends Controller {
             return;
         }
 
+        if (isset($_POST['album'])) {
+            // Leggi il contenuto JSON dal campo album
+            $json_string = $_POST['album'];
+        
+            // Rimuovi eventuali backslash che possono essere stati aggiunti
+            $json_string = stripslashes($json_string);
+            
+            // Decodifica la stringa JSON
+            $body['album'] = json_decode($json_string, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $response->Error('Invalid JSON', $body);
+                return;
+            }
+        }
         if ($this->vinyl_model->addVinyl($body['cost'] ?? null, $body['rpm'] ?? null, $body['inch'] ?? null, $body['type'] ?? null, $body['stock'] ?? null, $body['album'] ?? null, $body['id_vinyl'] ?? null)) {
             $response->Success('Vinyl ' . (isset($body['id_vinyl']) ? 'updated' : 'added'), $body);
             return;

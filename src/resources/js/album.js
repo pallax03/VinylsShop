@@ -42,48 +42,67 @@ document.getElementById("input-add_cost").addEventListener("blur", function () {
 
 document.getElementById("btn-album_submit").addEventListener("click", function (event) {
     let flag = true;
+    let last_track = (document.getElementById("ul-tracks").childElementCount-1)/2;
     document.querySelectorAll("input").forEach(elem => {
-        if (elem.id !==  "input-track_title_" + document.getElementById("ul-tracks").childElementCount ||
-            elem.id !== "input-track_duration_" + document.getElementById("ul-tracks").childElementCount) {
-            flag = flag && validateData(elem);
+        if (elem.id !=  "input-track_title_" + last_track &&
+            elem.id != "input-track_duration_" + last_track) {
+                flag = flag && validateData(elem);
         }
     });
     if (!flag) {
         return;
     }
-    let body = [];
-    // getting info from fields
-    body['cost'] = parseFloat(document.getElementById('input-add_cost').value);
-    body['inch'] = document.querySelector('input[name="inch"]:checked').value;
-    body['type'] = document.querySelector('input[name="type"]:checked').value;
-    body['rpm'] = document.querySelector('input[name="rpm"]:checked').value;
-    body['stock'] = document.getElementById('input-add_stock').value;
-    body['album']['title'] = document.getElementById('input-album_title').value;
-    body['album']['release_date'] = document.getElementById('input-album_releasedate').value;
-    body['album']['genre'] = document.getElementById('input-album_genre').value;
-    // artist check
-    const artists = document.getElementById('datalist-album_artists').childNodes;
-    artists.forEach(artist => {
+
+    const formData = new FormData();
+
+    // Add vinyl details
+    formData.append('cost', parseFloat(document.getElementById('input-add_cost').value));
+    formData.append('inch', document.querySelector('input[name="inch"]:checked').value);
+    formData.append('type', document.querySelector('input[name="type"]:checked').value);
+    formData.append('rpm', document.querySelector('input[name="rpm"]:checked').value);
+    formData.append('stock', document.getElementById('input-add_stock').value);
+
+
+    // already present artist check
+    let artist_id = false;
+    document.getElementById('datalist-album_artists').childNodes.forEach(artist => {
         if (artist.value == document.getElementById('input-album_artist').value) {
-            body['album']['artist']['id_artist'] = artist.id;
+            artist_id = artist.id;
         }
     });
-    body['album']['artist']['name'] = document.getElementById('input-album_artist').value;
-    body['album']['tracks'] = [];
-    document.getElementById("ul-tracks").childNodes.forEach(node => {
-        if (node !== document.getElementById("ul-tracks").lastChild) { 
-            body['album']['tracks'].push(node.childNodes)
-        }
-    });
-    for (let index = 1; index < document.getElementById("ul-tracks").childElementCount-1; index++) {
-        let track = [];
-        track['title'] = document.getElementById("input-track_title_" + index);
-        track['duration'] = document.getElementById("input-track_duration_" + index); 
-        body['album']['tracks'].push(track);
+    
+    // Add tracks
+    let tracks = [];
+    for (let index = 0; index < last_track - 1; index++) {
+        tracks.push({
+            title: document.getElementById('input-track_title_' + (index+1)).value,
+            duration: document.getElementById('input-track_duration_' + (index+1)).value
+        });
     }
-    console.log(body);
+    // Example JSON data (album details)
+    const albumData = {
+        title: document.getElementById('input-album_title').value,
+        release_date: document.getElementById('input-album_releasedate').value,
+        genre: document.getElementById('input-album_genre').value,
+        artist: {
+            id_artist: artist_id ? artist_id : '',
+            name: document.getElementById('input-album_artist').value,
+        },
+        tracks: tracks,
+    };
+
+    formData.append('album', JSON.stringify(albumData));
+
+    // Add image file
+    const imageInput = document.getElementById('input-album_cover');
+    if (imageInput.files.length > 0) {
+        formData.append('cover', imageInput.files[0]);
+    }
+
     makeRequest(fetch('/vinyl', {
         method: 'POST',
-        body: body
-    })).then(data => { createNotification(data, true); }).catch(error => { createNotification(error, false); });
+        body: formData,
+    }))
+    .then(data => { createNotification(data, true); })
+    .catch(error => { createNotification(error, false); });
 });
