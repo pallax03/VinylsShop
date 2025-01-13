@@ -30,7 +30,7 @@ class HomeController extends Controller {
         $title = 'Home';
         $head = array('title' => $title, 'style'=> array(''),
          'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
-        $data['vinyls'] = $this->vinyls_model->getCarousel();
+        $data = $this->vinyls_model->getCarousel();
         
         $this->render('home', $head, $data);
     }
@@ -104,7 +104,8 @@ class HomeController extends Controller {
 
     function addForm(Request $request, Response $response) {
         $this->redirectNotSuperUser();
-        $this->render('admin/newvinyl', ['title' => 'New vinyl'], []);
+        $data = $this->vinyls_model->getArtists();
+        $this->render('admin/newvinyl', ['title' => 'New vinyl'], $data);
     }
 
     public function dashboardAlbums(Request $request, Response $response) {

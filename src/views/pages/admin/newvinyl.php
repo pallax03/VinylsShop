@@ -64,7 +64,7 @@
             <label for="input-album_artist">Artist</label>
             <input type="text" id="input-album_artist" name="album_artist" required aria-required="true" />
             <datalist id="datalist-album_artists">
-                <?php foreach ($artists as $artist): ?>
+                <?php foreach ($data['artists'] as $artist): ?>
                     <option id="option-artist_<?php echo $artist['id_artist']; ?>" value="<?php echo $artist['artist']; ?>">
                 <?php endforeach; ?>
             </datalist>

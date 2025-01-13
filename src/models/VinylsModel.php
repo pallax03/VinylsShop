@@ -240,7 +240,8 @@ final class VinylsModel {
             JOIN albums a ON v.id_vinyl = a.id_album
             JOIN artists ar ON ar.id_artist = a.id_artist";
         // execute query
-        return $this->db->executeResults($query);
+        $result['vinyls'] = $this->db->executeResults($query);
+        return $result;
     }
 
     /**
@@ -572,6 +573,15 @@ final class VinylsModel {
             $this->notificateVinylQuantity($id_vinyl);
         }
 
+        return $result;
+    }
+
+    function getArtists() {
+        $query = "SELECT
+            a.id_artist,
+            a.name
+            FROM artists a";
+        $result['artists'] =  $this->db->executeResults($query);
         return $result;
     }
 }
