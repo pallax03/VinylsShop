@@ -74,6 +74,15 @@ class Database {
         }
     }
 
+    /**
+     * Get the last inserted Id
+     *
+     * @return int
+     */
+    public function getLastId() {
+        return $this->connection->insert_id;
+    }
+
     public static function defaultHandler() {
         return function($query, $types=null, ...$params) {
             echo 'Query: '.$query . "</br>";
