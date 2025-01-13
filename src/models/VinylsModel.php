@@ -445,12 +445,11 @@ final class VinylsModel {
      * @param string $title of the album
      * @param string $release_date of the album
      * @param string $genre of the album
-     * @param string $cover of the album
      * @param array $artist of the album
      * 
      * @return bool true if the album was created, false otherwise
      */
-    public function createAlbum($title, $release_date, $genre, $cover, $artist) {
+    public function createAlbum($title, $release_date, $genre, $artist) {
         // check if the artist already exists if not add it to the database
         if(is_array($artist) && !$this->checkArtist($artist["id_artist"])) {
             $artist = $this->createArtist($artist["name"]);
@@ -463,11 +462,25 @@ final class VinylsModel {
 
         $artist = $artist["id_artist"];
 
+        // uploaded image elaboration, if file is not loaded -> false
+        if (isset($_FILES['uploaded_file']) && $_FILES['uploaded_file']['error'] === UPLOAD_ERR_OK) {
+            $tmpPath = $_FILES['uploaded_file']['tmp_name'];
+            $name = $_FILES['uploaded_file']['name']; 
+            $destination = '/resources/img/albums/' . $name;
+            // if file is loaded but cannot be moved or not an image -> false;
+            if (!move_uploaded_file($tmpPath, $destination) &&
+                mime_content_type($tmpPath) !== 'image/webp') {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
         return $this->db->executeQueryAffectRows(
             "INSERT INTO albums (title, release_date, genre, cover, id_artist)
                 VALUES (?, ?, ?, ?, ?)",
             'ssssi',
-            $title, $release_date, $genre, $cover, $artist
+            $title, $release_date, $genre, $name, $artist
         );
     }
 
@@ -485,7 +498,7 @@ final class VinylsModel {
     public function addVinyl($cost, $rpm, $inch, $type, $stock, $album, $id_vinyl = null) {
         // check if the album already exists if not add it to the database
         if(is_array($album) && !$this->checkAlbum($album["id_album"])) {
-            $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["cover"], $album["artist"]);
+            $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["artist"]);
             if(!$album) {
                 return false;
             }
@@ -498,7 +511,7 @@ final class VinylsModel {
         
         $result = $this->db->executeQueryAffectRows(
             "INSERT INTO vinyls (`cost`, `rpm`, `inch`, `type`, `stock`, `id_album`)
-                VALUES (?, ?, ?, ?, ?, ?)",
+                VALUES (?, ?, ?, ?, ?, ?, ?)",
             'diisii',
             $cost, $rpm, $inch, $type, $stock, $album
         );

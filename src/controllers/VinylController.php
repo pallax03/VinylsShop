@@ -54,7 +54,6 @@ final class VinylController extends Controller {
         $body = $request->getBody();
         if ($this->vinyl_model->updateVinyl($body['id'], $body['cost'], null, null, null, $body['stock'], null)) {
             $response->Success('Vinyl succesfully updated');
-            //redirect("/dashboard");
             return;
         }
         $response->Error('Update not possible');
