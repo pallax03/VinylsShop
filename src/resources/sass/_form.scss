@@ -13,10 +13,6 @@ form {
     ul {
         list-style: none;
         padding: 0;
-        width: 80%;
-        @media (min-width: $breakpoint) {
-            width: 60%;
-        }
         li {
             margin: 1rem;
             margin-top: 2rem;
