@@ -21,8 +21,8 @@
                 <i class="bi bi-box-arrow-right"></i>
             </a>
         </div>
+        <div class="div"></div>
     </section>
-    <div class="div"></div>
     <form aria-label="Defaults" id="form-user_defaults">
         <h2>Defaults</h2>
         <ul>
@@ -39,13 +39,12 @@
                 <a href="/user/cards"><i class="bi bi-caret-right-fill"></i></a>
             </li>
         </ul>
+        <div class="div"></div>
     </form>
-    <div class="div"></div>
     <?php include PAGES . 'user/orders.php'; ?>
     <script src="/resources/js/user.js"></script>
 <?php else: ?>
     <?php include COMPONENTS . 'login.php' ?>
-    <div class="div"></div>
     <?php include COMPONENTS . 'register.php' ?>
     <script src="/resources/js/auth.js"></script>
 <?php endif; ?>
