@@ -40,19 +40,17 @@
     </ol>
     <div class="div"></div>
 </section>
-<section class="recommended">
-    <h1 class="header">Recommended<h1>
-    <?php
-        foreach ($data["suggested"] as $vinyl):
-            echo(
-                '<a class="recommended-preview" href="vinyl?id=' . $vinyl["id_vinyl"] . '">
-                    <div>
-                        <img class="cover" src="resources/img/albums/' . $vinyl["cover"] . '"/>
-                        <p class="title">' . $vinyl["title"] . '</p>
-                    </div>
-                </a>'
-            );
-        endforeach;
-    ?>
-        
+<section class="no-margin no-padding">
+    <h2>Recommended</h2>
+    <div class="carousel">
+        <?php foreach ($data["suggested"] as $vinyl): ?>
+            <a href="/vinyl?id=<?php echo $vinyl['id_vinyl']?>">
+                <img src="/resources/img/albums/<?php echo $vinyl['cover'] ?>"/>
+                <span>
+                    <p><?php echo $vinyl['title'] ?></p>
+                    <p><?php echo $vinyl['artist_name'] ?></p>
+                </span>
+            </a>
+        <?php endforeach; ?>
+    </div>
 </section>

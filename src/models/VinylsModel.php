@@ -272,30 +272,30 @@ final class VinylsModel {
     }
 
     public function getSuggested($id) {
-        $infos = "SELECT
-            a.genre,
-            ar.name AS artist
-            FROM
-            vinyls v
-            JOIN albums a ON v.id_album = a.id_album
-            JOIN artists ar ON ar.id_artist = a.id_artist
-            WHERE v.id_vinyl = ?";
-        $vinyls = "SELECT
-            v.id_vinyl,
-            a.cover,
-            a.title
-            FROM
-            vinyls v
-            JOIN albums a ON v.id_album = a.id_album
-            JOIN artists ar ON ar.id_artist = a.id_artist
-            WHERE (a.genre = ? OR ar.name = ?)
-            AND v.id_vinyl <> ?
-            LIMIT 6";
-        // execute query
-        $info = $this->db->executeResults($infos, "i", $id)[0];
-        // store infos
-        $result = $this->db->executeResults($vinyls, "ssi", $info["genre"], $info["artist"], $id);
-        return $result;
+        $selected_vinyl = $this->getVinyl($id);
+        return Database::getInstance()->executeResults(
+            "SELECT 
+                v.id_vinyl,
+                v.stock,
+                v.cost,
+                v.rpm,
+                v.inch,
+                v.type,
+                a.title,
+                a.genre,
+                a.cover,
+                ar.name AS artist_name
+                FROM vinyls v
+                JOIN albums a ON v.id_album = a.id_album
+                JOIN artists ar ON ar.id_artist = a.id_artist
+                WHERE (a.genre = ? OR ar.name = ?)
+                AND v.id_vinyl <> ?
+                LIMIT 6", 
+            "ssi", 
+            $selected_vinyl["genre"], 
+            $selected_vinyl["artist_name"],
+            $id
+        );
     }
 
     

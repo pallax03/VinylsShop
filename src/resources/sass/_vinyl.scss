@@ -44,54 +44,55 @@ $sleeve-size: 80px;
 }
 
 .carousel {
-    background-color: rgba(0, 0, 0, 0.6);
+    // background-color: rgba(0, 0, 0, 0.6);
     width: 100%;
     height: 300px;
-    overflow: hidden;
+    overflow-x: auto;
     display: flex;
     align-items: center;
     position: relative;
+
+    a {
+        border: 0;
+        text-decoration: none;
+        display: inline-block;
+        width: 200px;
+        min-width: 200px;
+        position: relative;
+        margin: 20px;
+        padding: 0;
+        height: 200px;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+        span {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            bottom: 0%;
+            right: 0%;
+            padding: 10px 5px;
+            text-align: center;
+            z-index: 99;
+        }
+        p {
+            font-size: 0.9rem;
+            opacity: 1;
+            color: white;
+            text-shadow: 1px -1px black;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            border: 0;
+            padding: 0;
+            margin: 0;
+        }
+    }
 }
 
-.carousel > div {
-    display: flex;
-    align-items: center;
-    transition: transform 1s ease-in-out; /* Aggiungi transizione */
-    white-space: nowrap; /* Assicura che i contenuti siano su una sola riga */
-}
-
-.carousel a {
-    text-decoration: none;
-    display: inline-block;
-    width: 200px;
-    min-width: 200px;
-    position: relative;
-    margin: 20px;
-    height: 200px;
-}
-
-.carousel img {
-    width: 100%;
-    height: 100%;
-}
-
-.carousel span {
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    position: absolute;
-    bottom: 0%;
-    right: 0%;
-    padding: 10px 5px;
-    text-align: center;
-    z-index: 99;
-}
-
-.carousel p {
-    font-size: 0.9rem;
-    opacity: 1;
-    color: white;
-    text-shadow: 1px -1px black;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+@media (min-width: $breakpoint) {
+    .carousel {
+        overflow-x: hidden;
+    }
 }
