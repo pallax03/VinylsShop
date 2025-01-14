@@ -5,12 +5,10 @@
 > 💡 REPO:
 > - src
 > - mockups
-> - relazione ???
+> - relazione
 
 ## COSA DOBBIAMO FARE: ⚠️
-- ⚠️ LA HOME PAGE.
-- picchiare sam
-- fixing generici nel frontend
+- relazione
 
 ### Database Schema:
 ![Database Schema](/db/RELAZIONALE.png)
