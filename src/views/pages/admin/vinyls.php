@@ -33,7 +33,7 @@
                     <td> <?php echo $vinyl["title"] ?> </td>
                     <td> <?php echo $vinyl["cost"] ?> €</td>
                     <td>
-                        <button onclick="loadVinyl(<?php echo $vinyl['id_vinyl']?>)" class="edit">
+                        <button aria-label="Edit Vinyl" onclick="loadVinyl(<?php echo $vinyl['id_vinyl']?>)" class="edit">
                             <span aria-hidden="true"><i class="bi bi-pencil"></i></span>
                         </button>
                     </td>

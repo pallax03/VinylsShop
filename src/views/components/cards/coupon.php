@@ -8,7 +8,7 @@
         </header>
     <?php endif; ?>
     <span class="coupon-details">
-        <h4><?php echo $coupon['discount_code']?>:</h4>
+        <p><?php echo $coupon['discount_code']?>:</p>
         <p>
             <?php echo $coupon['percentage'] * 100?>% off (<?php echo $coupon['valid_from']?> - <?php echo $coupon['valid_until']?>)
         </p>

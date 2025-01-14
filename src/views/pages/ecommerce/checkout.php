@@ -11,7 +11,7 @@
                 Address:
             </label>
             <input type="text" id="input-default_address" value="<?php echo (isset($user['default_address']) && !empty($user['default_address'])) ? ($user['name'] . ' - ' . $user['city'] . ' (' . $user['postal_code'] . ')') : 'no default address.' ?>" name="default_address" disabled />
-            <a href="user/addresses"><i class="bi bi-caret-right-fill"></i></a>
+            <a aria-label="User Addresses" href="user/addresses"><i class="bi bi-caret-right-fill"></i></a>
         </li>
         <li>
             <label for="input-default_card">
@@ -19,7 +19,7 @@
                 Card:
             </label>
             <input type="text" id="input-default_card" value="<?php echo ($is_paying_with_card) ? ('**** **** **** ' . substr($user['card_number'], -4)) : ('Balance: ' . $user['balance'] . ' €') ?>" name="default_card" disabled />
-            <a href="/user/cards"><i class="bi bi-caret-right-fill"></i></a>
+            <a aria-label="User Cards" href="/user/cards"><i class="bi bi-caret-right-fill"></i></a>
         </li>
         <li>
             <label for="input-discount_code">
@@ -29,7 +29,7 @@
             <input type="text" id="input-discount_code" value="" name="discount_code"/>
         </li>
         <li>
-            <label for="textarea-shipping_note">
+            <label for="textarea-shipping_notes">
                 <i class="bi bi-pencil-square"></i>
                 Shipping Notes:
             </label>

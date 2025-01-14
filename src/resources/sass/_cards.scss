@@ -478,6 +478,12 @@ $preview-cover-size: 80%;
     }
 }
 
+.coupon {
+    @media (min-width:$breakpoint) {
+        width: 100%;
+    } 
+}
+
 @keyframes highlight-border {
     0% {
         border-color: var(--selected-color);

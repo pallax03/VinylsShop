@@ -1,12 +1,12 @@
 <section>
     <?php if (isset($coupons) && $coupons !== []): ?>
-        <h1>Coupons</h1>
+        <h2>Coupons</h2>
         <?php
             foreach ($coupons as $coupon) {
                 include COMPONENTS . '/cards/coupon.php';
             }
         ?>
     <?php else: ?>
-        <h1>No coupons found!</h1>
+        <h2>No coupons found!</h2>
     <?php endif; ?>
 </section>

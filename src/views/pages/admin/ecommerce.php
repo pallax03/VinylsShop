@@ -9,16 +9,16 @@
     <h2>Shipping Info</h2>
     <ul>
         <li>
-            <label for="shipping_courier">Courier</label>
-            <input type="text" name="shipping_courier" value="<?php echo $_ENV['SHIPPING_COURIER'] ?>" id="input-shipping_courier">
+            <label for="input-shipping_courier">Courier</label>
+            <input type="text" id="input-shipping_courier" name="shipping_courier" value="<?php echo $_ENV['SHIPPING_COURIER'] ?>" id="input-shipping_courier">
         </li>
         <li class="split">
-            <label for="shipping_cost">Cost</label>
-            <input type="text" name="shipping_cost" value="<?php echo $_ENV['SHIPPING_COST'] ?>" id="input-shipping_cost">
+            <label for="input-shipping_cost">Cost</label>
+            <input type="text" id="input-shipping_cost" name="shipping_cost" value="<?php echo $_ENV['SHIPPING_COST'] ?>" id="input-shipping_cost">
         </li>
         <li class="split">
-            <label for="shipping_goal">Goal</label>
-            <input type="text" name="shipping_goal" value="<?php echo $_ENV['SHIPPING_GOAL'] ?>" id="input-shipping_goal">
+            <label for="input-shipping_goal">Goal</label>
+            <input type="text" id="input-shipping_goal" name="shipping_goal" value="<?php echo $_ENV['SHIPPING_GOAL'] ?>" id="input-shipping_goal">
         </li>
         <li>
             <div class="large button">

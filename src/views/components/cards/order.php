@@ -4,7 +4,7 @@
             <p><?php echo $n ?></p>
             <a href="/order?id_order=<?php echo $order['id_order'] ?>&id_user=<?php echo $user['id_user'] ?>">
                 <i class="bi bi-box-seam-fill"></i>
-                <h2><? echo $order['tracking_number']?></h2>
+                <h2><?php echo $order['tracking_number']?></h2>
             </a>
         </header>
         <div class="order-details">

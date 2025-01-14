@@ -6,9 +6,9 @@
                 include COMPONENTS . '/cards/address.php';
             }
         ?>
-    <? else: ?>
+    <?php else: ?>
         <h1>No addresses found!</h1>
-    <? endif; ?>
+    <?php endif; ?>
 </section>
 <div class="div"></div>
 <form action="/user/address" id="form-address" method="post" novalidate>

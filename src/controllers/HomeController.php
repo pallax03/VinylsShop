@@ -72,14 +72,6 @@ class HomeController extends Controller {
         // always gives OK, because there's no wrong search.
         $response->Success($this->vinyls_model->getVinyls(null, $body));
     }
-    
-    public function devs(Request $request, Response $response) {
-        $data = $request->getBody();
-        $title = $data['title'] ?? 'Devs';
-        $head = array('title' => $title, 'style'=> array(''));
-
-        $this->render('devs', $head, $data);
-    }
 
     public function dashboard() {
         $this->redirectNotSuperUser();
