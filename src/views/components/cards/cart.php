@@ -20,7 +20,7 @@
         <img src="/resources/img/albums/<?php echo $item['vinyl']['cover']?>" alt="album cover">
         </div>
         <div class="info">
-            <h3><?php echo $item['vinyl']['title']; ?></h3>
+            <p><?php echo $item['vinyl']['title']; ?></p>
             <p><?php echo $item['vinyl']['artist_name'] ?> #<?php echo $item['vinyl']['genre'] ?></p>
             <p><?php echo $item['vinyl']['type'] ?> - <?php echo $item['vinyl']['rpm'] ?>rpm - <?php echo $item['vinyl']['inch'] ?>"</p>
         </div>

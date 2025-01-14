@@ -42,15 +42,17 @@
 </section>
 <section class="no-margin no-padding">
     <h2>Recommended</h2>
-    <div class="carousel">
-        <?php foreach ($data["suggested"] as $vinyl): ?>
-            <a href="/vinyl?id=<?php echo $vinyl['id_vinyl']?>">
-                <img src="/resources/img/albums/<?php echo $vinyl['cover'] ?>"/>
-                <span>
-                    <p><?php echo $vinyl['title'] ?></p>
-                    <p><?php echo $vinyl['artist_name'] ?></p>
-                </span>
-            </a>
-        <?php endforeach; ?>
+    <div class="recommended">
+        <div>
+            <?php foreach ($data["suggested"] as $vinyl): ?>
+                <a href="/vinyl?id=<?php echo $vinyl['id_vinyl']?>">
+                    <img src="/resources/img/albums/<?php echo $vinyl['cover'] ?>"/>
+                    <span>
+                        <p><?php echo $vinyl['title'] ?></p>
+                        <p><?php echo $vinyl['artist_name'] ?></p>
+                    </span>
+                </a>
+            <?php endforeach; ?>
+        </div>
     </div>
 </section>

@@ -189,24 +189,6 @@ final class AuthModel {
         );
     }
 
-    /**
-     * Send an mail (fake send), it set as password 'forgot'.
-     *
-     * @param string $mail
-     * @return bool
-     */
-    public function forgotPassword($mail) {
-        if (!$this->isValidMail($mail)) {
-            return false;
-        }
-
-        return Database::getInstance()->executeQueryAffectRows(
-            "UPDATE `users` SET password = ? WHERE mail = ?",
-            'ss',
-            $this->encryptPassword('forgot'), $mail
-        );
-    }
-
     public function registerSuperUser($mail, $password) {
         return Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO `users` (mail, password, su) VALUES (?, ?, 1)",

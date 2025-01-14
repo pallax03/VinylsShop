@@ -35,7 +35,7 @@
     <div class="container table">
         <p class="th">Shipping fee:</p>
         <p><?php echo round($order['shipment_cost'], 2) ?> €</p>
-        <p></p>
+        <p><?php echo $vinyl_total >= $_ENV['SHIPPING_GOAL'] ? 'shipping on us' : 'paid' ?></p>
     </div>
     <?php if (isset($order['discount_code']) && $order['discount_code'] != null): ?>
         <div class="container table">

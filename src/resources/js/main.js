@@ -156,8 +156,7 @@ function getNotificationsRealTime() {
         data.forEach(notification => {
             const createdAt = new Date(notification.created_at);
             const now = new Date();
-            interval = Math.abs(now - createdAt) / 1000;
-            if (interval < 5400 && notification.is_read == 0) {
+            if (notification.is_read == 0) {
                 createNotification(notification.message, true, '/notifications', 'bi bi-bell-fill');
             }
         });
@@ -169,7 +168,7 @@ function getNotificationsRealTime() {
 window.onload = function () {
     updateDarkmodeButton();
 
-    getNotificationsRealTime();
+    setTimeout(getNotificationsRealTime, 2000);
 
     document.addEventListener('touchstart', function (e) {
         if (!isTextInput(e.target) && isTextInput(document.activeElement)) {
@@ -202,7 +201,7 @@ window.onload = function () {
             const itemCount = items.length;
             const baseTimeout = 2800; // Base timeout in milliseconds
             const minTimeout = 200; // Minimum timeout in milliseconds
-            const decayFactor = 0.9; // Decay factor for exponential decay
+            const decayFactor = 0.7; // Decay factor for exponential decay
     
             // Formula: timeout = max(minTimeout, baseTimeout * (decayFactor ^ itemCount))
             let timeout = Math.max(minTimeout, baseTimeout * Math.pow(decayFactor, itemCount));

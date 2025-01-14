@@ -452,7 +452,6 @@ final class VinylsModel {
         if (empty($artist['id_artist']) || !$this->checkArtist($artist['id_artist'])) {
             $artist = $this->createArtist($artist["name"]);
             if (!$artist) {
-                echo "Artist not created";
                 return false;
             }
             $artist = Database::getInstance()->getLastId();
@@ -488,8 +487,7 @@ final class VinylsModel {
         if ($result) {
             $last_id = Database::getInstance()->getLastId();    
             foreach ($tracks as $track) {
-                echo 'adding track '. $track['title'] . ' to album ' . $last_id;
-                echo $this->addTrack($last_id, $track['title'], $track['duration']) ? 'track added' : 'track not added';
+                $this->addTrack($last_id, $track['title'], $track['duration']);
             }
         }
         return $result ? $last_id : false;
@@ -512,12 +510,10 @@ final class VinylsModel {
             if(!isset($album['id_album']) && empty($album['id_album'])) {
                 $album = $this->createAlbum($album["title"], $album["release_date"], $album["genre"], $album["artist"], $album['tracks']);
                 if(!$album) {
-                    echo "Album not created";
                     return false;
                 }
             } else {
                 if(!$this->checkAlbum($album["id_album"])) {
-                    echo "Album not found";
                     return false;
                 }
             }

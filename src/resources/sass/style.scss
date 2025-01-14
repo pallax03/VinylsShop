@@ -677,6 +677,9 @@ main {
             .card {
                 p {
                     font-size: 2rem;
+                    @media (min-width:$breakpoint) {
+                        font-size: 1.2rem;
+                    }
                 }
             }
         }
@@ -774,13 +777,11 @@ main {
 }
 
 .recommended {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    text-align: center;
-    width: 350px;
     @media (min-width: $breakpoint) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
         width: 70%;
     }
 

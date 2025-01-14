@@ -41,6 +41,10 @@ $preview-cover-size: 80%;
         &.order {
             visibility: hidden;
             opacity: 0;
+            @media (min-width: $breakpoint) {
+                width: 100%;
+                padding: 10px 15px 15px 10px;
+            }
         }   
         &.shipping {
             visibility: hidden;
@@ -381,6 +385,10 @@ $preview-cover-size: 80%;
     justify-content: center;
     align-items: center;
 
+    button > i {
+        cursor: pointer;
+    }
+
     header {
         width: 10%;
         .controls {
@@ -432,14 +440,12 @@ $preview-cover-size: 80%;
             img {
                 width: 70px;
                 height: 70px;
+                @media (min-width:$breakpoint) {
+                    width: 100px;
+                    height: 100px;
+                }
                 margin-right: 1rem;
             }
-        }
-        h2 {
-            font-size: 1rem;
-            margin: 0;
-            padding: 0;
-            border: 0;
         }
         p {
             font-size: 0.6rem;
@@ -447,6 +453,16 @@ $preview-cover-size: 80%;
             width: auto;
             padding: 0;
             border: 0;
+            &:first-child {
+                font-size: 1rem;
+                font-weight: bold;
+            }
+            @media (min-width:$breakpoint) {
+                font-size: 0.9rem;
+                &:first-child {
+                    font-size: 1.2rem;
+                }
+            }
         }
     }
     footer {
@@ -456,6 +472,9 @@ $preview-cover-size: 80%;
             padding: 0;
             border: 0;
         }
+    }
+    @media (min-width:$breakpoint) {
+        width: 100%;
     }
 }
 
@@ -478,6 +497,10 @@ $preview-cover-size: 80%;
     align-content: center;
     align-items: center;
     padding: 0.5rem;
+    height: 100px;
+    @media (min-width: $breakpoint) {
+        width: 100%;
+    }
 
     margin: 1rem;
     &.unread {

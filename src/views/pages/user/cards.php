@@ -14,19 +14,19 @@
 <form action="/user/card" id="form-card" method="post" novalidate>
     <ul>
         <li>
-            <label for="card_number">Number:</label>
+            <label for="input-card_number">Number:</label>
             <input placeholder="1234567887654321" type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}"
                 autocomplete="cc-number" maxlength="19" id="input-card_number" name="card_number"
                 aria-describedby="card-number-description" required />
         </li>
         <li class="split">
-            <label for="card_exp">Exp:</label>
+            <label for="input-card_exp">Exp:</label>
             <input type="text" id="input-card_exp" name="card_exp"
                 inputmode="numeric" pattern="[0-9]{2}/[0-9]{2}" placeholder="MM/AA"
                 aria-describedby="card-exp-description" autocomplete="cc-exp" required />
         </li>
         <li class="split">
-            <label for="card_cvc">CVC:</label>
+            <label for="input-card_cvc">CVC:</label>
             <input placeholder="123" type="text" id="input-card_cvc" name="card_cvc"
                 inputmode="numeric" pattern="[0-9]{3,4}" maxlength="4"
                 aria-describedby="card-cvc-description" autocomplete="cc-csc" required />

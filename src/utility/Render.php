@@ -7,6 +7,7 @@
     <title><?php echo $title ?></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scroll-carousel@1.2.7/dist/scroll.carousel.min.css" />
     <?php 
         if(isset($style) && !empty($style)) {
             foreach ($style as $s) {
@@ -19,6 +20,8 @@
 </head>
 <body>
     <script src="/resources/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/scroll-carousel@1.2.7/dist/scroll.carousel.min.js"></script>
+
     
     <?php include COMPONENTS . '/header.php' ?>
     
@@ -43,7 +46,7 @@
     </aside>
     
     <?php include COMPONENTS . '/footer.php' ?>
-
+    
     
     <?php if(!Session::isSuperUser()):?>
         <script src="/resources/js/search.js"></script>

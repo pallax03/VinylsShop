@@ -14,19 +14,19 @@
 <form action="/user/address" id="form-address" method="post" novalidate>
     <ul>
         <li>
-            <label for="address_name">Name:</label>
+            <label for="input-address_name">Name:</label>
             <input autocomplete="name" type="text" id="input-address_name" name="address_name" placeholder="Alex Mazzoni" required aria-required="true" aria-label="Name" />
         </li>
         <li>
-            <label for="address_street">Street & Number:</label>
+            <label for="input-address_street">Street & Number:</label>
             <input autocomplete="street-address" type="text" id="input-address_street" name="address_street" placeholder="Via Example, 123" required aria-required="true" aria-label="Street and number" />
         </li>
         <li class="split">
-            <label for="address_city">City:</label>
+            <label for="input-address_city">City:</label>
             <input autocomplete="address-level2" type="text" id="input-address_city" name="address_city" placeholder="Milan" required aria-required="true" aria-label="City" />
         </li>
         <li class="split">
-        <label for="address_cap">CAP:</label>
+        <label for="input-address_cap">CAP:</label>
         <input autocomplete="postal-code" type="text" id="input-address_cap" name="address_cap" placeholder="01234" pattern="[0-9]{5}" required aria-required="true" aria-label="CAP" />
         </li>
         <li>

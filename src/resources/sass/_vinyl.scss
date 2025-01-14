@@ -16,7 +16,7 @@ $sleeve-size: 80px;
     border-radius: 50%;
     border: solid #fff;
     box-shadow: 0px 0px 3px #333, 0px 0px 0px 10px #fff, 0px 0px 15px #333, 0px 0px 0px 16px #000, 0px 0px 0px 17px #252424, 0px 0px 0px 18px #000, 0px 0px 0px 19px #313030, 0px 0px 0px 20px #000, 0px 0px 0px 21px #3a3838, 0px 0px 0px 22px #000, 0px 0px 0px 23px #2b2a2a, 0px 0px 0px 24px #000, 0px 0px 0px 25px #313030, 0px 0px 0px 26px #000, 0px 0px 0px 27px #313030, 0px 0px 0px 28px #000, 0px 0px 0px 29px #333333, 0px 0px 0px 30px #000, 0px 0px 0px 31px #333232, 0px 0px 0px 32px #000, 0px 0px 0px 33px #4c4a4a, 0px 0px 0px 34px #000, 0px 0px 0px 35px #2f2e2e, 0px 0px 0px 36px #000, 0px 0px 0px 37px #252424, 0px 0px 0px 38px #000, 0px 0px 0px 39px #2f2e2e, 0px 0px 0px 40px #000, 0px 0px 0px 41px #2f2e2e, 0px 0px 0px 42px #000, 0px 0px 0px 55px #2f2e2e, 0px 0px 0px 56px #000, 0px 0px 0px 57px #2f2e2e, 0px 0px 0px 58px #cecece, 0px 0px 12px 59px #2f2e2e;
-    
+
     &:before {
         content: "";
         position: absolute;
@@ -31,53 +31,73 @@ $sleeve-size: 80px;
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
 }
 
-.home-title{
+.home-title {
     font-size: 1.5rem;
     font-weight: bolder;
     margin-bottom: 30px;
     text-align: center;
 }
 
-.carousel {
-    // background-color: rgba(0, 0, 0, 0.6);
+.recommended {
     width: 100%;
-    height: 300px;
     overflow-x: auto;
     display: flex;
     align-items: center;
     position: relative;
 
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: inherit;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+    }
+
     a {
         border: 0;
         text-decoration: none;
-        display: inline-block;
+        transition: all 0.3s ease-in-out;
+        z-index: 10;
         width: 200px;
-        min-width: 200px;
-        position: relative;
-        margin: 20px;
-        padding: 0;
         height: 200px;
+        position: relative;
+        padding: 0;
+        margin: 0;
+        margin-left: 10px;
+        margin-right: 10px;
+
         img {
             width: 100%;
             height: 100%;
         }
+
         span {
             width: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             position: absolute;
             bottom: 0%;
             right: 0%;
-            padding: 10px 5px;
+            padding: 1rem .5rem;
             text-align: center;
-            z-index: 99;
+            z-index: 10;
         }
+
         p {
             font-size: 0.9rem;
+            width: 98%;
             opacity: 1;
             color: white;
             text-shadow: 1px -1px black;
@@ -91,8 +111,58 @@ $sleeve-size: 80px;
     }
 }
 
-@media (min-width: $breakpoint) {
-    .carousel {
-        overflow-x: hidden;
+
+.my-carousel {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    a {
+        margin-top: 5px;
+        padding: 0;
+        border: 0;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+        z-index: 10;
+        width: 100px;
+        height: 100px;
+        transition: all 0.3s ease-in-out;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        span {
+            display: none;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            bottom: 0%;
+            right: 0%;
+            padding: 10px 5px;
+            text-align: center;
+            z-index: 10;
+            display: none;
+        }
+
+        p {
+            font-size: 0.9rem;
+            width: 98%;
+            opacity: 1;
+            color: white;
+            text-shadow: 1px -1px black;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            border: 0;
+            padding: 0;
+            margin: 0;
+        }
     }
 }
+
+@media (min-width: $breakpoint) {}
