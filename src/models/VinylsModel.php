@@ -89,6 +89,7 @@ final class VinylsModel {
     public function getVinyls($n, $params) {
         $query = "SELECT
             v.id_vinyl,
+            v.stock,
             v.cost,
             a.title,
             a.cover,

@@ -72,6 +72,7 @@ function search() {
 
 function createCard(result) {
         const itemElement = document.createElement('div');
+        button = result.stock <= 0 ? `<a class="add-cart">Out of stock</a>` : `<a class="add-cart" onclick="addToCart(${result.id_vinyl}, 1)">Add to cart - €${result.cost}</a>`;
         itemElement.innerHTML = `<div class="search-card">
             <a class="vinyl-preview" href="/vinyl?id=${result.id_vinyl}">
                 <p class="vinyl-title" title="${result.title}">${result.title}</p>
@@ -82,7 +83,7 @@ function createCard(result) {
                     <p class="vinyl-artist">${result.artist}</p>
                     <p class="vinyl-genre">#${result.genre}</p>
                 </div>
-                <a class="add-cart" onclick="addToCart(${result.id_vinyl}, 1)">Add to cart - €${result.cost}</a>
+                ${button}
             </a>
         </div>
         `;
