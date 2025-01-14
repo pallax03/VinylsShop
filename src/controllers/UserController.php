@@ -41,6 +41,12 @@ class UserController extends Controller {
     public function addresses() {
         $this->redirectSuperUser();
         $this->auth_model->checkAuth();
+
+        if(!Session::isLogged()) {
+            $this->render('notauthorizated', ['title' => 'Order not yours']);
+            return;
+        }
+
         $head = array('title' => 'Addresses');
         
         $data['user'] = $this->user_model->getUser();
@@ -50,7 +56,12 @@ class UserController extends Controller {
 
     public function cards() {
         $this->redirectSuperUser();
-        $this->auth_model->checkAuth();
+
+        if(!Session::isLogged()) {
+            $this->render('notauthorizated', ['title' => 'Order not yours']);
+            return;
+        }
+
         $head = array('title' => 'Cards');
         
         $data['user'] = $this->user_model->getUser();
@@ -60,7 +71,7 @@ class UserController extends Controller {
 
     public function orders(Request $request, Response $response) {
         $this->redirectNotSuperUser();
-        
+
         $this->render('user/orders', 
             ['title' => 'User Orders'], 
             [
@@ -71,7 +82,10 @@ class UserController extends Controller {
     }
 
     public function notifications(Request $request, Response $response) {
-        $this->auth_model->checkAuth();
+        if(!Session::isLogged()) {
+            $this->render('notauthorizated', ['title' => 'Order not yours']);
+            return;
+        }
         $this->render('user/notifications', ['title' => 'Notifications'], ['notifications' => $this->notification_model->getNotifications()]);
     }
 

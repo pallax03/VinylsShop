@@ -30,4 +30,3 @@ RUN chown -R www-data:www-data /var/www/html/resources/img/albums && \
 
 # Set the working directory to the web root
 WORKDIR /var/www/html
-

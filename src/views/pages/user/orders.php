@@ -7,7 +7,6 @@
     </section>
     <div class="div"></div>
 <?php endif; ?>
-
 <section class="cards">
     <h2>Orders</h2>
     <?php

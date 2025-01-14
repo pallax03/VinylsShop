@@ -67,11 +67,6 @@ class HomeController extends Controller {
         $response->redirect('/');
     }
 
-    public function forgotPassword() {
-        // $this->auth_model->forgotPassword();
-        echo json_encode(['error' => 'Not implemented']);
-    }
-
     public function search(Request $request, Response $response) {
         $body = $request->getBody();
         // always gives OK, because there's no wrong search.
@@ -79,7 +74,6 @@ class HomeController extends Controller {
     }
     
     public function devs(Request $request, Response $response) {
-        $this->redirectSuperUser();
         $data = $request->getBody();
         $title = $data['title'] ?? 'Devs';
         $head = array('title' => $title, 'style'=> array(''));

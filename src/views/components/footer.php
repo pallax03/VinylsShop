@@ -28,31 +28,19 @@
                     </a>
                 </li>
                 <li>
-                    <?php if (Session::isSuperUser()): ?>
-                        <a href="/dashboard/users">
-                            <p>Manage Users</p>
-                        </a>
-                    <?php else: ?>
-                        <a href="/user">
-                            <p>Login / Signup</p>
-                        </a>
-                    <?php endif; ?>
-                </li>
-                <li>
                     <a href="/coupons">
                         <p>Coupons</p>
                     </a>
                 </li>
                 <li>
-                    <?php if (Session::isSuperUser()): ?>
-                        <a href="/dashboard">
-                            <p>Manage Vinyls</p>
-                        </a>
-                    <?php else: ?>
-                        <a href="/cart">
-                            <p>Cart</p>
-                        </a>
-                    <?php endif; ?>
+                    <a href="/notifications">
+                        <p>Notifications</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/devs">
+                        <p>Relazione</p>
+                    </a>
                 </li>
             </ul>
         </li>
