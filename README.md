@@ -3,8 +3,11 @@
 ##### real deadline: 15 23:59 Jan 2025
 
 ## utenti già esistenti:
-admin: admin
-alexmaz03@hotmail.it: a
+mail: admin
+password: admin
+
+mail: alexmaz03@hotmail.it
+password: a
 
 ### Database Schema:
 ![Database Schema](/db/RELAZIONALE.png)
