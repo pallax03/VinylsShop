@@ -42,7 +42,7 @@ function loadCartView(data) {
                         <img src="/resources/img/albums/${item.vinyl.cover}" alt="album cover">
                     </div>
                     <div class="info">
-                        <h3>${item.vinyl.title}</h3>
+                        <p>${item.vinyl.title}</p>
                         <p>${item.vinyl.artist_name} #${item.vinyl.genre}</p>
                         <p>${item.vinyl.type} - ${item.vinyl.rpm}rpm - ${item.vinyl.inch}"</p>
                     </div>
