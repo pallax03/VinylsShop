@@ -2,13 +2,13 @@
     <nav aria-label="Main navigation">
         <ul>
             <li>
-                <a href="/">
+                <a href="/" aria-label="homepage">
                     <div class="vinyl"></div>
                     <p>Shop</p>
                 </a>
             </li>
             <li class="search-container">
-                <button id="btn-search" class="search">
+                <button id="btn-search" class="search" aria-label="search">
                     <i class="bi bi-search"></i>
                     <span>Search</span>
                 </button>
@@ -34,13 +34,13 @@
                 </div>
             </li>
             <li>
-                <a href="/cart">
+                <a href="/cart" aria-label="cart">
                     <i class="bi bi-bag-fill"></i>
                     <p>Cart</p>
                 </a>
             </li>
             <li>
-                <a href="/user">
+                <a href="/user" aria-label="user profile">
                     <i class="bi bi-person-fill"></i>
                     <p>User</p>
                 </a>

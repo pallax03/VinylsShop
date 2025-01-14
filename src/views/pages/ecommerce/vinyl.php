@@ -1,5 +1,5 @@
 <section class="album-details">
-    <img class="album-cover" src="/resources/img/albums/<?php echo $data["vinyl"]["details"]["cover"]?>"/>
+    <img class="album-cover" src="/resources/img/albums/<?php echo $data["vinyl"]["details"]["cover"]?>" alt=""/>
     <h1 class="album-title"><?php echo $data["vinyl"]["details"]["title"] ?></h1>
     <p class="info">
         <?php
@@ -45,8 +45,8 @@
     <div class="recommended">
         <div>
             <?php foreach ($data["suggested"] as $vinyl): ?>
-                <a href="/vinyl?id=<?php echo $vinyl['id_vinyl']?>">
-                    <img src="/resources/img/albums/<?php echo $vinyl['cover'] ?>"/>
+                <a href="/vinyl?id=<?php echo $vinyl['id_vinyl']?>" aria-label="<?php echo $vinyl['title'] ?>">
+                    <img src="/resources/img/albums/<?php echo $vinyl['cover'] ?>" alt=""/>
                     <span>
                         <p><?php echo $vinyl['title'] ?></p>
                         <p><?php echo $vinyl['artist_name'] ?></p>
