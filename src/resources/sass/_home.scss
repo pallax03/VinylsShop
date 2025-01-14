@@ -1,0 +1,62 @@
+@use "sass:math";
+@import "variables";
+
+.home-title {
+    font-size: 2rem;
+    font-weight: bolder;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 30px;
+}
+
+.home-article {
+    margin-top: 20px;
+    background-color: rgba(black, 0.3);
+    color: var(--text-color);
+    text-align: center;
+    width: 100%;
+    padding: 20px 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    p {
+        width: 100%;
+        font-size: 1.5rem;
+    }
+    div {
+        display: flex;
+        flex-direction: column;
+        @media (min-width: $breakpoint) {
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+    section {
+        width: 300px;
+        display: inline-block;
+
+        div {
+            display: flex;
+            flex-direction: row;
+            vertical-align: middle;
+            align-items: center;
+            margin: 0 10px;
+            h3 {
+                font-size: 2rem;
+                font-weight: bold;
+            }
+    
+            i {
+                font-size: 1.5rem;
+                display: inline;
+                margin-bottom: 10px;
+            }
+        }
+
+    }
+}

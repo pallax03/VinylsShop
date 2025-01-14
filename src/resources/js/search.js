@@ -44,6 +44,7 @@ document.getElementById('btn-search_close').addEventListener('click', function()
     document.getElementById('sec-search_content').ariaHidden = 'true';
     document.getElementById('input-search').value = "";
     document.getElementById('sec-search_content').style = 'display: none';
+    document.getElementById('main-content').style = 'display: flex';
 });
 
 function search() {
