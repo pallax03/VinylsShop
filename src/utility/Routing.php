@@ -24,7 +24,7 @@
     // # 🍽️  [Logout] -> Auth
     $router->get('/logout', [HomeController::class, 'logout']);
     // # 🏠 [Devs] ~ README.md
-    // $router->get('/devs', [HomeController::class, 'devs']);
+    $router->get('/devs', [HomeController::class, 'devs']);
     // # ❌ DESTROY ALL (SESSION)
     $router->get('/cache', [HomeController::class, 'reset']);
 

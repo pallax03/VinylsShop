@@ -135,12 +135,17 @@ final class OrderModel
      * @return bool 
      */
     public function isOrderOwner($id_order, $id_user = null) {
-        return !empty(Database::getInstance()->executeResults(
-            "SELECT id_order FROM `vinylsshop`.`orders` WHERE id_order = ? AND id_user = ?;",
+        if($id_user != Session::getUser()) {
+            return false;
+        } else {
+            $id_user = Session::getUser();
+        }
+        return Database::getInstance()->executeResults(
+            "SELECT `id_order` FROM `vinylsshop`.`orders` WHERE `id_order` = ? AND `id_user` = ?;",
             'ii',
             $id_order,
-            $id_user ?? Session::getUser()
-        ));
+            $id_user
+        ) ? true : false;
     }
 
     /**

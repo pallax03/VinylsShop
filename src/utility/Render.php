@@ -35,7 +35,7 @@
             if (isset($page) && file_exists($page)) {
                 include $page;
             } else {
-                include PAGES . 'error.php';
+                include PAGES . 'notfound.php';
             }
         ?>
     </main>

@@ -29,7 +29,7 @@ class OrderController extends Controller {
             return;
         }
         
-        if(!Session::isSuperUser() || !$this->order_model->isOrderOwner($body['id_order'] ?? null, $body['id_user'] ?? null)) {
+        if(!Session::isSuperUser() && !$this->order_model->isOrderOwner($body['id_order'] ?? null, $body['id_user'] ?? null)) {
             $this->render('notauthorizated', ['title' => 'Order not yours']);
             return;
         }
