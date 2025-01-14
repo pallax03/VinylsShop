@@ -37,11 +37,6 @@
                         <p>Notifications</p>
                     </a>
                 </li>
-                <li>
-                    <a href="/devs">
-                        <p>Relazione</p>
-                    </a>
-                </li>
             </ul>
         </li>
         <li>
