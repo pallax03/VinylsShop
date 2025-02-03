@@ -73,5 +73,14 @@ final class VinylController extends Controller {
         }
         $response->Error('Update not possible');
     }
+
+    function deleteVinyl(Request $request, Response $response) {
+        $body = $request->getBody();
+        if ($this->vinyl_model->deleteVinyl($body['id'])) {
+            $response->Success('Vinyl succesfully deleted');
+            return;
+        }
+        $response->Error('Delete not possible');
+    }
 }
 

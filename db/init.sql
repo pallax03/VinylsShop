@@ -143,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `vinylsshop`.`vinyls` (
     `stock` INT NOT NULL,
     `type` ENUM('LP', 'EP') NOT NULL,
     `id_album` INT NOT NULL,
+    `is_deleted` BOOLEAN DEFAULT 0,
     PRIMARY KEY (`id_vinyl`),
     FOREIGN KEY (`id_album`) REFERENCES `vinylsshop`.`albums` (`id_album`)
 );

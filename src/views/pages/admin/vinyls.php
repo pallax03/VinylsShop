@@ -29,6 +29,11 @@
             </tr>
             <?php foreach ($data["vinyls"] as $vinyl): ?>
                 <tr id="tr-vinyl_<?php echo $vinyl['id_vinyl']?>" data-cost="<?php echo $vinyl['cost']?>" data-stock="<?php echo $vinyl['stock']?>">
+                    <td>
+                        <button class="delete" onclick="deleteVinyl(<?php echo $user['id_vinyl']; ?>)" aria-label="Delete vinyl">
+                            <span aria-hidden="true"><i class="bi bi-x"></i></span>
+                        </button>
+                    </td>
                     <td> <?php echo $vinyl["stock"] ?> x</td>
                     <td> <?php echo $vinyl["title"] ?> </td>
                     <td> <?php echo $vinyl["cost"] ?> €</td>
