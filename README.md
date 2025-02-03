@@ -1,4 +1,4 @@
-# Progetto web - VinylsShop
+# VinylsShop - progetto web
 ##### expected deadline: 14 Jan 2025
 ##### real deadline: 15 23:59 Jan 2025
 
