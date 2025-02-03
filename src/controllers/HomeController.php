@@ -30,7 +30,7 @@ class HomeController extends Controller {
         $title = 'Home';
         $head = array('title' => $title, 'style'=> array(''),
          'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
-        $data = $this->vinyls_model->getCarousel();
+        $data = $this->vinyls_model->getVinyls([]);
         
         $this->render('home', $head, $data);
     }
@@ -69,15 +69,14 @@ class HomeController extends Controller {
 
     public function search(Request $request, Response $response) {
         $body = $request->getBody();
-        // always gives OK, because there's no wrong search.
-        $response->Success($this->vinyls_model->getVinyls(null, $body));
+        $response->Success($this->vinyls_model->getVinyls($body));
     }
 
     public function dashboard() {
         $this->redirectNotSuperUser();
         $this->render('admin/vinyls', ['title' => 'Manage Vinyls'],
             [
-                'vinyls' => $this->vinyls_model->getAllVinyls(),
+                'vinyls' => $this->vinyls_model->getVinyls([]),
                 'albums' => $this->vinyls_model->getAlbums([])
             ]);
     }

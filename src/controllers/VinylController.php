@@ -14,7 +14,7 @@ final class VinylController extends Controller {
 
     function index(Request $request, Response $response) {
         $body = $request->getBody();
-        $data['vinyl'] = $this->vinyl_model->getVinylDetails($body['id'] ?? null);
+        $data['vinyl'] = $this->vinyl_model->getVinyl($body['id'] ?? null);
         if (isset($body['id']) && !empty($data['vinyl'])) {
             $data['suggested'] = $this->vinyl_model->getSuggested($body['id']);
             $head = array('title' => $data["vinyl"]["details"]["title"], 'style'=> array(''),

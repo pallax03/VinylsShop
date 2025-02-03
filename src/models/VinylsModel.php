@@ -11,17 +11,6 @@ final class VinylsModel {
         $this->notification_model = new NotificationModel();
     }
 
-    private function notificateVinylsQuantity() {
-        $vinyls = $this->getVinylsOptimized(['stock' => 0]);
-        foreach ($vinyls as $vinyl) {
-            $this->notification_model->broadcastFor(
-                Database::getInstance()->executeResults("SELECT id_user FROM users WHERE su = 1"),
-                "Vinyl " . $vinyl['title'] . " out of stock!",
-                "/vinyl?id=" . $vinyl['id_vinyl']
-            );
-        }
-    }
-
     private function notificateVinylQuantity($id_vinyl) {
         $vinyl = $this->getVinyl($id_vinyl);
         if ($vinyl['stock'] <= 0) {
@@ -75,129 +64,13 @@ final class VinylsModel {
         return $this->db->executeResults($query. ' GROUP BY a.id_album;', $types, ...$values);
     }
 
-    /**
-     * Gets a specified number of vinyls from the database.
-     * @param n the number of vinyls to send
-     * @param params a map of values to query the database on:
-     * params structure:
-     *  { 
-     *      id -> ..., album -> ..., genre -> ...,
-     *      artist -> ..., track -> ...
-     *  }
-     * @return json of vinyls data
-     */    
-    public function getVinyls($n, $params) {
-        $query = "SELECT
-            v.id_vinyl,
-            v.stock,
-            v.cost,
-            a.title,
-            a.cover,
-            a.genre,
-            ar.name AS artist
-            FROM
-            vinyls v JOIN albums a ON v.id_album = a.id_album
-            JOIN artists ar ON a.id_artist = ar.id_artist";
-        $keys = array_keys($params);
-        // get the first key and switch on it to get the right string added to the query
-        switch (reset($keys)) {
-            case "id":
-                $query = $query . " WHERE v.id_vinyl = " . $params["id"];
-                break;
-            case "album":
-                $query = $query . " WHERE a.title LIKE '%" . $params["album"] . "%'";
-                break;
-            case "genre":
-                $query = $query . " WHERE a.genre LIKE '%" . $params["genre"] . "%'";
-                break;
-            case "track":
-                $query = $query . " JOIN albumstracks ta
-                    ON a.id_album = ta.id_album JOIN tracks t
-                    ON t.id_track = ta.id_track WHERE t.title LIKE '%". $params["track"] . "%'";
-                    break;
-            case "artist":
-                $query = $query . " WHERE ar.name LIKE '%" . $params["artist"] . "%'";
-                break;
-            default;
-        }
-        // in case it needs a limitation
-        if ($n > 0) {
-            $query = $query . " LIMIT ?";
-            $result = $this->db->executeResults($query, 'i', $n);
-        } else {
-            $result = $this->db->executeResults($query);
-        }
-        return $result;
-    }
-
-    public function getAllVinyls() {
-        $vinyls = "SELECT
-            v.id_vinyl,
-            v.stock,
-            a.title,
-            v.type,
-            v.inch,
-            v.stock,
-            v.rpm,
-            v.cost
-            FROM vinyls v , albums a
-            WHERE v.id_album=a.id_album";
-        return $this->db->executeResults($vinyls);
-    }
 
     /**
-     * Gets the full of a single vinyl (vinyl page)
-     * from a given id.
-     * @param id of the vinyl in question
-     * @return array containing details on the vinyl
-     */
-    public function getVinylDetails($id) {
-        // query to get vinyls info
-        $vinyl = "SELECT 
-            v.id_vinyl,
-            v.cost,
-            v.rpm,
-            v.inch,
-            v.type,
-            v.stock,
-            a.id_album,
-            a.title,
-            a.release_date,
-            a.cover,
-            a.genre,
-            ar.name AS artist
-            FROM 
-            vinyls v
-            JOIN albums a ON v.id_vinyl = a.id_album
-            JOIN artists ar ON ar.id_artist = a.id_artist
-            WHERE v.id_vinyl = ?";
-        // query to get the tracks from a vinyl [needs id_album from previous query]
-        $tracks = "SELECT
-            t.title,
-            t.duration
-            FROM
-            albums a
-            JOIN albumstracks ta ON ta.id_album = a.id_album
-            JOIN tracks t ON t.id_track = ta.id_track
-            WHERE a.id_album = ?";
-        // prepare statement
-        $result = $this->db->executeResults($vinyl, "i", $id);
-        if(!empty($result)) {
-            $result["details"] = $result[0];
-            // store id_album for the next query
-            $album =  $result["details"]["id_album"];
-            // prepare second statement
-            $result["tracks"] = $this->db->executeResults($tracks, "i", $album);
-        }
-        return $result;
-    }
-
-    /**
-     * get the vinyl details from the database (without tracks)
+     * get the vinyl details from the database
      * 
      * @param int $id_vinyl the id of the vinyl to get the details of
      * 
-     * @return array containing the details of the vinyl
+     * @return array containing the details of the vinyl with tracks
      */
     public function getVinyl($id_vinyl) {
         $vinyl = Database::getInstance()->executeResults(
@@ -219,58 +92,13 @@ final class VinylsModel {
             'i',
             $id_vinyl
         );
-        return !empty($vinyl) ? $vinyl[0] : $vinyl;
+        if(!empty($vinyl)) {
+            $vinyl = $vinyl[0];
+            $vinyl['tracks'] = $this->getTracks($vinyl['id_album']);
+        }
+        return $vinyl; 
     }
 
-
-    /**
-     * Function to be called to get the preview of a vinyl
-     * (cart, checkout and order pages).
-     * @param int $id of the vinyl to get the preview of
-     * @return array containing the information on the vinyl
-     */
-    public function getCarousel() {
-        // query to get vinyls info
-        $query = "SELECT
-            v.id_vinyl,
-            a.title,
-            a.cover,
-            ar.name AS artist
-            FROM 
-            vinyls v
-            JOIN albums a ON v.id_vinyl = a.id_album
-            JOIN artists ar ON ar.id_artist = a.id_artist";
-        // execute query
-        $result['vinyls'] = $this->db->executeResults($query);
-        return $result;
-    }
-
-    /**
-     * Gets the order previews (user page)
-     * from a given vinyl id.
-     * @param id of the vinyl to get the preview of
-     * @return json with the  preview infos
-     */
-    public function getUserOrderPreview($id) {
-        $preview = [];
-        $query = "SELECT
-            v.cost,
-            a.title,
-            a.cover,
-            FROM 
-            vinyls v
-            JOIN albums a ON v.id_vinyl = a.id_album
-            WHERE v.id_vinyl = ?";
-        // execute query
-        $result = $this->db->executeResults($query, 'i', $id);
-        if (!empty($result)):
-            // store results
-            $preview["cost"] = $result["cost"];
-            $preview["title"] = $result["title"];
-            $preview["cover"] = $result["cover"];
-        endif;
-        return $preview;
-    }
 
     public function getSuggested($id) {
         $selected_vinyl = $this->getVinyl($id);
@@ -315,7 +143,7 @@ final class VinylsModel {
      * 
      * @return array containing the albums 
      */
-    public function getVinylsOptimized($filters) {
+    public function getVinyls($filters) {
         Database::getInstance()->setHandler(Database::defaultHandler());
         return $this->applyFilters(
             "SELECT
@@ -340,6 +168,7 @@ final class VinylsModel {
             $filters
         );
     }
+
 
     /**
      * Get the albums of an artist.
@@ -376,6 +205,34 @@ final class VinylsModel {
         );
     }
 
+    /**
+     * Get the tracks of an album.
+     * @param int $id_album of the album to get the tracks of
+     * 
+     * @return array containing the tracks
+     */
+    public function getTracks($id_album) {
+        return Database::getInstance()->executeResults(
+            "SELECT 
+                t.id_track,
+                t.title,
+                t.duration
+                FROM tracks t
+                JOIN albumstracks ta ON t.id_track = ta.id_track
+                WHERE ta.id_album = ?",
+            'i',
+            $id_album
+        );
+    }
+
+    /**
+     * Add a track to the database.
+     * @param int $id_album of the album to add the track to
+     * @param string $title of the track
+     * @param string $duration of the track
+     * 
+     * @return bool true if the track was added, false otherwise
+     */
     public function addTrack($id_album, $title, $duration) {
         return Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO `tracks` (title, duration) VALUES (?, ?)",
@@ -494,6 +351,7 @@ final class VinylsModel {
         return $result ? $last_id : false;
     }
 
+
     /**
      * Add or update a vinyl to the database.
      * 
@@ -590,12 +448,34 @@ final class VinylsModel {
         return $result;
     }
 
-    function getArtists() {
+
+    /**
+     * Get the artists from the database.
+     * 
+     * @return array containing the artists
+     */
+    public function getArtists() {
         $query = "SELECT
             a.id_artist,
             a.name
             FROM artists a";
         $result['artists'] =  $this->db->executeResults($query);
+        return $result;
+    }
+
+
+    /**
+     * Delete a vinyl from the database.
+     * @param int $id_vinyl of the vinyl to delete
+     * 
+     * @return bool true if the vinyl was deleted, false otherwise
+     */
+    function deleteVinyl($id_vinyl) {
+        $result = $this->db->executeQueryAffectRows(
+            "DELETE FROM vinyls WHERE id_vinyl = ?",
+            'i',
+            $id_vinyl
+        );
         return $result;
     }
 }
