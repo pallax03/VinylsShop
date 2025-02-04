@@ -1,44 +1,14 @@
 <section class="margin-top no-padding">
     <h2 class="home-title">Welcome to VinylsShop</h2>
-    <div class="my-carousel" id="home-carousel_1">
-        <?php for ($i=0; $i < 2; $i++): ?>
-            <?php foreach ($data['vinyls'] as $vinyl): ?>
-                <a class="my-slide" href="/vinyl?id=<?php echo $vinyl['id_vinyl']?>" aria-label="<?php echo $vinyl['title']?>">
-                    <img src="/resources/img/albums/<?php echo $vinyl['cover'] ?>" alt=""/>
-                    <span>
-                        <p> <?php echo $vinyl['title'] ?></p>
-                        <p> <?php echo $vinyl['artist'] ?> </p>
-                    </span>
-                </a>
-            <?php endforeach; ?>
-        <?php endfor; ?>
-    </div>
-    <div class="my-carousel" id="home-carousel_2">
-        <?php for ($i=0; $i < 2; $i++): ?>
-            <?php foreach ($data['vinyls'] as $vinyl): ?>
-                <a class="my-slide" href="/vinyl?id=<?php echo $vinyl['id_vinyl']?>" aria-label="<?php echo $vinyl['title']?>">
-                    <img src="/resources/img/albums/<?php echo $vinyl['cover'] ?>" alt=""/>
-                    <span>
-                        <p> <?php echo $vinyl['title'] ?></p>
-                        <p> <?php echo $vinyl['artist'] ?> </p>
-                    </span>
-                </a>
-            <?php endforeach; ?>
-        <?php endfor; ?>
-    </div>
-    <div class="my-carousel" id="home-carousel_3">
-        <?php for ($i=0; $i < 2; $i++): ?>
-            <?php foreach ($data['vinyls'] as $vinyl): ?>
-                <a class="my-slide" href="/vinyl?id=<?php echo $vinyl['id_vinyl']?>" aria-label="<?php echo $vinyl['title']?>">
-                    <img src="/resources/img/albums/<?php echo $vinyl['cover'] ?>" alt=""/>
-                    <span>
-                        <p> <?php echo $vinyl['title'] ?></p>
-                        <p> <?php echo $vinyl['artist'] ?> </p>
-                    </span>
-                </a>
-            <?php endforeach; ?>
-        <?php endfor; ?>
-    </div>
+    <?php if(isset($data['vinyls']) && !empty($data['vinyls'])): ?>
+        <?php
+            for ($i=0; $i < 4; $i++) { 
+                include COMPONENTS . 'carousel.php'; 
+            }
+        ?>
+    <?php else: ?>
+        <p>There are no vinyls available at the moment!</p>
+    <?php endif; ?>
 </section>
 <article class="home-article">
     <h2>Why buy on VinylsShop?</h2>

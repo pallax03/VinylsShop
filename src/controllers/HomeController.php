@@ -30,9 +30,8 @@ class HomeController extends Controller {
         $title = 'Home';
         $head = array('title' => $title, 'style'=> array(''),
          'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
-        $data = $this->vinyls_model->getVinyls([]);
         
-        $this->render('home', $head, $data);
+        $this->render('home', $head, ['vinyls' => $this->vinyls_model->getVinyls([])]);
     }
 
     public function notFound(Request $request, Response $response) {

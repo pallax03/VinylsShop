@@ -1,7 +1,7 @@
 services:
   web:
-    build: ./src/
-    container_name: TecnologieWeb_progetto-web
+    build: ./src
+    container_name: ${COMPOSE_PROJECT_NAME}-web
     volumes:
       - ./src/:/var/www/html
     ports:
@@ -13,7 +13,7 @@ services:
     
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: TecnologieWeb_progetto-phpmyadmin
+    container_name: ${COMPOSE_PROJECT_NAME}-phpmyadmin
     environment:
       PMA_HOST: ${DB_HOST}
       PMA_PORT: ${DB_PORT}
@@ -23,8 +23,8 @@ services:
       - db
 
   db:
-    build: ./db/
-    container_name: TecnologieWeb_progetto-db
+    build: ./db
+    container_name: ${COMPOSE_PROJECT_NAME}-db
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}

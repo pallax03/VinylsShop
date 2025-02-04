@@ -1,12 +1,9 @@
 <?php
 final class VinylsModel {
 
-    private $db = null;
-
     private $notification_model = null;
 
     public function __construct() {
-        $this->db = Database::getInstance();
         require_once MODELS . 'NotificationModel.php';
         $this->notification_model = new NotificationModel();
     }
@@ -61,7 +58,8 @@ final class VinylsModel {
             $types .= $filtersMap[$key]["type"];
             $values[] = isset($filtersMap[$key]["value"]) ? $filtersMap[$key]["value"]($value) : $value;
         }
-        return $this->db->executeResults($query. ' GROUP BY a.id_album;', $types, ...$values);
+        
+        return Database::getInstance()->executeResults($query. ' GROUP BY a.id_album;', $types, ...$values);
     }
 
 
@@ -145,7 +143,7 @@ final class VinylsModel {
      */
     public function getVinyls($filters) {
         Database::getInstance()->setHandler(Database::defaultHandler());
-        return $this->applyFilters(
+        $vinyls = $this->applyFilters(
             "SELECT
                     GROUP_CONCAT(DISTINCT v.id_vinyl ORDER BY v.id_vinyl ASC SEPARATOR ', ') AS id_vinyl, 
                     GROUP_CONCAT(DISTINCT v.cost ORDER BY v.cost ASC SEPARATOR ', ') AS vinyl_cost, 
@@ -167,6 +165,7 @@ final class VinylsModel {
                 WHERE 1 = ?", 
             $filters
         );
+        return $vinyls;
     }
 
 
@@ -253,7 +252,7 @@ final class VinylsModel {
      * @return bool true if the artist exists, false otherwise
      */
     private function checkArtist($artist_id) {
-        return !empty($this->db->executeResults(
+        return !empty(Database::getInstance()->executeResults(
             "SELECT * FROM artists WHERE id_artist = ?",
             'i',
             $artist_id
@@ -268,7 +267,7 @@ final class VinylsModel {
      * @return bool true if the artist was created, false otherwise
      */ 
     public function createArtist($name) {
-        return $this->db->executeQueryAffectRows(
+        return Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO artists (name) VALUES (?)",
             's',
             $name
@@ -283,7 +282,7 @@ final class VinylsModel {
      * @return bool true if the album exists, false otherwise
      */
     private function checkAlbum($album_id) {
-        return !empty($this->db->executeResults(
+        return !empty(Database::getInstance()->executeResults(
             "SELECT * FROM albums WHERE id_album = ?",
             'i',
             $album_id
@@ -335,7 +334,7 @@ final class VinylsModel {
         }
 
         
-        $result = $this->db->executeQueryAffectRows(
+        $result = Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO albums (title, release_date, genre, cover, id_artist)
                 VALUES (?, ?, ?, ?, ?)",
             'ssssi',
@@ -383,7 +382,7 @@ final class VinylsModel {
             return $this->updateVinyl($id_vinyl, $cost, $rpm, $inch, $type, $stock, $album);
         }
         
-        $result = $this->db->executeQueryAffectRows(
+        $result = Database::getInstance()->executeQueryAffectRows(
             "INSERT INTO vinyls (`cost`, `rpm`, `inch`, `type`, `stock`, `id_album`)
                 VALUES (?, ?, ?, ?, ?, ?)",
             'diisii',
@@ -438,7 +437,7 @@ final class VinylsModel {
         $types .= 'i';
         $values[] = $id_vinyl;
 
-        $result = $this->db->executeQueryAffectRows($query, $types, ...$values);
+        $result = Database::getInstance()->executeQueryAffectRows($query, $types, ...$values);
 
         if ($result) {
             $this->broadcastCartVinyl($id_vinyl);
@@ -459,7 +458,7 @@ final class VinylsModel {
             a.id_artist,
             a.name
             FROM artists a";
-        $result['artists'] =  $this->db->executeResults($query);
+        $result['artists'] =  Database::getInstance()->executeResults($query);
         return $result;
     }
 
@@ -471,11 +470,20 @@ final class VinylsModel {
      * @return bool true if the vinyl was deleted, false otherwise
      */
     function deleteVinyl($id_vinyl) {
-        $result = $this->db->executeQueryAffectRows(
+        $result = Database::getInstance()->executeQueryAffectRows(
             "DELETE FROM vinyls WHERE id_vinyl = ?",
             'i',
             $id_vinyl
         );
+
+        if(!$result) {
+            $result = Database::getInstance()->executeQueryAffectRows(
+                "UPDATE vinyls SET is_deleted = 1 WHERE id_vinyl = ?",
+                'i',
+                $id_vinyl
+            );
+        }
+
         return $result;
     }
 }
