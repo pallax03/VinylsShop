@@ -17,7 +17,7 @@ final class VinylController extends Controller {
         $data['vinyl'] = $this->vinyl_model->getVinyl($body['id'] ?? null);
         if (isset($body['id']) && !empty($data['vinyl'])) {
             $data['suggested'] = $this->vinyl_model->getSuggested($body['id']);
-            $head = array('title' => $data["vinyl"]["details"]["title"], 'style'=> array(''),
+            $head = array('title' => $data["vinyl"]["title"], 'style'=> array(''),
              'header' => "Oltre i " . $_ENV['SHIPPING_GOAL'] . "€ spedizione gratuita!");
             $this->render('ecommerce/vinyl', $head, $data);
             return;

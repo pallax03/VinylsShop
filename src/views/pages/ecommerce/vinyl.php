@@ -1,17 +1,17 @@
 <section class="album-details">
-    <img class="album-cover" src="/resources/img/albums/<?php echo $data["vinyl"]["details"]["cover"]?>" alt=""/>
-    <h1 class="album-title"><?php echo $data["vinyl"]["details"]["title"] ?></h1>
+    <img class="album-cover" src="/resources/img/albums/<?php echo $vinyl["cover"]?>" alt=""/>
+    <h1 class="album-title"><?php echo $vinyl["title"] ?></h1>
     <p class="info">
         <?php
-            $details = $data["vinyl"]["details"];
+            $details = $vinyl;
             echo $details["rpm"] . " - " . $details["inch"]
                 . " - " . $details["type"];
         ?>
     </p>
     <div class="large button">
         <i class="bi bi-bag-fill"></i>
-        <button onclick="addToCart(<?php echo $data['vinyl']['details']['id_vinyl'] ?>, 1)">
-            <?php echo $data['vinyl']['details']['stock'] <= 0 ? 'Out of stock' : 'Add to cart - ' . $data["vinyl"]["details"]["cost"] . ' €' ?>
+        <button onclick="addToCart(<?php echo $vinyl['id_vinyl'] ?>, 1)">
+            <?php echo $vinyl['stock'] <= 0 ? 'Out of stock' : 'Add to cart - ' . $vinyl["cost"] . ' €' ?>
         </button>
     </div>
     
@@ -20,13 +20,13 @@
 <section class="tracklist">
     <h1>Album Info</h1>
     <div class="artist-info">
-        <b><?php echo $data["vinyl"]["details"]["artist"] ?></b>
-        <b><?php echo $data["vinyl"]["details"]["release_date"] ?></b>
-        <b><?php echo $data["vinyl"]["details"]["genre"] ?></b>
+        <b><?php echo $vinyl["artist_name"] ?></b>
+        <b><?php echo $vinyl["release_date"] ?></b>
+        <b><?php echo $vinyl["genre"] ?></b>
     </div>
     <ol class="album">
         <?php
-            foreach ($data["vinyl"]["tracks"] as $track):
+            foreach ($vinyl["tracks"] as $track):
                 echo(
                     '<li class="track">
                         <span class="track-info">
@@ -44,7 +44,7 @@
     <h2>Recommended</h2>
     <div class="recommended">
         <div>
-            <?php foreach ($data["suggested"] as $vinyl): ?>
+            <?php foreach ($suggested as $vinyl): ?>
                 <a href="/vinyl?id=<?php echo $vinyl['id_vinyl']?>" aria-label="<?php echo $vinyl['title'] ?>">
                     <img src="/resources/img/albums/<?php echo $vinyl['cover'] ?>" alt=""/>
                     <span>

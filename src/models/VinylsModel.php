@@ -79,9 +79,11 @@ final class VinylsModel {
                 v.rpm,
                 v.inch,
                 v.type,
+                a.id_album,
                 a.title,
                 a.genre,
                 a.cover,
+                a.release_date,
                 ar.name AS artist_name
                 FROM vinyls v 
                 JOIN albums a ON v.id_vinyl = a.id_album
@@ -146,8 +148,8 @@ final class VinylsModel {
         $vinyls = $this->applyFilters(
             "SELECT
                     GROUP_CONCAT(DISTINCT v.id_vinyl ORDER BY v.id_vinyl ASC SEPARATOR ', ') AS id_vinyl, 
-                    GROUP_CONCAT(DISTINCT v.cost ORDER BY v.cost ASC SEPARATOR ', ') AS vinyl_cost, 
-                    GROUP_CONCAT(DISTINCT v.stock ORDER BY v.stock ASC SEPARATOR ', ') AS vinyl_stock, 
+                    GROUP_CONCAT(DISTINCT v.cost ORDER BY v.cost ASC SEPARATOR ', ') AS cost, 
+                    GROUP_CONCAT(DISTINCT v.stock ORDER BY v.stock ASC SEPARATOR ', ') AS stock, 
                     a.id_album, 
                     a.title, 
                     a.release_date, 

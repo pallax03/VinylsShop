@@ -21,9 +21,10 @@ final class UserModel {
      * @return array the user if exists, false if the query failed.
      */
     public function getUser($id_user = null) {
+        Database::getInstance()->setHandler(Database::defaultHandler()); // reset the handler to avoid the error
         $user = Database::getInstance()->executeResults(
             "SELECT u.id_user, 
-                    u.mail, 
+                u.mail,
                     u.balance,
                     u.su,
                     u.notifications,

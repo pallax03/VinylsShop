@@ -170,6 +170,7 @@ class Database {
             $stmt->bind_param($finalTypes, ...$finalParams);
             $stmt->execute();
         } catch (\Throwable $th) {
+            // var_dump($this->handler);
             if ($this->handler !== null) {
                 echo 'Query: </br>';
                 call_user_func($this->handler, $query, $types, ...$params);

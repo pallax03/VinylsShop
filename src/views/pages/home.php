@@ -1,8 +1,8 @@
 <section class="margin-top no-padding">
     <h2 class="home-title">Welcome to VinylsShop</h2>
-    <?php if(isset($data['vinyls']) && !empty($data['vinyls'])): ?>
+    <?php if(isset($vinyls) && !empty($vinyls)): ?>
         <?php
-            for ($i=0; $i < 4; $i++) { 
+            for ($i=1; $i <= 3; $i++) { 
                 include COMPONENTS . 'carousel.php'; 
             }
         ?>
